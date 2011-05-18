@@ -1,0 +1,11 @@
+## Interface: 40100
+## Title: oUF_Zoey
+## Notes: An oUF layout
+## Author: Gizzmo
+## Version: 0.1
+## RequiredDeps: oUF
+## X-eMail: justgiz@gmail.com
+## X-Category: UnitFrame
+
+tags.lua
+core.lua
