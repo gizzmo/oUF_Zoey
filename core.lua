@@ -36,85 +36,73 @@ local config = {
 --// FUNCTIONS
 -----------------------------
 
+local SetBorder = function(self)
+	if type(self) ~= 'table' or not self.CreateTexture then return end
 
-local CreateBorder = function(self, size, padding)
-	if type(self) ~= 'table' or not self.CreateTexture or self.BorderTextures then return end
+	--// Defaults
+	local size = config.border_size
+	local padding = config.border_padding
+	local texture = config.border_texture
 
-	if not size then
-		size = config.border_size
-	end
-	if not padding then
-		padding = config.border_padding
-	end
+	--// If there is no textures, create them
+	if not self.BorderTextures then
+		t = {}
 
-	local t = { }
+		for i = 1, 8 do
+			t[i] = self:CreateTexture(nil, 'ARTWORK')
+			t[i]:SetTexture(texture)
+			t[i]:SetSize(size, size)
+		end
 
-	for i = 1, 8 do
-		t[i] = self:CreateTexture(nil, 'ARTWORK')
-		t[i]:SetTexture(config.border_texture)
-		t[i]:SetSize(size, size)
-	end
+		t[1].name = 'Top Left'
+		t[1]:SetPoint('TOPLEFT', -padding, padding)
+		t[1]:SetTexCoord(0.5, 0, 0.5, 1, 0.625, 0, 0.625, 1)
 
-	--// Top Left Corner
-	t[1]:SetPoint('TOPLEFT', -padding, padding)
-	t[1]:SetTexCoord(0.5, 0, 0.5, 1, 0.625, 0, 0.625, 1)
 
-	--// Top Edge
-	t[2]:SetPoint('TOPLEFT', size - padding, padding)
-	t[2]:SetPoint('TOPRIGHT', -size + padding, padding)
-	t[2]:SetTexCoord(0.25, 9.2808, 0.375, 9.2808, 0.25, 0, 0.375, 0)
+		t[2].name = 'Top'
+		t[2]:SetPoint('TOPLEFT', size - padding, padding)
+		t[2]:SetPoint('TOPRIGHT', -size + padding, padding)
+		t[2]:SetTexCoord(0.25, 9.2808, 0.375, 9.2808, 0.25, 0, 0.375, 0)
 
-	--// Top Right Corner
-	t[3]:SetPoint('TOPRIGHT', padding, padding)
-	t[3]:SetTexCoord(0.625, 0, 0.625, 1, 0.75, 0, 0.75, 1)
+		t[3].name = 'Top Right'
+		t[3]:SetPoint('TOPRIGHT', padding, padding)
+		t[3]:SetTexCoord(0.625, 0, 0.625, 1, 0.75, 0, 0.75, 1)
 
-	--// Left Edge
-	t[4]:SetPoint('TOPLEFT', -padding, -size + padding)
-	t[4]:SetPoint('BOTTOMLEFT', -padding, size - padding)
-	t[4]:SetTexCoord(0, 0, 0, 1.948, 0.125, 0, 0.125, 1.948)
+		t[4].name = 'Left'
+		t[4]:SetPoint('TOPLEFT', -padding, -size + padding)
+		t[4]:SetPoint('BOTTOMLEFT', -padding, size - padding)
+		t[4]:SetTexCoord(0, 0, 0, 1.948, 0.125, 0, 0.125, 1.948)
 
-	--// Right Edge
-	t[5]:SetPoint('TOPRIGHT', padding, -size + padding)
-	t[5]:SetPoint('BOTTOMRIGHT', padding, size - padding)
-	t[5]:SetTexCoord(0.125, 0, 0.125, 1.948, 0.25, 0, 0.25, 1.948)
+		t[5].name = 'Right'
+		t[5]:SetPoint('TOPRIGHT', padding, -size + padding)
+		t[5]:SetPoint('BOTTOMRIGHT', padding, size - padding)
+		t[5]:SetTexCoord(0.125, 0, 0.125, 1.948, 0.25, 0, 0.25, 1.948)
 
-	--// Bottom Left Corner
-	t[6]:SetPoint('BOTTOMLEFT', -padding, -padding)
-	t[6]:SetTexCoord(0.75, 0, 0.75, 1, 0.875, 0, 0.875, 1)
+		t[6].name = 'Bottom Left'
+		t[6]:SetPoint('BOTTOMLEFT', -padding, -padding)
+		t[6]:SetTexCoord(0.75, 0, 0.75, 1, 0.875, 0, 0.875, 1)
 
-	--// Bottom Edge
-	t[7]:SetPoint('BOTTOMLEFT', size - padding, -padding)
-	t[7]:SetPoint('BOTTOMRIGHT', -size + padding, -padding)
-	t[7]:SetTexCoord(0.375, 9.2808, 0.5, 9.2808, 0.375, 0, 0.5, 0)
+		t[7].name = 'Bottom'
+		t[7]:SetPoint('BOTTOMLEFT', size - padding, -padding)
+		t[7]:SetPoint('BOTTOMRIGHT', -size + padding, -padding)
+		t[7]:SetTexCoord(0.375, 9.2808, 0.5, 9.2808, 0.375, 0, 0.5, 0)
 
-	--// Bottom Right Corner
-	t[8]:SetPoint('BOTTOMRIGHT', padding, -padding)
-	t[8]:SetTexCoord(0.875, 0, 0.875, 1, 1, 0, 1, 1)
+		t[8].name = 'Bottom Right'
+		t[8]:SetPoint('BOTTOMRIGHT', padding, -padding)
+		t[8]:SetTexCoord(0.875, 0, 0.875, 1, 1, 0, 1, 1)
 
-	self.BorderTextures = t
-
-	SetBorderColor(self)
-end
-
-local SetBorderColor = function(self)
-	local t = self.BorderTextures
-	if not t then return end
-
-	local classification = UnitClassification(self.unit)
-
-	if classification == "worldboss" then
-		classification = "boss"
-	elseif classification == "elite" then
-		classification = "elite"
-	elseif classification == "rare" or classification == "rareelite" then
-		classification = "rare"
-	else
-		classification = "normal"
+		self.BorderTextures = t
 	end
 
-	local r,g,b = unpack(config.border_colors[classification])
+	--// Determin the border color
+	local colors = config.border_colors
+	local c = UnitClassification(self.unit)
+	if c == "worldboss" then c = "boss" end
+	if c == "rareelite" then c = "rare" end
+	local r,g,b = unpack(colors[c] and colors[c] or colors['normal'])
 
-	for _, tex in ipairs(t) do
+	--// Set the border color
+	for _, tex in ipairs(self.BorderTextures) do
 		tex:SetVertexColor(r, g, b)
 	end
 end
@@ -185,7 +173,7 @@ oUF:RegisterStyle('oUF_Zoey', function(self, unit)
 	Background:SetTexture(0, 0, 0, 1)
 
 	--// Border
-	CreateBorder(self)
+	SetBorder(self)
 
 	--// Overlay Frame -- used to attach icons/text to
 	local Overlay = CreateFrame('Frame', '$parentOverlay', self)
