@@ -36,6 +36,17 @@ local config = {
 --// FUNCTIONS
 -----------------------------
 
+local OnEnter = function(self)
+
+	UnitFrame_OnEnter(self)
+end
+
+local OnLeave = function(self)
+
+
+	UnitFrame_OnLeave(self)
+end
+
 local SetBorder = function(self)
 	if type(self) ~= 'table' or not self.CreateTexture then return end
 
@@ -164,8 +175,8 @@ oUF:RegisterStyle('oUF_Zoey', function(self, unit)
 	self:SetAttribute("*type2", "menu")
 
 	--// Hover Effects
-	self:SetScript("OnEnter", UnitFrame_OnEnter)
-	self:SetScript("OnLeave", UnitFrame_OnLeave)
+	self:SetScript("OnEnter", OnEnter)
+	self:SetScript("OnLeave", OnLeave)
 
 	--// Background
 	local Background = self:CreateTexture(nil, "BACKGROUND")
@@ -214,7 +225,7 @@ oUF:RegisterStyle('oUF_Zoey', function(self, unit)
 	------------------------------
 	--// Portrait
 	------------------------------
-	if unit == 'target' then -- later well add party
+	if unit == 'target' then -- later we'll add party
 		self.Portrait = CreateFrame("PlayerModel", '$parentPortrait', self)
 		self.Portrait:SetHeight(config.portrait_size)
 		self.Portrait:SetPoint('TOP', 0, -offset)
