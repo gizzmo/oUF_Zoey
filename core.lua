@@ -203,12 +203,10 @@ oUF:RegisterStyle('oUF_Zoey', function(self, unit)
 
 	--// Default location
 	Name:SetPoint("LEFT", self, "TOPLEFT", 3, 1)
-	Name:SetPoint("RIGHT", self, "TOPRIGHT", -3, 1)
 
 	--// Reposistion for target frame
 	if unit == 'target' then
 		Name:SetPoint("TOPLEFT", 3, -1)
-		Name:SetPoint("TOPRIGHT", -3, -1)
 	end
 
 	--// Hover Effect on Player (and pet?)
