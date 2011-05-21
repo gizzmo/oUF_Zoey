@@ -40,9 +40,7 @@ local OnEnter = function(self)
 
 	UnitFrame_OnEnter(self)
 end
-
 local OnLeave = function(self)
-
 
 	UnitFrame_OnLeave(self)
 end
@@ -57,7 +55,7 @@ local SetBorder = function(self)
 
 	--// If there is no textures, create them
 	if not self.BorderTextures then
-		t = {}
+		local t = {}
 
 		for i = 1, 8 do
 			t[i] = self:CreateTexture(nil, 'ARTWORK')
@@ -118,39 +116,27 @@ local SetBorder = function(self)
 	end
 end
 
+local SetHighlight = function(self)
+	--// If there is no texture, create it
+	if not self.Highlight then
+		local hl = CreateFrame("Frame", nil, self)
+		hl:SetAllPoints(self)
+		hl:SetFrameLevel(15)
 
---[[
-function CreateHighlight(self)
-	local Highlight = CreateFrame("Frame", nil, self)
-	Highlight:SetAllPoints(self)
-	Highlight:SetFrameLevel(self:GetFrameLevel() + 15)
+		hl.tex = hl:CreateTexture(nil, "OVERLAY")
+		hl.tex:SetTexture([=[Interface\QuestFrame\UI-QuestTitleHighlight]=])
+		hl.tex:SetBlendMode('ADD')
+		hl.tex:SetAlpha(0.5)
+		hl.tex:SetAllPoints(hl)
+		hl.tex:SetVertexColor(unpack(config.highlight_color))
 
-	Highlight.tex = Highlight:CreateTexture(nil, "OVERLAY")
-	Highlight.tex:SetTexture([=[Interface\QuestFrame\UI-QuestTitleHighlight]=])
-	Highlight.tex:SetBlendMode('ADD')
-	Highlight.tex:SetAlpha(0.5)
-	Highlight.tex:SetAllPoints(Highlight)
-	Highlight.tex:SetVertexColor(unpack(config.highlight_color))
+		self.Highlight = hl
 
-	Highlight:Hide()
-	self.Highlight = Highlight
-end
-
-local function UpdateHighlight(self)
-	if UnitIsUnit('target', self.unit) then
-		self.Highlight:Show()
-	else
-		self.Highlight:Hide()
+		--// Mouseover Events
+		self:HookScript("OnEnter", function(self) self.Highlight:Show() end)
+		self:HookScript("OnLeave", function(self) self.Highlight:Hide() end)
 	end
 end
-
-
-self:HookScript("OnEnter", function(self) self.Highlight:Show() end)
-self:HookScript("OnLeave", function(self) self.Highlight:Hide() end)
-self:RegisterEvent('PLAYER_TARGET_CHANGED', UpdateHighlight)
---]]
-
-
 -----------------------------
 --// STYLE FUNCTION
 -----------------------------
@@ -171,8 +157,8 @@ oUF:RegisterStyle('oUF_Zoey', function(self, unit)
 			end
 		end
 	end
-	self:RegisterForClicks("AnyUp")
 	self:SetAttribute("*type2", "menu")
+	self:RegisterForClicks("AnyUp")
 
 	--// Hover Effects
 	self:SetScript("OnEnter", OnEnter)
@@ -185,6 +171,9 @@ oUF:RegisterStyle('oUF_Zoey', function(self, unit)
 
 	--// Border
 	SetBorder(self)
+
+	--// Highlight
+	SetHighlight(self)
 
 	--// Overlay Frame -- used to attach icons/text to
 	local Overlay = CreateFrame('Frame', '$parentOverlay', self)
@@ -337,7 +326,6 @@ end)
 oUF:Factory(function(self)
 
 	local u = self.units
-	local b = 'oUF_Zoey_Frames_'
 
 	--// Player
 	self:Spawn('Player'				):SetPoint('TOP', UIParent, 'CENTER', 0, -302)
