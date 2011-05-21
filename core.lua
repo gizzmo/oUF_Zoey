@@ -122,6 +122,7 @@ local SetHighlight = function(self)
 		local hl = CreateFrame("Frame", nil, self)
 		hl:SetAllPoints(self)
 		hl:SetFrameLevel(15)
+		hl:Hide()
 
 		hl.tex = hl:CreateTexture(nil, "OVERLAY")
 		hl.tex:SetTexture([=[Interface\QuestFrame\UI-QuestTitleHighlight]=])
