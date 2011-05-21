@@ -36,15 +36,6 @@ local config = {
 --// FUNCTIONS
 -----------------------------
 
-local OnEnter = function(self)
-
-	UnitFrame_OnEnter(self)
-end
-local OnLeave = function(self)
-
-	UnitFrame_OnLeave(self)
-end
-
 local SetBorder = function(self)
 	if type(self) ~= 'table' or not self.CreateTexture then return end
 
@@ -162,8 +153,8 @@ oUF:RegisterStyle('oUF_Zoey', function(self, unit)
 	self:RegisterForClicks("AnyUp")
 
 	--// Hover Effects
-	self:SetScript("OnEnter", OnEnter)
-	self:SetScript("OnLeave", OnLeave)
+	self:SetScript("OnEnter", UnitFrame_OnEnter)
+	self:SetScript("OnLeave", UnitFrame_OnLeave)
 
 	--// Background
 	local Background = self:CreateTexture(nil, "BACKGROUND")

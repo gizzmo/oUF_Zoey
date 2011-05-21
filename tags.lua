@@ -12,9 +12,18 @@ local function Short(value)
 	end
 end
 
-local function Percent(x, y)
-	if y ~= 0 then
-		return math.floor(x/y*100+.5)
+local function Round(num, digits)
+	if not digits then
+		digits = 0
+	end
+	local power = 10^digits
+
+	return math.floor(num*power+.5) / power
+end
+
+local function Percent(cur, max)
+	if max ~= 0 then
+		return Round(cur/max*100,1)
 	else
 		return 0
 	end
@@ -56,20 +65,17 @@ oUF.TagEvents['Zoey:Name'] = 'UNIT_NAME_UPDATE UNIT_LEVEL PLAYER_LEVEL_UP'
 
 
 oUF.Tags['Zoey:Health'] = function(unit)
-
 	local cur = UnitHealth(unit)
 	local max = UnitHealthMax(unit)
 
 	if cur ~= max then
 		return ('%s%%'):format(Percent(cur,max))
 	end
-
-
 end
 oUF.TagEvents['Zoey:Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
 
-oUF.Tags['Zoey:Health_Hover'] = function(unit)
 
+oUF.Tags['Zoey:Health_Hover'] = function(unit)
 	local cur = UnitHealth(unit)
 	local max = UnitHealthMax(unit)
 
@@ -78,7 +84,6 @@ oUF.Tags['Zoey:Health_Hover'] = function(unit)
 	else
 		return ('|cffff7f7f-%s'):format(Short(max - cur))
 	end
-
 end
 oUF.TagEvents['Zoey:Health_Hover'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
 
