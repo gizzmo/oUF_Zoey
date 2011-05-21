@@ -196,7 +196,7 @@ oUF:RegisterStyle('oUF_Zoey', function(self, unit)
 
 	--// Reposistion for target frame
 	if unit == 'target' then
-		Name:SetPoint("TOPLEFT", 3, -1)
+		Name:SetPoint("TOPLEFT", 3, -2)
 	end
 
 	--// Bar Position
