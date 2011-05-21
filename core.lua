@@ -198,14 +198,6 @@ oUF:RegisterStyle('oUF_Zoey', function(self, unit)
 		Name:SetPoint("TOPLEFT", 3, -1)
 	end
 
-	--// Hover Effect on Player (and pet?)
-	if unit == 'player' then --or unit == 'pet' then
-		Name:Hide()
-		self:HookScript("OnEnter", function() Name:Show(); end)
-		self:HookScript("OnLeave", function() Name:Hide(); end)
-	end
-
-
 	--// Bar Position
 	local offset = config.bar_spacing
 
