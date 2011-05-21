@@ -227,14 +227,12 @@ oUF:RegisterStyle('oUF_Zoey', function(self, unit)
 	self.Health:SetPoint('RIGHT',-1,0)
 	self.Health.frequentUpdates = .2
 
-	-- Text
-	self.Health.Text = self.Health:CreateFontString(nil, 'OVERLAY')
-	self.Health.Text:SetFont(config.font, 21, config.fontOutline)
-	self.Health.Text:SetJustifyH('RIGHT')
-	self.Health.Text:SetShadowOffset(1, -1)
-	self.Health.Text:SetPoint('RIGHT', -1, 0)
-	self:Tag(self.Health.Text, '[Zoey:Health]')
+	--// Healthbar Background
+	self.Health.bg = self:CreateTexture(nil, "BACKGROUND")
+	self.Health.bg:SetTexture(config.healthbar_texture)
+	self.Health.bg:SetAllPoints(self.Health)
 
+	--// Bar Coloring
 	self.Health.PostUpdate = function(Health, unit, min,max)
 		local r,g,b
 
@@ -254,10 +252,13 @@ oUF:RegisterStyle('oUF_Zoey', function(self, unit)
 		Health.bg:SetVertexColor(25/255, 25/255, 25/255)
 	end
 
-	--// Background
-	self.Health.bg = self:CreateTexture(nil, "BACKGROUND")
-	self.Health.bg:SetTexture(config.healthbar_texture)
-	self.Health.bg:SetAllPoints(self.Health)
+	--// Text
+	local HealthText = self.Health:CreateFontString(nil, 'OVERLAY')
+	HealthText:SetFont(config.font, 20, config.fontOutline)
+	HealthText:SetJustifyH('RIGHT')
+	HealthText:SetShadowOffset(1, -1)
+	HealthText:SetPoint('RIGHT', -1, -1)
+	self:Tag(HealthText, '[Zoey:Health]')
 
 	--// offset the power bar's position
 	offset = offset + self.Health:GetHeight() + config.bar_spacing
@@ -273,17 +274,20 @@ oUF:RegisterStyle('oUF_Zoey', function(self, unit)
 	self.Power:SetPoint('RIGHT',-1,0)
 	self.Power.frequentUpdates = .2
 
-	-- Fix the colors
+	--// Powerbar Background
+	self.Power.bg = self:CreateTexture(nil, "BACKGROUND")
+	self.Power.bg:SetTexture(config.powerbar_texture)
+	self.Power.bg:SetAllPoints(self.Power)
+
+	--// Powerbar colors
 	self.Power.PostUpdate = function(Power, unit, min, max)
 		local r,g,b
 
 		--// Determin the color we want to use
 		if UnitIsPlayer(unit) then
-			local _, class = UnitClass(unit)
-			r,g,b = unpack(self.colors.class[class])
+			r,g,b = unpack(self.colors.class[select(2, UnitClass(unit))])
 		else
-			local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
-			r,g,b = unpack(self.colors.power[ptoken])
+			r,g,b = unpack(self.colors.power[select(2, UnitPowerType(unit))])
 		end
 
 		--// Set the power bar color
@@ -292,11 +296,6 @@ oUF:RegisterStyle('oUF_Zoey', function(self, unit)
 		--// Set the background color
 		Power.bg:SetVertexColor(r * 0.4, g * 0.4, b * 0.4)
 	end
-
-	--// Background
-	self.Power.bg = self:CreateTexture(nil, "BACKGROUND")
-	self.Power.bg:SetTexture(config.powerbar_texture)
-	self.Power.bg:SetAllPoints(self.Power)
 
 	--// The true height of the frame
 	offset = offset + self.Power:GetHeight() + config.bar_spacing
