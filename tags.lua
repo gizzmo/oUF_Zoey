@@ -29,7 +29,6 @@ local function Percent(cur, max)
 	end
 end
 
-
 oUF.Tags['Zoey:Name'] = function(unit)
 	local name = UnitName(unit)
 	local _, class = UnitClass(unit)
