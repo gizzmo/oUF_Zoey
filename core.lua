@@ -107,9 +107,41 @@ local SetBorder = function(self)
 	end
 end
 
-local SetHighlight = function(self)
-	--// If there is no texture, create it
+
+
+
+local mouse_focus = nil
+local HighlightShouldShow = function(self)
+
+	--// Frame is curently mouse focused
+	if mouse_focus == self then
+		return true
+	end
+
+	--// Frame is not the current target
+	if not UnitIsUnit(self.unit, 'target') then
+		return false
+	end
+
+	--// We dont want to show target highlighting for these frames
+	if self.unit == 'target' or self.unit == 'player' then
+		return false
+	end
+
+	return true
+end
+
+local HighlightUpdate = function(self)
+	local highlight = self.Highlight
+
+	if not HighlightShouldShow(self) then
+		if highlight then highlight:Hide() end
+		return false
+	end
+
 	if not self.Highlight then
+
+		--// Create the highlight
 		local hl = CreateFrame("Frame", nil, self)
 		hl:SetAllPoints(self)
 		hl:SetFrameLevel(15)
@@ -124,11 +156,32 @@ local SetHighlight = function(self)
 
 		self.Highlight = hl
 
-		--// Mouseover Events
-		self:HookScript("OnEnter", function(self) self.Highlight:Show() end)
-		self:HookScript("OnLeave", function(self) self.Highlight:Hide() end)
 	end
+
+	self.Highlight:Show()
+
+	return false
 end
+
+local HighlightEnable = function(self)
+
+	--// Mouseover Events
+	self:HookScript("OnEnter", function(self)
+		mouse_focus = self
+		HighlightUpdate(self)
+	end)
+	self:HookScript("OnLeave", function(self)
+		mouse_focus = nil
+		HighlightUpdate(self)
+	end)
+
+	--// Target Events
+	self:RegisterEvent('PLAYER_TARGET_CHANGED', HighlightUpdate)
+	table.insert(self.__elements, HighlightUpdate)
+end
+
+
+
 -----------------------------
 --// STYLE FUNCTION
 -----------------------------
@@ -165,7 +218,7 @@ oUF:RegisterStyle('oUF_Zoey', function(self, unit)
 	SetBorder(self)
 
 	--// Highlight
-	SetHighlight(self)
+	HighlightEnable(self)
 
 	--// Overlay Frame -- used to attach icons/text to
 	local Overlay = CreateFrame('Frame', '$parentOverlay', self)
