@@ -30,7 +30,8 @@ local config = {
 
 	font = [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]],
 
-	highlight_color = {1,1,1, 75/255},
+	highlight_texture = [[Interface\QuestFrame\UI-QuestLogTitleHighlight]],
+	highlight_color = {1,1,1, 60/255},
 }
 -----------------------------
 --// FUNCTIONS
@@ -158,14 +159,15 @@ local HighlightUpdate = function(self)
 		hl:SetFrameLevel(15)
 		hl:Hide()
 
-		hl.tex = hl:CreateTexture(nil, "OVERLAY")
-		hl.tex:SetTexture([=[Interface\QuestFrame\UI-QuestTitleHighlight]=])
-		hl.tex:SetBlendMode('ADD')
-		hl.tex:SetAlpha(0.5)
-		hl.tex:SetAllPoints(hl)
-		hl.tex:SetVertexColor(unpack(config.highlight_color))
+		local tex = hl:CreateTexture(nil, "OVERLAY")
+		tex:SetTexture(config.highlight_texture)
+		tex:SetBlendMode('ADD')
+		tex:SetAlpha(0.5)
+		tex:SetAllPoints(hl)
+		tex:SetVertexColor(unpack(config.highlight_color))
 
 		self.Highlight = hl
+		self.Highlight.tex = tex
 
 	end
 
