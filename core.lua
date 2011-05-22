@@ -36,18 +36,21 @@ local config = {
 --// FUNCTIONS
 -----------------------------
 
-local SetBorder = function(self)
+local BorderUpdate = function(self)
 	if type(self) ~= 'table' or not self.CreateTexture then return end
-
-	--// Defaults
-	local size = config.border_size
-	local padding = config.border_padding
-	local texture = config.border_texture
 
 	--// If there is no textures, create them
 	if not self.BorderTextures then
+
+		--// Defaults
+		local size = config.border_size
+		local padding = config.border_padding
+		local texture = config.border_texture
+
+		--// Temp hold the textures
 		local t = {}
 
+		--// Shared for all 8 textures
 		for i = 1, 8 do
 			t[i] = self:CreateTexture(nil, 'ARTWORK')
 			t[i]:SetTexture(texture)
@@ -57,7 +60,6 @@ local SetBorder = function(self)
 		t[1].name = 'Top Left'
 		t[1]:SetPoint('TOPLEFT', -padding, padding)
 		t[1]:SetTexCoord(0.5, 0, 0.5, 1, 0.625, 0, 0.625, 1)
-
 
 		t[2].name = 'Top'
 		t[2]:SetPoint('TOPLEFT', size - padding, padding)
@@ -99,12 +101,21 @@ local SetBorder = function(self)
 	local c = UnitClassification(self.unit)
 	if c == "worldboss" then c = "boss" end
 	if c == "rareelite" then c = "rare" end
-	local r,g,b = unpack(colors[c] and colors[c] or colors['normal'])
+	local r,g,b = unpack(colors[c])
 
 	--// Set the border color
 	for _, tex in ipairs(self.BorderTextures) do
 		tex:SetVertexColor(r, g, b)
 	end
+end
+
+local BorderEnable = function(self)
+	--// Start by updating the borders
+	BorderUpdate(self)
+
+	--// Update events
+	self:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', BorderUpdate)
+	table.insert(self.__elements, BorderUpdate)
 end
 
 
@@ -215,7 +226,7 @@ oUF:RegisterStyle('oUF_Zoey', function(self, unit)
 	Background:SetTexture(0, 0, 0, 1)
 
 	--// Border
-	SetBorder(self)
+	BorderEnable(self)
 
 	--// Highlight
 	HighlightEnable(self)
