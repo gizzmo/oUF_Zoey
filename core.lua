@@ -184,6 +184,16 @@ local function HighlightEnable(self)
 end
 
 
+
+local function CreateText(parent, size)
+	local fs = parent:CreateFontString(nil, 'OVERLAY')
+	fs:SetFont(config.font, size or 16, config.fontOutline)
+	-- fs:SetJustifyH('LEFT')
+	fs:SetShadowOffset(1, -1)
+	fs:SetShadowColor(0,0,0,1)
+
+	return fs
+end
 -----------------------------
 --// STYLE FUNCTION
 -----------------------------
@@ -230,11 +240,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	------------------------------
 	--// Name Text
 	------------------------------
-	local Name = Overlay:CreateFontString(nil, 'OVERLAY')
-	Name:SetFont(config.font, 16, config.fontOutline)
-	Name:SetJustifyH('LEFT')
-	Name:SetShadowOffset(1, -1)
-	Name:SetShadowColor(0,0,0,1)
+	local Name = CreateText(Overlay, 16)
 	self:Tag(Name, '[Zoey:Name]')
 
 	--// Default location
@@ -299,11 +305,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	end
 
 	--// Text
-	local HealthText = self.Health:CreateFontString(nil, 'OVERLAY')
-	HealthText:SetFont(config.font, 22, config.fontOutline)
-	HealthText:SetJustifyH('RIGHT')
-	HealthText:SetShadowOffset(1, -1)
-	HealthText:SetShadowColor(0,0,0,1)
+	local HealthText = CreateText(self.Health, 22)
 	self:Tag(HealthText, '[Zoey:Health]')
 
 	HealthText:SetPoint('RIGHT', -1, -1)
