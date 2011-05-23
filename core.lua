@@ -36,8 +36,7 @@ local config = {
 -----------------------------
 --// FUNCTIONS
 -----------------------------
-
-local BorderUpdate = function(self)
+local function BorderUpdate(self)
 	if type(self) ~= 'table' or not self.CreateTexture then return end
 
 	--// If there is no textures, create them
@@ -110,7 +109,7 @@ local BorderUpdate = function(self)
 	end
 end
 
-local BorderEnable = function(self)
+local function BorderEnable(self)
 	--// Start by updating the borders
 	BorderUpdate(self)
 
@@ -123,7 +122,7 @@ end
 
 
 local mouse_focus = nil
-local HighlightShouldShow = function(self)
+local function HighlightShouldShow(self)
 
 	--// Frame is curently mouse focused
 	if mouse_focus == self then
@@ -136,14 +135,14 @@ local HighlightShouldShow = function(self)
 	end
 
 	--// We dont want to show target highlighting for these frames
-	if self.unit == 'target' or self.unit == 'player' then
+	if self.unit == 'player' or strsub(self.unit, 1, 6) == 'target' then
 		return false
 	end
 
 	return true
 end
 
-local HighlightUpdate = function(self)
+local function HighlightUpdate(self)
 	local highlight = self.Highlight
 
 	if not HighlightShouldShow(self) then
@@ -154,7 +153,7 @@ local HighlightUpdate = function(self)
 	if not self.Highlight then
 
 		--// Create the highlight
-		local hl = CreateFrame("Frame", nil, self)
+		local hl = CreateFrame("Frame", '$parentHighlight', self)
 		hl:SetAllPoints(self)
 		hl:SetFrameLevel(15)
 		hl:Hide()
@@ -176,7 +175,7 @@ local HighlightUpdate = function(self)
 	return false
 end
 
-local HighlightEnable = function(self)
+local function HighlightEnable(self)
 
 	--// Mouseover Events
 	self:HookScript("OnEnter", function(self)
@@ -194,11 +193,10 @@ local HighlightEnable = function(self)
 end
 
 
-
 -----------------------------
 --// STYLE FUNCTION
 -----------------------------
-oUF:RegisterStyle('oUF_Zoey', function(self, unit)
+oUF:RegisterStyle('Zoey', function(self, unit)
 
 	--// Rightclick Menu
 	self.menu = function(self)
@@ -245,7 +243,7 @@ oUF:RegisterStyle('oUF_Zoey', function(self, unit)
 	Name:SetFont(config.font, 16, config.fontOutline)
 	Name:SetJustifyH('LEFT')
 	Name:SetShadowOffset(1, -1)
-
+	Name:SetShadowColor(0,0,0,1)
 	self:Tag(Name, '[Zoey:Name]')
 
 	--// Default location
@@ -311,11 +309,13 @@ oUF:RegisterStyle('oUF_Zoey', function(self, unit)
 
 	--// Text
 	local HealthText = self.Health:CreateFontString(nil, 'OVERLAY')
-	HealthText:SetFont(config.font, 20, config.fontOutline)
+	HealthText:SetFont(config.font, 22, config.fontOutline)
 	HealthText:SetJustifyH('RIGHT')
 	HealthText:SetShadowOffset(1, -1)
-	HealthText:SetPoint('RIGHT', -1, -1)
+	HealthText:SetShadowColor(0,0,0,1)
 	self:Tag(HealthText, '[Zoey:Health]')
+
+	HealthText:SetPoint('RIGHT', -1, -1)
 
 	--// offset the power bar's position
 	offset = offset + self.Health:GetHeight() + config.bar_spacing
@@ -396,7 +396,7 @@ oUF:Factory(function(self)
 
 end)
 
---// Disable Blizzard options that are rendered useless by having a unit frame addon
+--// Disable Blizzard options that are rendered useless by having this unit frame addon
 for _, button in pairs({
 	'UnitFramePanelPartyBackground',
 	'UnitFramePanelPartyPets',
