@@ -37,12 +37,12 @@ local config = {
 --// Mouse hovering
 ns.Mouse_Focus = nil
 local function OnEnter(self)
-	ns.Mouse_Focus = self;
+	ns.Mouse_Focus = self
 	UnitFrame_OnEnter(self)
 end
 local function OnLeave(self)
 	ns.Mouse_Focus = nil
-	UnitFrame_OnEnter(self)
+	UnitFrame_OnLeave(self)
 end
 
 
@@ -376,8 +376,14 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Enable mouse on all texts
 	--// -----------------------------
 	for _,fs in ipairs(self.__tags) do
-		self:HookScript('OnEnter', function() fs:UpdateTag() end)
-		self:HookScript('OnLeave', function() fs:UpdateTag() end)
+		self:HookScript('OnEnter', function()
+			fs:UpdateTag()
+		end)
+		self:HookScript('OnLeave', function()
+			if self:IsShown() then
+				fs:UpdateTag()
+			end
+		end)
 	end
 
 end)
