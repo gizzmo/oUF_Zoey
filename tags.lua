@@ -1,3 +1,15 @@
+--// Get the addon namespace
+local addon, ns = ...
+
+local function IsMouseOver(unit)
+
+	if ns.Mouse_Focus and ns.Mouse_Focus['unit'] == unit then
+		return true
+	end
+
+	return false
+end
+
 local function Short(value)
 	if value >= 1e7 then
 		return ('%.1fm'):format(value / 1e6):gsub('%.?0+([km])$', '%1')
@@ -10,6 +22,38 @@ local function Short(value)
 	else
 		return value
 	end
+end
+
+local function SeparateDigits(number, thousands, decimal)
+	if not thousands then thousands = ',' end
+	if not decimal then decimal = '.' end
+
+	local t = {}
+
+	local int = math.floor(number)
+	local rest = number % 1
+	if int == 0 then
+		t[#t+1] = 0
+	else
+		local digits = math.log10(int)
+		local segments = math.floor(digits / 3)
+		t[#t+1] = math.floor(int / 1000^segments)
+		for i = segments-1, 0, -1 do
+			t[#t+1] = thousands
+			t[#t+1] = ("%03d"):format(math.floor(int / 1000^i) % 1000)
+		end
+	end
+	if rest ~= 0 then
+		t[#t+1] = decimal
+		rest = math.floor(rest * 10^6)
+		while rest % 10 == 0 do
+			rest = rest / 10
+		end
+		t[#t+1] = rest
+	end
+	local s = table.concat(t)
+
+	return s
 end
 
 local function Round(num, digits)
@@ -58,7 +102,10 @@ oUF.Tags['Zoey:Name'] = function(unit)
 		name = strsub(name,1,len)..'…'
 	end
 
-	return ('%s %s'):format(classColor..name, levelColor..level)
+	-- Show Player on mouse over, all others just show
+	if (unit == 'player' and IsMouseOver(unit)) or unit ~= 'player' then
+		return ('%s %s'):format(classColor..name, levelColor..level)
+	end
 end
 oUF.TagEvents['Zoey:Name'] = 'UNIT_NAME_UPDATE UNIT_LEVEL PLAYER_LEVEL_UP'
 
@@ -67,24 +114,28 @@ oUF.Tags['Zoey:Health'] = function(unit)
 	local cur = UnitHealth(unit)
 	local max = UnitHealthMax(unit)
 
-	if cur ~= max then
-		return ('%s%%'):format(Percent(cur,max))
+	local SepSh = Short
+	if unit == 'target' or unit == 'player' then
+		SepSh = SeparateDigits
+	end
+
+	if IsMouseOver(unit) then
+		if cur == max then
+			return ('%s'):format(SepSh(max))
+		else
+			if unit == 'target' or unit == 'player' then
+				return ('|cffff7f7f-%s|r / |cff00ff00%s|r / %s'):format(SepSh(max - cur),SepSh(cur),SepSh(max))
+			else
+				return ('|cffff7f7f-%s'):format(SepSh(max - cur))
+			end
+		end
+	else
+		if cur ~= max then
+			return ('%s%%'):format(Percent(cur,max))
+		end
 	end
 end
 oUF.TagEvents['Zoey:Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
-
-
-oUF.Tags['Zoey:Health_Hover'] = function(unit)
-	local cur = UnitHealth(unit)
-	local max = UnitHealthMax(unit)
-
-	if cur == max then
-		return ('%s'):format(Short(max))
-	else
-		return ('|cffff7f7f-%s'):format(Short(max - cur))
-	end
-end
-oUF.TagEvents['Zoey:Health_Hover'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
 
 
 --[[

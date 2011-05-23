@@ -1,14 +1,10 @@
 --// Get the addon namespace
 local addon, ns = ...
 
---// Get the Tags
-local tags = ns.tags
-
 -----------------------------
 --// CONFIG
 -----------------------------
 local config = {
-
 	healthbar_color = {89/255, 89/255, 89/255},
 	healthbar_texture = [[Interface\AddOns\oUF_Zoey\media\Armory]],
 	powerbar_texture = [[Interface\AddOns\oUF_Zoey\media\Armory]],
@@ -33,6 +29,8 @@ local config = {
 	highlight_texture = [[Interface\QuestFrame\UI-QuestLogTitleHighlight]],
 	highlight_color = {1,1,1, 60/255},
 }
+
+ns.Mouse_Focus = nil
 -----------------------------
 --// FUNCTIONS
 -----------------------------
@@ -121,11 +119,10 @@ end
 
 
 
-local mouse_focus = nil
 local function HighlightShouldShow(self)
 
 	--// Frame is curently mouse focused
-	if mouse_focus == self then
+	if ns.Mouse_Focus == self then
 		return true
 	end
 
@@ -178,14 +175,8 @@ end
 local function HighlightEnable(self)
 
 	--// Mouseover Events
-	self:HookScript("OnEnter", function(self)
-		mouse_focus = self
-		HighlightUpdate(self)
-	end)
-	self:HookScript("OnLeave", function(self)
-		mouse_focus = nil
-		HighlightUpdate(self)
-	end)
+	self:HookScript("OnEnter", HighlightUpdate)
+	self:HookScript("OnLeave", HighlightUpdate)
 
 	--// Target Events
 	self:RegisterEvent('PLAYER_TARGET_CHANGED', HighlightUpdate)
@@ -217,8 +208,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self:RegisterForClicks("AnyUp")
 
 	--// Hover Effects
-	self:SetScript("OnEnter", UnitFrame_OnEnter)
-	self:SetScript("OnLeave", UnitFrame_OnLeave)
+	self:SetScript("OnEnter", function(self) ns.Mouse_Focus = self; UnitFrame_OnEnter(self) end)
+	self:SetScript("OnLeave", function(self) ns.Mouse_Focus = nil; UnitFrame_OnLeave(self) end)
 
 	--// Background
 	local Background = self:CreateTexture(nil, "BACKGROUND")
@@ -365,6 +356,14 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 	if unit == 'player' or unit == 'target' then
 		self:SetWidth(285)
+	end
+
+	--// -----------------------------
+	--// Enable mouse on all texts
+	--// -----------------------------
+	for _,fs in ipairs(self.__tags) do
+		self:HookScript('OnEnter', function() fs:UpdateTag() end)
+		self:HookScript('OnLeave', function() fs:UpdateTag() end)
 	end
 
 end)
