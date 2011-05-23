@@ -30,10 +30,22 @@ local config = {
 	highlight_color = {1,1,1, 60/255},
 }
 
-ns.Mouse_Focus = nil
 -----------------------------
 --// FUNCTIONS
 -----------------------------
+
+--// Mouse hovering
+ns.Mouse_Focus = nil
+local function OnEnter(self)
+	ns.Mouse_Focus = self;
+	UnitFrame_OnEnter(self)
+end
+local function OnLeave(self)
+	ns.Mouse_Focus = nil
+	UnitFrame_OnEnter(self)
+end
+
+
 local function BorderUpdate(self)
 	if type(self) ~= 'table' or not self.CreateTexture then return end
 
@@ -218,8 +230,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self:RegisterForClicks("AnyUp")
 
 	--// Hover Effects
-	self:SetScript("OnEnter", function(self) ns.Mouse_Focus = self; UnitFrame_OnEnter(self) end)
-	self:SetScript("OnLeave", function(self) ns.Mouse_Focus = nil; UnitFrame_OnLeave(self) end)
+	self:SetScript("OnEnter", OnEnter)
+	self:SetScript("OnLeave", OnLeave)
 
 	--// Background
 	local Background = self:CreateTexture(nil, "BACKGROUND")
