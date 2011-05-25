@@ -355,6 +355,12 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self.Power.bg:SetTexture(config.powerbar_texture)
 	self.Power.bg:SetAllPoints(self.Power)
 
+	--// Text
+	local PowerText = CreateText(self.Power, 12)
+	self:Tag(PowerText, '[Zoey:Power]')
+
+	PowerText:SetPoint('RIGHT', -1, -1)
+
 	--// The true height of the frame
 	offset = offset + self.Power:GetHeight() + config.bar_spacing
 

@@ -94,7 +94,7 @@ oUF.Tags['Zoey:Name'] = function(unit)
 	local length = 13
 
 	if unit == 'player' or unit == 'target' then
-		length = 25
+		length = 30
 	end
 
 	if strlen(name..' '..level) > length then
@@ -134,34 +134,29 @@ end
 oUF.TagEvents['Zoey:Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
 
 
---[[
+oUF.Tags['Zoey:Power'] = function(unit)
 
-oUF.Tags['Zoey:Power'] = function(unit) -- Normal and Party
--- ====================================================================
+	local cur = UnitPower(unit)
+	local max = UnitPowerMax(unit)
 
-	local cur = Power(unit)
-	local max = MaxPower(unit)
+	local SepSh = Short
+	if unit == 'target' or unit == 'player' then
+		SepSh = SeparateDigits
+	end
 
-	if not UnitIsDead(unit) and UnitPowerType(unit) == 0 then
-		if IsMouseOver() then
-			if unit == 'player' or unit == 'target' then
-				if cur == max then
-					return '%s',SeparateDigits(max)
-				else
-					return '|cffff7f7f-%s|r / |cff00ff00%s|r / %s',SeparateDigits(max - cur),SeparateDigits(cur),SeparateDigits(max)
-				end
-			else
-				if cur == max then
-					return '%s',Short(max,true)
-				else
-					return '|cffff7f7f-%s|r / %s',Short(max - cur,true),Short(max,true)
-				end
-			end
+	if not UnitIsDead(unit) and UnitPowerType(unit) == 0 and IsMouseOver(unit) then
+		if cur ~= max then
+			return ('|cffff7f7f-%s'):format(SepSh(max - cur))
+		else
+			return ('%s'):format(SepSh(max))
 		end
 	end
 
--- ====================================================================
 end
+oUF.TagEvents['Zoey:Power'] = 'UNIT_POWER UNIT_MAXPOWER'
+
+
+--[[
 oUF.Tags['Zoey:PlayerHealth'] = function(unit)
 -- ====================================================================
 
