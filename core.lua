@@ -9,7 +9,11 @@ local config = {
 	healthbar_texture = [[Interface\AddOns\oUF_Zoey\media\Armory]],
 	powerbar_texture = [[Interface\AddOns\oUF_Zoey\media\Armory]],
 
-	castbar_color = {89/255, 89/255, 89/255},
+	castbar_colors = {
+		normal = {89/255, 89/255, 89/255},
+		success = {20/255, 208/255, 0/255},
+		failed = {255/255, 12/255, 0/255}
+	},
 	castbar_texture = [[Interface\AddOns\oUF_Zoey\media\Armory]],
 
 	portrait_size = 59,
@@ -97,6 +101,85 @@ local function PostUpdatePower(Power, unit, min, max)
 
 	--// Set the background color
 	Power.bg:SetVertexColor(r * 0.4, g * 0.4, b * 0.4)
+end
+
+
+
+local function OnCastSent(self, event, unit, spell, rank)
+	if self.unit ~= unit then return end
+	self.Castbar.sentTime = GetTime()
+end
+
+local function PostCastStart(self, unit, name, rank, text)
+	self:SetAlpha(1.0)
+	self.Spark:Show()
+	self:SetStatusBarColor(unpack(config.castbar_colors.normal))
+
+	if (self.sentTime) then
+		self.latency = GetTime() - self.sentTime
+	else
+		self.latency = 0
+	end
+
+end
+
+local function PostCastStop(self, unit, name, rank, castid)
+	self:SetValue(self.max)
+	self:Show()
+end
+
+local function PostChannelStop(self, unit, name, rank)
+	self:SetValue(0)
+	self:Show()
+end
+
+local function PostCastFailed(self, event, unit, name, rank, castid)
+	self:SetValue(self.max)
+	self:Show()
+end
+
+local function CastbarOnUpdate(self, elapsed)
+	if self.casting or self.channeling then
+		local duration = self.casting and self.duration + elapsed or self.duration - elapsed
+		if (self.casting and duration >= self.max) or (self.channeling and duration <= 0) then
+			self.casting = nil
+			self.channeling = nil
+			return
+		end
+
+		if self.SafeZone then
+			local width = self:GetWidth() * self.latency / self.max
+			if (width < 1) then width = 1 end
+			self.SafeZone:SetWidth(width);
+		end
+
+		if self.Lag then
+			self.Lag:SetFormattedText("%d ms", self.latency * 1000)
+		end
+
+		if(self.Time) then
+			if self.delay ~= 0 then
+				self.Time:SetFormattedText('%.1f | |cffff0000%.1f|r', duration, self.casting and self.max + self.delay or self.max - self.delay)
+			else
+				self.Time:SetFormattedText('%.1f | %.1f', duration, self.max)
+			end
+		end
+
+		self.duration = duration
+		self:SetValue(duration)
+		if(self.Spark) then
+			self.Spark:SetPoint("CENTER", self, "LEFT", (duration / self.max) * self:GetWidth(), 0)
+		end
+	else
+		self.Spark:Hide()
+		local alpha = self:GetAlpha() - 0.08
+		if alpha > 0 then
+			self:SetAlpha(alpha)
+		else
+			self:Hide()
+		end
+
+	end
 end
 
 
@@ -399,10 +482,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	if unit == 'player' or unit == 'target' then
 
 		--// The Castbar its self
-		local r,g,b = unpack(config.castbar_color)
 		self.Castbar = CreateFrame("StatusBar", "$parentCastbar", self)
 		self.Castbar:SetStatusBarTexture(config.castbar_texture)
-		self.Castbar:SetStatusBarColor(r,g,b)
+		self.Castbar:SetStatusBarColor(unpack(config.castbar_colors.normal))
 
 		self.Castbar:SetSize(597, 38)
 
@@ -418,12 +500,35 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Castbar.Spark:SetBlendMode("ADD")
 		self.Castbar.Spark:SetAlpha(0.5)
 
+		--// Player only Latency
+		if unit == 'player' then
+			self.Castbar.SafeZone = self.Castbar:CreateTexture(nil,"OVERLAY")
+			self.Castbar.SafeZone:SetTexture(config.castbar_texture)
+			self.Castbar.SafeZone:SetVertexColor(1,0.1,0,.6)
+			self.Castbar.SafeZone:SetPoint("TOPRIGHT")
+			self.Castbar.SafeZone:SetPoint("BOTTOMRIGHT")
+
+			self.Castbar.Lag = CreateText(self.Castbar, 10)
+			self.Castbar.Lag:SetPoint("TOPRIGHT", self.Castbar, 'BOTTOMRIGHT', 0, -7)
+
+			self:RegisterEvent("UNIT_SPELLCAST_SENT", OnCastSent)
+		end
+
 		--// Castbar Texts
 		self.Castbar.Text = CreateText(self.Castbar, 20)
 		self.Castbar.Text:SetPoint("LEFT", 10, 0)
 
 		self.Castbar.Time = CreateText(self.Castbar, 16)
 		self.Castbar.Time:SetPoint('RIGHT', -10, 0)
+
+
+		self.Castbar.OnUpdate = CastbarOnUpdate
+		self.Castbar.PostCastStart = PostCastStart
+		self.Castbar.PostChannelStart = PostCastStart
+		self.Castbar.PostCastStop = PostCastStop
+		self.Castbar.PostChannelStop = PostChannelStop
+		self.Castbar.PostCastFailed = PostCastFailed
+		self.Castbar.PostCastInterrupted = PostCastFailed
 
 
 		--// Castbar Frame
