@@ -63,7 +63,7 @@ local function Menu(self)
 	end
 end
 
-local function PostUpdateHealth(Health, unit, min,max)
+local function PostUpdateHealth(Health, unit, min, max)
 	local r,g,b
 
 	--// Determin the color we want to use
@@ -364,7 +364,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 	PowerText:SetPoint('RIGHT', -1, -1)
 
-	--// The true height of the frame
+	--// Offset the class bars' position
 	offset = offset + self.Power:GetHeight() + config.bar_spacing
 
 	--// -----------------------------
@@ -404,13 +404,19 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Castbar:SetStatusBarTexture(config.castbar_texture)
 		self.Castbar:SetStatusBarColor(r,g,b)
 
-		self.Castbar:SetSize(598, 38)
+		self.Castbar:SetSize(597, 38)
 
 		if unit == "player" then
-			self.Castbar:SetPoint('TOP', oUF.units.player, 'BOTTOM', 0, -77)
+			self.Castbar:SetPoint('TOP', oUF.units.player, 'BOTTOM', 0, -76)
 		elseif unit == "target" then
-			self.Castbar:SetPoint('BOTTOM', oUF.units.target, 'TOP', 0, 77)
+			self.Castbar:SetPoint('BOTTOM', oUF.units.target, 'TOP', 0, 76)
 		end
+
+		-- Add a spark
+		self.Castbar.Spark = self.Castbar:CreateTexture(nil, "OVERLAY")
+		self.Castbar.Spark:SetHeight(self.Castbar:GetHeight()*2.5)
+		self.Castbar.Spark:SetBlendMode("ADD")
+		self.Castbar.Spark:SetAlpha(0.5)
 
 		--// Castbar Texts
 		self.Castbar.Text = CreateText(self.Castbar, 20)
@@ -419,16 +425,18 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Castbar.Time = CreateText(self.Castbar, 16)
 		self.Castbar.Time:SetPoint('RIGHT', -10, 0)
 
-		--// Castbar Background
-		local Background = self.Castbar:CreateTexture(nil, "BACKGROUND")
-		Background:SetTexture(config.healthbar_texture)
-		Background:SetAllPoints(self.Castbar)
-		Background:SetVertexColor(r * 0.4, g * 0.4, b * 0.4)
 
-		--// Castbar Frame - only the player needs a frame
+		--// Castbar Frame
 		local CastbarFrame = CreateFrame('Frame', '$parentCastbarFrame', self.Castbar)
-		CastbarFrame:SetPoint('TOPLEFT', 1, -1)
-		CastbarFrame:SetPoint('BOTTOMRIGHT', -1, 1)
+		CastbarFrame:SetPoint('TOPLEFT', -1, 1)
+		CastbarFrame:SetPoint('BOTTOMRIGHT', 1, -1)
+		CastbarFrame:SetFrameLevel(self.Castbar:GetFrameLevel()-1)
+
+		--// Castbar Frame Background
+		local CastbarFrameBackground = CastbarFrame:CreateTexture(nil, "BACKGROUND")
+		CastbarFrameBackground:SetAllPoints(CastbarFrame)
+		CastbarFrameBackground:SetTexture(config.healthbar_texture)
+		CastbarFrameBackground:SetVertexColor(25/255, 25/255, 25/255)
 
 		--// Castbar Frame Border
 		CreateBorder(CastbarFrame)
