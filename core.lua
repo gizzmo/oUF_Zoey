@@ -9,6 +9,9 @@ local config = {
 	healthbar_texture = [[Interface\AddOns\oUF_Zoey\media\Armory]],
 	powerbar_texture = [[Interface\AddOns\oUF_Zoey\media\Armory]],
 
+	castbar_color = {89/255, 89/255, 89/255},
+	castbar_texture = [[Interface\AddOns\oUF_Zoey\media\Armory]],
+
 	portrait_size = 59,
 	healthbar_size = 31,
 	powerbar_size = 5,
@@ -387,6 +390,52 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			end
 		end)
 	end
+
+
+
+	--// -----------------------------
+	--// Cast Bars
+	--// -----------------------------
+	if unit == 'player' or unit == 'target' then
+
+		--// The Castbar its self
+		local r,g,b = unpack(config.castbar_color)
+		self.Castbar = CreateFrame("StatusBar", "$parentCastbar", self)
+		self.Castbar:SetStatusBarTexture(config.castbar_texture)
+		self.Castbar:SetStatusBarColor(r,g,b)
+
+		self.Castbar:SetSize(598, 38)
+
+		if unit == "player" then
+			self.Castbar:SetPoint('TOP', oUF.units.player, 'BOTTOM', 0, -77)
+		elseif unit == "target" then
+			self.Castbar:SetPoint('BOTTOM', oUF.units.target, 'TOP', 0, 77)
+		end
+
+		--// Castbar Texts
+		self.Castbar.Text = CreateText(self.Castbar, 20)
+		self.Castbar.Text:SetPoint("LEFT", 10, 0)
+
+		self.Castbar.Time = CreateText(self.Castbar, 16)
+		self.Castbar.Time:SetPoint('RIGHT', -10, 0)
+
+		--// Castbar Background
+		local Background = self.Castbar:CreateTexture(nil, "BACKGROUND")
+		Background:SetTexture(config.healthbar_texture)
+		Background:SetAllPoints(self.Castbar)
+		Background:SetVertexColor(r * 0.4, g * 0.4, b * 0.4)
+
+		--// Castbar Frame - only the player needs a frame
+		local CastbarFrame = CreateFrame('Frame', '$parentCastbarFrame', self.Castbar)
+		CastbarFrame:SetPoint('TOPLEFT', 1, -1)
+		CastbarFrame:SetPoint('BOTTOMRIGHT', -1, 1)
+
+		--// Castbar Frame Border
+		CreateBorder(CastbarFrame)
+	end
+
+
+
 
 end)
 
