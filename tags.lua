@@ -120,14 +120,10 @@ oUF.Tags['Zoey:Health'] = function(unit)
 	end
 
 	if IsMouseOver(unit) then
-		if cur == max then
-			return ('%s'):format(SepSh(max))
+		if cur ~= max then
+			return ('|cffff7f7f-%s'):format(SepSh(max - cur))
 		else
-			if unit == 'target' or unit == 'player' then
-				return ('|cffff7f7f-%s|r / |cff00ff00%s|r / %s'):format(SepSh(max - cur),SepSh(cur),SepSh(max))
-			else
-				return ('|cffff7f7f-%s'):format(SepSh(max - cur))
-			end
+			return ('%s'):format(SepSh(max))
 		end
 	else
 		if cur ~= max then
