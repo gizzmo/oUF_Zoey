@@ -4,6 +4,7 @@
 ## Author: Gizzmo
 ## Version: 0.1
 ## RequiredDeps: oUF
+## OptionalDeps: oUF.SpellRange
 ## X-eMail: justgiz@gmail.com
 ## X-Category: UnitFrame
 

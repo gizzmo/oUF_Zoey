@@ -349,6 +349,12 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
 
+	--// Range Fading
+	self.SpellRange = {
+		insideAlpha = 1,
+		outsideAlpha = 0.4
+	}
+
 	--// Background
 	local Background = self:CreateTexture(nil, "BACKGROUND")
 	Background:SetAllPoints(self)
