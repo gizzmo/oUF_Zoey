@@ -189,7 +189,7 @@ end
 local function CreateText(parent, size)
 	local fs = parent:CreateFontString(nil, 'OVERLAY')
 	fs:SetFont(config.font, size or 16, config.fontOutline)
-	-- fs:SetJustifyH('LEFT')
+	fs:SetJustifyH('LEFT')
 	fs:SetShadowOffset(1, -1)
 	fs:SetShadowColor(0,0,0,1)
 
