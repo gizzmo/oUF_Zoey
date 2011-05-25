@@ -45,6 +45,58 @@ local function OnLeave(self)
 	UnitFrame_OnLeave(self)
 end
 
+local function Menu(self)
+	local unit = self.unit:sub(1, -2)
+	if unit == 'party' or unit == 'partypet' then
+		ToggleDropDownMenu(1, nil, _G['PartyMemberFrame' .. self.id .. 'DropDown'], 'cursor', 0, 0)
+	else
+		local cunit = self.unit:gsub('^%l', string.upper)
+		if cunit == 'Vehicle' then
+			cunit = 'Pet'
+		end
+		if _G[cunit .. 'FrameDropDown'] then
+			ToggleDropDownMenu(1, nil, _G[cunit .. 'FrameDropDown'], 'cursor', 0, 0)
+		end
+	end
+end
+
+local function PostUpdateHealth(Health, unit, min,max)
+	local r,g,b
+
+	--// Determin the color we want to use
+	if UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit) then
+		r,g,b = unpack(oUF.colors.tapped)
+	elseif not UnitIsConnected(unit) then
+		r,g,b = unpack(oUF.colors.disconnected)
+	else
+		r,g,b = unpack(config.healthbar_color)
+	end
+
+	--// Set the health bar color
+	Health:SetStatusBarColor(r, g, b)
+
+	--// Set the background color
+	Health.bg:SetVertexColor(25/255, 25/255, 25/255)
+end
+
+local function PostUpdatePower(Power, unit, min, max)
+	local r,g,b
+
+	--// Determin the color we want to use
+	if UnitIsPlayer(unit) then
+		r,g,b = unpack(oUF.colors.class[select(2, UnitClass(unit))])
+	else
+		r,g,b = unpack(oUF.colors.power[select(2, UnitPowerType(unit))])
+	end
+
+	--// Set the power bar color
+	Power:SetStatusBarColor(r, g, b)
+
+	--// Set the background color
+	Power.bg:SetVertexColor(r * 0.4, g * 0.4, b * 0.4)
+end
+
+
 
 local function CreateBorder(self)
 
@@ -195,26 +247,15 @@ local function CreateText(parent, size)
 
 	return fs
 end
+
+
 -----------------------------
 --// STYLE FUNCTION
 -----------------------------
 oUF:RegisterStyle('Zoey', function(self, unit)
 
 	--// Rightclick Menu
-	self.menu = function(self)
-		local unit = self.unit:sub(1, -2)
-		if unit == 'party' or unit == 'partypet' then
-			ToggleDropDownMenu(1, nil, _G['PartyMemberFrame' .. self.id .. 'DropDown'], 'cursor', 0, 0)
-		else
-			local cunit = self.unit:gsub('^%l', string.upper)
-			if cunit == 'Vehicle' then
-				cunit = 'Pet'
-			end
-			if _G[cunit .. 'FrameDropDown'] then
-				ToggleDropDownMenu(1, nil, _G[cunit .. 'FrameDropDown'], 'cursor', 0, 0)
-			end
-		end
-	end
+	self.menu = Menu
 	self:SetAttribute("*type2", "menu")
 	self:RegisterForClicks("AnyUp")
 
@@ -281,31 +322,12 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self.Health:SetPoint('LEFT', 1,0)
 	self.Health:SetPoint('RIGHT',-1,0)
 	self.Health.frequentUpdates = .2
+	self.Health.PostUpdate = PostUpdateHealth
 
 	--// Healthbar Background
 	self.Health.bg = self:CreateTexture(nil, "BACKGROUND")
 	self.Health.bg:SetTexture(config.healthbar_texture)
 	self.Health.bg:SetAllPoints(self.Health)
-
-	--// Bar Coloring
-	self.Health.PostUpdate = function(Health, unit, min,max)
-		local r,g,b
-
-		--// Determin the color we want to use
-		if UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit) then
-			r,g,b = unpack(self.colors.tapped)
-		elseif not UnitIsConnected(unit) then
-			r,g,b = unpack(self.colors.disconnected)
-		else
-			r,g,b = unpack(config.healthbar_color)
-		end
-
-		--// Set the health bar color
-		Health:SetStatusBarColor(r, g, b)
-
-		--// Set the background color
-		Health.bg:SetVertexColor(25/255, 25/255, 25/255)
-	end
 
 	--// Text
 	local HealthText = CreateText(self.Health, 22)
@@ -326,29 +348,12 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self.Power:SetPoint('LEFT', 1,0)
 	self.Power:SetPoint('RIGHT',-1,0)
 	self.Power.frequentUpdates = .2
+	self.Power.PostUpdate = PostUpdatePower
 
 	--// Powerbar Background
 	self.Power.bg = self:CreateTexture(nil, "BACKGROUND")
 	self.Power.bg:SetTexture(config.powerbar_texture)
 	self.Power.bg:SetAllPoints(self.Power)
-
-	--// Powerbar colors
-	self.Power.PostUpdate = function(Power, unit, min, max)
-		local r,g,b
-
-		--// Determin the color we want to use
-		if UnitIsPlayer(unit) then
-			r,g,b = unpack(self.colors.class[select(2, UnitClass(unit))])
-		else
-			r,g,b = unpack(self.colors.power[select(2, UnitPowerType(unit))])
-		end
-
-		--// Set the power bar color
-		Power:SetStatusBarColor(r, g, b)
-
-		--// Set the background color
-		Power.bg:SetVertexColor(r * 0.4, g * 0.4, b * 0.4)
-	end
 
 	--// The true height of the frame
 	offset = offset + self.Power:GetHeight() + config.bar_spacing
