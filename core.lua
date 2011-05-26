@@ -69,6 +69,148 @@ end
 
 
 
+--// Border Creation
+local function CreateBorder(self)
+
+	local size = config.border_size
+	local padding = config.border_padding
+	local texture = config.border_texture
+	local color = config.border_colors.normal
+
+	--// Temp hold the textures
+	local t = {}
+
+	--// Shared for all 8 textures
+	for i = 1, 8 do
+		t[i] = self:CreateTexture(nil, 'ARTWORK')
+		t[i]:SetTexture(texture)
+		t[i]:SetSize(size, size)
+		t[i]:SetVertexColor(unpack(color))
+	end
+
+	t[1].name = 'Top Left'
+	t[1]:SetPoint('TOPLEFT', -padding, padding)
+	t[1]:SetTexCoord(0.5, 0, 0.5, 1, 0.625, 0, 0.625, 1)
+
+	t[2].name = 'Top'
+	t[2]:SetPoint('TOPLEFT', size - padding, padding)
+	t[2]:SetPoint('TOPRIGHT', -size + padding, padding)
+	t[2]:SetTexCoord(0.25, 9.2808, 0.375, 9.2808, 0.25, 0, 0.375, 0)
+
+	t[3].name = 'Top Right'
+	t[3]:SetPoint('TOPRIGHT', padding, padding)
+	t[3]:SetTexCoord(0.625, 0, 0.625, 1, 0.75, 0, 0.75, 1)
+
+	t[4].name = 'Left'
+	t[4]:SetPoint('TOPLEFT', -padding, -size + padding)
+	t[4]:SetPoint('BOTTOMLEFT', -padding, size - padding)
+	t[4]:SetTexCoord(0, 0, 0, 1.948, 0.125, 0, 0.125, 1.948)
+
+	t[5].name = 'Right'
+	t[5]:SetPoint('TOPRIGHT', padding, -size + padding)
+	t[5]:SetPoint('BOTTOMRIGHT', padding, size - padding)
+	t[5]:SetTexCoord(0.125, 0, 0.125, 1.948, 0.25, 0, 0.25, 1.948)
+
+	t[6].name = 'Bottom Left'
+	t[6]:SetPoint('BOTTOMLEFT', -padding, -padding)
+	t[6]:SetTexCoord(0.75, 0, 0.75, 1, 0.875, 0, 0.875, 1)
+
+	t[7].name = 'Bottom'
+	t[7]:SetPoint('BOTTOMLEFT', size - padding, -padding)
+	t[7]:SetPoint('BOTTOMRIGHT', -size + padding, -padding)
+	t[7]:SetTexCoord(0.375, 9.2808, 0.5, 9.2808, 0.375, 0, 0.5, 0)
+
+	t[8].name = 'Bottom Right'
+	t[8]:SetPoint('BOTTOMRIGHT', padding, -padding)
+	t[8]:SetTexCoord(0.875, 0, 0.875, 1, 1, 0, 1, 1)
+
+	self.BorderTextures = t
+end
+
+local function UpdateBorderColor(self)
+	if self.unit and self.BorderTexture then
+		local c = UnitClassification(self.unit)
+		if c == "worldboss" then c = "boss" end
+		if c == "rareelite" then c = "rare" end
+		local r,g,b = unpack(config.border_colors[c])
+
+		--// Set the border color
+		for _, tex in ipairs(self.BorderTextures) do
+			tex:SetVertexColor(r, g, b)
+		end
+	end
+end
+
+
+
+--// Mouseover and Target Highlighting
+local function HighlightShouldShow(self)
+
+	--// Frame is curently mouse focused
+	if ns.Mouse_Focus == self then
+		return true
+	end
+
+	--// Frame is not the current target
+	if not UnitIsUnit(self.unit, 'target') then
+		return false
+	end
+
+	--// We dont want to show target highlighting for these frames
+	if self.unit == 'player' or strsub(self.unit, 1, 6) == 'target' then
+		return false
+	end
+
+	return true
+end
+
+local function HighlightUpdate(self)
+	local highlight = self.Highlight
+
+	if not HighlightShouldShow(self) then
+		if highlight then highlight:Hide() end
+		return false
+	end
+
+	if not self.Highlight then
+
+		--// Create the highlight
+		local hl = CreateFrame("Frame", '$parentHighlight', self)
+		hl:SetAllPoints(self)
+		hl:SetFrameLevel(15)
+		hl:Hide()
+
+		local tex = hl:CreateTexture(nil, "OVERLAY")
+		tex:SetTexture(config.highlight_texture)
+		tex:SetBlendMode('ADD')
+		tex:SetAlpha(0.5)
+		tex:SetAllPoints(hl)
+		tex:SetVertexColor(unpack(config.highlight_color))
+
+		self.Highlight = hl
+		self.Highlight.tex = tex
+
+	end
+
+	self.Highlight:Show()
+
+	return false
+end
+
+local function HighlightEnable(self)
+
+	--// Mouseover Events
+	self:HookScript("OnEnter", HighlightUpdate)
+	self:HookScript("OnLeave", HighlightUpdate)
+
+	--// Target Events
+	self:RegisterEvent('PLAYER_TARGET_CHANGED', HighlightUpdate)
+	table.insert(self.__elements, HighlightUpdate)
+end
+
+
+
+--// Health and Power, mostly for setting color
 local function PostUpdateHealth(Health, unit, min, max)
 	local r,g,b
 
@@ -107,6 +249,7 @@ end
 
 
 
+--// Castbar Functions
 local function OnCastSent(self, event, unit, spell, rank)
 	if self.unit ~= unit then return end
 	self.Castbar.sentTime = GetTime()
@@ -186,145 +329,7 @@ end
 
 
 
-local function CreateBorder(self)
-
-	local size = config.border_size
-	local padding = config.border_padding
-	local texture = config.border_texture
-	local color = config.border_colors.normal
-
-	--// Temp hold the textures
-	local t = {}
-
-	--// Shared for all 8 textures
-	for i = 1, 8 do
-		t[i] = self:CreateTexture(nil, 'ARTWORK')
-		t[i]:SetTexture(texture)
-		t[i]:SetSize(size, size)
-		t[i]:SetVertexColor(unpack(color))
-	end
-
-	t[1].name = 'Top Left'
-	t[1]:SetPoint('TOPLEFT', -padding, padding)
-	t[1]:SetTexCoord(0.5, 0, 0.5, 1, 0.625, 0, 0.625, 1)
-
-	t[2].name = 'Top'
-	t[2]:SetPoint('TOPLEFT', size - padding, padding)
-	t[2]:SetPoint('TOPRIGHT', -size + padding, padding)
-	t[2]:SetTexCoord(0.25, 9.2808, 0.375, 9.2808, 0.25, 0, 0.375, 0)
-
-	t[3].name = 'Top Right'
-	t[3]:SetPoint('TOPRIGHT', padding, padding)
-	t[3]:SetTexCoord(0.625, 0, 0.625, 1, 0.75, 0, 0.75, 1)
-
-	t[4].name = 'Left'
-	t[4]:SetPoint('TOPLEFT', -padding, -size + padding)
-	t[4]:SetPoint('BOTTOMLEFT', -padding, size - padding)
-	t[4]:SetTexCoord(0, 0, 0, 1.948, 0.125, 0, 0.125, 1.948)
-
-	t[5].name = 'Right'
-	t[5]:SetPoint('TOPRIGHT', padding, -size + padding)
-	t[5]:SetPoint('BOTTOMRIGHT', padding, size - padding)
-	t[5]:SetTexCoord(0.125, 0, 0.125, 1.948, 0.25, 0, 0.25, 1.948)
-
-	t[6].name = 'Bottom Left'
-	t[6]:SetPoint('BOTTOMLEFT', -padding, -padding)
-	t[6]:SetTexCoord(0.75, 0, 0.75, 1, 0.875, 0, 0.875, 1)
-
-	t[7].name = 'Bottom'
-	t[7]:SetPoint('BOTTOMLEFT', size - padding, -padding)
-	t[7]:SetPoint('BOTTOMRIGHT', -size + padding, -padding)
-	t[7]:SetTexCoord(0.375, 9.2808, 0.5, 9.2808, 0.375, 0, 0.5, 0)
-
-	t[8].name = 'Bottom Right'
-	t[8]:SetPoint('BOTTOMRIGHT', padding, -padding)
-	t[8]:SetTexCoord(0.875, 0, 0.875, 1, 1, 0, 1, 1)
-
-	self.BorderTextures = t
-end
-
-local function UpdateBorderColor(self)
-	if self.unit and self.BorderTexture then
-		local c = UnitClassification(self.unit)
-		if c == "worldboss" then c = "boss" end
-		if c == "rareelite" then c = "rare" end
-		local r,g,b = unpack(config.border_colors[c])
-
-		--// Set the border color
-		for _, tex in ipairs(self.BorderTextures) do
-			tex:SetVertexColor(r, g, b)
-		end
-	end
-end
-
-
-
-local function HighlightShouldShow(self)
-
-	--// Frame is curently mouse focused
-	if ns.Mouse_Focus == self then
-		return true
-	end
-
-	--// Frame is not the current target
-	if not UnitIsUnit(self.unit, 'target') then
-		return false
-	end
-
-	--// We dont want to show target highlighting for these frames
-	if self.unit == 'player' or strsub(self.unit, 1, 6) == 'target' then
-		return false
-	end
-
-	return true
-end
-
-local function HighlightUpdate(self)
-	local highlight = self.Highlight
-
-	if not HighlightShouldShow(self) then
-		if highlight then highlight:Hide() end
-		return false
-	end
-
-	if not self.Highlight then
-
-		--// Create the highlight
-		local hl = CreateFrame("Frame", '$parentHighlight', self)
-		hl:SetAllPoints(self)
-		hl:SetFrameLevel(15)
-		hl:Hide()
-
-		local tex = hl:CreateTexture(nil, "OVERLAY")
-		tex:SetTexture(config.highlight_texture)
-		tex:SetBlendMode('ADD')
-		tex:SetAlpha(0.5)
-		tex:SetAllPoints(hl)
-		tex:SetVertexColor(unpack(config.highlight_color))
-
-		self.Highlight = hl
-		self.Highlight.tex = tex
-
-	end
-
-	self.Highlight:Show()
-
-	return false
-end
-
-local function HighlightEnable(self)
-
-	--// Mouseover Events
-	self:HookScript("OnEnter", HighlightUpdate)
-	self:HookScript("OnLeave", HighlightUpdate)
-
-	--// Target Events
-	self:RegisterEvent('PLAYER_TARGET_CHANGED', HighlightUpdate)
-	table.insert(self.__elements, HighlightUpdate)
-end
-
-
-
+--// Other Functions
 local function CreateText(parent, size, justify)
 	local fs = parent:CreateFontString(nil, 'OVERLAY')
 	fs:SetFont(config.font, size or 16)
@@ -401,7 +406,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self.RaidIcon:SetSize(29,29)
 	self.RaidIcon:SetPoint('CENTER', Overlay, 0, 3)
 
-	--// PvP Icon
+	--// PvP Icon -- The img used isnt perfect, it sucks
 	self.PvP = Overlay:CreateTexture(nil, "OVERLAY")
 	local faction = UnitFactionGroup(unit)
 	if faction == "Horde" then
