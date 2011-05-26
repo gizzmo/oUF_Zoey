@@ -156,6 +156,40 @@ end
 oUF.TagEvents['Zoey:Power'] = 'UNIT_POWER UNIT_MAXPOWER'
 
 
+oUF.Tags["leadericon"] = function(unit)
+	if (UnitInParty(unit) or UnitInRaid(unit)) and UnitIsPartyLeader(unit) then
+		return [[|TInterface\GroupFrame\UI-Group-LeaderIcon:0|t]]
+	elseif UnitInRaid(unit) and UnitIsRaidOfficer(unit) then
+		return [[|TInterface\GroupFrame\UI-Group-AssistantIcon:0|t]]
+	end
+end
+oUF.TagEvents["leadericon"] = "PARTY_LEADER_CHANGED PARTY_MEMBERS_CHANGED"
+oUF.UnitlessTagEvents["PARTY_LEADER_CHANGED"] = true
+oUF.UnitlessTagEvents["PARTY_MEMBERS_CHANGED"] = true
+
+
+oUF.Tags["mastericon"] = function(unit)
+	local method, pid, rid = GetLootMethod()
+	if method == "master" then
+		local munit
+		if pid then
+			if pid == 0 then
+				munit = "player"
+			else
+				munit = "party" .. pid
+			end
+		elseif rid then
+			munit = "raid" .. rid
+		end
+		if munit and UnitIsUnit(munit, unit) then
+			return [[|TInterface\GroupFrame\UI-Group-MasterLooter:0:0:0:2|t]]
+		end
+	end
+end
+oUF.TagEvents["mastericon"] = "PARTY_LOOT_METHOD_CHANGED PARTY_MEMBERS_CHANGED"
+oUF.UnitlessTagEvents["PARTY_LOOT_METHOD_CHANGED"] = true
+oUF.UnitlessTagEvents["PARTY_MEMBERS_CHANGED"] = true
+
 --[[
 oUF.Tags['Zoey:PlayerHealth'] = function(unit)
 -- ====================================================================

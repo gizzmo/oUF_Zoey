@@ -67,6 +67,8 @@ local function Menu(self)
 	end
 end
 
+
+
 local function PostUpdateHealth(Health, unit, min, max)
 	local r,g,b
 
@@ -257,7 +259,6 @@ end
 
 
 
-
 local function HighlightShouldShow(self)
 
 	--// Frame is curently mouse focused
@@ -326,7 +327,7 @@ end
 
 local function CreateText(parent, size, justify)
 	local fs = parent:CreateFontString(nil, 'OVERLAY')
-	fs:SetFont(config.font, size or 16, config.fontOutline)
+	fs:SetFont(config.font, size or 16)
 	fs:SetJustifyH(justify or 'LEFT')
 	fs:SetShadowOffset(1, -1)
 	fs:SetShadowColor(0,0,0,1)
@@ -374,10 +375,63 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	Overlay:SetFrameLevel(10)
 
 	------------------------------
-	--// Name Text
+	--// Icons
+	------------------------------
+
+	if unit == 'player' then
+		--// Resting Icon
+		self.Resting = Overlay:CreateTexture(nil, "OVERLAY")
+		self.Resting:SetSize(25,25)
+		self.Resting:SetPoint("LEFT", Overlay, "BOTTOMLEFT", 0, -2)
+
+		--// Combat Icon
+		self.Combat = Overlay:CreateTexture(nil, 'OVERLAY')
+		self.Combat:SetSize(25,25)
+		self.Combat:SetPoint('RIGHT', Overlay, 'BOTTOMRIGHT', 0, -2)
+
+	elseif unit == 'target' then
+		--// Quest Mob Icon
+		self.QuestIcon = Overlay:CreateTexture(nil, "OVERLAY")
+		self.QuestIcon:SetSize(32,32)
+		self.QuestIcon:SetPoint("CENTER", Overlay, "LEFT", 0, 0)
+	end
+
+	--// Raid Icon (Skull, Cross, Square ...)
+	self.RaidIcon = Overlay:CreateTexture(nil, 'OVERLAY')
+	self.RaidIcon:SetSize(29,29)
+	self.RaidIcon:SetPoint('CENTER', Overlay, 0, 3)
+
+	--// PvP Icon
+	self.PvP = Overlay:CreateTexture(nil, "OVERLAY")
+	local faction = UnitFactionGroup(unit)
+	if faction == "Horde" then
+		self.PvP:SetTexCoord(0.08, 0.58, 0.045, 0.545)
+	elseif faction == "Alliance" then
+		self.PvP:SetTexCoord(0.07, 0.58, 0.06, 0.57)
+	else
+		self.PvP:SetTexCoord(0.05, 0.605, 0.015, 0.57)
+	end
+	self.PvP:SetSize(21,21)
+	self.PvP:SetPoint("CENTER", Overlay, 'LEFT', 0,0)
+
+	if unit == 'player' then
+		--// LFD Role Icon
+		self.LFDRole = Overlay:CreateTexture(nil, "OVERLAY")
+		self.LFDRole:SetSize(13, 13)
+		self.LFDRole:SetPoint("CENTER", Overlay, "TOPLEFT", 1, 0)
+
+		--// Ready Check icon
+		self.ReadyCheck = Overlay:CreateTexture(nil, "OVERLAY")
+		self.ReadyCheck:SetSize(14, 14)
+		self.ReadyCheck:SetPoint("CENTER", Overlay, "BOTTOM", 0, 0)
+	end
+
+
+	------------------------------
+	--// Name Text -- oh and leader and master icons ;)
 	------------------------------
 	local Name = CreateText(Overlay, 16)
-	self:Tag(Name, '[Zoey:Name]')
+	self:Tag(Name, '[leadericon][mastericon][Zoey:Name]')
 
 	--// Default location
 	Name:SetPoint("LEFT", self, "TOPLEFT", 3, 1)
@@ -460,7 +514,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Frame Size
 	--// -----------------------------
 	self:SetHeight(offset)
-	self:SetWidth(139) -- default width
+	self:SetWidth(139)
 
 	if unit == 'player' or unit == 'target' then
 		self:SetWidth(285)
@@ -500,7 +554,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			self.Castbar:SetPoint('BOTTOM', oUF.units.target, 'TOP', 0, 76)
 		end
 
-		-- Add a spark
+		--// Add a spark
 		self.Castbar.Spark = self.Castbar:CreateTexture(nil, "OVERLAY")
 		self.Castbar.Spark:SetHeight(self.Castbar:GetHeight()*2.5)
 		self.Castbar.Spark:SetBlendMode("ADD")
