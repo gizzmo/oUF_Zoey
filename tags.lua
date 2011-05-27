@@ -74,7 +74,7 @@ local function Percent(cur, max)
 end
 
 oUF.Tags['Zoey:Name'] = function(unit)
-	local name = UnitName(unit)
+	local name = UnitName(unit) or ''
 	local _, class = UnitClass(unit)
 	local classColor = Hex(UnitIsPlayer(unit) and _COLORS.class[class] or {1,1,1})
 

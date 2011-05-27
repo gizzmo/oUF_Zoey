@@ -626,14 +626,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Enable mouse on all texts
 	--// -----------------------------
 	for _,fs in ipairs(self.__tags) do
-		self:HookScript('OnEnter', function()
-			fs:UpdateTag()
-		end)
-		self:HookScript('OnLeave', function()
-			if self:IsShown() then
-				fs:UpdateTag()
-			end
-		end)
+		self:HookScript('OnEnter', function() fs:UpdateTag() end)
+		self:HookScript('OnLeave', function() fs:UpdateTag() end)
 	end
 
 
