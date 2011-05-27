@@ -571,7 +571,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Castbar:SetStatusBarTexture(config.castbar_texture)
 		self.Castbar:SetStatusBarColor(unpack(config.castbar_colors.normal))
 
-		self.Castbar:SetSize(597, 38)
+		self.Castbar:SetSize(585, 38)
 
 		if unit == "player" then
 			self.Castbar:SetPoint('TOP', oUF.units.player, 'BOTTOM', 0, -76)
