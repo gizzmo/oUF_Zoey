@@ -513,7 +513,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	if unit == 'player' or unit == 'party' then
 		--// LFD Role Icon
 		self.LFDRole = Overlay:CreateTexture(nil, "OVERLAY")
-		self.LFDRole:SetSize(13, 13)
+		self.LFDRole:SetSize(18,18)
 		self.LFDRole:SetPoint("CENTER", Overlay, "TOPLEFT", 1, 0)
 
 		--// Ready Check icon
