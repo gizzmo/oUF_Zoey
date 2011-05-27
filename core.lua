@@ -329,6 +329,18 @@ end
 
 
 
+--// Aura Function
+local function PostCreateAuraIcon(iconframe, button)
+	button.cd:SetReverse(true)
+	button.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+end
+
+local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
+
+end
+
+
+
 --// Other Functions
 local function CreateText(parent, size, justify)
 	local fs = parent:CreateFontString(nil, 'OVERLAY')
@@ -516,6 +528,11 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	offset = offset + self.Power:GetHeight() + config.bar_spacing
 
 	--// -----------------------------
+	--// Class Bars
+	--// -----------------------------
+
+
+	--// -----------------------------
 	--// Frame Size
 	--// -----------------------------
 	self:SetHeight(offset)
@@ -614,6 +631,70 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 
 
+	--// -----------------------------
+	--// Auras
+	--// -----------------------------
+    if unit == 'player' or unit == 'target' then
+
+		--// Buffs
+		self.Buffs = CreateFrame('Frame', nil, self)
+
+		if unit == 'player' then
+			self.Buffs:SetSize(285, 64)
+			self.Buffs:SetPoint('TOP', self, 'BOTTOM', 0, -7)
+
+			self.Buffs['initialAnchor'] = 'TOPLEFT'
+			self.Buffs['growth-x'] = 'RIGHT'
+			self.Buffs['growth-y'] = 'DOWN'
+			self.Buffs['num'] = 18
+			self.Buffs['size'] = 30
+
+		elseif unit == 'target' then
+			self.Buffs:SetSize(285, 22)
+			self.Buffs:SetPoint('BOTTOM', self, 'TOP', 0, 7)
+
+			self.Buffs['initialAnchor'] = 'BOTTOMLEFT'
+			self.Buffs['growth-x'] = 'RIGHT'
+			self.Buffs['growth-y'] = 'UP'
+			self.Buffs['num'] = 12
+			self.Buffs['size'] = 22
+		end
+
+		self.Buffs['spacing'] = 2
+
+		self.Buffs.CustomFilter = CustomAuraFilter
+		self.Buffs.PostCreateIcon = PostCreateAuraIcon
+		self.Buffs.PostUpdateIcon = PostUpdateAuraIcon
+
+		--// Debuffs
+		self.Debuffs = CreateFrame('Frame', nil, self)
+
+		if unit == 'player' then
+			self.Debuffs:SetSize(139, 38)
+			self.Debuffs:SetPoint('LEFT', self, 'RIGHT', 13, 0)
+
+			self.Debuffs['initialAnchor'] = 'TOPLEFT'
+			self.Debuffs['growth-x'] = 'RIGHT'
+			self.Debuffs['growth-y'] = 'DOWN'
+			self.Debuffs['num'] = 4
+
+		elseif unit == 'target' then
+			self.Debuffs:SetSize(285, 100)
+			self.Debuffs:SetPoint('BOTTOM', self, 'TOP', 0, 35)
+
+			self.Debuffs['initialAnchor'] = 'BOTTOMLEFT'
+			self.Debuffs['growth-x'] = 'RIGHT'
+			self.Debuffs['growth-y'] = 'UP'
+			self.Debuffs['num'] = 16
+		end
+
+		self.Debuffs['spacing'] = 2
+		self.Debuffs['size'] = 34
+
+		self.Debuffs.CustomFilter = CustomAuraFilter
+		self.Debuffs.PostCreateIcon = PostCreateAuraIcon
+		self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
+	end
 
 end)
 
