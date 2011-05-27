@@ -325,6 +325,7 @@ end
 local function CastbarOnUpdate(self, elapsed)
 	if self.casting or self.channeling then
 		local duration = self.casting and self.duration + elapsed or self.duration - elapsed
+		local remaining = (duration - (duration *2) + self.max) -- incase i want to use it :p
 		if (self.casting and duration >= self.max) or (self.channeling and duration <= 0) then
 			self.casting = nil
 			self.channeling = nil
