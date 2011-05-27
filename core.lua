@@ -746,6 +746,12 @@ end)
 -----------------------------
 oUF:Factory(function(self)
 
+	--// Hide the Blizzard Buffs
+	BuffFrame:Hide()
+	BuffFrame:UnregisterAllEvents()
+	TemporaryEnchantFrame:Hide()
+	ConsolidatedBuffs:Hide()
+
 	--// Skin the Mirror Timers
 	for i = 1, 3 do
 		local barname = "MirrorTimer" .. i
