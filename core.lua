@@ -1,5 +1,20 @@
 --// Get the addon namespace
 local addon, ns = ...
+--[[
+--// TODO
+ClassBars
+ - Runes
+ - SoulShards
+ - Holy Power
+
+Timers
+ - AFK and DND
+ - Dead
+ - Offline
+
+Expernce bar?
+
+--]]
 
 -----------------------------
 --// CONFIG
