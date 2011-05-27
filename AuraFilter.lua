@@ -8,6 +8,8 @@
 	3 = by anyone on friendly
 	4 = by anyone on player
 ----------------------------------------------------------------------]]
+--// Get the addon namespace
+local addon, ns = ...
 
 local playerClass = select(2, UnitClass('player'))
 local playerRace = select(2, UnitRace('player'))
@@ -671,7 +673,7 @@ local filters = {
 	[4] = function( self, unit, caster ) return unit == 'player' and not self.__owner.isGroupFrame end,
 }
 
-CustomAuraFilter = function( self, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID )
+ns.CustomAuraFilter = function( self, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID )
 	local v = auras[ spellID ]
 
 	-- print( 'CustomAuraFilter', unit, caster, name, spellID, v )
@@ -683,4 +685,4 @@ CustomAuraFilter = function( self, unit, icon, name, rank, texture, count, dtype
 	end
 end
 
-AuraList = auras
+ns.AuraList = auras
