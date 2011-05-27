@@ -784,7 +784,7 @@ oUF:Factory(function(self)
 	--// Player Pet
 	self:Spawn('Pet'				):SetPoint('TOPRIGHT', u.player, 'TOPLEFT', -15, 0)
 	self:Spawn('PetTarget'			):SetPoint('BOTTOM', u.pet, 'TOP', 0, 16)
-	self:Spawn('PetTargetTarget'	):SetPoint('BOTTOM', u.pettarget, 'TOP', 0, 16)
+	self:Spawn('PetTargetTarget'	):SetPoint('BOTTOM', u.pettarget, 'TOP', 0, 15)
 
 	--// Targets
 	self:Spawn('Target'				):SetPoint('BOTTOM', u.player, 'TOP', 0, 18)
