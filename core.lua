@@ -5,16 +5,15 @@ local addon, ns = ...
 --// CONFIG
 -----------------------------
 local config = {
+	statusbar_texture = [[Interface\AddOns\oUF_Zoey\media\Armory]],
+
 	healthbar_color = {89/255, 89/255, 89/255},
-	healthbar_texture = [[Interface\AddOns\oUF_Zoey\media\Armory]],
-	powerbar_texture = [[Interface\AddOns\oUF_Zoey\media\Armory]],
 
 	castbar_colors = {
 		normal = {89/255, 89/255, 89/255},
 		success = {20/255, 208/255, 0/255},
 		failed = {255/255, 12/255, 0/255}
 	},
-	castbar_texture = [[Interface\AddOns\oUF_Zoey\media\Armory]],
 
 	portrait_size = 59,
 	healthbar_size = 31,
@@ -482,7 +481,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Health Bar
 	------------------------------
 	self.Health = CreateFrame("StatusBar", '$parentHealthBar', self)
-	self.Health:SetStatusBarTexture(config.healthbar_texture)
+	self.Health:SetStatusBarTexture(config.statusbar_texture)
 	self.Health:SetHeight(config.healthbar_size)
 	self.Health:SetPoint('TOP', 0, -offset)
 	self.Health:SetPoint('LEFT', 1,0)
@@ -492,7 +491,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 	--// Healthbar Background
 	self.Health.bg = self:CreateTexture(nil, "BACKGROUND")
-	self.Health.bg:SetTexture(config.healthbar_texture)
+	self.Health.bg:SetTexture(config.statusbar_texture)
 	self.Health.bg:SetAllPoints(self.Health)
 
 	--// Text
@@ -508,7 +507,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Power Bar
 	------------------------------
 	self.Power = CreateFrame('StatusBar', '$parentPowerBar', self)
-	self.Power:SetStatusBarTexture(config.powerbar_texture)
+	self.Power:SetStatusBarTexture(config.statusbar_texture)
 	self.Power:SetHeight(config.powerbar_size)
 	self.Power:SetPoint('TOP', 0, -offset)
 	self.Power:SetPoint('LEFT', 1,0)
@@ -518,7 +517,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 	--// Powerbar Background
 	self.Power.bg = self:CreateTexture(nil, "BACKGROUND")
-	self.Power.bg:SetTexture(config.powerbar_texture)
+	self.Power.bg:SetTexture(config.statusbar_texture)
 	self.Power.bg:SetAllPoints(self.Power)
 
 	--// Text
@@ -533,6 +532,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// -----------------------------
 	--// Class Bars
 	--// -----------------------------
+
 
 
 	--// -----------------------------
@@ -625,7 +625,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		--// Castbar Frame Background
 		local CastbarFrameBackground = CastbarFrame:CreateTexture(nil, "BACKGROUND")
 		CastbarFrameBackground:SetAllPoints(CastbarFrame)
-		CastbarFrameBackground:SetTexture(config.healthbar_texture)
+		CastbarFrameBackground:SetTexture(config.statusbar_texture)
 		CastbarFrameBackground:SetVertexColor(25/255, 25/255, 25/255)
 
 		--// Castbar Frame Border
@@ -757,7 +757,7 @@ oUF:Factory(function(self)
 		bar.bg = bar:GetRegions()
 		bar.bg:ClearAllPoints()
 		bar.bg:SetAllPoints( bar )
-		bar.bg:SetTexture( config.healthbar_texture )
+		bar.bg:SetTexture( config.statusbar_texture )
 		bar.bg:SetVertexColor( 0.2, 0.2, 0.2, 1 )
 
 		bar.text = _G[ barname .. "Text" ]
@@ -770,7 +770,7 @@ oUF:Factory(function(self)
 
 		bar.bar = _G[ barname .. "StatusBar" ]
 		bar.bar:SetAllPoints( bar )
-		bar.bar:SetStatusBarTexture( config.healthbar_texture )
+		bar.bar:SetStatusBarTexture( config.statusbar_texture )
 		bar.bar:SetAlpha( 0.8 )
 	end
 
