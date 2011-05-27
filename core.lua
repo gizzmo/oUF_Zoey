@@ -34,6 +34,43 @@ local config = {
 
 	highlight_texture = [[Interface\QuestFrame\UI-QuestLogTitleHighlight]],
 	highlight_color = {1,1,1, 60/255},
+
+	auraborder_texture = [[Interface\AddOns\oUF_Zoey\media\AuraBorder]],
+}
+
+local Auras = {
+	rules = {
+		my_buffs = {
+			friend = 'caster',
+			enemy = 'type',
+		},
+		my_debuffs = {
+			friend = 'type',
+			enemy = 'caster',
+		},
+		other_buffs = {
+			friend = 'caster',
+			enemy = 'type',
+		},
+		other_debuffs = {
+			friend = 'type',
+			enemy = 'caster',
+		},
+	},
+	colors = {
+		caster = {
+			my = {0, 1, 0, 1},
+			other = {1, 0, 0, 1},
+		},
+		type = {
+			Poison = {0, 1, 0, 1},
+			Magic = {0, 0, 1, 1},
+			Disease = {.55, .15, 0, 1},
+			Curse = {5, 0, 5, 1},
+			Enrage = {1, .55, 0, 1},
+			["nil"] = {1, 0, 0, 1},
+		},
+	}
 }
 
 -----------------------------
@@ -335,10 +372,37 @@ end
 local function PostCreateAuraIcon(iconframe, button)
 	button.cd:SetReverse(true)
 	button.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+
+	button.border = button:CreateTexture(nil, 'OVERLAY')
+	button.border:SetTexture(config.auraborder_texture)
+	button.border:SetAllPoints(button)
 end
 
 local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
+	local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, button.filter)
 
+	local border = button.border
+	border:Show()
+
+	local is_mine = caster == 'player' or caster == 'pet'
+	local who = is_mine and 'my' or 'other'
+
+	local rule = who .. '_' .. (iconframe.isDebuff and 'debuffs' or 'buffs')
+
+	local is_friend = UnitIsFriend('player', unit)
+	local color_type  = Auras.rules[rule][is_friend and 'friend' or 'enemy']
+
+	if color_type == "type" then
+		local color = Auras.colors.type[tostring(dtype)]
+		if not color then color = Auras.colors.type["nil"] end
+		border:SetVertexColor(unpack(color))
+	elseif color_type == "caster" then
+		border:SetVertexColor(unpack(Auras.colors.caster[who]))
+	else
+		-- Unknown color type just set it to red,
+		-- shouldn't actually ever get to this code
+		border:SetVertexColor(1,0,0)
+	end
 end
 
 
@@ -663,20 +727,19 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			self.Buffs['growth-x'] = 'RIGHT'
 			self.Buffs['growth-y'] = 'DOWN'
 			self.Buffs['num'] = 18
-			self.Buffs['size'] = 30
 
 		elseif unit == 'target' then
-			self.Buffs:SetSize(285, 22)
+			self.Buffs:SetSize(285, 26)
 			self.Buffs:SetPoint('BOTTOM', self, 'TOP', 0, 7)
 
 			self.Buffs['initialAnchor'] = 'BOTTOMLEFT'
 			self.Buffs['growth-x'] = 'RIGHT'
 			self.Buffs['growth-y'] = 'UP'
-			self.Buffs['num'] = 12
-			self.Buffs['size'] = 22
+			self.Buffs['num'] = 9
 		end
 
 		self.Buffs['spacing'] = 2
+		self.Buffs['size'] = 30
 
 		self.Buffs.CustomFilter = ns.CustomAuraFilter
 		self.Buffs.PostCreateIcon = PostCreateAuraIcon
@@ -696,7 +759,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 		elseif unit == 'target' then
 			self.Debuffs:SetSize(285, 100)
-			self.Debuffs:SetPoint('BOTTOM', self, 'TOP', 0, 35)
+			self.Debuffs:SetPoint('BOTTOM', self.Buffs, 'TOP', 0, 8)
 
 			self.Debuffs['initialAnchor'] = 'BOTTOMLEFT'
 			self.Debuffs['growth-x'] = 'RIGHT'
