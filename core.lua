@@ -568,7 +568,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 		--// The Castbar its self
 		self.Castbar = CreateFrame("StatusBar", "$parentCastbar", self)
-		self.Castbar:SetStatusBarTexture(config.castbar_texture)
+		self.Castbar:SetStatusBarTexture(config.statusbar_texture)
 		self.Castbar:SetStatusBarColor(unpack(config.castbar_colors.normal))
 
 		self.Castbar:SetSize(585, 38)
@@ -588,7 +588,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		--// Player only Latency
 		if unit == 'player' then
 			self.Castbar.SafeZone = self.Castbar:CreateTexture(nil,"OVERLAY")
-			self.Castbar.SafeZone:SetTexture(config.castbar_texture)
+			self.Castbar.SafeZone:SetTexture(config.statusbar_texture)
 			self.Castbar.SafeZone:SetVertexColor(1,0.1,0,.6)
 			self.Castbar.SafeZone:SetPoint("TOPRIGHT")
 			self.Castbar.SafeZone:SetPoint("BOTTOMRIGHT")
