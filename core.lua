@@ -237,7 +237,10 @@ local function PostUpdatePower(Power, unit, min, max)
 	if UnitIsPlayer(unit) then
 		r,g,b = unpack(oUF.colors.class[select(2, UnitClass(unit))])
 	else
-		r,g,b = unpack(oUF.colors.power[select(2, UnitPowerType(unit))])
+		local power = select(2, UnitPowerType(unit))
+		if power == '' then power = 'UNUSED' end
+
+		r,g,b = unpack(oUF.colors.power[power])
 	end
 
 	--// Set the power bar color
