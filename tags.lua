@@ -81,12 +81,16 @@ oUF.Tags['Zoey:Name'] = function(unit)
 	local level = UnitLevel(unit)
 	local levelColor = Hex(GetQuestDifficultyColor(level <= 0 and 99 or level))
 
-	-- only show levels 2 though 84
-	if level < 2 or level == 85 then
-		if level < 0 then
-			level = '??'
-		else
+	-- only show
+	if UnitIsPlayer(unit) then
+		if level == 85 then
 			level = ''
+		end
+	else
+		if level == 1 or level == 85 then
+			level = ''
+		elseif level < 1 then
+			level = '??'
 		end
 	end
 
