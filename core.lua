@@ -510,7 +510,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self.PvP:SetSize(21,21)
 	self.PvP:SetPoint("CENTER", Overlay, 'LEFT', 0,0)
 
-	if unit == 'player' then
+	if unit == 'player' or unit == 'party' then
 		--// LFD Role Icon
 		self.LFDRole = Overlay:CreateTexture(nil, "OVERLAY")
 		self.LFDRole:SetSize(13, 13)
@@ -533,7 +533,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	Name:SetPoint("LEFT", self, "TOPLEFT", 3, 1)
 
 	--// Reposistion for target frame
-	if unit == 'target' then
+	if unit == 'target' or unit == 'party' then
 		Name:SetPoint("TOPLEFT", 3, -2)
 	end
 
@@ -543,7 +543,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	------------------------------
 	--// Portrait
 	------------------------------
-	if unit == 'target' then -- later we'll add party
+	if unit == 'target' or unit == 'party' then
 		self.Portrait = CreateFrame("PlayerModel", '$parentPortrait', self)
 		self.Portrait:SetHeight(config.portrait_size)
 		self.Portrait:SetPoint('TOP', 0, -offset)
@@ -801,6 +801,28 @@ oUF:Factory(function(self)
 	self:Spawn('Focus'				):SetPoint('TOPRIGHT', u.pet, 'TOPLEFT', -15, 0)
 	self:Spawn('FocusTarget'		):SetPoint('BOTTOM', u.focus, 'TOP', 0, 16)
 	self:Spawn('FocusTargetTarget'	):SetPoint('BOTTOM', u.focustarget, 'TOP', 0, 15)
+
+	--// Party
+	local party = self:SpawnHeader(nil, nil, 'raid,party,solo',
+		-- http://wowprogramming.com/docs/secure_template/Group_Headers
+		-- Set header attributes
+		'showParty', true, 'showPlayer', true,
+		'yOffset', 47,
+
+		'point', 'BOTTOM'
+	)
+	party:SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -187)
+
+	--// Party Targets
+	self:SpawnHeader(nil, nil, 'rady,party,solo',
+		'showParty', true, 'showPlayer', true,
+		'yOffset', 107,
+		'oUF-initialConfigFunction', [[
+			self:SetAttribute('unitsuffix', 'target')
+		]],
+
+		'point', 'BOTTOM'
+	):SetPoint('BOTTOMLEFT', party, 'BOTTOMRIGHT', 15, 0)
 
 end)
 
