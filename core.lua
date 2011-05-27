@@ -415,6 +415,19 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.QuestIcon:SetPoint("CENTER", Overlay, "LEFT", 0, 0)
 	end
 
+	if unit == "party" or unit == "target" or unit == "focus" then
+		--// Phase Icon
+		self.PhaseIcon = Overlay:CreateTexture( nil, "OVERLAY" )
+		self.PhaseIcon:SetPoint( "TOP", self, "TOP", 0, -4 )
+		self.PhaseIcon:SetPoint( "BOTTOM", self, "BOTTOM", 0, 4 )
+		self.PhaseIcon:SetWidth( self.PhaseIcon:GetHeight() )
+		self.PhaseIcon:SetTexture( [[Interface\Icons\Spell_Frost_Stun]] )
+		self.PhaseIcon:SetTexCoord( 0.05, 0.95, 0.5 - 0.25 * 0.9, 0.5 + 0.25 * 0.9 )
+		self.PhaseIcon:SetDesaturated( true )
+		self.PhaseIcon:SetBlendMode( "ADD" )
+		self.PhaseIcon:SetAlpha( 0.5 )
+	end
+
 	--// Raid Icon (Skull, Cross, Square ...)
 	self.RaidIcon = Overlay:CreateTexture(nil, 'OVERLAY')
 	self.RaidIcon:SetSize(29,29)
