@@ -18,7 +18,6 @@ local config = {
 	portrait_size = 59,
 	healthbar_size = 31,
 	powerbar_size = 5,
-	bar_spacing = 1,
 
 	border_texture = [[Interface\AddOns\oUF_Zoey\media\ThinSquare]],
 	border_colors = {
@@ -546,7 +545,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	end
 
 	--// Bar Position
-	local offset = config.bar_spacing
+	local offset = 1
 
 	------------------------------
 	--// Portrait
@@ -559,7 +558,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Portrait:SetPoint('RIGHT',-1,0)
 
 		--// offset the health bar's position
-		offset = offset + self.Portrait:GetHeight() + config.bar_spacing
+		offset = offset + self.Portrait:GetHeight() +1
 	end
 
 	------------------------------
@@ -586,7 +585,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	HealthText:SetPoint('RIGHT', -1, -1)
 
 	--// offset the power bar's position
-	offset = offset + self.Health:GetHeight() + config.bar_spacing
+	offset = offset + self.Health:GetHeight() + 1
 
 	------------------------------
 	--// Power Bar
@@ -612,7 +611,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	PowerText:SetPoint('RIGHT', -1, -1)
 
 	--// Offset the class bars' position
-	offset = offset + self.Power:GetHeight() + config.bar_spacing
+	offset = offset + self.Power:GetHeight() + 1
 
 	--// -----------------------------
 	--// Class Bars
