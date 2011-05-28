@@ -801,26 +801,25 @@ oUF:Factory(function(self)
 	self:Spawn('FocusTargetTarget'	):SetPoint('BOTTOM', u.focustarget, 'TOP', 0, 15)
 
 	--// Party
-	local party = self:SpawnHeader(nil, nil, 'raid,party,solo',
+	self:SpawnHeader(nil, nil, 'raid,party',
 		-- http://wowprogramming.com/docs/secure_template/Group_Headers
 		-- Set header attributes
-		'showParty', true, 'showPlayer', true,
+		'showParty', true,
 		'yOffset', 47,
 
 		'point', 'BOTTOM'
-	)
-	party:SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -187)
+	):SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -304)
 
 	--// Party Targets
-	self:SpawnHeader(nil, nil, 'rady,party,solo',
-		'showParty', true, 'showPlayer', true,
+	self:SpawnHeader(nil, nil, 'raid,party',
+		'showParty', true,
 		'yOffset', 107,
 		'oUF-initialConfigFunction', [[
 			self:SetAttribute('unitsuffix', 'target')
 		]],
 
 		'point', 'BOTTOM'
-	):SetPoint('BOTTOMLEFT', party, 'BOTTOMRIGHT', 15, 0)
+	):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 'BOTTOMRIGHT', 15, 0)
 
 end)
 
