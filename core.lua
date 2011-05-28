@@ -23,8 +23,8 @@ local config = {
 	border_texture = [[Interface\AddOns\oUF_Zoey\media\ThinSquare]],
 	border_colors = {
 		normal = {113/255, 113/255, 113/255},
-		rare = {1,1,1},
-		elite = {1,1,0},
+		rare = {1, 1, 1},
+		elite = {1, 1, 0},
 		boss = {1, .5, 1}
 	},
 	border_size = 12,
@@ -163,13 +163,17 @@ local function CreateBorder(self)
 	self.BorderTextures = t
 end
 
-local function UpdateBorderColor(self)
-	if self.unit and self.BorderTexture then
+local function UpdateBorderColor(self, r,g,b)
+	if not self.BorderTextures then return end
+
+	if self.unit then
 		local c = UnitClassification(self.unit)
 		if c == "worldboss" then c = "boss" end
 		if c == "rareelite" then c = "rare" end
-		local r,g,b = unpack(config.border_colors[c])
+		r,g,b = unpack(config.border_colors[c])
+	end
 
+	if r and g and b then
 		--// Set the border color
 		for _, tex in ipairs(self.BorderTextures) do
 			tex:SetVertexColor(r, g, b)
