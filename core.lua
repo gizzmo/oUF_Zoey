@@ -251,42 +251,53 @@ end
 
 --// Health and Power, mostly for setting color
 local function PostUpdateHealth(Health, unit, min, max)
-	local r,g,b
+	local r,g,b,t
 
 	--// Determin the color we want to use
 	if UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit) then
-		r,g,b = unpack(oUF.colors.tapped)
+		t = oUF.colors.tapped
 	elseif not UnitIsConnected(unit) then
-		r,g,b = unpack(oUF.colors.disconnected)
+		t = oUF.colors.disconnected
 	else
-		r,g,b = unpack(config.healthbar_color)
+		t = config.healthbar_color
 	end
 
-	--// Set the health bar color
-	Health:SetStatusBarColor(r, g, b)
+	if t then
+		r, g, b = t[1], t[2], t[3]
+	end
 
-	--// Set the background color
-	Health.bg:SetVertexColor(r*0.4, g *0.4, b*0.4)
+	if b then
+		--// Set the health bar color
+		Health:SetStatusBarColor(r, g, b)
+
+		--// Set the background color
+		Health.bg:SetVertexColor(r*0.4, g *0.4, b*0.4)
+	end
 end
 
 local function PostUpdatePower(Power, unit, min, max)
-	local r,g,b
+	local r,g,b,t
 
 	--// Determin the color we want to use
 	if UnitIsPlayer(unit) then
-		r,g,b = unpack(oUF.colors.class[select(2, UnitClass(unit))])
+		local class = select(2, UnitClass(unit))
+		t = oUF.colors.class[class]
 	else
 		local power = select(2, UnitPowerType(unit))
-		if power == '' then power = 'UNUSED' end
-
-		r,g,b = unpack(oUF.colors.power[power])
+		t = oUF.colors.power[power]
 	end
 
-	--// Set the power bar color
-	Power:SetStatusBarColor(r, g, b)
+	if t then
+		r, g, b = t[1], t[2], t[3]
+	end
 
-	--// Set the background color
-	Power.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
+	if b then
+		--// Set the power bar color
+		Power:SetStatusBarColor(r, g, b)
+
+		--// Set the background color
+		Power.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
+	end
 end
 
 
