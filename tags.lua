@@ -2,7 +2,6 @@
 local addon, ns = ...
 
 local function IsMouseOver(unit)
-
 	if ns.Mouse_Focus and ns.Mouse_Focus['unit'] == unit then
 		return true
 	end
@@ -115,6 +114,15 @@ oUF.TagEvents['Zoey:Name'] = 'UNIT_NAME_UPDATE UNIT_LEVEL PLAYER_LEVEL_UP'
 
 
 oUF.Tags['Zoey:Health'] = function(unit)
+	--// Status
+	if(not UnitIsConnected(unit)) then
+		return 'Offline'
+	elseif(UnitIsDead(unit)) then
+		return 'Dead'
+	elseif(UnitIsGhost(unit)) then
+		return 'Ghost'
+	end
+
 	local cur = UnitHealth(unit)
 	local max = UnitHealthMax(unit)
 
@@ -135,7 +143,7 @@ oUF.Tags['Zoey:Health'] = function(unit)
 		end
 	end
 end
-oUF.TagEvents['Zoey:Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
+oUF.TagEvents['Zoey:Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
 
 
 oUF.Tags['Zoey:Power'] = function(unit)
