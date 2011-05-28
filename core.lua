@@ -497,8 +497,13 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 	--// Raid Icon (Skull, Cross, Square ...)
 	self.RaidIcon = Overlay:CreateTexture(nil, 'OVERLAY')
-	self.RaidIcon:SetSize(29,29)
-	self.RaidIcon:SetPoint('CENTER', Overlay, 0, 3)
+	self.RaidIcon:SetSize(21,21)
+	self.RaidIcon:SetPoint('CENTER', Overlay, 'LEFT', 0, 0)
+
+	if unit == 'target' then
+		self.RaidIcon:SetSize(30,30)
+		self.RaidIcon:SetPoint('CENTER', Overlay, 'TOP', 0, 0)
+	end
 
 	--// PvP Icon -- The img used isnt perfect, it sucks
 	self.PvP = Overlay:CreateTexture(nil, "OVERLAY")
