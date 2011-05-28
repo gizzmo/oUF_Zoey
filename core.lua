@@ -293,12 +293,12 @@ end
 
 
 --// Castbar Functions
-local function OnCastSent(self, event, unit, spell, rank)
+local function OnCastSent(self, event, unit, spell, rank, target)
 	if self.unit ~= unit then return end
 	self.Castbar.sentTime = GetTime()
 end
 
-local function PostCastStart(self, unit, name, rank, text)
+local function PostCastStart(self, unit, name, rank, castid)
 	self:SetAlpha(1.0)
 	self.Spark:Show()
 	self:SetStatusBarColor(unpack(config.castbar_colors.normal))
@@ -308,7 +308,6 @@ local function PostCastStart(self, unit, name, rank, text)
 	else
 		self.latency = 0
 	end
-
 end
 
 local function PostCastStop(self, unit, name, rank, castid)
@@ -316,12 +315,12 @@ local function PostCastStop(self, unit, name, rank, castid)
 	self:Show()
 end
 
-local function PostChannelStop(self, unit, name, rank)
+local function PostChannelStop(self, unit, name, rank, castid)
 	self:SetValue(0)
 	self:Show()
 end
 
-local function PostCastFailed(self, event, unit, name, rank, castid)
+local function PostCastFailed(self, unit, name, rank, castid)
 	self:SetValue(self.max)
 	self:Show()
 end
