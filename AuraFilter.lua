@@ -33,11 +33,19 @@ addAuras({
 	[1022]  = 4, -- Hand of Protection
 	[32182] = 4, -- Heroism
 	[29166] = 4, -- Innervate
-	[55503] = 4, -- Lifeblood [herbalism]
 	[80353] = 4, -- Time Warp
 	[33206] = 4, -- Pain Suppression
 	[10060] = 4, -- Power Infusion
 	[49016] = 4, -- Unholy Frenzy
+
+	[81708] = 4, -- Lifeblood [Rank 1]
+	[55428] = 4, -- Lifeblood [Rank 2]
+	[55480] = 4, -- Lifeblood [Rank 3]
+	[55500] = 4, -- Lifeblood [Rank 4]
+	[55501] = 4, -- Lifeblood [Rank 5]
+	[55502] = 4, -- Lifeblood [Rank 6]
+	[55503] = 4, -- Lifeblood [Rank 7]
+	[74497] = 4, -- Lifeblood [Rank 8]
 })
 
 ------------------------------------------------------------------------
@@ -256,6 +264,7 @@ if playerClass == 'DRUID' then addAuras({
 
 	[22812] = 4, -- Barkskin
 	[50334] = 4, -- Berserk
+	[93622] = 4, -- Berserk [Mangle (Bear) cooldown reset proc]
 	[16870] = 4, -- Clearcasting <== Omen of Clarity
 	[1850]  = 4, -- Dash
 	[5229]  = 4, -- Enrage
@@ -456,6 +465,8 @@ if playerClass == 'PRIEST' then addAuras({
 	[89485] = 4, -- Inner Focus
 	[81292] = 4, -- Mind Melt [Rank 1]
 	[87160] = 4, -- Mind Melt [Rank 2]
+	[63731] = 4, -- Serendipity [Rank 1]
+	[63735] = 4, -- Serendipity [Rank 2]
 	[88688] = 4, -- Surge of Light
 
 	[6346]  = 1, -- Fear Ward
@@ -609,11 +620,13 @@ if playerClass == 'WARRIOR' then addAuras({
 	[85388] = 2, -- Throwdown
 	[6343]  = 2, -- Thunder Clap
 
+	[6673]  = 2, -- Battle Shout
 	[12964] = 4, -- Battle Trance
 	[18499] = 4, -- Berserker Rage
 	[46924] = 4, -- Bladestorm
 	[46916] = 4, -- Bloodsurge
 	[23885] = 4, -- Bloodthirst -- NEEDS CHECK
+	[469]   = 2, -- Commanding Shout
 	[85730] = 4, -- Deadly Calm
 	[12292] = 4, -- Death Wish
 	[55694] = 4, -- Enraged Regeneration

@@ -743,7 +743,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Buffs['spacing'] = 2
 		self.Buffs['size'] = 30
 
-		self.Buffs.CustomFilter = ns.CustomAuraFilter
+		self.Buffs.CustomFilter   = ns.CustomAuraFilter
 		self.Buffs.PostCreateIcon = PostCreateAuraIcon
 		self.Buffs.PostUpdateIcon = PostUpdateAuraIcon
 
@@ -772,7 +772,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Debuffs['spacing'] = 2
 		self.Debuffs['size'] = 34
 
-		self.Debuffs.CustomFilter = ns.CustomAuraFilter
+		self.Debuffs.CustomFilter   = ns.CustomAuraFilter
 		self.Debuffs.PostCreateIcon = PostCreateAuraIcon
 		self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
 	end
