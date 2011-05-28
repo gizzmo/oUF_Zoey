@@ -266,7 +266,7 @@ local function PostUpdateHealth(Health, unit, min, max)
 	Health:SetStatusBarColor(r, g, b)
 
 	--// Set the background color
-	Health.bg:SetVertexColor(25/255, 25/255, 25/255)
+	Health.bg:SetVertexColor(r*0.4, g *0.4, b*0.4)
 end
 
 local function PostUpdatePower(Power, unit, min, max)
@@ -286,7 +286,7 @@ local function PostUpdatePower(Power, unit, min, max)
 	Power:SetStatusBarColor(r, g, b)
 
 	--// Set the background color
-	Power.bg:SetVertexColor(r * 0.4, g * 0.4, b * 0.4)
+	Power.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
 end
 
 
