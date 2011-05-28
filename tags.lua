@@ -115,11 +115,13 @@ oUF.TagEvents['Zoey:Name'] = 'UNIT_NAME_UPDATE UNIT_LEVEL PLAYER_LEVEL_UP'
 
 oUF.Tags['Zoey:Health'] = function(unit)
 	--// Status
-	if(not UnitIsConnected(unit)) then
+	if not UnitIsConnected(unit)  then
 		return 'Offline'
-	elseif(UnitIsDead(unit)) then
+	elseif UnitIsFeignDeath(unit) then
+		return 'Feign Death'
+	elseif UnitIsDead(unit) then
 		return 'Dead'
-	elseif(UnitIsGhost(unit)) then
+	elseif UnitIsGhost(unit) then
 		return 'Ghost'
 	end
 
@@ -201,6 +203,7 @@ end
 oUF.TagEvents["mastericon"] = "PARTY_LOOT_METHOD_CHANGED PARTY_MEMBERS_CHANGED"
 oUF.UnitlessTagEvents["PARTY_LOOT_METHOD_CHANGED"] = true
 oUF.UnitlessTagEvents["PARTY_MEMBERS_CHANGED"] = true
+
 
 --[[
 oUF.Tags['Zoey:PlayerHealth'] = function(unit)
