@@ -344,7 +344,7 @@ local function CastbarOnUpdate(self, elapsed)
 
 		if(self.Time) then
 			if self.delay ~= 0 then
-				self.Time:SetFormattedText('%.1f | |cffff0000%.1f|r', duration, self.casting and self.max + self.delay or self.max - self.delay)
+				self.Time:SetFormattedText('|cffff0000-%.1f|r %.1f | %.1f', self.delay, duration, self.max)
 			else
 				self.Time:SetFormattedText('%.1f | %.1f', duration, self.max)
 			end
