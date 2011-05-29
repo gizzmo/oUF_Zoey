@@ -81,10 +81,14 @@ ns.Mouse_Focus = nil
 local function OnEnter(self)
 	ns.Mouse_Focus = self
 	UnitFrame_OnEnter(self)
+
+	for _, fs in ipairs( self.__tags ) do fs:UpdateTag() end
 end
 local function OnLeave(self)
 	ns.Mouse_Focus = nil
 	UnitFrame_OnLeave(self)
+
+	for _, fs in ipairs( self.__tags ) do fs:UpdateTag() end
 end
 
 local function Menu(self)
@@ -639,16 +643,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	if unit == 'player' or unit == 'target' then
 		self:SetWidth(285)
 	end
-
-	--// -----------------------------
-	--// Enable mouse on all texts
-	--// -----------------------------
-	for _,fs in ipairs(self.__tags) do
-		self:HookScript('OnEnter', function() fs:UpdateTag() end)
-		self:HookScript('OnLeave', function() fs:UpdateTag() end)
-	end
-
-
 
 	--// -----------------------------
 	--// Cast Bars
