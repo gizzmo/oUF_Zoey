@@ -679,8 +679,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			self.Castbar.SafeZone = self.Castbar:CreateTexture(nil,"OVERLAY")
 			self.Castbar.SafeZone:SetTexture(config.statusbar_texture)
 			self.Castbar.SafeZone:SetVertexColor(1,0.1,0,.6)
-			self.Castbar.SafeZone:SetPoint("TOPRIGHT")
-			self.Castbar.SafeZone:SetPoint("BOTTOMRIGHT")
 
 			self.Castbar.Lag = CreateText(self.Castbar, 10)
 			self.Castbar.Lag:SetPoint("TOPRIGHT", self.Castbar, 'BOTTOMRIGHT', 0, -7)
