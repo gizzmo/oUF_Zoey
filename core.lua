@@ -1,9 +1,9 @@
 --// Get the addon namespace
 local addon, ns = ...
 
------------------------------
+--//---------------------------
 --// CONFIG
------------------------------
+--//---------------------------
 local config = {
 	statusbar_texture = [[Interface\AddOns\oUF_Zoey\media\Armory]],
 
@@ -72,9 +72,9 @@ local Auras = {
 	}
 }
 
------------------------------
+--//---------------------------
 --// FUNCTIONS
------------------------------
+--//---------------------------
 
 --// Mouse hovering
 ns.Mouse_Focus = nil
@@ -433,9 +433,9 @@ local function CreateText(parent, size, justify)
 end
 
 
------------------------------
+--//---------------------------
 --// STYLE FUNCTION
------------------------------
+--//---------------------------
 oUF:RegisterStyle('Zoey', function(self, unit)
 
 	--// Rightclick Menu
@@ -471,9 +471,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	Overlay:SetAllPoints(self)
 	Overlay:SetFrameLevel(10)
 
-	------------------------------
+	--//----------------------------
 	--// Icons
-	------------------------------
+	--//----------------------------
 
 	if unit == 'player' then
 		--// Resting Icon
@@ -541,9 +541,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	end
 
 
-	------------------------------
+	--//----------------------------
 	--// Name Text -- oh and leader and master icons ;)
-	------------------------------
+	--//----------------------------
 	local Name = CreateText(Overlay, 16)
 	self:Tag(Name, '[leadericon][mastericon][Zoey:Name]')
 
@@ -558,9 +558,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Bar Position
 	local offset = 1
 
-	------------------------------
+	--//----------------------------
 	--// Portrait
-	------------------------------
+	--//----------------------------
 	if unit == 'target' or unit == 'party' then
 		self.Portrait = CreateFrame("PlayerModel", '$parentPortrait', self)
 		self.Portrait:SetHeight(config.portrait_size)
@@ -572,9 +572,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		offset = offset + self.Portrait:GetHeight() +1
 	end
 
-	------------------------------
+	--//----------------------------
 	--// Health Bar
-	------------------------------
+	--//----------------------------
 	self.Health = CreateFrame("StatusBar", '$parentHealthBar', self)
 	self.Health:SetStatusBarTexture(config.statusbar_texture)
 	self.Health:SetHeight(config.healthbar_size)
@@ -598,9 +598,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// offset the power bar's position
 	offset = offset + self.Health:GetHeight() + 1
 
-	------------------------------
+	--//----------------------------
 	--// Power Bar
-	------------------------------
+	--//----------------------------
 	self.Power = CreateFrame('StatusBar', '$parentPowerBar', self)
 	self.Power:SetStatusBarTexture(config.statusbar_texture)
 	self.Power:SetHeight(config.powerbar_size)
