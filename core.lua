@@ -475,92 +475,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	Overlay:SetAllPoints(self)
 	Overlay:SetFrameLevel(10)
 
-	--//----------------------------
-	--// Icons
-	--//----------------------------
-
-	if unit == 'player' then
-		--// Resting Icon
-		self.Resting = Overlay:CreateTexture(nil, "OVERLAY")
-		self.Resting:SetSize(25,25)
-		self.Resting:SetPoint("LEFT", Overlay, "BOTTOMLEFT", 0, -2)
-
-		--// Combat Icon
-		self.Combat = Overlay:CreateTexture(nil, 'OVERLAY')
-		self.Combat:SetSize(25,25)
-		self.Combat:SetPoint('RIGHT', Overlay, 'BOTTOMRIGHT', 0, -2)
-
-	elseif unit == 'target' then
-		--// Quest Mob Icon
-		self.QuestIcon = Overlay:CreateTexture(nil, "OVERLAY")
-		self.QuestIcon:SetSize(32,32)
-		self.QuestIcon:SetPoint("CENTER", Overlay, "LEFT", 0, 0)
-	end
-
-	if unit == "party" or unit == "target" or unit == "focus" then
-		--// Phase Icon
-		self.PhaseIcon = Overlay:CreateTexture( nil, "OVERLAY" )
-		self.PhaseIcon:SetPoint( "CENTER", self, 0, 0)
-		self.PhaseIcon:SetSize( 50, 50 )
-		self.PhaseIcon:SetTexture( [[Interface\Icons\Spell_Frost_Stun]] )
-		self.PhaseIcon:SetTexCoord( 0.05, 0.95, 0.05 , 0.95 )
-		self.PhaseIcon:SetDesaturated( true )
-		self.PhaseIcon:SetBlendMode( "ADD" )
-		self.PhaseIcon:SetAlpha( 0.8 )
-	end
-
-	--// Raid Icon (Skull, Cross, Square ...)
-	self.RaidIcon = Overlay:CreateTexture(nil, 'OVERLAY')
-	self.RaidIcon:SetSize(21,21)
-	self.RaidIcon:SetPoint('CENTER', Overlay, 'LEFT', 0, 0)
-
-	if unit == 'target' then
-		self.RaidIcon:SetSize(30,30)
-		self.RaidIcon:SetPoint('CENTER', Overlay, 'TOP', 0, 0)
-	end
-
-	--// PvP Icon -- The img used isnt perfect, it sucks
-	self.PvP = Overlay:CreateTexture(nil, "OVERLAY")
-	local faction = UnitFactionGroup(unit)
-	if faction == "Horde" then
-		self.PvP:SetTexCoord(0.08, 0.58, 0.045, 0.545)
-	elseif faction == "Alliance" then
-		self.PvP:SetTexCoord(0.07, 0.58, 0.06, 0.57)
-	else
-		self.PvP:SetTexCoord(0.05, 0.605, 0.015, 0.57)
-	end
-	self.PvP:SetSize(21,21)
-	self.PvP:SetPoint("CENTER", Overlay, 'LEFT', 0,0)
-
-	if unit == 'player' or unit == 'party' then
-		--// LFD Role Icon
-		self.LFDRole = Overlay:CreateTexture(nil, "OVERLAY")
-		self.LFDRole:SetSize(18,18)
-		self.LFDRole:SetPoint("CENTER", Overlay, "TOPLEFT", 1, 0)
-
-		--// Ready Check icon
-		self.ReadyCheck = Overlay:CreateTexture(nil, "OVERLAY")
-		self.ReadyCheck:SetSize(14, 14)
-		self.ReadyCheck:SetPoint("CENTER", Overlay, "BOTTOM", 0, 0)
-	end
-
-
-	--//----------------------------
-	--// Name Text -- oh and leader and master icons ;)
-	--//----------------------------
-	local Name = CreateText(Overlay, 16)
-	self:Tag(Name, '[leadericon][mastericon][Zoey:Name]')
-
-	--// Default location
-	Name:SetPoint("LEFT", self, "TOPLEFT", 3, 1)
-
-	--// Reposistion for target frame
-	if unit == 'target' or unit == 'party' then
-		Name:SetPoint("TOPLEFT", 3, -2)
-	end
-
 	--// Bar Position
 	local offset = 1
+
 
 	--//----------------------------
 	--// Portrait
@@ -575,6 +492,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		--// offset the health bar's position
 		offset = offset + self.Portrait:GetHeight() +1
 	end
+
 
 	--//----------------------------
 	--// Health Bar
@@ -593,14 +511,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self.Health.bg:SetTexture(config.statusbar_texture)
 	self.Health.bg:SetAllPoints(self.Health)
 
-	--// Text
-	local HealthText = CreateText(self.Health, 22)
-	self:Tag(HealthText, '[Zoey:Health]')
-
-	HealthText:SetPoint('RIGHT', -1, -1)
-
 	--// offset the power bar's position
 	offset = offset + self.Health:GetHeight() + 1
+
 
 	--//----------------------------
 	--// Power Bar
@@ -619,14 +532,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self.Power.bg:SetTexture(config.statusbar_texture)
 	self.Power.bg:SetAllPoints(self.Power)
 
-	--// Text
-	local PowerText = CreateText(self.Power, 12)
-	self:Tag(PowerText, '[Zoey:Power]')
-
-	PowerText:SetPoint('RIGHT', -1, -1)
-
 	--// Offset the class bars' position
 	offset = offset + self.Power:GetHeight() + 1
+
 
 	--// -----------------------------
 	--// Class Bars
@@ -643,6 +551,102 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	if unit == 'player' or unit == 'target' then
 		self:SetWidth(285)
 	end
+
+
+	--//----------------------------
+	--// Texts
+	--//----------------------------
+	--// Name Text
+	local Name = CreateText(Overlay, 16)
+	self:Tag(Name, '[leadericon][mastericon][Zoey:Name]')
+
+	if unit == 'target' or unit == 'party' then
+		Name:SetPoint("TOPLEFT", 3, -2)
+	else
+		Name:SetPoint("LEFT", self, "TOPLEFT", 3, 1)
+	end
+
+	--// Health Text
+	local HealthText = CreateText(self.Health, 22)
+	self:Tag(HealthText, '[Zoey:Health]')
+	HealthText:SetPoint('RIGHT', -1, -1)
+
+	--// Power Text
+	local PowerText = CreateText(self.Power, 12)
+	self:Tag(PowerText, '[Zoey:Power]')
+	PowerText:SetPoint('RIGHT', -1, -1)
+
+
+	--//----------------------------
+	--// Icons
+	--//----------------------------
+	if unit == 'player' then
+		--// Resting Icon
+		self.Resting = Overlay:CreateTexture(nil, "OVERLAY")
+		self.Resting:SetSize(25,25)
+		self.Resting:SetPoint("LEFT", Overlay, "BOTTOMLEFT", 0, -2)
+
+		--// Combat Icon
+		self.Combat = Overlay:CreateTexture(nil, 'OVERLAY')
+		self.Combat:SetSize(25,25)
+		self.Combat:SetPoint('RIGHT', Overlay, 'BOTTOMRIGHT', 0, -2)
+	end
+
+	if unit == 'target' then
+		--// Quest Mob Icon
+		self.QuestIcon = Overlay:CreateTexture(nil, "OVERLAY")
+		self.QuestIcon:SetSize(32,32)
+		self.QuestIcon:SetPoint("CENTER", Overlay, "LEFT", 0, 0)
+	end
+	if unit == "party" or unit == "target" or unit == "focus" then
+		--// Phase Icon
+		self.PhaseIcon = Overlay:CreateTexture( nil, "OVERLAY" )
+		self.PhaseIcon:SetPoint( "CENTER", self, 0, 0)
+		self.PhaseIcon:SetSize( 50, 50 )
+		self.PhaseIcon:SetTexture( [[Interface\Icons\Spell_Frost_Stun]] )
+		self.PhaseIcon:SetTexCoord( 0.05, 0.95, 0.05 , 0.95 )
+		self.PhaseIcon:SetDesaturated( true )
+		self.PhaseIcon:SetBlendMode( "ADD" )
+		self.PhaseIcon:SetAlpha( 0.8 )
+	end
+
+	--// Raid Icon (Skull, Cross, Square ...)
+	self.RaidIcon = Overlay:CreateTexture(nil, 'OVERLAY')
+
+	if unit == 'target' then
+		self.RaidIcon:SetSize(30,30)
+		self.RaidIcon:SetPoint('CENTER', Overlay, 'TOP', 0, 0)
+	else
+		self.RaidIcon:SetSize(21,21)
+		self.RaidIcon:SetPoint('CENTER', Overlay, 'LEFT', 0, 0)
+	end
+
+	--// PvP Icon -- The img used isnt perfect, it sucks
+	self.PvP = Overlay:CreateTexture(nil, "OVERLAY")
+	self.PvP:SetSize(21,21)
+	self.PvP:SetPoint("CENTER", Overlay, 'LEFT', 0,0)
+
+	local faction = UnitFactionGroup(unit)
+	if faction == "Horde" then
+		self.PvP:SetTexCoord(0.08, 0.58, 0.045, 0.545)
+	elseif faction == "Alliance" then
+		self.PvP:SetTexCoord(0.07, 0.58, 0.06, 0.57)
+	else
+		self.PvP:SetTexCoord(0.05, 0.605, 0.015, 0.57)
+	end
+
+	if unit == 'player' or unit == 'party' then
+		--// LFD Role Icon
+		self.LFDRole = Overlay:CreateTexture(nil, "OVERLAY")
+		self.LFDRole:SetSize(18,18)
+		self.LFDRole:SetPoint("CENTER", Overlay, "TOPLEFT", 1, 0)
+
+		--// Ready Check icon
+		self.ReadyCheck = Overlay:CreateTexture(nil, "OVERLAY")
+		self.ReadyCheck:SetSize(14, 14)
+		self.ReadyCheck:SetPoint("CENTER", Overlay, "BOTTOM", 0, 0)
+	end
+
 
 	--// -----------------------------
 	--// Cast Bars
@@ -714,11 +718,10 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	end
 
 
-
 	--// -----------------------------
 	--// Auras
 	--// -----------------------------
-    if unit == 'player' or unit == 'target' then
+	if unit == 'player' or unit == 'target' then
 
 		--// Buffs
 		self.Buffs = CreateFrame('Frame', nil, self)
