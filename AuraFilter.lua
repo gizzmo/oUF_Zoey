@@ -49,6 +49,15 @@ addAuras({
 })
 
 ------------------------------------------------------------------------
+--	Debuffed
+
+addAuras({
+	[95223] = 1, -- Recently Mass Resurrected
+	[57724] = 1, -- Sated (Bloodlust)
+	[57723] = 1, -- Exhaustion (Heroism)
+})
+
+------------------------------------------------------------------------
 --	Armor reduced
 
 if playerClass == 'DRUID' or playerClass == 'WARRIOR' then addAuras({
