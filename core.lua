@@ -5,70 +5,71 @@ local addon, ns = ...
 --// CONFIG
 --//---------------------------
 local config = {
-	statusbar_texture = [[Interface\AddOns\oUF_Zoey\media\Armory]],
 
-	healthbar_color = {89/255, 89/255, 89/255},
-
-	castbar_colors = {
-		normal = {89/255, 89/255, 89/255},
-		success = {20/255, 208/255, 0/255},
-		failed = {255/255, 12/255, 0/255}
+	border = {
+		texture = [[Interface\AddOns\oUF_Zoey\media\ThinSquare]],
+		colors = {
+			normal = {113/255, 113/255, 113/255},
+			rare = {1, 1, 1},
+			elite = {1, 1, 0},
+			boss = {1, .5, 1}
+		},
+		size = 12,
+		padding = 4
 	},
 
-	portrait_size = 59,
-	healthbar_size = 31,
-	powerbar_size = 5,
-
-	border_texture = [[Interface\AddOns\oUF_Zoey\media\ThinSquare]],
-	border_colors = {
-		normal = {113/255, 113/255, 113/255},
-		rare = {1, 1, 1},
-		elite = {1, 1, 0},
-		boss = {1, .5, 1}
+	highlight = {
+		texture = [[Interface\QuestFrame\UI-QuestLogTitleHighlight]],
+		color = {1,1,1, 60/255},
 	},
-	border_size = 12,
-	border_padding = 4,
+
+	bars = {
+		texture = [[Interface\AddOns\oUF_Zoey\media\Armory]],
+
+		portrait = {
+			height = 59
+		},
+		health = {
+			height = 31,
+			color = {89/255, 89/255, 89/255}
+		},
+		power = {
+			height = 5
+		},
+		cast = {
+			size = {585, 38},
+			colors = {
+				normal = {89/255, 89/255, 89/255},
+				success = {20/255, 208/255, 0/255},
+				failed = {255/255, 12/255, 0/255}
+			}
+		}
+	},
 
 	font = [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]],
 
-	highlight_texture = [[Interface\QuestFrame\UI-QuestLogTitleHighlight]],
-	highlight_color = {1,1,1, 60/255},
-
-	auraborder_texture = [[Interface\AddOns\oUF_Zoey\media\AuraBorder]],
-}
-
-local Auras = {
-	rules = {
-		my_buffs = {
-			friend = 'caster',
-			enemy = 'type',
+	aura = {
+		texture = [[Interface\AddOns\oUF_Zoey\media\AuraBorder]],
+		rules = {
+			my_buffs = {		friend = 'caster',	enemy = 'type'},
+			my_debuffs = {		friend = 'type',	enemy = 'caster'},
+			other_buffs = {		friend = 'caster',	enemy = 'type'},
+			other_debuffs = {	friend = 'type',	enemy = 'caster'},
 		},
-		my_debuffs = {
-			friend = 'type',
-			enemy = 'caster',
-		},
-		other_buffs = {
-			friend = 'caster',
-			enemy = 'type',
-		},
-		other_debuffs = {
-			friend = 'type',
-			enemy = 'caster',
-		},
-	},
-	colors = {
-		caster = {
-			my = {0, 1, 0, 1},
-			other = {1, 0, 0, 1},
-		},
-		type = {
-			Poison = {0, 1, 0, 1},
-			Magic = {0, 0, 1, 1},
-			Disease = {.55, .15, 0, 1},
-			Curse = {5, 0, 5, 1},
-			Enrage = {1, .55, 0, 1},
-			["nil"] = {1, 0, 0, 1},
-		},
+		colors = {
+			caster = {
+				my = {0, 1, 0, 1},
+				other = {1, 0, 0, 1}
+			},
+			type = {
+				Poison = {0, 1, 0, 1},
+				Magic = {0, 0, 1, 1},
+				Disease = {.55, .15, 0, 1},
+				Curse = {5, 0, 5, 1},
+				Enrage = {1, .55, 0, 1},
+				["nil"] = {1, 0, 0, 1}
+			},
+		}
 	}
 }
 
@@ -111,10 +112,10 @@ end
 --// Border Creation
 local function CreateBorder(self)
 
-	local size = config.border_size
-	local padding = config.border_padding
-	local texture = config.border_texture
-	local color = config.border_colors.normal
+	local size = config.border.size
+	local padding = config.border.padding
+	local texture = config.border.texture
+	local color = config.border.colors.normal
 
 	--// Temp hold the textures
 	local t = {}
@@ -173,7 +174,7 @@ local function UpdateBorderColor(self, r,g,b)
 		local c = UnitClassification(self.unit)
 		if c == "worldboss" then c = "boss" end
 		if c == "rareelite" then c = "rare" end
-		r,g,b = unpack(config.border_colors[c])
+		r,g,b = unpack(config.border.colors[c])
 	end
 
 	if r and g and b then
@@ -224,11 +225,11 @@ local function HighlightUpdate(self)
 		hl:Hide()
 
 		local tex = hl:CreateTexture(nil, "OVERLAY")
-		tex:SetTexture(config.highlight_texture)
+		tex:SetTexture(config.highlight.texture)
 		tex:SetBlendMode('ADD')
 		tex:SetAlpha(0.5)
 		tex:SetAllPoints(hl)
-		tex:SetVertexColor(unpack(config.highlight_color))
+		tex:SetVertexColor(unpack(config.highlight.color))
 
 		self.Highlight = hl
 		self.Highlight.tex = tex
@@ -263,7 +264,7 @@ local function PostUpdateHealth(Health, unit, min, max)
 	elseif not UnitIsConnected(unit) then
 		t = oUF.colors.disconnected
 	else
-		t = config.healthbar_color
+		t = config.bars.health.color
 	end
 
 	if t then
@@ -315,7 +316,7 @@ end
 local function PostCastStart(self, unit, name, rank, castid)
 	self:SetAlpha(1.0)
 	self.Spark:Show()
-	self:SetStatusBarColor(unpack(config.castbar_colors.normal))
+	self:SetStatusBarColor(unpack(config.bars.cast.colors.normal))
 
 	if (self.sentTime) then
 		self.latency = GetTime() - self.sentTime
@@ -392,7 +393,7 @@ local function PostCreateAuraIcon(iconframe, button)
 	button.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
 
 	button.border = button:CreateTexture(nil, 'OVERLAY')
-	button.border:SetTexture(config.auraborder_texture)
+	button.border:SetTexture(config.aura.texture)
 	button.border:SetAllPoints(button)
 end
 
@@ -408,14 +409,14 @@ local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
 	local rule = who .. '_' .. (iconframe.isDebuff and 'debuffs' or 'buffs')
 
 	local is_friend = UnitIsFriend('player', unit)
-	local color_type  = Auras.rules[rule][is_friend and 'friend' or 'enemy']
+	local color_type  = config.aura.rules[rule][is_friend and 'friend' or 'enemy']
 
 	if color_type == "type" then
-		local color = Auras.colors.type[tostring(dtype)]
-		if not color then color = Auras.colors.type["nil"] end
+		local color = config.aura.colors.type[tostring(dtype)]
+		if not color then color = config.aura.colors.type["nil"] end
 		border:SetVertexColor(unpack(color))
 	elseif color_type == "caster" then
-		border:SetVertexColor(unpack(Auras.colors.caster[who]))
+		border:SetVertexColor(unpack(config.aura.colors.caster[who]))
 	else
 		-- Unknown color type just set it to red,
 		-- shouldn't actually ever get to this code
@@ -484,7 +485,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--//----------------------------
 	if unit == 'target' or unit == 'party' then
 		self.Portrait = CreateFrame("PlayerModel", '$parentPortrait', self)
-		self.Portrait:SetHeight(config.portrait_size)
+		self.Portrait:SetHeight(config.bars.portrait.height)
 		self.Portrait:SetPoint('TOP', 0, -offset)
 		self.Portrait:SetPoint('LEFT', 1,0)
 		self.Portrait:SetPoint('RIGHT',-1,0)
@@ -498,8 +499,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Health Bar
 	--//----------------------------
 	self.Health = CreateFrame("StatusBar", '$parentHealthBar', self)
-	self.Health:SetStatusBarTexture(config.statusbar_texture)
-	self.Health:SetHeight(config.healthbar_size)
+	self.Health:SetStatusBarTexture(config.bars.texture)
+	self.Health:SetHeight(config.bars.health.height)
 	self.Health:SetPoint('TOP', 0, -offset)
 	self.Health:SetPoint('LEFT', 1,0)
 	self.Health:SetPoint('RIGHT',-1,0)
@@ -508,7 +509,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 	--// Healthbar Background
 	self.Health.bg = self:CreateTexture(nil, "BACKGROUND")
-	self.Health.bg:SetTexture(config.statusbar_texture)
+	self.Health.bg:SetTexture(config.bars.texture)
 	self.Health.bg:SetAllPoints(self.Health)
 
 	--// offset the power bar's position
@@ -519,8 +520,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Power Bar
 	--//----------------------------
 	self.Power = CreateFrame('StatusBar', '$parentPowerBar', self)
-	self.Power:SetStatusBarTexture(config.statusbar_texture)
-	self.Power:SetHeight(config.powerbar_size)
+	self.Power:SetStatusBarTexture(config.bars.texture)
+	self.Power:SetHeight(config.bars.power.height)
 	self.Power:SetPoint('TOP', 0, -offset)
 	self.Power:SetPoint('LEFT', 1,0)
 	self.Power:SetPoint('RIGHT',-1,0)
@@ -529,7 +530,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 	--// Powerbar Background
 	self.Power.bg = self:CreateTexture(nil, "BACKGROUND")
-	self.Power.bg:SetTexture(config.statusbar_texture)
+	self.Power.bg:SetTexture(config.bars.texture)
 	self.Power.bg:SetAllPoints(self.Power)
 
 	--// Offset the class bars' position
@@ -567,14 +568,14 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	end
 
 	--// Health Text
-	local HealthText = CreateText(self.Health, 22)
+	local HealthText = CreateText(Overlay, 22)
 	self:Tag(HealthText, '[Zoey:Health]')
-	HealthText:SetPoint('RIGHT', -1, -1)
+	HealthText:SetPoint('RIGHT', self.Health, -1, -1)
 
 	--// Power Text
-	local PowerText = CreateText(self.Power, 12)
+	local PowerText = CreateText(Overlay, 12)
 	self:Tag(PowerText, '[Zoey:Power]')
-	PowerText:SetPoint('RIGHT', -1, -1)
+	PowerText:SetPoint('RIGHT', self.Power, -1, -1)
 
 
 	--//----------------------------
@@ -655,10 +656,10 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 		--// The Castbar its self
 		self.Castbar = CreateFrame("StatusBar", "$parentCastbar", self)
-		self.Castbar:SetStatusBarTexture(config.statusbar_texture)
-		self.Castbar:SetStatusBarColor(unpack(config.castbar_colors.normal))
+		self.Castbar:SetStatusBarTexture(config.bars.texture)
+		self.Castbar:SetStatusBarColor(unpack(config.bars.cast.colors.normal))
 
-		self.Castbar:SetSize(585, 38)
+		self.Castbar:SetSize(unpack(config.bars.cast.size))
 
 		if unit == "player" then
 			self.Castbar:SetPoint('TOP', oUF.units.player, 'BOTTOM', 0, -76)
@@ -675,7 +676,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		--// Player only Latency
 		if unit == 'player' then
 			self.Castbar.SafeZone = self.Castbar:CreateTexture(nil,"OVERLAY")
-			self.Castbar.SafeZone:SetTexture(config.statusbar_texture)
+			self.Castbar.SafeZone:SetTexture(config.bars.texture)
 			self.Castbar.SafeZone:SetVertexColor(1,0.1,0,.6)
 
 			self.Castbar.Lag = CreateText(self.Castbar, 10)
@@ -710,7 +711,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		--// Castbar Frame Background
 		local CastbarFrameBackground = CastbarFrame:CreateTexture(nil, "BACKGROUND")
 		CastbarFrameBackground:SetAllPoints(CastbarFrame)
-		CastbarFrameBackground:SetTexture(config.statusbar_texture)
+		CastbarFrameBackground:SetTexture(config.bars.texture)
 		CastbarFrameBackground:SetVertexColor(25/255, 25/255, 25/255)
 
 		--// Castbar Frame Border
@@ -786,7 +787,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		--// Debuffs
 		self.Debuffs = CreateFrame('Frame', nil, self)
 		self.Debuffs:SetSize(139, 38)
-		self.Debuffs:SetPoint('TOP', self, 'TOPRIGHT', 13, 0)
+		self.Debuffs:SetPoint('TOPLEFT', self, 'TOPRIGHT', 13, 0)
 
 		self.Debuffs['initialAnchor'] = 'TOPLEFT'
 		self.Debuffs['growth-x'] = 'RIGHT'
@@ -885,7 +886,7 @@ oUF:Factory(function(self)
 		bar.bg = bar:GetRegions()
 		bar.bg:ClearAllPoints()
 		bar.bg:SetAllPoints( bar )
-		bar.bg:SetTexture( config.statusbar_texture )
+		bar.bg:SetTexture( config.bars.texture )
 		bar.bg:SetVertexColor( 0.2, 0.2, 0.2, 1 )
 
 		bar.text = _G[ barname .. "Text" ]
@@ -898,7 +899,7 @@ oUF:Factory(function(self)
 
 		bar.bar = _G[ barname .. "StatusBar" ]
 		bar.bar:SetAllPoints( bar )
-		bar.bar:SetStatusBarTexture( config.statusbar_texture )
+		bar.bar:SetStatusBarTexture( config.bars.texture )
 		bar.bar:SetAlpha( 0.8 )
 	end
 
