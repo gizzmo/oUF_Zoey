@@ -908,6 +908,7 @@ oUF:Factory(function(self)
 		'UnitFramePanelPartyBackground',
 		'UnitFramePanelPartyPets',
 		'UnitFramePanelFullSizeFocusFrame',
+		'UnitFramePanelRaidStylePartyFrames',
 
 		'CombatPanelTargetOfTarget',
 		'CombatPanelTOTDropDown',
@@ -917,6 +918,7 @@ oUF:Factory(function(self)
 		'DisplayPanelShowAggroPercentage',
 
 		'FrameCategoriesButton9',
+		'FrameCategoriesButton12',
 	}) do
 		_G['InterfaceOptions'..button]:SetAlpha(0.35)
 		_G['InterfaceOptions'..button]:Disable()
