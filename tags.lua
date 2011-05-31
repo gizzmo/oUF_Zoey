@@ -82,11 +82,11 @@ oUF.Tags['Zoey:Name'] = function(unit)
 
 	-- only show
 	if UnitIsPlayer(unit) then
-		if level == 85 then
+		if level == MAX_PLAYER_LEVEL then
 			level = ''
 		end
 	else
-		if level == 1 or level == 85 then
+		if level == 1 or level == MAX_PLAYER_LEVEL then
 			level = ''
 		elseif level < 1 then
 			level = '??'
