@@ -477,6 +477,13 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Highlight
 	HighlightEnable(self)
 
+	-- // Frame Width. Height will be set after bars are created
+	if unit == 'player' or unit == 'target' then
+		self:SetWidth(285)
+	else
+		self:SetWidth(139)
+	end
+
 	--// Overlay Frame -- used to attach icons/text to
 	local Overlay = CreateFrame('Frame', '$parentOverlay', self)
 	Overlay:SetAllPoints(self)
@@ -549,15 +556,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 
 
-	--// -----------------------------
-	--// Frame Size
-	--// -----------------------------
+	--// Frame Height
 	self:SetHeight(offset)
-	self:SetWidth(139)
-
-	if unit == 'player' or unit == 'target' then
-		self:SetWidth(285)
-	end
 
 
 	--//----------------------------
