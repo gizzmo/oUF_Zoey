@@ -20,7 +20,7 @@ local config = {
 
 	highlight = {
 		texture = [[Interface\QuestFrame\UI-QuestLogTitleHighlight]],
-		color = {1,1,1, 60/255},
+		color = {1,1,1, .2},
 	},
 
 	bars = {
