@@ -170,14 +170,20 @@ end
 local function UpdateBorderColor(self, r,g,b)
 	if not self.BorderTextures then return end
 
+	local t
+
 	if self.unit then
 		local c = UnitClassification(self.unit)
 		if c == "worldboss" then c = "boss" end
 		if c == "rareelite" then c = "rare" end
-		r,g,b = unpack(config.border.colors[c])
+		t = config.border.colors[c]
 	end
 
-	if r and g and b then
+	if t then
+		r, g, b = t[1], t[2], t[3]
+	end
+
+	if b then
 		--// Set the border color
 		for _, tex in ipairs(self.BorderTextures) do
 			tex:SetVertexColor(r, g, b)
