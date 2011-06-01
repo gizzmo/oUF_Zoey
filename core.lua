@@ -611,10 +611,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.PhaseIcon:SetPoint( "CENTER", self, 0, 0)
 		self.PhaseIcon:SetSize( 50, 50 )
 		self.PhaseIcon:SetTexture( [[Interface\Icons\Spell_Frost_Stun]] )
-		self.PhaseIcon:SetTexCoord( 0.05, 0.95, 0.05 , 0.95 )
+		self.PhaseIcon:SetTexCoord( 0.06, 0.94, 0.06 , 0.94 )
 		self.PhaseIcon:SetDesaturated( true )
 		self.PhaseIcon:SetBlendMode( "ADD" )
-		self.PhaseIcon:SetAlpha( 0.8 )
 	end
 
 	--// Raid Icon (Skull, Cross, Square ...)
