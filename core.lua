@@ -681,12 +681,12 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 		--// Player only Latency
 		if unit == 'player' then
-			self.Castbar.SafeZone = CreateFrame('Frame', nil, self)
-			self.Castbar.SafeZone:SetFrameLevel(self.Castbar:GetFramelevel() - 1)
+			self.Castbar.SafeZone = CreateFrame('Frame', nil, self.Castbar)
+			self.Castbar.SafeZone:SetFrameLevel(self.Castbar:GetFrameLevel() - 1)
 
 			self.Castbar.SafeZone.tex = self.Castbar.SafeZone:CreateTexture(nil,"OVERLAY")
 			self.Castbar.SafeZone.tex:SetTexture(config.bars.texture)
-			self.Castbar.SafeZone.tex:SetVertexColor(unpack(config.bars.cast.colors.safezone)
+			self.Castbar.SafeZone.tex:SetVertexColor(unpack(config.bars.cast.colors.safezone))
 			self.Castbar.SafeZone.tex:SetAllPoints(self.Castbar.SafeZone)
 
 			self.Castbar.Lag = CreateText(self.Castbar, 10)
@@ -713,7 +713,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 
 		--// Castbar Frame
-		local CastbarFrame = CreateFrame('Frame', '$parentCastbarFrame', self.Castbar)
+		local CastbarFrame = CreateFrame('Frame', '$parentFrame', self.Castbar)
 		CastbarFrame:SetPoint('TOPLEFT', -1, 1)
 		CastbarFrame:SetPoint('BOTTOMRIGHT', 1, -1)
 		CastbarFrame:SetFrameLevel(self.Castbar:GetFrameLevel()-1)
