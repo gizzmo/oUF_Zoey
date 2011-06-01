@@ -447,11 +447,7 @@ local function CreateText(parent, size, justify)
 	return fs
 end
 
-
---//---------------------------
---// STYLE FUNCTION
---//---------------------------
-oUF:RegisterStyle('Zoey', function(self, unit)
+local function StyleHeader(self)
 
 	--// Rightclick Menu
 	self.menu = Menu
@@ -480,6 +476,16 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 	--// Highlight
 	HighlightEnable(self)
+
+end
+
+--//----------------------------
+--// STYLE FUNCTION
+--//----------------------------
+oUF:RegisterStyle('Zoey', function(self, unit)
+
+	-- // Style Header
+	StyleHeader(self)
 
 	-- // Frame Width. Height will be set after bars are created
 	if unit == 'player' or unit == 'target' then
@@ -859,6 +865,52 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 end)
 
+oUF:RegisterStyle('ZoeyThin', function(self, unit)
+
+	--// StyleHeader
+	StyleHeader(self)
+
+	--// Overlay Frame -- used to attach icons/text to
+	local Overlay = CreateFrame('Frame', '$parentOverlay', self)
+	Overlay:SetAllPoints(self)
+	Overlay:SetFrameLevel(10)
+
+	--//----------------------------
+	--// Health Bar
+	--//----------------------------
+	self.Health = CreateFrame("StatusBar", '$parentHealthBar', self)
+	self.Health:SetStatusBarTexture(config.bars.texture)
+	self.Health:SetHeight(17)
+	self.Health:SetPoint('TOP', 0, -1)
+	self.Health:SetPoint('LEFT', 1,0)
+	self.Health:SetPoint('RIGHT',-1,0)
+	self.Health.frequentUpdates = .2
+	self.Health.PostUpdate = PostUpdateHealth
+
+	--// Healthbar Background
+	self.Health.bg = self:CreateTexture(nil, "BACKGROUND")
+	self.Health.bg:SetTexture(config.bars.texture)
+	self.Health.bg:SetAllPoints(self.Health)
+
+
+	--//----------------------------
+	--// Frame Size
+	--//----------------------------
+	self:SetHeight(self.Health:GetHeight() + 2)
+	self:SetWidth(139)
+
+
+	--//----------------------------
+	--// Texts
+	--//----------------------------
+	--// Name Text
+	local Name = CreateText(Overlay, 16)
+	self:Tag(Name, '[Zoey:Name]')
+	Name:SetPoint("LEFT", self, "TOPLEFT", 3, 1)
+
+
+end)
+
 --//----------------------------
 --// SPAWN UNITS
 --//----------------------------
@@ -904,6 +956,18 @@ oUF:Factory(function(self)
 
 		'point', 'BOTTOM'
 	):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 'BOTTOMRIGHT', 15, 0)
+
+	--// Party Pets
+	self:SetActiveStyle('ZoeyThin')
+	self:SpawnHeader(nil, nil, 'raid,party',
+		'showParty', true,
+		'yOffset', 127,
+		'oUF-initialConfigFunction', [[
+			self:SetAttribute('unitsuffix', 'pet')
+		]],
+
+		'point', 'BOTTOM'
+	):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 0, -31)
 
 end)
 
