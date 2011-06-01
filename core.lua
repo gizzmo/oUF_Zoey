@@ -451,7 +451,6 @@ local function StyleHeader(self)
 
 	--// Rightclick Menu
 	self.menu = Menu
-	self:SetAttribute("*type2", "menu")
 	self:RegisterForClicks("AnyUp")
 
 	--// Hover Effects
