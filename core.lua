@@ -1,9 +1,9 @@
 --// Get the addon namespace
 local addon, ns = ...
 
---//---------------------------
+--//----------------------------
 --// CONFIG
---//---------------------------
+--//----------------------------
 local config = {
 
 	border = {
@@ -73,9 +73,9 @@ local config = {
 	}
 }
 
---//---------------------------
+--//----------------------------
 --// FUNCTIONS
---//---------------------------
+--//----------------------------
 
 --// Mouse hovering
 ns.Mouse_Focus = nil
@@ -550,9 +550,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	offset = offset + self.Power:GetHeight() + 1
 
 
-	--// -----------------------------
+	--//----------------------------
 	--// Class Bars
-	--// -----------------------------
+	--//----------------------------
 
 
 
@@ -605,6 +605,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.QuestIcon:SetSize(32,32)
 		self.QuestIcon:SetPoint("CENTER", Overlay, "LEFT", 0, 0)
 	end
+
 	if unit == "party" or unit == "target" or unit == "focus" then
 		--// Phase Icon
 		self.PhaseIcon = Overlay:CreateTexture( nil, "OVERLAY" )
@@ -654,9 +655,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	end
 
 
-	--// -----------------------------
+	--//----------------------------
 	--// Cast Bars
-	--// -----------------------------
+	--//----------------------------
 	if unit == 'player' or unit == 'target' then
 
 		--// The Castbar its self
@@ -728,9 +729,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	end
 
 
-	--// -----------------------------
+	--//----------------------------
 	--// Auras
-	--// -----------------------------
+	--//----------------------------
 	if unit == 'player' or unit == 'target' then
 
 		--// Buffs
@@ -812,9 +813,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 end)
 
------------------------------
+--//----------------------------
 --// SPAWN UNITS
------------------------------
+--//----------------------------
 oUF:Factory(function(self)
 
 	local u = self.units
@@ -860,9 +861,9 @@ oUF:Factory(function(self)
 
 end)
 
------------------------------
+--//----------------------------
 --// Extra Stuff for the UI
------------------------------
+--//----------------------------
 oUF:Factory(function(self)
 
 	--// Hide the Blizzard Buffs
@@ -950,5 +951,5 @@ oUF:Factory(function(self)
 
 
 end)
------------------------------
+--//----------------------------
 --// THE END
