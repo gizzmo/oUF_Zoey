@@ -566,7 +566,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--//----------------------------
 	--// Name Text
 	local Name = CreateText(Overlay, 16)
-	self:Tag(Name, '[leadericon][mastericon][Zoey:Name]')
+	self:Tag(Name, '[Zoey:Name]')
 
 	if unit == 'target' or unit == 'party' then
 		Name:SetPoint("TOPLEFT", 3, -2)
@@ -599,6 +599,10 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Combat:SetSize(25,25)
 		self.Combat:SetPoint('RIGHT', Overlay, 'BOTTOMRIGHT', 0, -2)
 	end
+
+	self.Leader = Overlay:CreateTexture(nil, 'OVERLAY')
+	self.Leader:SetSize(16,16)
+	self.Leader:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 0)
 
 	if unit == 'target' then
 		--// Quest Mob Icon
