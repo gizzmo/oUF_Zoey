@@ -603,6 +603,90 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 		end
 
+		--//----------------------------
+		--// Paladin Holy Power
+		--//----------------------------
+		if playerClass == 'PALADIN' then
+
+			self.HolyPower = CreateFrame('Frame', '$parentHolyPowerBar', self)
+			self.HolyPower:SetHeight(config.bars.class.height)
+			self.HolyPower:SetPoint('TOP', 0, -offset)
+			self.HolyPower:SetPoint('LEFT', 1,0)
+			self.HolyPower:SetPoint('RIGHT', -1,0)
+
+			local width = (self:GetWidth() / 3) - ((3 - 1) / 3)
+
+			for i = 1, 3 do
+				local power = self:CreateTexture(nil, 'ARTWORK')
+				power:SetTexture(config.bars.texture)
+				power:SetSize(width, self.HolyPower:GetHeight())
+
+				if (i == 1) then
+					power:SetPoint("LEFT", self.HolyPower, 0, 0)
+				else
+					power:SetPoint("LEFT", self.HolyPower[i-1], "RIGHT", 1, 0)
+				end
+
+				power.bg = self:CreateTexture(nil, 'BACKGROUND')
+				power.bg:SetTexture(config.bars.texture)
+				power.bg:SetAllPoints(power)
+
+				-- // Color
+				local r,g,b,mu = 230/255, 242/255, 84/255, 0.4
+
+				power:SetVertexColor(r,g,b)
+				power.bg:SetVertexColor(r * mu, g * mu, b * mu)
+
+				self.HolyPower[i] = power
+			end
+
+			-- // Offset the next class bar? Or Frame Height
+			offset = offset + self.HolyPower:GetHeight() + 1
+
+		end
+
+		--//----------------------------
+		--// Warlock Soul Shards
+		--//----------------------------
+		if playerClass == 'WARLOCK' then
+
+			self.SoulShards = CreateFrame('Frame', '$parentSoulShardsBar', self)
+			self.SoulShards:SetHeight(config.bars.class.height)
+			self.SoulShards:SetPoint('TOP', 0, -offset)
+			self.SoulShards:SetPoint('LEFT', 1,0)
+			self.SoulShards:SetPoint('RIGHT', -1,0)
+
+			local width = (self:GetWidth() / 3) - ((3 - 1) / 3)
+
+			for i = 1, 3 do
+				local shard = self:CreateTexture(nil, 'ARTWORK')
+				shard:SetTexture(config.bars.texture)
+				shard:SetSize(width, self.SoulShards:GetHeight())
+
+				if (i == 1) then
+					shard:SetPoint("LEFT", self.SoulShards, 0, 0)
+				else
+					shard:SetPoint("LEFT", self.SoulShards[i-1], "RIGHT", 1, 0)
+				end
+
+				shard.bg = self:CreateTexture(nil, 'BACKGROUND')
+				shard.bg:SetTexture(config.bars.texture)
+				shard.bg:SetAllPoints(shard)
+
+				-- // Color
+				local r,g,b,mu = 209/255, 61/255, 189/255, 0.4
+
+				shard:SetVertexColor(r,g,b)
+				shard.bg:SetVertexColor(r * mu, g * mu, b * mu)
+
+				self.SoulShards[i] = shard
+			end
+
+			-- // Offset the next class bar? Or Frame Height
+			offset = offset + self.SoulShards:GetHeight() + 1
+
+		end
+
 	end
 
 	--// Frame Height
