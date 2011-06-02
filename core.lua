@@ -563,12 +563,12 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Class Bars
 	--//----------------------------
 	if unit == 'player' then
-		local class = select(2, UnitClass(unit))
+		local playerClass = select(2, UnitClass(unit))
 
 		--//----------------------------
 		--// Death Knight Runes
 		--//----------------------------
-		if class == 'DEATHKNIGHT' then
+		if playerClass == 'DEATHKNIGHT' then
 
 			self.Runes = CreateFrame('Frame', '$parentRunebar', self)
 			self.Runes:SetHeight(config.bars.class.height)
@@ -576,15 +576,18 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			self.Runes:SetPoint('LEFT', 1,0)
 			self.Runes:SetPoint('RIGHT', -1,0)
 
-			local width = self:GetWidth() / 6 - 1
-			for i=1,6 do
+			local MAX_RUNES = 6
+
+			local width = (self:GetWidth() / MAX_RUNES) - ((MAX_RUNES - 1) / MAX_RUNES)
+
+			for i = 1, MAX_RUNES do
 				local rune  = CreateFrame('StatusBar', nil, self.Runes)
 				rune:SetStatusBarTexture(config.bars.texture)
 				rune:SetSize(width, self.Runes:GetHeight())
 				rune:SetFrameLevel(4)
 
 				if i == 1 then
-					rune:SetPoint('LEFT', self.Runes, 0, 0)
+					rune:SetPoint('LEFT')
 				else
 					rune:SetPoint('LEFT', self.Runes[i-1], 'RIGHT', 1, 0)
 				end
@@ -599,6 +602,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 			-- // Offset the next class bar? Or Frame Height
 			offset = offset + self.Runes:GetHeight() + 1
+
 		end
 
 	end
