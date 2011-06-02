@@ -581,7 +581,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			local width = (self:GetWidth() / MAX_RUNES) - ((MAX_RUNES - 1) / MAX_RUNES)
 
 			for i = 1, MAX_RUNES do
-				local rune  = CreateFrame('StatusBar', nil, self.Runes)
+				local rune  = CreateFrame('StatusBar', '$parentRune'..i, self.Runes)
 				rune:SetStatusBarTexture(config.bars.texture)
 				rune:SetSize(width, self.Runes:GetHeight())
 				rune:SetFrameLevel(4)
