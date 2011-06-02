@@ -732,10 +732,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Combat:SetPoint('RIGHT', Overlay, 'BOTTOMRIGHT', 0, -2)
 	end
 
-	self.Leader = Overlay:CreateTexture(nil, 'OVERLAY')
-	self.Leader:SetSize(16,16)
-	self.Leader:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 0)
-
 	if unit == 'target' then
 		--// Quest Mob Icon
 		self.QuestIcon = Overlay:CreateTexture(nil, "OVERLAY")
@@ -753,6 +749,23 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.PhaseIcon:SetDesaturated( true )
 		self.PhaseIcon:SetBlendMode( "ADD" )
 	end
+
+	if unit == 'player' or unit == 'party' then
+		--// LFD Role Icon
+		self.LFDRole = Overlay:CreateTexture(nil, "OVERLAY")
+		self.LFDRole:SetSize(18,18)
+		self.LFDRole:SetPoint("CENTER", Overlay, "TOPLEFT", 1, 0)
+
+		--// Ready Check icon
+		self.ReadyCheck = Overlay:CreateTexture(nil, "OVERLAY")
+		self.ReadyCheck:SetSize(14, 14)
+		self.ReadyCheck:SetPoint("CENTER", Overlay, "BOTTOM", 0, 0)
+	end
+
+	--// Leader Icon
+	self.Leader = Overlay:CreateTexture(nil, 'OVERLAY')
+	self.Leader:SetSize(16,16)
+	self.Leader:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 0)
 
 	--// Raid Icon (Skull, Cross, Square ...)
 	self.RaidIcon = Overlay:CreateTexture(nil, 'OVERLAY')
@@ -777,18 +790,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.PvP:SetTexCoord(0.07, 0.58, 0.06, 0.57)
 	else
 		self.PvP:SetTexCoord(0.05, 0.605, 0.015, 0.57)
-	end
-
-	if unit == 'player' or unit == 'party' then
-		--// LFD Role Icon
-		self.LFDRole = Overlay:CreateTexture(nil, "OVERLAY")
-		self.LFDRole:SetSize(18,18)
-		self.LFDRole:SetPoint("CENTER", Overlay, "TOPLEFT", 1, 0)
-
-		--// Ready Check icon
-		self.ReadyCheck = Overlay:CreateTexture(nil, "OVERLAY")
-		self.ReadyCheck:SetSize(14, 14)
-		self.ReadyCheck:SetPoint("CENTER", Overlay, "BOTTOM", 0, 0)
 	end
 
 
