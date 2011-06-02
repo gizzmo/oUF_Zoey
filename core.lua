@@ -579,7 +579,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			local width = (self:GetWidth() / 6) - ((6 - 1) / 6)
 
 			for i = 1, 6 do
-				local rune  = CreateFrame('StatusBar', '$parentRune'..i, self.Runes)
+				local rune = CreateFrame('StatusBar', '$parentRune'..i, self.Runes)
 				rune:SetStatusBarTexture(config.bars.texture)
 				rune:SetSize(width, self.Runes:GetHeight())
 				rune:SetFrameLevel(4)
@@ -590,7 +590,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 					rune:SetPoint('LEFT', self.Runes[i-1], 'RIGHT', 1, 0)
 				end
 
-				rune.bg = self:CreateTexture(nil, 'BACKGROUND')
+				rune.bg = rune:CreateTexture(nil, 'BACKGROUND')
 				rune.bg:SetTexture(config.bars.texture)
 				rune.bg:SetAllPoints(rune)
 				rune.bg.multiplier = 0.3
@@ -617,7 +617,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			local width = (self:GetWidth() / 3) - ((3 - 1) / 3)
 
 			for i = 1, 3 do
-				local power = self:CreateTexture(nil, 'ARTWORK')
+				local power = self.HolyPower:CreateTexture(nil, 'ARTWORK')
 				power:SetTexture(config.bars.texture)
 				power:SetSize(width, self.HolyPower:GetHeight())
 
@@ -627,7 +627,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 					power:SetPoint("LEFT", self.HolyPower[i-1], "RIGHT", 1, 0)
 				end
 
-				power.bg = self:CreateTexture(nil, 'BACKGROUND')
+				power.bg = power:CreateTexture(nil, 'BACKGROUND')
 				power.bg:SetTexture(config.bars.texture)
 				power.bg:SetAllPoints(power)
 
@@ -659,7 +659,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			local width = (self:GetWidth() / 3) - ((3 - 1) / 3)
 
 			for i = 1, 3 do
-				local shard = self:CreateTexture(nil, 'ARTWORK')
+				local shard = self.SoulShards:CreateTexture(nil, 'ARTWORK')
 				shard:SetTexture(config.bars.texture)
 				shard:SetSize(width, self.SoulShards:GetHeight())
 
@@ -669,7 +669,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 					shard:SetPoint("LEFT", self.SoulShards[i-1], "RIGHT", 1, 0)
 				end
 
-				shard.bg = self:CreateTexture(nil, 'BACKGROUND')
+				shard.bg = shard:CreateTexture(nil, 'BACKGROUND')
 				shard.bg:SetTexture(config.bars.texture)
 				shard.bg:SetAllPoints(shard)
 
