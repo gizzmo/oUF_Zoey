@@ -549,10 +549,10 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				point.bg:SetAllPoints(point)
 
 				-- // Color
-				local r,g,b,mu = 232/255, 214/255, 12/255, 0.4
+				local r,g,b = 232/255, 214/255, 12/255
 
 				point:SetVertexColor(r,g,b)
-				point.bg:SetVertexColor(r * mu, g * mu, b * mu)
+				point.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
 
 				self.CPoints[i] = point
 			end
@@ -565,10 +565,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 		end
 	end
-
-
-
-
 
 
 	--//----------------------------
@@ -647,7 +643,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				rune.bg = rune:CreateTexture(nil, 'BACKGROUND')
 				rune.bg:SetTexture(config.bars.texture)
 				rune.bg:SetAllPoints(rune)
-				rune.bg.multiplier = 0.3
+				rune.bg.multiplier = 0.4
 
 				self.Runes[i] = rune
 			end
@@ -686,10 +682,10 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				power.bg:SetAllPoints(power)
 
 				-- // Color
-				local r,g,b,mu = 230/255, 242/255, 84/255, 0.4
+				local r,g,b = 230/255, 242/255, 84/255
 
 				power:SetVertexColor(r,g,b)
-				power.bg:SetVertexColor(r * mu, g * mu, b * mu)
+				power.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
 
 				self.HolyPower[i] = power
 			end
@@ -728,10 +724,10 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				shard.bg:SetAllPoints(shard)
 
 				-- // Color
-				local r,g,b,mu = 209/255, 61/255, 189/255, 0.4
+				local r,g,b = 209/255, 61/255, 189/255
 
 				shard:SetVertexColor(r,g,b)
-				shard.bg:SetVertexColor(r * mu, g * mu, b * mu)
+				shard.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
 
 				self.SoulShards[i] = shard
 			end
@@ -1201,5 +1197,6 @@ oUF:Factory(function(self)
 
 
 end)
+
 --//----------------------------
 --// THE END
