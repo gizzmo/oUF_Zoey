@@ -1083,7 +1083,7 @@ oUF:Factory(function(self)
 	):SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -304)
 
 	--// Party Targets
-	self:SpawnHeader(nil, nil, 'raid,party',
+	self:SpawnHeader(nil, nil, 'party',
 		'showParty', true,
 		'yOffset', 107,
 		'oUF-initialConfigFunction', [[
@@ -1095,7 +1095,7 @@ oUF:Factory(function(self)
 
 	--// Party Pets
 	self:SetActiveStyle('ZoeyThin')
-	self:SpawnHeader(nil, nil, 'raid,party',
+	self:SpawnHeader(nil, nil, 'party',
 		'showParty', true,
 		'yOffset', 127,
 		'oUF-initialConfigFunction', [[
