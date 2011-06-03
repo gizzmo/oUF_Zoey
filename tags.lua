@@ -39,7 +39,7 @@ local function SeparateDigits(number, thousands, decimal)
 		t[#t+1] = math.floor(int / 1000^segments)
 		for i = segments-1, 0, -1 do
 			t[#t+1] = thousands
-			t[#t+1] = ("%03d"):format(math.floor(int / 1000^i) % 1000)
+			t[#t+1] = ('%03d'):format(math.floor(int / 1000^i) % 1000)
 		end
 	end
 	if rest ~= 0 then
@@ -170,39 +170,39 @@ end
 oUF.TagEvents['Zoey:Power'] = 'UNIT_POWER UNIT_MAXPOWER'
 
 
-oUF.Tags["leadericon"] = function(unit)
+oUF.Tags['leadericon'] = function(unit)
 	if (UnitInParty(unit) or UnitInRaid(unit)) and UnitIsPartyLeader(unit) then
 		return [[|TInterface\GroupFrame\UI-Group-LeaderIcon:0|t]]
 	elseif UnitInRaid(unit) and UnitIsRaidOfficer(unit) then
 		return [[|TInterface\GroupFrame\UI-Group-AssistantIcon:0|t]]
 	end
 end
-oUF.TagEvents["leadericon"] = "PARTY_LEADER_CHANGED PARTY_MEMBERS_CHANGED"
-oUF.UnitlessTagEvents["PARTY_LEADER_CHANGED"] = true
-oUF.UnitlessTagEvents["PARTY_MEMBERS_CHANGED"] = true
+oUF.TagEvents['leadericon'] = 'PARTY_LEADER_CHANGED PARTY_MEMBERS_CHANGED'
+oUF.UnitlessTagEvents['PARTY_LEADER_CHANGED'] = true
+oUF.UnitlessTagEvents['PARTY_MEMBERS_CHANGED'] = true
 
 
-oUF.Tags["mastericon"] = function(unit)
+oUF.Tags['mastericon'] = function(unit)
 	local method, pid, rid = GetLootMethod()
-	if method == "master" then
+	if method == 'master' then
 		local munit
 		if pid then
 			if pid == 0 then
-				munit = "player"
+				munit = 'player'
 			else
-				munit = "party" .. pid
+				munit = 'party' .. pid
 			end
 		elseif rid then
-			munit = "raid" .. rid
+			munit = 'raid' .. rid
 		end
 		if munit and UnitIsUnit(munit, unit) then
 			return [[|TInterface\GroupFrame\UI-Group-MasterLooter:0:0:0:2|t]]
 		end
 	end
 end
-oUF.TagEvents["mastericon"] = "PARTY_LOOT_METHOD_CHANGED PARTY_MEMBERS_CHANGED"
-oUF.UnitlessTagEvents["PARTY_LOOT_METHOD_CHANGED"] = true
-oUF.UnitlessTagEvents["PARTY_MEMBERS_CHANGED"] = true
+oUF.TagEvents['mastericon'] = 'PARTY_LOOT_METHOD_CHANGED PARTY_MEMBERS_CHANGED'
+oUF.UnitlessTagEvents['PARTY_LOOT_METHOD_CHANGED'] = true
+oUF.UnitlessTagEvents['PARTY_MEMBERS_CHANGED'] = true
 
 
 --[[
@@ -341,12 +341,12 @@ end
 oUF.Tags['Zoey:DruidDots'] = function(unit)
 -- ====================================================================
 
-	if UnitClass("player") == 'Druid' then
+	if UnitClass('player') == 'Druid' then
 
 		local strings = {}
 
 		for i, name in pairs({'Regrowth', 'Rejuvenation', 'Lifebloom'}) do
-			local name, _, _, count, _, _, expirationTime, _, _, _, id = UnitBuff(unit, name, nil, "PLAYER")
+			local name, _, _, count, _, _, expirationTime, _, _, _, id = UnitBuff(unit, name, nil, 'PLAYER')
 
 
 			strings[i] = ('[%s%s]'):format(FormatDuration(expirationTime),'')
