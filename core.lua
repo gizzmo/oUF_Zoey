@@ -71,7 +71,7 @@ local config = {
 				Disease = {.55, .15, 0, 1},
 				Curse = {5, 0, 5, 1},
 				Enrage = {1, .55, 0, 1},
-				["nil"] = {1, 0, 0, 1}
+				['nil'] = {1, 0, 0, 1}
 			},
 		}
 	}
@@ -178,8 +178,8 @@ local function UpdateBorderColor(self, r,g,b)
 
 	if self.unit then
 		local c = UnitClassification(self.unit)
-		if c == "worldboss" then c = "boss" end
-		if c == "rareelite" then c = "rare" end
+		if c == 'worldboss' then c = 'boss' end
+		if c == 'rareelite' then c = 'rare' end
 		t = config.border.colors[c]
 	end
 
@@ -229,12 +229,12 @@ local function HighlightUpdate(self)
 	if not self.Highlight then
 
 		--// Create the highlight
-		local hl = CreateFrame("Frame", '$parentHighlight', self)
+		local hl = CreateFrame('Frame', '$parentHighlight', self)
 		hl:SetAllPoints(self)
 		hl:SetFrameLevel(15)
 		hl:Hide()
 
-		local tex = hl:CreateTexture(nil, "OVERLAY")
+		local tex = hl:CreateTexture(nil, 'OVERLAY')
 		tex:SetTexture(config.highlight.texture)
 		tex:SetBlendMode('ADD')
 		tex:SetAlpha(0.5)
@@ -254,8 +254,8 @@ end
 local function HighlightEnable(self)
 
 	--// Mouseover Events
-	self:HookScript("OnEnter", HighlightUpdate)
-	self:HookScript("OnLeave", HighlightUpdate)
+	self:HookScript('OnEnter', HighlightUpdate)
+	self:HookScript('OnLeave', HighlightUpdate)
 
 	--// Target Events
 	self:RegisterEvent('PLAYER_TARGET_CHANGED', HighlightUpdate)
@@ -367,7 +367,7 @@ local function CastbarOnUpdate(self, elapsed)
 		end
 
 		if self.Lag then
-			self.Lag:SetFormattedText("%d ms", self.latency * 1000)
+			self.Lag:SetFormattedText('%d ms', self.latency * 1000)
 		end
 
 		if(self.Time) then
@@ -381,7 +381,7 @@ local function CastbarOnUpdate(self, elapsed)
 		self.duration = duration
 		self:SetValue(duration)
 		if(self.Spark) then
-			self.Spark:SetPoint("CENTER", self, "LEFT", (duration / self.max) * self:GetWidth(), 0)
+			self.Spark:SetPoint('CENTER', self, 'LEFT', (duration / self.max) * self:GetWidth(), 0)
 		end
 	else
 		self.Spark:Hide()
@@ -421,11 +421,11 @@ local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
 	local is_friend = UnitIsFriend('player', unit)
 	local color_type  = config.aura.rules[rule][is_friend and 'friend' or 'enemy']
 
-	if color_type == "type" then
+	if color_type == 'type' then
 		local color = config.aura.colors.type[tostring(dtype)]
-		if not color then color = config.aura.colors.type["nil"] end
+		if not color then color = config.aura.colors.type['nil'] end
 		border:SetVertexColor(unpack(color))
-	elseif color_type == "caster" then
+	elseif color_type == 'caster' then
 		border:SetVertexColor(unpack(config.aura.colors.caster[who]))
 	else
 		-- Unknown color type just set it to red,
@@ -451,11 +451,11 @@ local function StyleHeader(self)
 
 	--// Rightclick Menu
 	self.menu = Menu
-	self:RegisterForClicks("AnyUp")
+	self:RegisterForClicks('AnyUp')
 
 	--// Hover Effects
-	self:SetScript("OnEnter", OnEnter)
-	self:SetScript("OnLeave", OnLeave)
+	self:SetScript('OnEnter', OnEnter)
+	self:SetScript('OnLeave', OnLeave)
 
 	--// Range Fading
 	self.SpellRange = {
@@ -464,7 +464,7 @@ local function StyleHeader(self)
 	}
 
 	--// Background
-	local Background = self:CreateTexture(nil, "BACKGROUND")
+	local Background = self:CreateTexture(nil, 'BACKGROUND')
 	Background:SetAllPoints(self)
 	Background:SetTexture(0, 0, 0, 1)
 
@@ -506,7 +506,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Portrait
 	--//----------------------------
 	if unit == 'target' or unit == 'party' then
-		self.Portrait = CreateFrame("PlayerModel", '$parentPortrait', self)
+		self.Portrait = CreateFrame('PlayerModel', '$parentPortrait', self)
 		self.Portrait:SetHeight(config.bars.portrait.height)
 		self.Portrait:SetPoint('TOP', 0, -offset)
 		self.Portrait:SetPoint('LEFT', 1,0)
@@ -539,9 +539,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				point:SetSize(width, self.CPoints:GetHeight())
 
 				if (i == 1) then
-					point:SetPoint("LEFT", self.CPoints, 0, 0)
+					point:SetPoint('LEFT', self.CPoints, 0, 0)
 				else
-					point:SetPoint("LEFT", self.CPoints[i-1], "RIGHT", 1, 0)
+					point:SetPoint('LEFT', self.CPoints[i-1], 'RIGHT', 1, 0)
 				end
 
 				point.bg = self.CPoints:CreateTexture(nil, 'BACKGROUND')
@@ -570,7 +570,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--//----------------------------
 	--// Health Bar
 	--//----------------------------
-	self.Health = CreateFrame("StatusBar", '$parentHealthBar', self)
+	self.Health = CreateFrame('StatusBar', '$parentHealthBar', self)
 	self.Health:SetStatusBarTexture(config.bars.texture)
 	self.Health:SetHeight(config.bars.health.height)
 	self.Health:SetPoint('TOP', 0, -offset)
@@ -580,7 +580,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self.Health.PostUpdate = PostUpdateHealth
 
 	--// Healthbar Background
-	self.Health.bg = self:CreateTexture(nil, "BACKGROUND")
+	self.Health.bg = self:CreateTexture(nil, 'BACKGROUND')
 	self.Health.bg:SetTexture(config.bars.texture)
 	self.Health.bg:SetAllPoints(self.Health)
 
@@ -601,7 +601,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self.Power.PostUpdate = PostUpdatePower
 
 	--// Powerbar Background
-	self.Power.bg = self:CreateTexture(nil, "BACKGROUND")
+	self.Power.bg = self:CreateTexture(nil, 'BACKGROUND')
 	self.Power.bg:SetTexture(config.bars.texture)
 	self.Power.bg:SetAllPoints(self.Power)
 
@@ -672,9 +672,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				power:SetSize(width, self.HolyPower:GetHeight())
 
 				if (i == 1) then
-					power:SetPoint("LEFT", self.HolyPower, 0, 0)
+					power:SetPoint('LEFT', self.HolyPower, 0, 0)
 				else
-					power:SetPoint("LEFT", self.HolyPower[i-1], "RIGHT", 1, 0)
+					power:SetPoint('LEFT', self.HolyPower[i-1], 'RIGHT', 1, 0)
 				end
 
 				power.bg = power:CreateTexture(nil, 'BACKGROUND')
@@ -714,9 +714,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				shard:SetSize(width, self.SoulShards:GetHeight())
 
 				if (i == 1) then
-					shard:SetPoint("LEFT", self.SoulShards, 0, 0)
+					shard:SetPoint('LEFT', self.SoulShards, 0, 0)
 				else
-					shard:SetPoint("LEFT", self.SoulShards[i-1], "RIGHT", 1, 0)
+					shard:SetPoint('LEFT', self.SoulShards[i-1], 'RIGHT', 1, 0)
 				end
 
 				shard.bg = shard:CreateTexture(nil, 'BACKGROUND')
@@ -751,9 +751,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self:Tag(Name, '[Zoey:Name]')
 
 	if unit == 'target' or unit == 'party' then
-		Name:SetPoint("TOPLEFT", 3, -2)
+		Name:SetPoint('TOPLEFT', 3, -2)
 	else
-		Name:SetPoint("LEFT", self, "TOPLEFT", 3, 1)
+		Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
 	end
 
 	--// Health Text
@@ -772,9 +772,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--//----------------------------
 	if unit == 'player' then
 		--// Resting Icon
-		self.Resting = Overlay:CreateTexture(nil, "OVERLAY")
+		self.Resting = Overlay:CreateTexture(nil, 'OVERLAY')
 		self.Resting:SetSize(25,25)
-		self.Resting:SetPoint("LEFT", Overlay, "BOTTOMLEFT", 0, -2)
+		self.Resting:SetPoint('LEFT', Overlay, 'BOTTOMLEFT', 0, -2)
 
 		--// Combat Icon
 		self.Combat = Overlay:CreateTexture(nil, 'OVERLAY')
@@ -784,32 +784,32 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 	if unit == 'target' then
 		--// Quest Mob Icon
-		self.QuestIcon = Overlay:CreateTexture(nil, "OVERLAY")
+		self.QuestIcon = Overlay:CreateTexture(nil, 'OVERLAY')
 		self.QuestIcon:SetSize(32,32)
-		self.QuestIcon:SetPoint("CENTER", Overlay, "LEFT", 0, 0)
+		self.QuestIcon:SetPoint('CENTER', Overlay, 'LEFT', 0, 0)
 	end
 
-	if unit == "party" or unit == "target" or unit == "focus" then
+	if unit == 'party' or unit == 'target' or unit == 'focus' then
 		--// Phase Icon
-		self.PhaseIcon = Overlay:CreateTexture( nil, "OVERLAY" )
-		self.PhaseIcon:SetPoint( "CENTER", self, 0, 0)
+		self.PhaseIcon = Overlay:CreateTexture( nil, 'OVERLAY' )
+		self.PhaseIcon:SetPoint( 'CENTER', self, 0, 0)
 		self.PhaseIcon:SetSize( 50, 50 )
 		self.PhaseIcon:SetTexture( [[Interface\Icons\Spell_Frost_Stun]] )
 		self.PhaseIcon:SetTexCoord( 0.06, 0.94, 0.06 , 0.94 )
 		self.PhaseIcon:SetDesaturated( true )
-		self.PhaseIcon:SetBlendMode( "ADD" )
+		self.PhaseIcon:SetBlendMode( 'ADD' )
 	end
 
 	if unit == 'player' or unit == 'party' then
 		--// LFD Role Icon
-		self.LFDRole = Overlay:CreateTexture(nil, "OVERLAY")
+		self.LFDRole = Overlay:CreateTexture(nil, 'OVERLAY')
 		self.LFDRole:SetSize(18,18)
-		self.LFDRole:SetPoint("CENTER", Overlay, "TOPLEFT", 1, 0)
+		self.LFDRole:SetPoint('CENTER', Overlay, 'TOPLEFT', 1, 0)
 
 		--// Ready Check icon
-		self.ReadyCheck = Overlay:CreateTexture(nil, "OVERLAY")
+		self.ReadyCheck = Overlay:CreateTexture(nil, 'OVERLAY')
 		self.ReadyCheck:SetSize(14, 14)
-		self.ReadyCheck:SetPoint("CENTER", Overlay, "BOTTOM", 0, 0)
+		self.ReadyCheck:SetPoint('CENTER', Overlay, 'BOTTOM', 0, 0)
 	end
 
 	--// Leader Icon
@@ -829,14 +829,14 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	end
 
 	--// PvP Icon -- The img used isnt perfect, it sucks
-	self.PvP = Overlay:CreateTexture(nil, "OVERLAY")
+	self.PvP = Overlay:CreateTexture(nil, 'OVERLAY')
 	self.PvP:SetSize(21,21)
-	self.PvP:SetPoint("CENTER", Overlay, 'LEFT', 0,0)
+	self.PvP:SetPoint('CENTER', Overlay, 'LEFT', 0,0)
 
 	local faction = UnitFactionGroup(unit)
-	if faction == "Horde" then
+	if faction == 'Horde' then
 		self.PvP:SetTexCoord(0.08, 0.58, 0.045, 0.545)
-	elseif faction == "Alliance" then
+	elseif faction == 'Alliance' then
 		self.PvP:SetTexCoord(0.07, 0.58, 0.06, 0.57)
 	else
 		self.PvP:SetTexCoord(0.05, 0.605, 0.015, 0.57)
@@ -849,22 +849,22 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	if unit == 'player' or unit == 'target' then
 
 		--// The Castbar its self
-		self.Castbar = CreateFrame("StatusBar", "$parentCastbar", self)
+		self.Castbar = CreateFrame('StatusBar', '$parentCastbar', self)
 		self.Castbar:SetStatusBarTexture(config.bars.texture)
 		self.Castbar:SetStatusBarColor(unpack(config.bars.cast.colors.normal))
 
 		self.Castbar:SetSize(unpack(config.bars.cast.size))
 
-		if unit == "player" then
+		if unit == 'player' then
 			self.Castbar:SetPoint('TOP', oUF.units.player, 'BOTTOM', 0, -76)
-		elseif unit == "target" then
+		elseif unit == 'target' then
 			self.Castbar:SetPoint('BOTTOM', oUF.units.target, 'TOP', 0, 76)
 		end
 
 		--// Add a spark
-		self.Castbar.Spark = self.Castbar:CreateTexture(nil, "OVERLAY")
+		self.Castbar.Spark = self.Castbar:CreateTexture(nil, 'OVERLAY')
 		self.Castbar.Spark:SetHeight(self.Castbar:GetHeight()*2.5)
-		self.Castbar.Spark:SetBlendMode("ADD")
+		self.Castbar.Spark:SetBlendMode('ADD')
 		self.Castbar.Spark:SetAlpha(0.5)
 
 		--// Player only Latency
@@ -872,20 +872,20 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			self.Castbar.SafeZone = CreateFrame('Frame', nil, self.Castbar)
 			self.Castbar.SafeZone:SetFrameLevel(self.Castbar:GetFrameLevel() - 1)
 
-			self.Castbar.SafeZone.tex = self.Castbar.SafeZone:CreateTexture(nil,"OVERLAY")
+			self.Castbar.SafeZone.tex = self.Castbar.SafeZone:CreateTexture(nil,'OVERLAY')
 			self.Castbar.SafeZone.tex:SetTexture(config.bars.texture)
 			self.Castbar.SafeZone.tex:SetVertexColor(unpack(config.bars.cast.colors.safezone))
 			self.Castbar.SafeZone.tex:SetAllPoints(self.Castbar.SafeZone)
 
 			self.Castbar.Lag = CreateText(self.Castbar, 10)
-			self.Castbar.Lag:SetPoint("TOPRIGHT", self.Castbar, 'BOTTOMRIGHT', 0, -7)
+			self.Castbar.Lag:SetPoint('TOPRIGHT', self.Castbar, 'BOTTOMRIGHT', 0, -7)
 
-			self:RegisterEvent("UNIT_SPELLCAST_SENT", OnCastSent)
+			self:RegisterEvent('UNIT_SPELLCAST_SENT', OnCastSent)
 		end
 
 		--// Castbar Texts
 		self.Castbar.Text = CreateText(self.Castbar, 20)
-		self.Castbar.Text:SetPoint("LEFT", 10, 0)
+		self.Castbar.Text:SetPoint('LEFT', 10, 0)
 
 		self.Castbar.Time = CreateText(self.Castbar, 16)
 		self.Castbar.Time:SetPoint('RIGHT', -10, 0)
@@ -907,7 +907,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		CastbarFrame:SetFrameLevel(self.Castbar:GetFrameLevel()-1)
 
 		--// Castbar Frame Background
-		local CastbarFrameBackground = CastbarFrame:CreateTexture(nil, "BACKGROUND")
+		local CastbarFrameBackground = CastbarFrame:CreateTexture(nil, 'BACKGROUND')
 		CastbarFrameBackground:SetAllPoints(CastbarFrame)
 		CastbarFrameBackground:SetTexture(config.bars.texture)
 		CastbarFrameBackground:SetVertexColor(25/255, 25/255, 25/255)
@@ -1014,7 +1014,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 	--//----------------------------
 	--// Health Bar
 	--//----------------------------
-	self.Health = CreateFrame("StatusBar", '$parentHealthBar', self)
+	self.Health = CreateFrame('StatusBar', '$parentHealthBar', self)
 	self.Health:SetStatusBarTexture(config.bars.texture)
 	self.Health:SetHeight(17)
 	self.Health:SetPoint('TOP', 0, -1)
@@ -1024,7 +1024,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 	self.Health.PostUpdate = PostUpdateHealth
 
 	--// Healthbar Background
-	self.Health.bg = self:CreateTexture(nil, "BACKGROUND")
+	self.Health.bg = self:CreateTexture(nil, 'BACKGROUND')
 	self.Health.bg:SetTexture(config.bars.texture)
 	self.Health.bg:SetAllPoints(self.Health)
 
@@ -1042,7 +1042,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 	--// Name Text
 	local Name = CreateText(Overlay, 16)
 	self:Tag(Name, '[Zoey:Name]')
-	Name:SetPoint("LEFT", self, "TOPLEFT", 3, 1)
+	Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
 
 
 end)
@@ -1120,11 +1120,11 @@ oUF:Factory(function(self)
 
 	--// Skin the Mirror Timers
 	for i = 1, 3 do
-		local barname = "MirrorTimer" .. i
+		local barname = 'MirrorTimer' .. i
 		local bar = _G[ barname ]
 
 		for i, region in pairs( { bar:GetRegions() } ) do
-			if region.GetTexture and region:GetTexture() == "SolidTexture" then
+			if region.GetTexture and region:GetTexture() == 'SolidTexture' then
 				region:Hide()
 			end
 		end
@@ -1145,15 +1145,15 @@ oUF:Factory(function(self)
 		bar.bg:SetTexture( config.bars.texture )
 		bar.bg:SetVertexColor( 0.2, 0.2, 0.2, 1 )
 
-		bar.text = _G[ barname .. "Text" ]
+		bar.text = _G[ barname .. 'Text' ]
 		bar.text:ClearAllPoints()
-		bar.text:SetPoint( "LEFT", bar, 4, 1 )
+		bar.text:SetPoint( 'LEFT', bar, 4, 1 )
 		bar.text:SetFont( config.font, 16)
 
-		bar.border = _G[ barname .. "Border" ]
+		bar.border = _G[ barname .. 'Border' ]
 		bar.border:Hide()
 
-		bar.bar = _G[ barname .. "StatusBar" ]
+		bar.bar = _G[ barname .. 'StatusBar' ]
 		bar.bar:SetAllPoints( bar )
 		bar.bar:SetStatusBarTexture( config.bars.texture )
 		bar.bar:SetAlpha( 0.8 )
