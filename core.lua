@@ -677,7 +677,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 					power:SetPoint('LEFT', self.HolyPower[i-1], 'RIGHT', 1, 0)
 				end
 
-				power.bg = power:CreateTexture(nil, 'BACKGROUND')
+				power.bg = self.HolyPower:CreateTexture(nil, 'BACKGROUND')
 				power.bg:SetTexture(config.bars.texture)
 				power.bg:SetAllPoints(power)
 
@@ -719,7 +719,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 					shard:SetPoint('LEFT', self.SoulShards[i-1], 'RIGHT', 1, 0)
 				end
 
-				shard.bg = shard:CreateTexture(nil, 'BACKGROUND')
+				shard.bg = self.SoulShards:CreateTexture(nil, 'BACKGROUND')
 				shard.bg:SetTexture(config.bars.texture)
 				shard.bg:SetAllPoints(shard)
 
