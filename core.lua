@@ -645,6 +645,15 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		end
 
 		--//----------------------------
+		--// Druid Eclipse
+		--//----------------------------
+		if playerClass == 'DRUID' then
+
+
+
+		end
+
+		--//----------------------------
 		--// Paladin Holy Power
 		--//----------------------------
 		if playerClass == 'PALADIN' then
@@ -683,6 +692,15 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 			-- // Offset the next class bar? Or Frame Height
 			offset = offset + self.HolyPower:GetHeight() + 1
+
+		end
+
+		--//----------------------------
+		--// Shaman Totems
+		--//----------------------------
+		if playerClass == 'SHAMAN' then
+
+
 
 		end
 
