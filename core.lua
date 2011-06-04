@@ -27,7 +27,7 @@ local config = {
 		texture = [[Interface\AddOns\oUF_Zoey\media\Armory]],
 
 		portrait = {
-			height = 59
+			height = 53
 		},
 		health = {
 			height = 31,
@@ -1069,27 +1069,28 @@ end)
 oUF:Factory(function(self)
 
 	local u = self.units
+	local offset = 15
 
 	--// Player
 	self:Spawn('Player'				):SetPoint('TOP', UIParent, 'CENTER', 0, -302)
 
 	--// Player Pet
-	self:Spawn('Pet'				):SetPoint('TOPRIGHT', u.player, 'TOPLEFT', -15, 0)
-	self:Spawn('PetTarget'			):SetPoint('BOTTOM', u.pet, 'TOP', 0, 16)
-	self:Spawn('PetTargetTarget'	):SetPoint('BOTTOM', u.pettarget, 'TOP', 0, 15)
+	self:Spawn('Pet'				):SetPoint('TOPRIGHT', u.player, 'TOPLEFT', -offset, 0)
+	self:Spawn('PetTarget'			):SetPoint('BOTTOM', u.pet, 'TOP', 0, offset)
+	self:Spawn('PetTargetTarget'	):SetPoint('BOTTOM', u.pettarget, 'TOP', 0, offset)
 
 	--// Targets
-	self:Spawn('Target'				):SetPoint('BOTTOM', u.player, 'TOP', 0, 18)
-	self:Spawn('TargetTarget'		):SetPoint('TOPLEFT', u.target, 'TOPRIGHT', 15, 0)
-	self:Spawn('TargetTargetTarget'	):SetPoint('BOTTOMLEFT', u.target, 'BOTTOMRIGHT', 15, 0)
+	self:Spawn('Target'				):SetPoint('BOTTOM', u.player, 'TOP', 0, offset)
+	self:Spawn('TargetTarget'		):SetPoint('TOPLEFT', u.target, 'TOPRIGHT', offset, 0)
+	self:Spawn('TargetTargetTarget'	):SetPoint('TOP', u.targettarget, 'BOTTOM', 0, -offset)
 
 	--// Focus
-	self:Spawn('Focus'				):SetPoint('TOPRIGHT', u.pet, 'TOPLEFT', -15, 0)
-	self:Spawn('FocusTarget'		):SetPoint('BOTTOM', u.focus, 'TOP', 0, 16)
-	self:Spawn('FocusTargetTarget'	):SetPoint('BOTTOM', u.focustarget, 'TOP', 0, 15)
+	self:Spawn('Focus'				):SetPoint('TOPRIGHT', u.pet, 'TOPLEFT', -offset, 0)
+	self:Spawn('FocusTarget'		):SetPoint('BOTTOM', u.focus, 'TOP', 0, offset)
+	self:Spawn('FocusTargetTarget'	):SetPoint('BOTTOM', u.focustarget, 'TOP', 0, offset)
 
 	--// Party
-	self:SpawnHeader(nil, nil, 'raid,party',
+	self:SpawnHeader('oUF_ZoeyParty', nil, 'party',
 		-- http://wowprogramming.com/docs/secure_template/Group_Headers
 		-- Set header attributes
 		'showParty', true,
@@ -1099,7 +1100,7 @@ oUF:Factory(function(self)
 	):SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -304)
 
 	--// Party Targets
-	self:SpawnHeader(nil, nil, 'party',
+	self:SpawnHeader('oUF_ZoeyPartyTargets', nil, 'party',
 		'showParty', true,
 		'yOffset', 107,
 		'oUF-initialConfigFunction', [[
@@ -1109,9 +1110,13 @@ oUF:Factory(function(self)
 		'point', 'BOTTOM'
 	):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 'BOTTOMRIGHT', 15, 0)
 
-	--// Party Pets
+
+	--// Activate the Thin Style -- Raids and Party Pets use this style
 	self:SetActiveStyle('ZoeyThin')
-	self:SpawnHeader(nil, nil, 'party',
+
+
+	--// Party Pets
+	self:SpawnHeader('oUF_ZoeyPartyPets', nil, 'party',
 		'showParty', true,
 		'yOffset', 127,
 		'oUF-initialConfigFunction', [[
