@@ -622,7 +622,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				local rune = CreateFrame('StatusBar', '$parentRune'..i, self.Runes)
 				rune:SetStatusBarTexture(config.bars.texture)
 				rune:SetSize(width, self.Runes:GetHeight())
-				rune:SetFrameLevel(4)
 
 				if i == 1 then
 					rune:SetPoint('LEFT')
@@ -637,6 +636,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 				self.Runes[i] = rune
 			end
+
+			self.Runes[6]:SetPoint('RIGHT')
 
 			-- // Offset the next class bar? Or Frame Height
 			offset = offset + self.Runes:GetHeight() + 1
