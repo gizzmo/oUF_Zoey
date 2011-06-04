@@ -701,7 +701,7 @@ ns.CustomAuraFilters = {
 	end,
 	target = function( self, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID )
 		local v = auras[ spellID ]
-		-- print( 'CustomAuraFilter', unit, caster, name, spellID, v )
+
 		if v and filters[ v ] then
 			return filters[ v ]( self, unit, caster )
 		else

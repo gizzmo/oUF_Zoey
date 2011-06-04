@@ -1110,10 +1110,8 @@ oUF:Factory(function(self)
 		'point', 'BOTTOM'
 	):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 'BOTTOMRIGHT', 15, 0)
 
-
 	--// Activate the Thin Style -- Raids and Party Pets use this style
 	self:SetActiveStyle('ZoeyThin')
-
 
 	--// Party Pets
 	self:SpawnHeader('oUF_ZoeyPartyPets', nil, 'party',
