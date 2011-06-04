@@ -1132,6 +1132,7 @@ oUF:Factory(function(self)
 			'showRaid', true,
 			'yOffset', 7,
 			'groupFilter', tostring(i),
+			'sortDir', 'DESC',
 			'point', 'BOTTOM'
 		)
 
