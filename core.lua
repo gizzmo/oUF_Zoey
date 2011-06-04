@@ -1097,7 +1097,7 @@ oUF:Factory(function(self)
 		'yOffset', 47,
 
 		'point', 'BOTTOM'
-	):SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -304)
+	):SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -341)
 
 	--// Party Targets
 	self:SpawnHeader('oUF_ZoeyPartyTargets', nil, 'party',
@@ -1123,6 +1123,27 @@ oUF:Factory(function(self)
 
 		'point', 'BOTTOM'
 	):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 0, -31)
+
+
+	--// Raid Groups
+	local Raid = {}
+	for i = 1, 5 do
+		local group = oUF:SpawnHeader('oUF_ZoeyRaidGroup'..i, nil, 'raid',
+			'showRaid', true,
+			'yOffset', 12,
+			'groupFilter', tostring(i),
+
+			'point', 'BOTTOM'
+		)
+
+		if i == 1 then
+			group:SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -341)
+		else
+			group:SetPoint('BOTTOM', Raid[i - 1], 'TOP', 0, 15)
+		end
+
+		Raid[i] = group
+	end
 
 end)
 
