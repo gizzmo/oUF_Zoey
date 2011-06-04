@@ -493,14 +493,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self:SetWidth(139)
 	end
 
-	--// Overlay Frame -- used to attach icons/text to
-	local Overlay = CreateFrame('Frame', '$parentOverlay', self)
-	Overlay:SetAllPoints(self)
-	Overlay:SetFrameLevel(10)
-
 	--// Bar Position
 	local offset = 1
-
 
 	--//----------------------------
 	--// Portrait
@@ -515,7 +509,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		--// offset the health bar's position
 		offset = offset + self.Portrait:GetHeight() +1
 	end
-
 
 	--//----------------------------
 	--// Combo Points
@@ -566,7 +559,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		end
 	end
 
-
 	--//----------------------------
 	--// Health Bar
 	--//----------------------------
@@ -587,7 +579,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// offset the power bar's position
 	offset = offset + self.Health:GetHeight() + 1
 
-
 	--//----------------------------
 	--// Power Bar
 	--//----------------------------
@@ -607,7 +598,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 	--// Offset the class bars' position
 	offset = offset + self.Power:GetHeight() + 1
-
 
 	--//----------------------------
 	--// Class Bars
@@ -742,6 +732,10 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Frame Height
 	self:SetHeight(offset)
 
+	--// Overlay Frame -- used to attach icons/text to
+	local Overlay = CreateFrame('Frame', '$parentOverlay', self)
+	Overlay:SetAllPoints(self)
+	Overlay:SetFrameLevel(10)
 
 	--//----------------------------
 	--// Texts
@@ -765,7 +759,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	local PowerText = CreateText(Overlay, 12)
 	self:Tag(PowerText, '[Zoey:Power]')
 	PowerText:SetPoint('RIGHT', self.Power, -1, -1)
-
 
 	--//----------------------------
 	--// Icons
@@ -842,7 +835,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.PvP:SetTexCoord(0.05, 0.605, 0.015, 0.57)
 	end
 
-
 	--//----------------------------
 	--// Cast Bars
 	--//----------------------------
@@ -915,7 +907,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		--// Castbar Frame Border
 		CreateBorder(CastbarFrame)
 	end
-
 
 	--//----------------------------
 	--// Auras
@@ -1006,10 +997,11 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 	--// StyleHeader
 	StyleHeader(self)
 
-	--// Overlay Frame -- used to attach icons/text to
-	local Overlay = CreateFrame('Frame', '$parentOverlay', self)
-	Overlay:SetAllPoints(self)
-	Overlay:SetFrameLevel(10)
+	-- // Frame Width. Height will be set after bars are created
+	self:SetWidth(139)
+
+	--// Bar Position
+	local offset = 1
 
 	--//----------------------------
 	--// Health Bar
@@ -1017,7 +1009,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 	self.Health = CreateFrame('StatusBar', '$parentHealthBar', self)
 	self.Health:SetStatusBarTexture(config.bars.texture)
 	self.Health:SetHeight(17)
-	self.Health:SetPoint('TOP', 0, -1)
+	self.Health:SetPoint('TOP', 0, -offset)
 	self.Health:SetPoint('LEFT', 1,0)
 	self.Health:SetPoint('RIGHT',-1,0)
 	self.Health.frequentUpdates = .2
@@ -1028,13 +1020,18 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 	self.Health.bg:SetTexture(config.bars.texture)
 	self.Health.bg:SetAllPoints(self.Health)
 
+	--// Offset the Power bar, or this is the frame height
+	offset = offset + self.Health:GetHeight() + 1
 
 	--//----------------------------
 	--// Frame Size
 	--//----------------------------
-	self:SetHeight(self.Health:GetHeight() + 2)
-	self:SetWidth(139)
+	self:SetHeight(offset)
 
+	--// Overlay Frame -- used to attach icons/text to
+	local Overlay = CreateFrame('Frame', '$parentOverlay', self)
+	Overlay:SetAllPoints(self)
+	Overlay:SetFrameLevel(10)
 
 	--//----------------------------
 	--// Texts
