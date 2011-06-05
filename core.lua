@@ -894,13 +894,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 		--// Player only Latency
 		if unit == 'player' then
-			self.Castbar.SafeZone = CreateFrame('Frame', nil, self.Castbar)
-			self.Castbar.SafeZone:SetFrameLevel(self.Castbar:GetFrameLevel() - 1)
-
-			self.Castbar.SafeZone.tex = self.Castbar.SafeZone:CreateTexture(nil,'OVERLAY')
-			self.Castbar.SafeZone.tex:SetTexture(config.bars.texture)
-			self.Castbar.SafeZone.tex:SetVertexColor(unpack(config.bars.cast.colors.safezone))
-			self.Castbar.SafeZone.tex:SetAllPoints(self.Castbar.SafeZone)
+			self.Castbar.SafeZone = self.Castbar:CreateTexture(nil,'OVERLAY')
+			self.Castbar.SafeZone:SetTexture(config.bars.texture)
+			self.Castbar.SafeZone:SetVertexColor(unpack(config.bars.cast.colors.safezone))
 
 			self.Castbar.Lag = CreateText(self.Castbar, 10)
 			self.Castbar.Lag:SetPoint('TOPRIGHT', self.Castbar, 'BOTTOMRIGHT', 0, -7)
