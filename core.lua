@@ -632,7 +632,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			self.Runes:SetPoint('LEFT', 1,0)
 			self.Runes:SetPoint('RIGHT', -1,0)
 
-			local width = (self:GetWidth() / 6) - ((6 - 1) / 6)
+			local width = ((self:GetWidth() - 2) / 6) - ((6 - 1) / 6)
 
 			for i = 1, 6 do
 				local rune = CreateFrame('StatusBar', '$parentRune'..i, self.Runes)
@@ -652,8 +652,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 				self.Runes[i] = rune
 			end
-
-			self.Runes[6]:SetPoint('RIGHT')
 
 			-- // Offset the next class bar? Or Frame Height
 			offset = offset + self.Runes:GetHeight() + 1
@@ -680,7 +678,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			self.HolyPower:SetPoint('LEFT', 1,0)
 			self.HolyPower:SetPoint('RIGHT', -1,0)
 
-			local width = (self:GetWidth() / 3) - ((3 - 1) / 3)
+			local width = ((self:GetWidth() - 2) / 3) - ((3 - 1) / 3)
 
 			for i = 1, 3 do
 				local power = self.HolyPower:CreateTexture(nil, 'ARTWORK')
@@ -731,7 +729,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			self.SoulShards:SetPoint('LEFT', 1,0)
 			self.SoulShards:SetPoint('RIGHT', -1,0)
 
-			local width = (self:GetWidth() / 3) - ((3 - 1) / 3)
+			local width = ((self:GetWidth() - 2) / 3) - ((3 - 1) / 3)
 
 			for i = 1, 3 do
 				local shard = self.SoulShards:CreateTexture(nil, 'ARTWORK')
