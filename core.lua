@@ -116,6 +116,7 @@ end
 --// Border Creation
 local function CreateBorder(self)
 
+	--// Want to change the Color? Use SetBorderColor
 	local size = config.border.size
 	local padding = config.border.padding
 	local texture = config.border.texture
@@ -139,21 +140,21 @@ local function CreateBorder(self)
 	t[2].name = 'Top'
 	t[2]:SetPoint('TOPLEFT', size - padding, padding)
 	t[2]:SetPoint('TOPRIGHT', -size + padding, padding)
-	t[2]:SetTexCoord(0.25, 9.2808, 0.375, 9.2808, 0.25, 0, 0.375, 0)
+	t[2]:SetTexCoord(0.25, 1, 0.375, 1, 0.25, 0, 0.375, 0)
 
 	t[3].name = 'Top Right'
 	t[3]:SetPoint('TOPRIGHT', padding, padding)
-	t[3]:SetTexCoord(0.625, 0, 0.625, 1, 0.75, 0, 0.75, 1)
+	t[3]:SetTexCoord(0.625, 0, 0.625, 1,0.75, 0, 0.75, 1)
 
 	t[4].name = 'Left'
 	t[4]:SetPoint('TOPLEFT', -padding, -size + padding)
 	t[4]:SetPoint('BOTTOMLEFT', -padding, size - padding)
-	t[4]:SetTexCoord(0, 0, 0, 1.948, 0.125, 0, 0.125, 1.948)
+	t[4]:SetTexCoord(0, 0, 0, 1, 0.125, 0, 0.125, 1)
 
 	t[5].name = 'Right'
 	t[5]:SetPoint('TOPRIGHT', padding, -size + padding)
 	t[5]:SetPoint('BOTTOMRIGHT', padding, size - padding)
-	t[5]:SetTexCoord(0.125, 0, 0.125, 1.948, 0.25, 0, 0.25, 1.948)
+	t[5]:SetTexCoord(0.125, 0, 0.125, 1, 0.25, 0, 0.25, 1)
 
 	t[6].name = 'Bottom Left'
 	t[6]:SetPoint('BOTTOMLEFT', -padding, -padding)
@@ -162,7 +163,7 @@ local function CreateBorder(self)
 	t[7].name = 'Bottom'
 	t[7]:SetPoint('BOTTOMLEFT', size - padding, -padding)
 	t[7]:SetPoint('BOTTOMRIGHT', -size + padding, -padding)
-	t[7]:SetTexCoord(0.375, 9.2808, 0.5, 9.2808, 0.375, 0, 0.5, 0)
+	t[7]:SetTexCoord(0.375, 1, 0.5, 1, 0.375, 0, 0.5, 0)
 
 	t[8].name = 'Bottom Right'
 	t[8]:SetPoint('BOTTOMRIGHT', padding, -padding)
@@ -171,7 +172,29 @@ local function CreateBorder(self)
 	self.BorderTextures = t
 end
 
-local function UpdateBorderColor(self, r,g,b)
+local function SetBorderColor(self, r,g,b)
+	if not self.BorderTextures then return end
+
+	if type(r) == 'table' then
+		if r.r then
+			r, g, b = r.r, r.g, r.b
+		else
+			r, g, b = unpack(r)
+		end
+	end
+
+	--// If no color set, then grab the default
+	if not r or not g or not b then
+		r,g,b = unpack(config.border.colors.normal)
+	end
+
+	--// Set the border color
+	for _, tex in ipairs(self.BorderTextures) do
+		tex:SetVertexColor(r, g, b)
+	end
+end
+
+local function UpdateUnitBorderColor(self, r,g,b)
 	if not self.BorderTextures then return end
 
 	local t
@@ -183,16 +206,9 @@ local function UpdateBorderColor(self, r,g,b)
 		t = config.border.colors[c]
 	end
 
-	if t then
-		r, g, b = t[1], t[2], t[3]
-	end
+	--// Threat coloring could also be put in here
 
-	if b then
-		--// Set the border color
-		for _, tex in ipairs(self.BorderTextures) do
-			tex:SetVertexColor(r, g, b)
-		end
-	end
+	SetBorderColor(self, t)
 end
 
 
@@ -470,8 +486,8 @@ local function StyleHeader(self)
 
 	--// Border
 	CreateBorder(self)
-	self:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', UpdateBorderColor)
-	table.insert(self.__elements, UpdateBorderColor)
+	self:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', UpdateUnitBorderColor)
+	table.insert(self.__elements, UpdateUnitBorderColor)
 
 	--// Highlight
 	HighlightEnable(self)
