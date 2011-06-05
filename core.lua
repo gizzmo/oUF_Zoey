@@ -40,7 +40,7 @@ local config = {
 			height = 5
 		},
 		cast = {
-			size = {585, 38},
+			size = {591, 38},
 			colors = {
 				normal = {89/255, 89/255, 89/255},
 				success = {20/255, 208/255, 0/255},
@@ -339,73 +339,73 @@ local function OnCastSent(self, event, unit, spell, rank, target)
 	self.Castbar.sentTime = GetTime()
 end
 
-local function PostCastStart(self, unit, name, rank, castid)
-	self:SetAlpha(1.0)
-	self.Spark:Show()
-	self:SetStatusBarColor(unpack(config.bars.cast.colors.normal))
+local function PostCastStart(Castbar, unit, name, rank, castid)
+	Castbar:SetAlpha(1.0)
+	Castbar.Spark:Show()
+	Castbar:SetStatusBarColor(unpack(config.bars.cast.colors.normal))
 
-	if (self.sentTime) then
-		self.latency = GetTime() - self.sentTime
+	if (Castbar.sentTime) then
+		Castbar.latency = GetTime() - Castbar.sentTime
 	else
-		self.latency = 0
+		Castbar.latency = 0
 	end
 end
 
-local function PostCastStop(self, unit, name, rank, castid)
-	self:SetValue(self.max)
-	self:Show()
+local function PostCastStop(Castbar, unit, name, rank, castid)
+	Castbar:SetValue(Castbar.max)
+	Castbar:Show()
 end
 
-local function PostChannelStop(self, unit, name, rank, castid)
-	self:SetValue(0)
-	self:Show()
+local function PostChannelStop(Castbar, unit, name, rank, castid)
+	Castbar:SetValue(0)
+	Castbar:Show()
 end
 
-local function PostCastFailed(self, unit, name, rank, castid)
-	self:SetValue(self.max)
-	self:Show()
+local function PostCastFailed(Castbar, unit, name, rank, castid)
+	Castbar:SetValue(Castbar.max)
+	Castbar:Show()
 end
 
-local function CastbarOnUpdate(self, elapsed)
-	if self.casting or self.channeling then
-		local duration = self.casting and self.duration + elapsed or self.duration - elapsed
-		local remaining = (duration - (duration *2) + self.max) -- incase i want to use it :p
-		if (self.casting and duration >= self.max) or (self.channeling and duration <= 0) then
-			self.casting = nil
-			self.channeling = nil
+local function CastbarOnUpdate(Castbar, elapsed)
+	if Castbar.casting or Castbar.channeling then
+		local duration = Castbar.casting and Castbar.duration + elapsed or Castbar.duration - elapsed
+		local remaining = (duration - (duration *2) + Castbar.max) -- incase i want to use it :p
+		if (Castbar.casting and duration >= Castbar.max) or (Castbar.channeling and duration <= 0) then
+			Castbar.casting = nil
+			Castbar.channeling = nil
 			return
 		end
 
-		if self.SafeZone then
-			local width = self:GetWidth() * self.latency / self.max
+		if Castbar.SafeZone then
+			local width = Castbar:GetWidth() * Castbar.latency / Castbar.max
 			if (width < 1) then width = 1 end
-			self.SafeZone:SetWidth(width);
+			Castbar.SafeZone:SetWidth(width);
 		end
 
-		if self.Lag then
-			self.Lag:SetFormattedText('%d ms', self.latency * 1000)
+		if Castbar.Lag then
+			Castbar.Lag:SetFormattedText('%d ms', Castbar.latency * 1000)
 		end
 
-		if(self.Time) then
-			if self.delay ~= 0 then
-				self.Time:SetFormattedText('|cffff0000-%.1f|r %.1f | %.1f', self.delay, duration, self.max)
+		if(Castbar.Time) then
+			if Castbar.delay ~= 0 then
+				Castbar.Time:SetFormattedText('|cffff0000-%.1f|r %.1f | %.1f', Castbar.delay, duration, Castbar.max)
 			else
-				self.Time:SetFormattedText('%.1f | %.1f', duration, self.max)
+				Castbar.Time:SetFormattedText('%.1f | %.1f', duration, Castbar.max)
 			end
 		end
 
-		self.duration = duration
-		self:SetValue(duration)
-		if(self.Spark) then
-			self.Spark:SetPoint('CENTER', self, 'LEFT', (duration / self.max) * self:GetWidth(), 0)
+		Castbar.duration = duration
+		Castbar:SetValue(duration)
+		if(Castbar.Spark) then
+			Castbar.Spark:SetPoint('CENTER', Castbar, 'LEFT', (duration / Castbar.max) * Castbar:GetWidth(), 0)
 		end
 	else
-		self.Spark:Hide()
-		local alpha = self:GetAlpha() - 0.08
+		Castbar.Spark:Hide()
+		local alpha = Castbar:GetAlpha() - 0.08
 		if alpha > 0 then
-			self:SetAlpha(alpha)
+			Castbar:SetAlpha(alpha)
 		else
-			self:Hide()
+			Castbar:Hide()
 		end
 
 	end
