@@ -170,6 +170,19 @@ end
 oUF.TagEvents['Zoey:Power'] = 'UNIT_POWER UNIT_MAXPOWER'
 
 
+oUF.Tags['Zoey:Exp'] = function(unit)
+	local cur, max, rest = UnitXP(unit), UnitXPMax(unit), GetXPExhaustion(unit)
+
+	if IsMouseOver(unit) then
+		if rest then
+			return ('%s/%s (%s%%) R: %s%%'):format(Short(cur), Short(max), Percent(cur,max), Percent(rest,max))
+		else
+			return ('%s/%s (%s%%)'):format(Short(cur), Short(max), Percent(cur,max))
+		end
+	end
+end
+oUF.TagEvents['Zoey:Exp'] = 'PLAYER_XP_UPDATE'
+
 oUF.Tags['leadericon'] = function(unit)
 	if (UnitInParty(unit) or UnitInRaid(unit)) and UnitIsPartyLeader(unit) then
 		return [[|TInterface\GroupFrame\UI-Group-LeaderIcon:0|t]]

@@ -39,6 +39,9 @@ local config = {
 		class = {
 			height = 5
 		},
+		experience = {
+			height = 5
+		},
 		cast = {
 			size = {591, 38},
 			colors = {
@@ -331,6 +334,16 @@ local function PostUpdatePower(Power, unit, min, max)
 	end
 end
 
+
+--// Experience bar functions
+local function PostUpdateExperience(Experience, unit)
+	if not Experience:IsShown() then
+		local parent = Experience:GetParent()
+		local ExperienceHeight = Experience:GetHeight()
+
+		parent:SetHeight(parent:GetHeight() - ExperienceHeight - 1)
+	end
+end
 
 
 --// Castbar Functions
@@ -762,6 +775,40 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 	end
 
+	--//----------------------------
+	--// Experience Bar
+	--//----------------------------
+	if unit == 'player' and IsAddOnLoaded('oUF_Experience') and UnitLevel(unit) ~= MAX_PLAYER_LEVEL then
+		self.Experience = CreateFrame('Statusbar', '$parentExperience', self)
+		self.Experience:SetStatusBarTexture(config.bars.texture)
+		self.Experience:SetHeight(config.bars.experience.height)
+		self.Experience:SetPoint('TOP', 0, -offset)
+		self.Experience:SetPoint('LEFT', 1,0)
+		self.Experience:SetPoint('RIGHT',-1,0)
+
+		self.Experience.Rested = CreateFrame('StatusBar', '$parentRested', self.Experience)
+		self.Experience.Rested:SetStatusBarTexture(config.bars.texture)
+		self.Experience.Rested:SetAllPoints(self.Experience)
+
+		self.Experience.bg = self.Experience.Rested:CreateTexture(nil, 'BACKGROUND')
+		self.Experience.bg:SetAllPoints(self.Experience)
+		self.Experience.bg:SetTexture(config.bars.texture)
+
+		self.Experience.PostUpdate = PostUpdateExperience
+
+		--// Main Color
+		local r,g,b = 200/255, 0, 200/255
+
+		self.Experience:SetStatusBarColor(r,g,b)
+		self.Experience.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
+
+		--// Rested Color
+		self.Experience.Rested:SetStatusBarColor(60/255, 60/255, 255/255)
+
+		offset = offset + self.Experience:GetHeight() + 1
+	end
+
+
 	--// Frame Height
 	self:SetHeight(offset)
 
@@ -792,6 +839,13 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	local PowerText = CreateText(Overlay, 12)
 	self:Tag(PowerText, '[Zoey:Power]')
 	PowerText:SetPoint('RIGHT', self.Power, -1, -1)
+
+	--// Experience Text
+	if self.Experience then
+		local Experience = CreateText(Overlay, 10)
+		self:Tag(Experience, '[Zoey:Exp]')
+		Experience:SetPoint('CENTER', self.Experience, 'BOTTOM', 0, -5)
+	end
 
 	--//----------------------------
 	--// Icons
