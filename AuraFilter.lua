@@ -331,6 +331,9 @@ if playerClass == 'HUNTER' then addAuras({
 	[2974]  = 2, -- Wing Clip
 	[19386] = 2, -- Wyvern Sting
 
+	[5118]  = 4, -- Aspect of the Cheetah
+	[13159] = 4, -- Aspect of the Pack
+
 	[82921] = 4, -- Bombardment
 	[51755] = 4, -- Camouflage
 	[15571] = 4, -- Dazed <== Aspect of the Cheetah
