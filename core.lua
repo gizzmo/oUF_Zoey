@@ -588,7 +588,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self.Health.PostUpdate = PostUpdateHealth
 
 	--// Healthbar Background
-	self.Health.bg = self:CreateTexture(nil, 'BACKGROUND')
+	self.Health.bg = self.Health:CreateTexture(nil, 'BACKGROUND')
 	self.Health.bg:SetTexture(config.bars.texture)
 	self.Health.bg:SetAllPoints(self.Health)
 
@@ -608,7 +608,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self.Power.PostUpdate = PostUpdatePower
 
 	--// Powerbar Background
-	self.Power.bg = self:CreateTexture(nil, 'BACKGROUND')
+	self.Power.bg = self.Power:CreateTexture(nil, 'BACKGROUND')
 	self.Power.bg:SetTexture(config.bars.texture)
 	self.Power.bg:SetAllPoints(self.Power)
 
@@ -1045,7 +1045,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 	self.Health.PostUpdate = PostUpdateHealth
 
 	--// Healthbar Background
-	self.Health.bg = self:CreateTexture(nil, 'BACKGROUND')
+	self.Health.bg = self.Health:CreateTexture(nil, 'BACKGROUND')
 	self.Health.bg:SetTexture(config.bars.texture)
 	self.Health.bg:SetAllPoints(self.Health)
 
