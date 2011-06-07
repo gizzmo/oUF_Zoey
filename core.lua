@@ -357,7 +357,7 @@ local function PostCastStart(Castbar, unit, name, rank, castid)
 	Castbar.Spark:Show()
 	Castbar:SetStatusBarColor(unpack(config.bars.cast.colors.normal))
 
-	if (Castbar.sentTime) then
+	if Castbar.sentTime then
 		Castbar.latency = GetTime() - Castbar.sentTime
 	else
 		Castbar.latency = 0
@@ -391,7 +391,7 @@ local function CastbarOnUpdate(Castbar, elapsed)
 
 		if Castbar.SafeZone then
 			local width = Castbar:GetWidth() * Castbar.latency / Castbar.max
-			if (width < 1) then width = 1 end
+			if width < 1 then width = 1 end
 			Castbar.SafeZone:SetWidth(width);
 		end
 
@@ -399,7 +399,7 @@ local function CastbarOnUpdate(Castbar, elapsed)
 			Castbar.Lag:SetFormattedText('%d ms', Castbar.latency * 1000)
 		end
 
-		if(Castbar.Time) then
+		if Castbar.Time then
 			if Castbar.delay ~= 0 then
 				Castbar.Time:SetFormattedText('|cffff0000-%.1f|r %.1f | %.1f', Castbar.delay, duration, Castbar.max)
 			else
@@ -409,7 +409,7 @@ local function CastbarOnUpdate(Castbar, elapsed)
 
 		Castbar.duration = duration
 		Castbar:SetValue(duration)
-		if(Castbar.Spark) then
+		if Castbar.Spark then
 			Castbar.Spark:SetPoint('CENTER', Castbar, 'LEFT', (duration / Castbar.max) * Castbar:GetWidth(), 0)
 		end
 	else
@@ -560,7 +560,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				point:SetTexture(config.bars.texture)
 				point:SetSize(width, self.CPoints:GetHeight())
 
-				if (i == 1) then
+				if i == 1 then
 					point:SetPoint('LEFT', self.CPoints, 0, 0)
 				else
 					point:SetPoint('LEFT', self.CPoints[i-1], 'RIGHT', 1, 0)
@@ -698,7 +698,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				power:SetTexture(config.bars.texture)
 				power:SetSize(width, self.HolyPower:GetHeight())
 
-				if (i == 1) then
+				if i == 1 then
 					power:SetPoint('LEFT', self.HolyPower, 0, 0)
 				else
 					power:SetPoint('LEFT', self.HolyPower[i-1], 'RIGHT', 1, 0)
@@ -749,7 +749,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				shard:SetTexture(config.bars.texture)
 				shard:SetSize(width, self.SoulShards:GetHeight())
 
-				if (i == 1) then
+				if i == 1 then
 					shard:SetPoint('LEFT', self.SoulShards, 0, 0)
 				else
 					shard:SetPoint('LEFT', self.SoulShards[i-1], 'RIGHT', 1, 0)
@@ -1262,7 +1262,7 @@ oUF:Factory(function(self)
 		bar:SetParent( UIParent )
 		bar:SetSize(285, 28)
 
-		if (i > 1) then
+		if i > 1 then
 			local p1, p2, p3, p4, p5 = bar:GetPoint()
 			bar:SetPoint(p1, p2, p3, p4, p5 - 15)
 		end
