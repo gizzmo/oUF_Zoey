@@ -1196,11 +1196,27 @@ oUF:Factory(function(self)
 
 
 	--//----------------------------
-	--// Raid Groups
+	--// Raid Size 6 - 10
 	--//----------------------------
+	self:SetActiveStyle('Zoey')
+	self:SpawnHeader('oUF_ZoeyRaid10', nil,
+		'custom [@raid11,exists] hide; [@raid6,exists] show; hide',
+
+		'showRaid', true,
+		'yOffset', 21,
+
+		'point', 'BOTTOM'
+	):SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -341)
+
+	--//----------------------------
+	--// Raid Size 11 - 25
+	--//----------------------------
+	self:SetActiveStyle('ZoeyThin')
 	local Raid = {}
 	for i = 1, 5 do
-		local group = oUF:SpawnHeader('oUF_ZoeyRaidGroup'..i, nil, 'raid',
+		local group = self:SpawnHeader('oUF_ZoeyRaid25_g'..i, nil,
+			'custom [@raid26,exists] hide; [@raid11,exists] show; hide ',
+
 			'showRaid', true,
 			'yOffset', 7.1,
 			'groupFilter', tostring(i),
