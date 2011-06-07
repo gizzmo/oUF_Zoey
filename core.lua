@@ -1124,6 +1124,10 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 	self:Tag(Name, '[Zoey:Name]')
 	Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
 
+	--// Status Text
+	local StatusText = CreateText(Overlay, 16)
+	self:Tag(StatusText, '[Zoey:Status]')
+	StatusText:SetPoint('RIGHT', self.Health, -1, 0)
 
 end)
 

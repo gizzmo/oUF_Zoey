@@ -113,7 +113,7 @@ end
 oUF.TagEvents['Zoey:Name'] = 'UNIT_NAME_UPDATE UNIT_LEVEL PLAYER_LEVEL_UP'
 
 
-oUF.Tags['Zoey:Health'] = function(unit)
+oUF.Tags['Zoey:Status'] = function(unit)
 	--// Status
 	if not UnitIsConnected(unit)  then
 		return 'Offline'
@@ -124,6 +124,13 @@ oUF.Tags['Zoey:Health'] = function(unit)
 	elseif UnitIsGhost(unit) then
 		return 'Ghost'
 	end
+end
+oUF.TagEvents['Zoey:Status'] = 'UNIT_HEALTH UNIT_CONNECTION'
+
+
+oUF.Tags['Zoey:Health'] = function(unit)
+	local status = _TAGS['Zoey:Status'](unit)
+	if status then return status end
 
 	local cur = UnitHealth(unit)
 	local max = UnitHealthMax(unit)
@@ -145,7 +152,7 @@ oUF.Tags['Zoey:Health'] = function(unit)
 		end
 	end
 end
-oUF.TagEvents['Zoey:Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
+oUF.TagEvents['Zoey:Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
 
 
 oUF.Tags['Zoey:Power'] = function(unit)
