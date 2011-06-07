@@ -1153,17 +1153,19 @@ oUF:Factory(function(self)
 	self:Spawn('FocusTarget'		):SetPoint('BOTTOM', u.focus, 'TOP', 0, offset)
 	self:Spawn('FocusTargetTarget'	):SetPoint('BOTTOM', u.focustarget, 'TOP', 0, offset)
 
+	--//----------------------------
 	--// Party
+	--//----------------------------
 	self:SpawnHeader('oUF_ZoeyParty', nil, 'party',
-		-- http://wowprogramming.com/docs/secure_template/Group_Headers
-		-- Set header attributes
 		'showParty', true,
 		'yOffset', 47,
 
 		'point', 'BOTTOM'
 	):SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -341)
 
+	--//----------------------------
 	--// Party Targets
+	--//----------------------------
 	self:SpawnHeader('oUF_ZoeyPartyTargets', nil, 'party',
 		'showParty', true,
 		'yOffset', 107,
@@ -1174,10 +1176,10 @@ oUF:Factory(function(self)
 		'point', 'BOTTOM'
 	):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 'BOTTOMRIGHT', 15, 0)
 
-	--// Activate the Thin Style -- Raids and Party Pets use this style
-	self:SetActiveStyle('ZoeyThin')
-
+	--//----------------------------
 	--// Party Pets
+	--//----------------------------
+	self:SetActiveStyle('ZoeyThin')
 	self:SpawnHeader('oUF_ZoeyPartyPets', nil, 'party',
 		'showParty', true,
 		'yOffset', 127,
@@ -1189,7 +1191,9 @@ oUF:Factory(function(self)
 	):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 0, -31)
 
 
+	--//----------------------------
 	--// Raid Groups
+	--//----------------------------
 	local Raid = {}
 	for i = 1, 5 do
 		local group = oUF:SpawnHeader('oUF_ZoeyRaidGroup'..i, nil, 'raid',
