@@ -382,7 +382,7 @@ end
 local function CastbarOnUpdate(Castbar, elapsed)
 	if Castbar.casting or Castbar.channeling then
 		local duration = Castbar.casting and Castbar.duration + elapsed or Castbar.duration - elapsed
-		local remaining = (duration - (duration *2) + Castbar.max) -- incase i want to use it :p
+		local remaining = (duration * -1 + Castbar.max) -- incase i want to use it :p
 		if (Castbar.casting and duration >= Castbar.max) or (Castbar.channeling and duration <= 0) then
 			Castbar.casting = nil
 			Castbar.channeling = nil
