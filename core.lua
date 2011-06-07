@@ -1202,7 +1202,7 @@ oUF:Factory(function(self)
 	for i = 1, 5 do
 		local group = oUF:SpawnHeader('oUF_ZoeyRaidGroup'..i, nil, 'raid',
 			'showRaid', true,
-			'yOffset', 7,
+			'yOffset', 7.1,
 			'groupFilter', tostring(i),
 			'sortDir', 'DESC',
 			'point', 'BOTTOM'
