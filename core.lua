@@ -1207,6 +1207,12 @@ oUF:Factory(function(self)
 		'point', 'BOTTOM'
 	):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 0, -31)
 
+end)
+
+--//----------------------------
+--// SPAWN RAIDS
+--//----------------------------
+oUF:Factory(function(self)
 
 	--//----------------------------
 	--// Raid Size 6 - 10
