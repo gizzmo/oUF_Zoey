@@ -46,7 +46,11 @@ local config = {
 			}
 		},
 		experience = {
-			height = 5
+			height = 5,
+			colors = {
+				main = {176/255, 72/255, 176/255},
+				rested = {80/255, 80/255, 222/255}
+			}
 		},
 		cast = {
 			size = {591, 38},
@@ -803,13 +807,13 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Experience.PostUpdate = PostUpdateExperience
 
 		--// Main Color
-		local r,g,b = 200/255, 0, 200/255
+		local r,g,b = unpack(config.bars.experience.colors.main)
 
 		self.Experience:SetStatusBarColor(r,g,b)
 		self.Experience.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
 
 		--// Rested Color
-		self.Experience.Rested:SetStatusBarColor(60/255, 60/255, 255/255)
+		self.Experience.Rested:SetStatusBarColor(unpack(config.bars.experience.colors.rested))
 
 		offset = offset + self.Experience:GetHeight() + 1
 	end
