@@ -73,45 +73,41 @@ local function Percent(cur, max)
 end
 
 oUF.Tags['Zoey:Name'] = function(unit)
-	local name = UnitName(unit) or ''
+	local name = UnitName(unit)
 	local _, class = UnitClass(unit)
 	local classColor = Hex(UnitIsPlayer(unit) and _COLORS.class[class] or {1,1,1})
 
+	-- Show Player on mouse over, all others just show
+	if name and ((unit == 'player' and IsMouseOver(unit)) or unit ~= 'player') then
+		return classColor..name
+	end
+end
+oUF.TagEvents['Zoey:Name'] = 'UNIT_NAME_UPDATE'
+
+
+oUF.Tags['Zoey:Level'] = function(unit)
 	local level = UnitLevel(unit)
 	local levelColor = Hex(GetQuestDifficultyColor(level <= 0 and 99 or level))
 
-	-- only show
 	if UnitIsPlayer(unit) then
 		if level == MAX_PLAYER_LEVEL then
 			level = ''
 		end
 	else
 		if level == 1 or level == MAX_PLAYER_LEVEL then
-			level = ''
+			level = nil
 		elseif level < 1 then
 			level = '??'
 		end
 	end
 
-	-- trim the length of name to fit the frame
-	local length = 13
-
-	if unit == 'player' or unit == 'target' then
-		length = 30
-	end
-
-	if strlen(name..' '..level) > length then
-		local len = length - strlen(' '..level)
-		name = strsub(name,1,len)..'…'
-	end
-
 	-- Show Player on mouse over, all others just show
-	if (unit == 'player' and IsMouseOver(unit)) or unit ~= 'player' then
-		return ('%s %s'):format(classColor..name, levelColor..level)
+	if level and ((unit == 'player' and IsMouseOver(unit)) or unit ~= 'player') then
+		return levelColor..level
 	end
-end
-oUF.TagEvents['Zoey:Name'] = 'UNIT_NAME_UPDATE UNIT_LEVEL PLAYER_LEVEL_UP'
 
+end
+oUF.TagEvents['Zoey:Level'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
 
 oUF.Tags['Zoey:Status'] = function(unit)
 	--// Status

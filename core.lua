@@ -832,12 +832,14 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--//----------------------------
 	--// Name Text
 	local Name = CreateText(Overlay, 16)
-	self:Tag(Name, '[Zoey:Name]')
+	self:Tag(Name, '[Zoey:Level< ][Zoey:Name]')
 
 	if unit == 'target' or unit == 'party' then
 		Name:SetPoint('TOPLEFT', 3, -2)
+		Name:SetPoint('TOPRIGHT', -3, -2)
 	else
 		Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
+		Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
 	end
 
 	--// Health Text
@@ -1131,8 +1133,9 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 	--//----------------------------
 	--// Name Text
 	local Name = CreateText(Overlay, 16)
-	self:Tag(Name, '[Zoey:Name]')
+	self:Tag(Name, '[Zoey:Level< ][Zoey:Name]')
 	Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
+	Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
 
 	--// Status Text
 	local StatusText = CreateText(Overlay, 16)
