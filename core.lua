@@ -37,7 +37,13 @@ local config = {
 			height = 5
 		},
 		class = {
-			height = 5
+			height = 5,
+			colors = {
+				combo = {
+					normal = {232/255, 214/255, 12/255},
+					last = {240/255, 60/255, 60/255},
+				}
+			}
 		},
 		experience = {
 			height = 5
@@ -571,7 +577,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				point.bg:SetAllPoints(point)
 
 				-- // Color
-				local r,g,b = 232/255, 214/255, 12/255
+				local r,g,b = unpack(config.bars.class.colors.combo.normal)
 
 				point:SetVertexColor(r,g,b)
 				point.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
@@ -580,7 +586,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			end
 
 			--// Last combo point should be red, but not the bg
-			self.CPoints[5]:SetVertexColor(240/255, 60/255, 60/255)
+			self.CPoints[5]:SetVertexColor(unpack(config.bars.class.colors.combo.last))
 
 			--// offset the health bar's position
 			offset = offset + self.CPoints:GetHeight() + 1
@@ -709,7 +715,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				power.bg:SetAllPoints(power)
 
 				-- // Color
-				local r,g,b = 230/255, 242/255, 84/255
+				local r,g,b = unpack(self.colors.power.HOLY_POWER)
 
 				power:SetVertexColor(r,g,b)
 				power.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
@@ -760,7 +766,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				shard.bg:SetAllPoints(shard)
 
 				-- // Color
-				local r,g,b = 209/255, 61/255, 189/255
+				local r,g,b = unpack(self.colors.power.SOUL_SHARDS)
 
 				shard:SetVertexColor(r,g,b)
 				shard.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
