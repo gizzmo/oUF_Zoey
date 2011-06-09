@@ -1394,7 +1394,8 @@ oUF:Factory(function(self)
 		bar.border:Hide()
 
 		bar.bar = _G[ barname .. 'StatusBar' ]
-		bar.bar:SetAllPoints( bar )
+		bar.bar:SetPoint('TOPLEFT', bar, 1, -1)
+		bar.bar:SetPoint('BOTTOMRIGHT', bar, -1, 1)
 		bar.bar:SetStatusBarTexture( config.bars.texture )
 		bar.bar:SetAlpha( 0.8 )
 	end
