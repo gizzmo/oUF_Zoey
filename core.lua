@@ -545,7 +545,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Portrait:SetPoint('LEFT', 1,0)
 		self.Portrait:SetPoint('RIGHT',-1,0)
 
-		--// offset the health bar's position
+		--// Up The Offset Value
 		offset = offset + self.Portrait:GetHeight() +1
 	end
 
@@ -592,7 +592,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			--// Last combo point should be red, but not the bg
 			self.CPoints[5]:SetVertexColor(unpack(config.bars.class.colors.combo.last))
 
-			--// offset the health bar's position
+			--// Up The Offset Value
 			offset = offset + self.CPoints:GetHeight() + 1
 
 		end
@@ -615,7 +615,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self.Health.bg:SetTexture(config.bars.texture)
 	self.Health.bg:SetAllPoints(self.Health)
 
-	--// offset the power bar's position
+	--// Up The Offset Value
 	offset = offset + self.Health:GetHeight() + 1
 
 	--//----------------------------
@@ -635,7 +635,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self.Power.bg:SetTexture(config.bars.texture)
 	self.Power.bg:SetAllPoints(self.Power)
 
-	--// Offset the class bars' position
+	--// Up The Offset Value
 	offset = offset + self.Power:GetHeight() + 1
 
 	--//----------------------------
@@ -676,7 +676,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				self.Runes[i] = rune
 			end
 
-			-- // Offset the next class bar? Or Frame Height
+			--// Up The Offset Value
 			offset = offset + self.Runes:GetHeight() + 1
 
 		end
@@ -727,7 +727,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				self.HolyPower[i] = power
 			end
 
-			-- // Offset the next class bar? Or Frame Height
+			--// Up The Offset Value
 			offset = offset + self.HolyPower:GetHeight() + 1
 
 		end
@@ -778,7 +778,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				self.SoulShards[i] = shard
 			end
 
-			-- // Offset the next class bar? Or Frame Height
+			--// Up The Offset Value
 			offset = offset + self.SoulShards:GetHeight() + 1
 
 		end
@@ -815,6 +815,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		--// Rested Color
 		self.Experience.Rested:SetStatusBarColor(unpack(config.bars.experience.colors.rested))
 
+		--// Up The Offset Value
 		offset = offset + self.Experience:GetHeight() + 1
 	end
 
@@ -1115,7 +1116,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 	self.Health.bg:SetTexture(config.bars.texture)
 	self.Health.bg:SetAllPoints(self.Health)
 
-	--// Offset the Power bar, or this is the frame height
+	--// Up The Offset Value
 	offset = offset + self.Health:GetHeight() + 1
 
 	--//----------------------------
