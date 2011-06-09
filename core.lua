@@ -1133,7 +1133,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 	--// Texts
 	--//----------------------------
 	--// Name Text
-	local Name = CreateText(Overlay, 16)
+	local Name = CreateText(Overlay, 12)
 	self:Tag(Name, '[Zoey:Level< ][Zoey:Name]')
 	Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
 	Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
