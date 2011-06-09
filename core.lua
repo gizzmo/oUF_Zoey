@@ -357,21 +357,10 @@ end
 
 
 --// Castbar Functions
-local function OnCastSent(self, event, unit, spell, rank, target)
-	if self.unit ~= unit then return end
-	self.Castbar.sentTime = GetTime()
-end
-
 local function PostCastStart(Castbar, unit, name, rank, castid)
 	Castbar:SetAlpha(1.0)
 	Castbar.Spark:Show()
 	Castbar:SetStatusBarColor(unpack(config.bars.cast.colors.normal))
-
-	if Castbar.sentTime then
-		Castbar.latency = GetTime() - Castbar.sentTime
-	else
-		Castbar.latency = 0
-	end
 end
 
 local function PostCastStop(Castbar, unit, name, rank, castid)
@@ -399,14 +388,16 @@ local function CastbarOnUpdate(Castbar, elapsed)
 			return
 		end
 
+		local latency = select(4, GetNetStats())
+
 		if Castbar.SafeZone then
-			local width = Castbar:GetWidth() * Castbar.latency / Castbar.max
+			local width = Castbar:GetWidth() * (latency / 1e3) / Castbar.max
 			if width < 1 then width = 1 end
-			Castbar.SafeZone:SetWidth(width);
+			Castbar.SafeZone:SetWidth(width)
 		end
 
 		if Castbar.Lag then
-			Castbar.Lag:SetFormattedText('%d ms', Castbar.latency * 1000)
+			Castbar.Lag:SetFormattedText('%d ms', latency)
 		end
 
 		if Castbar.Time then
@@ -967,8 +958,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 			self.Castbar.Lag = CreateText(self.Castbar, 10)
 			self.Castbar.Lag:SetPoint('TOPRIGHT', self.Castbar, 'BOTTOMRIGHT', 0, -7)
-
-			self:RegisterEvent('UNIT_SPELLCAST_SENT', OnCastSent)
 		end
 
 		--// Castbar Texts
