@@ -186,4 +186,33 @@ end
 oUF.TagEvents['Zoey:Exp'] = 'PLAYER_XP_UPDATE'
 
 
+oUF.Tags['Zoey:Guild'] = function(unit)
+	if IsInGuild(unit) then
+		local GuildName = GetGuildInfo(unit) or ''
+		local r,g,b = 255,255,255
 
+		if GuildName ~= '' then
+			if UnitIsInMyGuild(unit) then
+				r,g,b = 195,27,255
+			end
+
+			return ('|cff%02x%02x%02x%s'):format(r,g,b, '<'..GuildName..'>')
+		end
+	end
+end
+oUF.TagEvents['Zoey:Guild'] = ''
+
+
+oUF.Tags['Zoey:RealmIndicator'] = function(unit)
+	local _, realm = UnitName(unit)
+	local r,g,b = 225,225,225
+
+	if realm == nil then
+		if UnitIsInMyGuild(unit) then
+			r,g,b = 195,27,255
+		end
+
+		return ('|cff%02x%02x%02x%s'):format(r,g,b, '!')
+	end
+end
+oUF.TagEvents['Zoey:RealmIndicator'] = 'UNIT_NAME PARTY_MEMBERS_CHANGED'
