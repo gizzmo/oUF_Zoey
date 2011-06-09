@@ -91,7 +91,7 @@ oUF.Tags['Zoey:Level'] = function(unit)
 
 	if UnitIsPlayer(unit) then
 		if level == MAX_PLAYER_LEVEL then
-			level = ''
+			level = nil
 		end
 	else
 		if level == 1 or level == MAX_PLAYER_LEVEL then
@@ -152,7 +152,6 @@ oUF.TagEvents['Zoey:Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
 
 
 oUF.Tags['Zoey:Power'] = function(unit)
-
 	local cur = UnitPower(unit)
 	local max = UnitPowerMax(unit)
 
