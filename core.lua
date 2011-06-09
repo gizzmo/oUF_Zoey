@@ -1145,6 +1145,83 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 
 end)
 
+oUF:RegisterStyle('ZoeySquare', function(self, unit)
+
+	--// StyleHeader
+	StyleHeader(self)
+
+	-- // Frame Width. Height will be set after bars are created
+	self:SetWidth(53)
+
+	--// Bar Position
+	local offset = 1
+
+	--//----------------------------
+	--// Health Bar
+	--//----------------------------
+	self.Health = CreateFrame('StatusBar', '$parentHealthBar', self)
+	self.Health:SetStatusBarTexture(config.bars.texture)
+	self.Health:SetHeight(25)
+	self.Health:SetPoint('TOP', 0, -offset)
+	self.Health:SetPoint('LEFT', 1,0)
+	self.Health:SetPoint('RIGHT',-1,0)
+	self.Health.frequentUpdates = .2
+	self.Health.PostUpdate = PostUpdateHealth
+
+	--// Healthbar Background
+	self.Health.bg = self.Health:CreateTexture(nil, 'BACKGROUND')
+	self.Health.bg:SetTexture(config.bars.texture)
+	self.Health.bg:SetAllPoints(self.Health)
+
+	--// Up The Offset Value
+	offset = offset + self.Health:GetHeight() + 1
+
+	--//----------------------------
+	--// Power Bar
+	--//----------------------------
+	self.Power = CreateFrame('StatusBar', '$parentPowerBar', self)
+	self.Power:SetStatusBarTexture(config.bars.texture)
+	self.Power:SetHeight(config.bars.power.height)
+	self.Power:SetPoint('TOP', 0, -offset)
+	self.Power:SetPoint('LEFT', 1,0)
+	self.Power:SetPoint('RIGHT',-1,0)
+	self.Power.frequentUpdates = .2
+	self.Power.PostUpdate = PostUpdatePower
+
+	--// Powerbar Background
+	self.Power.bg = self.Power:CreateTexture(nil, 'BACKGROUND')
+	self.Power.bg:SetTexture(config.bars.texture)
+	self.Power.bg:SetAllPoints(self.Power)
+
+	--// Up The Offset Value
+	offset = offset + self.Power:GetHeight() + 1
+
+	--//----------------------------
+	--// Frame Size
+	--//----------------------------
+	self:SetHeight(offset)
+
+	--// Overlay Frame -- used to attach icons/text to
+	local Overlay = CreateFrame('Frame', '$parentOverlay', self)
+	Overlay:SetAllPoints(self)
+	Overlay:SetFrameLevel(10)
+
+	--//----------------------------
+	--// Texts
+	--//----------------------------
+	--// Name Text
+	local Name = CreateText(Overlay, 10, 'center')
+	self:Tag(Name, '[Zoey:Name]')
+	Name:SetPoint('TOPLEFT', self, 'TOPLEFT', 1, -1)
+	Name:SetPoint('TOPRIGHT', self, 'TOPRIGHT', -1, -1)
+
+	--// Status Text
+	local StatusText = CreateText(Overlay, 12, 'center')
+	self:Tag(StatusText, '[Zoey:Status]')
+	StatusText:SetPoint('CENTER',  self)
+
+end)
+
 --//----------------------------
 --// SPAWN UNITS
 --//----------------------------
@@ -1241,6 +1318,7 @@ oUF:Factory(function(self)
 			'yOffset', 7.1,
 			'groupFilter', tostring(i),
 			'sortDir', 'DESC',
+
 			'point', 'BOTTOM'
 		)
 
@@ -1248,6 +1326,31 @@ oUF:Factory(function(self)
 			group:SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -341)
 		else
 			group:SetPoint('BOTTOM', Raid[i - 1], 'TOP', 0, 15)
+		end
+
+		Raid[i] = group
+	end
+
+	--//----------------------------
+	--// Raid Size 26 - 40
+	--//----------------------------
+	self:SetActiveStyle('ZoeySquare')
+	local Raid = {}
+	for i = 1, 8 do
+		local group = self:SpawnHeader('oUF_ZoeyRaid40_g'..i, nil,
+			'custom [@raid26,exists] show; hide',
+
+			'showRaid', true,
+			'xOffset', 10,
+			'groupFilter', tostring(i),
+
+			'point', 'LEFT'
+		)
+
+		if i == 1 then
+			group:SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -341)
+		else
+			group:SetPoint('BOTTOMLEFT', Raid[i - 1], 'TOPLEFT', 0, 10)
 		end
 
 		Raid[i] = group
