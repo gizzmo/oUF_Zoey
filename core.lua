@@ -345,15 +345,17 @@ local function PostUpdatePower(Power, unit, min, max)
 end
 
 
---// Experience bar functions
-local function PostUpdateExperience(Experience, unit)
-	if not Experience:IsShown() then
-		local parent = Experience:GetParent()
-		local ExperienceHeight = Experience:GetHeight()
 
-		parent:SetHeight(parent:GetHeight() - ExperienceHeight - 1)
-	end
+--// Experience bar functions
+local function ExperienceBarOnHide(Experience)
+	local parent = Experience:GetParent()
+	parent:SetHeight(parent:GetHeight() - Experience:GetHeight() - 1)
 end
+local function ExperienceBarOnShow(Experience)
+	local parent = Experience:GetParent()
+	parent:SetHeight(parent:GetHeight() + Experience:GetHeight() + 1)
+end
+
 
 
 --// Castbar Functions
@@ -795,7 +797,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Experience.bg:SetAllPoints(self.Experience)
 		self.Experience.bg:SetTexture(config.bars.texture)
 
-		self.Experience.PostUpdate = PostUpdateExperience
+		--// Resize the main frame when this frame Hides or Shows
+		self.Experience:SetScript('OnShow', ExperienceBarOnShow)
+		self.Experience:SetScript('OnHide', ExperienceBarOnHide)
 
 		--// Main Color
 		local r,g,b = unpack(config.bars.experience.colors.main)
