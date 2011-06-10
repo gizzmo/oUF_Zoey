@@ -897,7 +897,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.PhaseIcon:SetBlendMode( 'ADD' )
 	end
 
-	if unit == 'player' or unit == 'party' then
+	if unit == 'player' or unit == 'party'  or unit == 'raid' then
 		--// LFD Role Icon
 		self.LFDRole = Overlay:CreateTexture(nil, 'OVERLAY')
 		self.LFDRole:SetSize(18,18)
@@ -1145,6 +1145,24 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 	self:Tag(StatusText, '[Zoey:Status]')
 	StatusText:SetPoint('RIGHT', self.Health, -1, 0)
 
+	--//----------------------------
+	--// Icons
+	--//----------------------------
+	--// Leader Icon
+	self.Leader = Overlay:CreateTexture(nil, 'OVERLAY')
+	self.Leader:SetSize(10,10)
+	self.Leader:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 0)
+
+	--// Ready Check icon
+	self.ReadyCheck = Overlay:CreateTexture(nil, 'OVERLAY')
+	self.ReadyCheck:SetSize(14, 14)
+	self.ReadyCheck:SetPoint('CENTER', Overlay, 'BOTTOM', 0, 0)
+
+	--// Raid Icon (Skull, Cross, Square ...)
+	self.RaidIcon = Overlay:CreateTexture(nil, 'OVERLAY')
+	self.RaidIcon:SetSize(16,16)
+	self.RaidIcon:SetPoint('CENTER', Overlay, 'LEFT', 0, 0)
+
 end)
 
 oUF:RegisterStyle('ZoeySquare', function(self, unit)
@@ -1221,6 +1239,24 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
 	local StatusText = CreateText(Overlay, 12, 'center')
 	self:Tag(StatusText, '[Zoey:Status]')
 	StatusText:SetPoint('CENTER',  self)
+
+	--//----------------------------
+	--// Icons
+	--//----------------------------
+	--// Leader Icon
+	self.Leader = Overlay:CreateTexture(nil, 'OVERLAY')
+	self.Leader:SetSize(10,10)
+	self.Leader:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 0)
+
+	--// Ready Check icon
+	self.ReadyCheck = Overlay:CreateTexture(nil, 'OVERLAY')
+	self.ReadyCheck:SetSize(14, 14)
+	self.ReadyCheck:SetPoint('CENTER', Overlay, 'BOTTOM', 0, 0)
+
+	--// Raid Icon (Skull, Cross, Square ...)
+	self.RaidIcon = Overlay:CreateTexture(nil, 'OVERLAY')
+	self.RaidIcon:SetSize(16,16)
+	self.RaidIcon:SetPoint('CENTER', Overlay, 'LEFT', 0, 0)
 
 end)
 
