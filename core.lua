@@ -552,55 +552,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	end
 
 	--//----------------------------
-	--// Combo Points
-	--//----------------------------
-	if unit == 'target' then
-		local playerClass = select(2, UnitClass('player'))
-
-		if playerClass == 'ROGUE' then
-
-			self.CPoints = CreateFrame('Frame', '$parentCPointsFrame', self)
-			self.CPoints:SetHeight(config.bars.class.height)
-			self.CPoints:SetPoint('TOP', 0, -offset)
-			self.CPoints:SetPoint('LEFT', 1,0)
-			self.CPoints:SetPoint('RIGHT', -1,0)
-
-			local width = (self:GetWidth() / 5) - ((5 - 1) / 5)
-
-			for i = 1, 5 do
-				local point = self.CPoints:CreateTexture(nil, 'ARTWORK')
-				point:SetTexture(config.bars.texture)
-				point:SetSize(width, self.CPoints:GetHeight())
-
-				if i == 1 then
-					point:SetPoint('LEFT', self.CPoints, 0, 0)
-				else
-					point:SetPoint('LEFT', self.CPoints[i-1], 'RIGHT', 1, 0)
-				end
-
-				point.bg = self.CPoints:CreateTexture(nil, 'BACKGROUND')
-				point.bg:SetTexture(config.bars.texture)
-				point.bg:SetAllPoints(point)
-
-				-- // Color
-				local r,g,b = unpack(config.bars.class.colors.combo.normal)
-
-				point:SetVertexColor(r,g,b)
-				point.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
-
-				self.CPoints[i] = point
-			end
-
-			--// Last combo point should be red, but not the bg
-			self.CPoints[5]:SetVertexColor(unpack(config.bars.class.colors.combo.last))
-
-			--// Up The Offset Value
-			offset = offset + self.CPoints:GetHeight() + 1
-
-		end
-	end
-
-	--//----------------------------
 	--// Health Bar
 	--//----------------------------
 	self.Health = CreateFrame('StatusBar', '$parentHealthBar', self)
@@ -785,6 +736,59 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 		end
 
+	elseif unit == 'target' then
+		local playerClass = select(2, UnitClass('player'))
+
+		--//----------------------------
+		--// Combo Points
+		--//----------------------------
+		if playerClass == 'ROGUE' or playerClass == 'DRUID' then
+
+			--// Combo points float above the healthbar
+			--// so they can be hidden if the druid isnt in cat form
+
+			self.CPoints = CreateFrame('Frame', '$parentCPointsFrame', self)
+			self.CPoints:SetHeight(config.bars.class.height)
+			self.CPoints:SetPoint('BOTTOMLEFT', self.Health, 'TOPLEFT', 0, 1)
+			self.CPoints:SetPoint('BOTTOMRIGHT', self.Health, 'TOPRIGHT', 0, 1)
+
+			self.CPoints:SetFrameLevel(3) --// Push it above the portrait
+
+			--// Background
+			local Background = self.CPoints:CreateTexture(nil, 'BACKGROUND')
+			Background:SetPoint('TOPLEFT', -1, 1)
+			Background:SetPoint('BOTTOMRIGHT', 1, -1)
+			Background:SetTexture(0, 0, 0, 1)
+
+			local width = ((self:GetWidth() - 2) / 5) - ((5 - 1) / 5)
+
+			for i = 1, 5 do
+				local point = self.CPoints:CreateTexture(nil, 'ARTWORK')
+				point:SetTexture(config.bars.texture)
+				point:SetSize(width, self.CPoints:GetHeight())
+
+				if i == 1 then
+					point:SetPoint('LEFT', self.CPoints, 0, 0)
+				else
+					point:SetPoint('LEFT', self.CPoints[i-1], 'RIGHT', 1, 0)
+				end
+
+				point.bg = self.CPoints:CreateTexture(nil, 'BACKGROUND')
+				point.bg:SetTexture(config.bars.texture)
+				point.bg:SetAllPoints(point)
+
+				-- // Color
+				local r,g,b = unpack(config.bars.class.colors.combo.normal)
+
+				point:SetVertexColor(r,g,b)
+				point.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
+
+				self.CPoints[i] = point
+			end
+
+			--// Last combo point should be red, but not the bg
+			self.CPoints[5]:SetVertexColor(unpack(config.bars.class.colors.combo.last))
+		end
 	end
 
 	--//----------------------------
