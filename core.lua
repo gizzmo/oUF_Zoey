@@ -788,6 +788,20 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 			--// Last combo point should be red, but not the bg
 			self.CPoints[5]:SetVertexColor(unpack(config.bars.class.colors.combo.last))
+
+			--// Toggle the frame when the Druid enters/leaves Cat Form
+			if playerClass == 'DRUID' then
+				local f = CreateFrame('Frame', nil, self)
+				f:RegisterEvent('PLAYER_LOGIN')
+				f:RegisterEvent('UPDATE_SHAPESHIFT_FORM')
+				f:SetScript('OnEvent', function()
+					if GetShapeshiftFormID() == CAT_FORM then
+						self.CPoints:Show()
+					else
+						self.CPoints:Hide()
+					end
+				end)
+			end
 		end
 	end
 
