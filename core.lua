@@ -925,12 +925,12 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.ReadyCheck = Overlay:CreateTexture(nil, 'OVERLAY')
 		self.ReadyCheck:SetSize(14, 14)
 		self.ReadyCheck:SetPoint('CENTER', Overlay, 'BOTTOM', 0, 0)
-	end
 
-	--// Leader Icon
-	self.Leader = Overlay:CreateTexture(nil, 'OVERLAY')
-	self.Leader:SetSize(16,16)
-	self.Leader:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 0)
+		--// Leader Icon
+		self.Leader = Overlay:CreateTexture(nil, 'OVERLAY')
+		self.Leader:SetSize(16,16)
+		self.Leader:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 0)
+	end
 
 	--// Raid Icon (Skull, Cross, Square ...)
 	self.RaidIcon = Overlay:CreateTexture(nil, 'OVERLAY')
