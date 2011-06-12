@@ -1324,7 +1324,7 @@ oUF:Factory(function(self)
 	--//----------------------------
 	self:SpawnHeader('oUF_ZoeyPartyTargets', nil, 'party',
 		'showParty', true,
-		'yOffset', 107,
+		'yOffset', 101,
 		'oUF-initialConfigFunction', [[
 			self:SetAttribute('unitsuffix', 'target')
 		]],
@@ -1338,13 +1338,13 @@ oUF:Factory(function(self)
 	self:SetActiveStyle('ZoeyThin')
 	self:SpawnHeader('oUF_ZoeyPartyPets', nil, 'party',
 		'showParty', true,
-		'yOffset', 127,
+		'yOffset', 121,
 		'oUF-initialConfigFunction', [[
 			self:SetAttribute('unitsuffix', 'pet')
 		]],
 
 		'point', 'BOTTOM'
-	):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 0, -31)
+	):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 0, -28)
 
 end)
 
