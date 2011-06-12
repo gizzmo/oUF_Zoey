@@ -829,7 +829,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 		--// Ready Check icon
 		self.ReadyCheck = Overlay:CreateTexture(nil, 'OVERLAY')
-		self.ReadyCheck:SetSize(20, 20)
+		self.ReadyCheck:SetSize(20,20)
 		self.ReadyCheck:SetPoint('CENTER', Overlay, 'CENTER', 0, 0)
 
 		--// Leader Icon
@@ -850,8 +850,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.RaidIcon:SetSize(30,30)
 		self.RaidIcon:SetPoint('CENTER', Overlay, 'TOP', 0, 0)
 	else
-		self.RaidIcon:SetSize(21,21)
-		self.RaidIcon:SetPoint('CENTER', Overlay, 'LEFT', 0, 0)
+		self.RaidIcon:SetSize(23,23)
+		self.RaidIcon:SetPoint('LEFT', Overlay, 3, 0)
 	end
 
 	--// PvP Icon -- The img used isnt perfect, it sucks
