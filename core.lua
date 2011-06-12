@@ -218,7 +218,7 @@ local function PostUpdateHealth(Health, unit, min, max)
 	elseif not UnitIsConnected(unit) then
 		t = oUF.colors.disconnected
 	else
-		t = config.bars.health.color
+		t = oUF.colors.health
 	end
 
 	if t then
@@ -277,7 +277,7 @@ end
 local function PostCastStart(Castbar, unit, name, rank, castid)
 	Castbar:SetAlpha(1.0)
 	Castbar.Spark:Show()
-	Castbar:SetStatusBarColor(unpack(config.bars.cast.colors.normal))
+	Castbar:SetStatusBarColor(unpack(oUF.colors.cast.normal))
 end
 
 local function PostCastStop(Castbar, unit, name, rank, castid)
@@ -448,7 +448,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--//----------------------------
 	if unit == 'target' or unit == 'party' then
 		self.Portrait = CreateFrame('PlayerModel', '$parentPortrait', self)
-		self.Portrait:SetHeight(config.bars.portrait.height)
+		self.Portrait:SetHeight(53)
 		self.Portrait:SetPoint('TOP', 0, -offset)
 		self.Portrait:SetPoint('LEFT', 1,0)
 		self.Portrait:SetPoint('RIGHT',-1,0)
@@ -461,8 +461,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Health Bar
 	--//----------------------------
 	self.Health = CreateFrame('StatusBar', '$parentHealthBar', self)
-	self.Health:SetStatusBarTexture(config.bars.texture)
-	self.Health:SetHeight(config.bars.health.height)
+	self.Health:SetStatusBarTexture(config.statusbar)
+	self.Health:SetHeight(31)
 	self.Health:SetPoint('TOP', 0, -offset)
 	self.Health:SetPoint('LEFT', 1,0)
 	self.Health:SetPoint('RIGHT',-1,0)
@@ -471,7 +471,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 	--// Healthbar Background
 	self.Health.bg = self.Health:CreateTexture(nil, 'BACKGROUND')
-	self.Health.bg:SetTexture(config.bars.texture)
+	self.Health.bg:SetTexture(config.statusbar)
 	self.Health.bg:SetAllPoints(self.Health)
 
 	--// Up The Offset Value
@@ -481,8 +481,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Power Bar
 	--//----------------------------
 	self.Power = CreateFrame('StatusBar', '$parentPowerBar', self)
-	self.Power:SetStatusBarTexture(config.bars.texture)
-	self.Power:SetHeight(config.bars.power.height)
+	self.Power:SetStatusBarTexture(config.statusbar)
+	self.Power:SetHeight(5)
 	self.Power:SetPoint('TOP', 0, -offset)
 	self.Power:SetPoint('LEFT', 1,0)
 	self.Power:SetPoint('RIGHT',-1,0)
@@ -491,7 +491,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 	--// Powerbar Background
 	self.Power.bg = self.Power:CreateTexture(nil, 'BACKGROUND')
-	self.Power.bg:SetTexture(config.bars.texture)
+	self.Power.bg:SetTexture(config.statusbar)
 	self.Power.bg:SetAllPoints(self.Power)
 
 	--// Up The Offset Value
@@ -509,7 +509,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		if playerClass == 'DEATHKNIGHT' then
 
 			self.Runes = CreateFrame('Frame', '$parentRunebar', self)
-			self.Runes:SetHeight(config.bars.class.height)
+			self.Runes:SetHeight(5)
 			self.Runes:SetPoint('TOP', 0, -offset)
 			self.Runes:SetPoint('LEFT', 1,0)
 			self.Runes:SetPoint('RIGHT', -1,0)
@@ -518,7 +518,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 			for i = 1, 6 do
 				local rune = CreateFrame('StatusBar', '$parentRune'..i, self.Runes)
-				rune:SetStatusBarTexture(config.bars.texture)
+				rune:SetStatusBarTexture(config.statusbar)
 				rune:SetSize(width, self.Runes:GetHeight())
 
 				if i == 1 then
@@ -528,7 +528,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				end
 
 				rune.bg = rune:CreateTexture(nil, 'BACKGROUND')
-				rune.bg:SetTexture(config.bars.texture)
+				rune.bg:SetTexture(config.statusbar)
 				rune.bg:SetAllPoints(rune)
 				rune.bg.multiplier = 0.4
 
@@ -555,7 +555,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		if playerClass == 'PALADIN' then
 
 			self.HolyPower = CreateFrame('Frame', '$parentHolyPowerBar', self)
-			self.HolyPower:SetHeight(config.bars.class.height)
+			self.HolyPower:SetHeight(5)
 			self.HolyPower:SetPoint('TOP', 0, -offset)
 			self.HolyPower:SetPoint('LEFT', 1,0)
 			self.HolyPower:SetPoint('RIGHT', -1,0)
@@ -564,7 +564,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 			for i = 1, 3 do
 				local power = self.HolyPower:CreateTexture(nil, 'ARTWORK')
-				power:SetTexture(config.bars.texture)
+				power:SetTexture(config.statusbar)
 				power:SetSize(width, self.HolyPower:GetHeight())
 
 				if i == 1 then
@@ -574,7 +574,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				end
 
 				power.bg = self.HolyPower:CreateTexture(nil, 'BACKGROUND')
-				power.bg:SetTexture(config.bars.texture)
+				power.bg:SetTexture(config.statusbar)
 				power.bg:SetAllPoints(power)
 
 				-- // Color
@@ -606,7 +606,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		if playerClass == 'WARLOCK' then
 
 			self.SoulShards = CreateFrame('Frame', '$parentSoulShardsBar', self)
-			self.SoulShards:SetHeight(config.bars.class.height)
+			self.SoulShards:SetHeight(5)
 			self.SoulShards:SetPoint('TOP', 0, -offset)
 			self.SoulShards:SetPoint('LEFT', 1,0)
 			self.SoulShards:SetPoint('RIGHT', -1,0)
@@ -615,7 +615,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 			for i = 1, 3 do
 				local shard = self.SoulShards:CreateTexture(nil, 'ARTWORK')
-				shard:SetTexture(config.bars.texture)
+				shard:SetTexture(config.statusbar)
 				shard:SetSize(width, self.SoulShards:GetHeight())
 
 				if i == 1 then
@@ -625,7 +625,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				end
 
 				shard.bg = self.SoulShards:CreateTexture(nil, 'BACKGROUND')
-				shard.bg:SetTexture(config.bars.texture)
+				shard.bg:SetTexture(config.statusbar)
 				shard.bg:SetAllPoints(shard)
 
 				-- // Color
@@ -654,7 +654,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			--// so they can be hidden if the druid isnt in cat form
 
 			self.CPoints = CreateFrame('Frame', '$parentCPointsFrame', self)
-			self.CPoints:SetHeight(config.bars.class.height)
+			self.CPoints:SetHeight(5)
 			self.CPoints:SetPoint('BOTTOMLEFT', self.Health, 'TOPLEFT', 0, 1)
 			self.CPoints:SetPoint('BOTTOMRIGHT', self.Health, 'TOPRIGHT', 0, 1)
 
@@ -670,7 +670,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 			for i = 1, 5 do
 				local point = self.CPoints:CreateTexture(nil, 'ARTWORK')
-				point:SetTexture(config.bars.texture)
+				point:SetTexture(config.statusbar)
 				point:SetSize(width, self.CPoints:GetHeight())
 
 				if i == 1 then
@@ -680,11 +680,11 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				end
 
 				point.bg = self.CPoints:CreateTexture(nil, 'BACKGROUND')
-				point.bg:SetTexture(config.bars.texture)
+				point.bg:SetTexture(config.statusbar)
 				point.bg:SetAllPoints(point)
 
 				-- // Color
-				local r,g,b = unpack(config.bars.class.colors.combo.normal)
+				local r,g,b = unpack(self.colors.combo.normal)
 
 				point:SetVertexColor(r,g,b)
 				point.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
@@ -693,7 +693,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			end
 
 			--// Last combo point should be red, but not the bg
-			self.CPoints[5]:SetVertexColor(unpack(config.bars.class.colors.combo.last))
+			self.CPoints[5]:SetVertexColor(unpack(self.colors.combo.last))
 
 			--// Toggle the frame when the Druid enters/leaves Cat Form
 			if playerClass == 'DRUID' then
@@ -716,32 +716,32 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--//----------------------------
 	if unit == 'player' and IsAddOnLoaded('oUF_Experience') and UnitLevel(unit) ~= MAX_PLAYER_LEVEL then
 		self.Experience = CreateFrame('Statusbar', '$parentExperience', self)
-		self.Experience:SetStatusBarTexture(config.bars.texture)
-		self.Experience:SetHeight(config.bars.experience.height)
+		self.Experience:SetStatusBarTexture(config.statusbar)
+		self.Experience:SetHeight(5)
 		self.Experience:SetPoint('TOP', 0, -offset)
 		self.Experience:SetPoint('LEFT', 1,0)
 		self.Experience:SetPoint('RIGHT',-1,0)
 
 		self.Experience.Rested = CreateFrame('StatusBar', '$parentRested', self.Experience)
-		self.Experience.Rested:SetStatusBarTexture(config.bars.texture)
+		self.Experience.Rested:SetStatusBarTexture(config.statusbar)
 		self.Experience.Rested:SetAllPoints(self.Experience)
 
 		self.Experience.bg = self.Experience.Rested:CreateTexture(nil, 'BACKGROUND')
 		self.Experience.bg:SetAllPoints(self.Experience)
-		self.Experience.bg:SetTexture(config.bars.texture)
+		self.Experience.bg:SetTexture(config.statusbar)
 
 		--// Resize the main frame when this frame Hides or Shows
 		self.Experience:SetScript('OnShow', ExperienceBarOnShow)
 		self.Experience:SetScript('OnHide', ExperienceBarOnHide)
 
 		--// Main Color
-		local r,g,b = unpack(config.bars.experience.colors.main)
+		local r,g,b = unpack(self.colors.experience.main)
 
 		self.Experience:SetStatusBarColor(r,g,b)
 		self.Experience.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
 
 		--// Rested Color
-		self.Experience.Rested:SetStatusBarColor(unpack(config.bars.experience.colors.rested))
+		self.Experience.Rested:SetStatusBarColor(unpack(self.colors.experience.rested))
 
 		--// Up The Offset Value
 		offset = offset + self.Experience:GetHeight() + 1
@@ -875,10 +875,10 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 		--// The Castbar its self
 		self.Castbar = CreateFrame('StatusBar', '$parentCastbar', self)
-		self.Castbar:SetStatusBarTexture(config.bars.texture)
-		self.Castbar:SetStatusBarColor(unpack(config.bars.cast.colors.normal))
+		self.Castbar:SetStatusBarTexture(config.statusbar)
+		self.Castbar:SetStatusBarColor(unpack(self.colors.cast.normal))
 
-		self.Castbar:SetSize(unpack(config.bars.cast.size))
+		self.Castbar:SetSize(591,38)
 
 		if unit == 'player' then
 			self.Castbar:SetPoint('TOP', oUF.units.player, 'BOTTOM', 0, -76)
@@ -895,8 +895,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		--// Player only Latency
 		if unit == 'player' then
 			self.Castbar.SafeZone = self.Castbar:CreateTexture(nil,'OVERLAY')
-			self.Castbar.SafeZone:SetTexture(config.bars.texture)
-			self.Castbar.SafeZone:SetVertexColor(unpack(config.bars.cast.colors.safezone))
+			self.Castbar.SafeZone:SetTexture(config.statusbar)
+			self.Castbar.SafeZone:SetVertexColor(unpack(self.colors.cast.safezone))
 
 			self.Castbar.Lag = CreateText(self.Castbar, 10)
 			self.Castbar.Lag:SetPoint('TOPRIGHT', self.Castbar, 'BOTTOMRIGHT', 0, -7)
@@ -928,7 +928,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		--// Castbar Frame Background
 		local CastbarFrameBackground = CastbarFrame:CreateTexture(nil, 'BACKGROUND')
 		CastbarFrameBackground:SetAllPoints(CastbarFrame)
-		CastbarFrameBackground:SetTexture(config.bars.texture)
+		CastbarFrameBackground:SetTexture(config.statusbar)
 		CastbarFrameBackground:SetVertexColor(25/255, 25/255, 25/255)
 
 		--// Castbar Frame Border
@@ -1034,7 +1034,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 	--// Health Bar
 	--//----------------------------
 	self.Health = CreateFrame('StatusBar', '$parentHealthBar', self)
-	self.Health:SetStatusBarTexture(config.bars.texture)
+	self.Health:SetStatusBarTexture(config.statusbar)
 	self.Health:SetHeight(17)
 	self.Health:SetPoint('TOP', 0, -offset)
 	self.Health:SetPoint('LEFT', 1,0)
@@ -1044,7 +1044,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 
 	--// Healthbar Background
 	self.Health.bg = self.Health:CreateTexture(nil, 'BACKGROUND')
-	self.Health.bg:SetTexture(config.bars.texture)
+	self.Health.bg:SetTexture(config.statusbar)
 	self.Health.bg:SetAllPoints(self.Health)
 
 	--// Up The Offset Value
@@ -1109,7 +1109,7 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
 	--// Health Bar
 	--//----------------------------
 	self.Health = CreateFrame('StatusBar', '$parentHealthBar', self)
-	self.Health:SetStatusBarTexture(config.bars.texture)
+	self.Health:SetStatusBarTexture(config.statusbar)
 	self.Health:SetHeight(25)
 	self.Health:SetPoint('TOP', 0, -offset)
 	self.Health:SetPoint('LEFT', 1,0)
@@ -1119,7 +1119,7 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
 
 	--// Healthbar Background
 	self.Health.bg = self.Health:CreateTexture(nil, 'BACKGROUND')
-	self.Health.bg:SetTexture(config.bars.texture)
+	self.Health.bg:SetTexture(config.statusbar)
 	self.Health.bg:SetAllPoints(self.Health)
 
 	--// Up The Offset Value
@@ -1129,8 +1129,8 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
 	--// Power Bar
 	--//----------------------------
 	self.Power = CreateFrame('StatusBar', '$parentPowerBar', self)
-	self.Power:SetStatusBarTexture(config.bars.texture)
-	self.Power:SetHeight(config.bars.power.height)
+	self.Power:SetStatusBarTexture(config.statusbar)
+	self.Power:SetHeight(5)
 	self.Power:SetPoint('TOP', 0, -offset)
 	self.Power:SetPoint('LEFT', 1,0)
 	self.Power:SetPoint('RIGHT',-1,0)
@@ -1139,7 +1139,7 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
 
 	--// Powerbar Background
 	self.Power.bg = self.Power:CreateTexture(nil, 'BACKGROUND')
-	self.Power.bg:SetTexture(config.bars.texture)
+	self.Power.bg:SetTexture(config.statusbar)
 	self.Power.bg:SetAllPoints(self.Power)
 
 	--// Up The Offset Value
@@ -1363,7 +1363,7 @@ oUF:Factory(function(self)
 		bar.bg = bar:GetRegions()
 		bar.bg:ClearAllPoints()
 		bar.bg:SetAllPoints( bar )
-		bar.bg:SetTexture( config.bars.texture )
+		bar.bg:SetTexture( config.statusbar )
 		bar.bg:SetVertexColor( 0.2, 0.2, 0.2, 1 )
 
 		bar.text = _G[ barname .. 'Text' ]
@@ -1377,7 +1377,7 @@ oUF:Factory(function(self)
 		bar.bar = _G[ barname .. 'StatusBar' ]
 		bar.bar:SetPoint('TOPLEFT', bar, 1, -1)
 		bar.bar:SetPoint('BOTTOMRIGHT', bar, -1, 1)
-		bar.bar:SetStatusBarTexture( config.bars.texture )
+		bar.bar:SetStatusBarTexture( config.statusbar )
 		bar.bar:SetAlpha( 0.8 )
 	end
 

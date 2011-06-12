@@ -6,6 +6,9 @@ local addon, ns = ...
 --//----------------------------
 local config = {}
 
+--// Status bar
+config.statusbar = [[Interface\AddOns\oUF_Zoey\media\Armory]]
+
 --// Font
 config.font = [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]]
 
@@ -53,49 +56,33 @@ config.aura = {
 	}
 }
 
---// Bars
-config.bars = {
-	texture = [[Interface\AddOns\oUF_Zoey\media\Armory]],
 
-	--// Basic bars
-	portrait = { height = 53 },
-	health = {
-		height = 31,
-		color = {89/255, 89/255, 89/255}
-	},
-	power = { height = 5 },
+--//-------------------------
+--// COLORS
+--//-------------------------
 
-	--// Class bars
-	class = {
-		height = 5,
-		colors = {
-			combo = {
-				normal = {232/255, 214/255, 12/255}, -- yellow
-				last   = {240/255, 60/255, 60/255},  -- red
-			}
-		}
-	},
+--// Health bar color
+oUF.colors.health = {89/255, 89/255, 89/255}	-- dark grey
 
-	--// Experience bar
-	experience = {
-		height = 5,
-		colors = {
-			main = {176/255, 72/255, 176/255},
-			rested = {80/255, 80/255, 222/255}
-		}
-	},
+--// Combo points colors
+oUF.colors.comboPoints = {
+	normal = {232/255, 214/255, 12/255},		-- yellow
+	last   = {240/255, 60/255, 60/255}			-- red
+}
 
-	--// Castbars
-	cast = {
-		size = {591, 38},
-		colors =  {
-			normal = {89/255, 89/255, 89/255},
-			success = {20/255, 208/255, 0/255},
-			failed = {255/255, 12/255, 0/255},
-			safezone = {255/255, 25/255, 0/255, 0.5},
-			shielded = {89/255, 89/255, 89/255},
-		}
-	},
+--// Experience bar colors
+oUF.colors.experience = {
+	main = {176/255, 72/255, 176/255},			-- purple
+	rested = {80/255, 80/255, 222/255}			-- blue
+}
+
+--// Cast bar colors
+oUF.colors.cast =  {
+	normal = {89/255, 89/255, 89/255},			-- dark gray
+	success = {20/255, 208/255, 0/255},			-- green
+	failed = {255/255, 12/255, 0/255},			-- dark red
+	safezone = {255/255, 25/255, 0/255, 0.5},	-- transparent red
+	shielded = {89/255, 89/255, 89/255},		-- ligh gray
 }
 
 
