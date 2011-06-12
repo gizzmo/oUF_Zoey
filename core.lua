@@ -1430,6 +1430,9 @@ oUF:Factory(function(self)
 	TemporaryEnchantFrame:Hide()
 	ConsolidatedBuffs:Hide()
 
+	--// Hide the Compact Raid Frame Manager
+	CompactRaidFrameManager:Hide()
+
 	--// Skin the Mirror Timers
 	for i = 1, 3 do
 		local barname = 'MirrorTimer' .. i
@@ -1487,6 +1490,7 @@ oUF:Factory(function(self)
 		'DisplayPanelShowAggroPercentage',
 
 		'FrameCategoriesButton9',
+		'FrameCategoriesButton11',
 		'FrameCategoriesButton12',
 	}) do
 		_G['InterfaceOptions'..button]:SetAlpha(0.35)
