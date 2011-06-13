@@ -281,7 +281,7 @@ local function PostCastStart(Castbar, unit, name, rank, castid)
 
 	local r,g,b
 	if Castbar.interrupt then
-		r,g,b = unpack(oUF.colors.cast.shielded)
+		r,g,b = unpack(oUF.colors.cast.uninterruptible)
 	else
 		r,g,b = unpack(oUF.colors.cast.normal)
 	end
