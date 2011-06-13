@@ -1,8 +1,8 @@
 --// Get the addon namespace
 local addon, ns = ...
 
---// config
 local config = ns.config
+local colors = oUF.colors
 
 
 --//----------------------------
@@ -214,11 +214,11 @@ local function PostUpdateHealth(Health, unit, min, max)
 
 	--// Determin the color we want to use
 	if UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit) then
-		t = oUF.colors.tapped
+		t = colors.tapped
 	elseif not UnitIsConnected(unit) then
-		t = oUF.colors.disconnected
+		t = colors.disconnected
 	else
-		t = oUF.colors.health
+		t = colors.health
 	end
 
 	if t then
@@ -240,10 +240,10 @@ local function PostUpdatePower(Power, unit, min, max)
 	--// Determin the color we want to use
 	if UnitIsPlayer(unit) then
 		local class = select(2, UnitClass(unit))
-		t = oUF.colors.class[class]
+		t = colors.class[class]
 	else
 		local power = select(2, UnitPowerType(unit))
-		t = oUF.colors.power[power]
+		t = colors.power[power]
 	end
 
 	if t then
@@ -281,9 +281,9 @@ local function PostCastStart(Castbar, unit, name, rank, castid)
 
 	local r,g,b
 	if Castbar.interrupt then
-		r,g,b = unpack(oUF.colors.cast.uninterruptible)
+		r,g,b = unpack(colors.cast.uninterruptible)
 	else
-		r,g,b = unpack(oUF.colors.cast.normal)
+		r,g,b = unpack(colors.cast.normal)
 	end
 
 	Castbar:SetStatusBarColor(r,g,b)
@@ -302,7 +302,7 @@ end
 local function PostCastFailed(Castbar, unit, name, rank, castid)
 	Castbar:SetValue(Castbar.max)
 	Castbar:Show()
-	Castbar:SetStatusBarColor(unpack(oUF.colors.cast.failed))
+	Castbar:SetStatusBarColor(unpack(colors.cast.failed))
 end
 
 local function CastbarOnUpdate(Castbar, elapsed)
@@ -588,7 +588,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				power.bg:SetAllPoints(power)
 
 				-- // Color
-				local r,g,b = unpack(self.colors.power.HOLY_POWER)
+				local r,g,b = unpack(colors.power.HOLY_POWER)
 
 				power:SetVertexColor(r,g,b)
 				power.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
@@ -639,7 +639,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				shard.bg:SetAllPoints(shard)
 
 				-- // Color
-				local r,g,b = unpack(self.colors.power.SOUL_SHARDS)
+				local r,g,b = unpack(colors.power.SOUL_SHARDS)
 
 				shard:SetVertexColor(r,g,b)
 				shard.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
@@ -694,7 +694,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				point.bg:SetAllPoints(point)
 
 				-- // Color
-				local r,g,b = unpack(self.colors.combo.normal)
+				local r,g,b = unpack(colors.combo.normal)
 
 				point:SetVertexColor(r,g,b)
 				point.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
@@ -703,7 +703,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			end
 
 			--// Last combo point should be red, but not the bg
-			self.CPoints[5]:SetVertexColor(unpack(self.colors.combo.last))
+			self.CPoints[5]:SetVertexColor(unpack(colors.combo.last))
 
 			--// Toggle the frame when the Druid enters/leaves Cat Form
 			if playerClass == 'DRUID' then
@@ -745,13 +745,13 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Experience:SetScript('OnHide', ExperienceBarOnHide)
 
 		--// Main Color
-		local r,g,b = unpack(self.colors.experience.main)
+		local r,g,b = unpack(colors.experience.main)
 
 		self.Experience:SetStatusBarColor(r,g,b)
 		self.Experience.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
 
 		--// Rested Color
-		self.Experience.Rested:SetStatusBarColor(unpack(self.colors.experience.rested))
+		self.Experience.Rested:SetStatusBarColor(unpack(colors.experience.rested))
 
 		--// Up The Offset Value
 		offset = offset + self.Experience:GetHeight() + 1
@@ -886,7 +886,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		--// The Castbar its self
 		self.Castbar = CreateFrame('StatusBar', '$parentCastbar', self)
 		self.Castbar:SetStatusBarTexture(config.statusbar)
-		self.Castbar:SetStatusBarColor(unpack(self.colors.cast.normal))
+		self.Castbar:SetStatusBarColor(unpack(colors.cast.normal))
 
 		self.Castbar:SetSize(591,38)
 
@@ -906,7 +906,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		if unit == 'player' then
 			self.Castbar.SafeZone = self.Castbar:CreateTexture(nil,'OVERLAY')
 			self.Castbar.SafeZone:SetTexture(config.statusbar)
-			self.Castbar.SafeZone:SetVertexColor(unpack(self.colors.cast.safezone))
+			self.Castbar.SafeZone:SetVertexColor(unpack(colors.cast.safezone))
 
 			self.Castbar.Lag = CreateText(self.Castbar, 10)
 			self.Castbar.Lag:SetPoint('TOPRIGHT', self.Castbar, 'BOTTOMRIGHT', 0, -7)
