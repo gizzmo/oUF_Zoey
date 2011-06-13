@@ -16,10 +16,10 @@ config.font = [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]]
 config.border = {
 	texture = [[Interface\AddOns\oUF_Zoey\media\ThinSquare]],
 	colors = {
-		normal = {113/255, 113/255, 113/255},
-		rare   = {1, 1, 1},
-		elite  = {185/255, 185/255, 80/255},
-		boss   = {150/255, 80/255, 200/255}
+		normal = {113/255, 113/255, 113/255}, 	-- Dark Grey
+		rare   = {1, 1, 1},						-- White
+		elite  = {185/255, 185/255, 80/255},	-- Yellow
+		boss   = {150/255, 80/255, 200/255}		-- Purple
 	},
 	size    = 12,
 	padding = 4
@@ -42,16 +42,16 @@ config.aura = {
 	},
 	colors = {
 		caster = {
-			my    = {0, 1, 0, 1},
-			other = {1, 0, 0, 1}
+			my    = {0, 1, 0, 1},		-- Green
+			other = {1, 0, 0, 1}		-- Red
 		},
 		type = {
-			Poison  = {0, 1, 0, 1},
-			Magic   = {0, 0, 1, 1},
-			Disease = {.55, .15, 0, 1},
-			Curse   = {5, 0, 5, 1},
-			Enrage  = {1, .55, 0, 1},
-			['nil'] = {1, 0, 0, 1}
+			Poison  = {0, 1, 0, 1},		-- Green
+			Magic   = {0, 0, 1, 1},		-- Blue
+			Disease = {.55, .15, 0, 1},	-- Brown
+			Curse   = {5, 0, 5, 1},		-- Purple
+			Enrage  = {1, .55, 0, 1},   -- Orange
+			['nil'] = {1, 0, 0, 1}      -- Red
 		},
 	}
 }
