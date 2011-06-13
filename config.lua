@@ -42,16 +42,16 @@ config.aura = {
 	},
 	colors = {
 		caster = {
-			my    = {0, 1, 0, 1},		-- Green
-			other = {1, 0, 0, 1}		-- Red
+			my    = {0, 1, 0},       -- Green
+			other = {1, 0, 0}        -- Red
 		},
 		type = {
-			Poison  = {0, 1, 0, 1},		-- Green
-			Magic   = {0, 0, 1, 1},		-- Blue
-			Disease = {.55, .15, 0, 1},	-- Brown
-			Curse   = {5, 0, 5, 1},		-- Purple
-			Enrage  = {1, .55, 0, 1},   -- Orange
-			['nil'] = {1, 0, 0, 1}      -- Red
+			Poison  = {0, 1, 0},     -- Green
+			Magic   = {0, 0, 1},     -- Blue
+			Disease = {.55, .15, 0}, -- Brown
+			Curse   = {5, 0, 5},     -- Purple
+			Enrage  = {1, .55, 0},   -- Orange
+			['nil'] = {1, 0, 0}      -- Red
 		},
 	}
 }
