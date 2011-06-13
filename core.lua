@@ -266,6 +266,7 @@ local function ExperienceBarOnHide(Experience)
 	local parent = Experience:GetParent()
 	parent:SetHeight(parent:GetHeight() - Experience:GetHeight() - 1)
 end
+
 local function ExperienceBarOnShow(Experience)
 	local parent = Experience:GetParent()
 	parent:SetHeight(parent:GetHeight() + Experience:GetHeight() + 1)
@@ -277,7 +278,15 @@ end
 local function PostCastStart(Castbar, unit, name, rank, castid)
 	Castbar:SetAlpha(1.0)
 	Castbar.Spark:Show()
-	Castbar:SetStatusBarColor(unpack(oUF.colors.cast.normal))
+
+	local r,g,b
+	if Castbar.interrupt then
+		r,g,b = unpack(oUF.colors.cast.shielded)
+	else
+		r,g,b = unpack(oUF.colors.cast.normal)
+	end
+
+	Castbar:SetStatusBarColor(r,g,b)
 end
 
 local function PostCastStop(Castbar, unit, name, rank, castid)
@@ -293,6 +302,7 @@ end
 local function PostCastFailed(Castbar, unit, name, rank, castid)
 	Castbar:SetValue(Castbar.max)
 	Castbar:Show()
+	Castbar:SetStatusBarColor(unpack(oUF.colors.cast.failed))
 end
 
 local function CastbarOnUpdate(Castbar, elapsed)
