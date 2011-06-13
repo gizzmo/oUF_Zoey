@@ -261,15 +261,15 @@ end
 
 
 
---// Experience bar functions
-local function ExperienceBarOnHide(Experience)
-	local parent = Experience:GetParent()
-	parent:SetHeight(parent:GetHeight() - Experience:GetHeight() - 1)
+--// When a bar hides, resize the parent frame.
+local function BarOnHide(bar)
+	local parent = bar:GetParent()
+	parent:SetHeight(parent:GetHeight() - bar:GetHeight() - 1)
 end
 
-local function ExperienceBarOnShow(Experience)
-	local parent = Experience:GetParent()
-	parent:SetHeight(parent:GetHeight() + Experience:GetHeight() + 1)
+local function BarOnShow(bar)
+	local parent = bar:GetParent()
+	parent:SetHeight(parent:GetHeight() + bar:GetHeight() + 1)
 end
 
 
@@ -351,7 +351,6 @@ local function CastbarOnUpdate(Castbar, elapsed)
 
 	end
 end
-
 
 
 --// Aura Function
@@ -741,8 +740,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Experience.bg:SetTexture(config.statusbar)
 
 		--// Resize the main frame when this frame Hides or Shows
-		self.Experience:SetScript('OnShow', ExperienceBarOnShow)
-		self.Experience:SetScript('OnHide', ExperienceBarOnHide)
+		self.Experience:SetScript('OnShow', BarOnShow)
+		self.Experience:SetScript('OnHide', BarOnHide)
 
 		--// Main Color
 		local r,g,b = unpack(colors.experience.main)
