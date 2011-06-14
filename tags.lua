@@ -186,6 +186,23 @@ end
 oUF.TagEvents['Zoey:Exp'] = 'PLAYER_XP_UPDATE'
 
 
+oUF.Tags['Zoey:Rep'] = function(unit)
+	local name, standingID, min, max, cur = GetWatchedFactionInfo(unit)
+
+	--// if name is a string then we are tracking something
+	if type(name) == 'string' then
+
+		local standing = _G['FACTION_STANDING_LABEL'..standingID]
+
+		--// Reputation Name: 10.5k/20k 50% Honored
+		if IsMouseOver(unit) then
+			return ('%s: %s\n%s/%s %s%%'):format(name, standing, Short(cur), Short(max), Percent(cur,max))
+		end
+	end
+end
+oUF.TagEvents['Zoey:Rep'] = 'UPDATE_FACTION'
+
+
 oUF.Tags['Zoey:Guild'] = function(unit)
 	if IsInGuild(unit) then
 		local GuildName = GetGuildInfo(unit) or ''
