@@ -181,9 +181,9 @@ local function HighlightUpdate(self)
 		local tex = hl:CreateTexture(nil, 'OVERLAY')
 		tex:SetTexture(config.highlight.texture)
 		tex:SetBlendMode('ADD')
-		tex:SetAlpha(0.5)
 		tex:SetAllPoints(hl)
 		tex:SetVertexColor(unpack(config.highlight.color))
+		tex:SetAlpha(config.highlight.alpha)
 
 		self.Highlight = hl
 		self.Highlight.tex = tex
@@ -411,6 +411,7 @@ local function CreateText(parent, size, justify)
 	return fs
 end
 
+--// Things that all the styles use
 local function StyleHeader(self)
 
 	--// Rightclick Menu

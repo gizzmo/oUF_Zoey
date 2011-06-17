@@ -28,7 +28,8 @@ config.border = {
 --// Highlight
 config.highlight = {
 	texture = [[Interface\QuestFrame\UI-QuestLogTitleHighlight]],
-	color = {1,1,1, 0.2}
+	color = {1, 1, 1}, -- White
+	alpha = 0.3
 }
 
 --// Aura
