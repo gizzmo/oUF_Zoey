@@ -1386,6 +1386,9 @@ oUF:Factory(function(self)
 	TemporaryEnchantFrame:Hide()
 	ConsolidatedBuffs:Hide()
 
+	--// Make sure the Consolidated Buffs dont show
+	ConsolidatedBuffs.Show = ConsolidatedBuffs.Hide
+
 	--// Hide the Compact Raid Frame Manager
 	CompactRaidFrameManager:Hide()
 
