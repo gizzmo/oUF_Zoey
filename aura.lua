@@ -55,6 +55,8 @@ addAuras({
 	[95223] = 1, -- Recently Mass Resurrected
 	[57724] = 1, -- Sated (Bloodlust)
 	[57723] = 1, -- Exhaustion (Heroism)
+
+	[87378] = 1, -- Evolution - Corla, Herald of Twilight
 })
 
 ------------------------------------------------------------------------
