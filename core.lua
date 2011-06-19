@@ -859,7 +859,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.QuestIcon:SetSize(32,32)
 		self.QuestIcon:SetPoint('CENTER', Overlay, 'LEFT', 0, 0)
 	end
-
+--[[
 	if unit == 'party' or unit == 'target' or unit == 'focus' then
 		--// Phase Icon
 		self.PhaseIcon = Overlay:CreateTexture( nil, 'OVERLAY' )
@@ -870,7 +870,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.PhaseIcon:SetDesaturated( true )
 		self.PhaseIcon:SetBlendMode( 'ADD' )
 	end
-
+]]
 	if unit == 'player' or unit == 'party'  or unit == 'raid' then
 		--// LFD Role Icon
 		self.LFDRole = Overlay:CreateTexture(nil, 'OVERLAY')
