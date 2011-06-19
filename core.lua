@@ -929,9 +929,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Castbar:SetSize(591,38)
 
 		if unit == 'player' then
-			self.Castbar:SetPoint('TOP', oUF.units.player, 'BOTTOM', 0, -76)
+			self.Castbar:SetPoint('TOP', self, 'BOTTOM', 0, -76)
 		elseif unit == 'target' then
-			self.Castbar:SetPoint('BOTTOM', oUF.units.target, 'TOP', 0, 76)
+			self.Castbar:SetPoint('BOTTOM', self, 'TOP', 0, 76)
 		end
 
 		--// Add a spark
