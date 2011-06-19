@@ -484,7 +484,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self.Health:SetPoint('TOP', 0, -offset)
 	self.Health:SetPoint('LEFT', 1,0)
 	self.Health:SetPoint('RIGHT',-1,0)
-	self.Health.frequentUpdates = .2
 	self.Health.PostUpdate = PostUpdateHealth
 
 	--// Healthbar Background
@@ -504,7 +503,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self.Power:SetPoint('TOP', 0, -offset)
 	self.Power:SetPoint('LEFT', 1,0)
 	self.Power:SetPoint('RIGHT',-1,0)
-	self.Power.frequentUpdates = .2
 	self.Power.PostUpdate = PostUpdatePower
 
 	--// Powerbar Background
@@ -1089,7 +1087,6 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 	self.Health:SetPoint('TOP', 0, -offset)
 	self.Health:SetPoint('LEFT', 1,0)
 	self.Health:SetPoint('RIGHT',-1,0)
-	self.Health.frequentUpdates = .2
 	self.Health.PostUpdate = PostUpdateHealth
 
 	--// Healthbar Background
@@ -1164,7 +1161,6 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
 	self.Health:SetPoint('TOP', 0, -offset)
 	self.Health:SetPoint('LEFT', 1,0)
 	self.Health:SetPoint('RIGHT',-1,0)
-	self.Health.frequentUpdates = .2
 	self.Health.PostUpdate = PostUpdateHealth
 
 	--// Healthbar Background
@@ -1184,7 +1180,6 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
 	self.Power:SetPoint('TOP', 0, -offset)
 	self.Power:SetPoint('LEFT', 1,0)
 	self.Power:SetPoint('RIGHT',-1,0)
-	self.Power.frequentUpdates = .2
 	self.Power.PostUpdate = PostUpdatePower
 
 	--// Powerbar Background
