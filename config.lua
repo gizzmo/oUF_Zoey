@@ -83,7 +83,7 @@ oUF.colors.cast =  {
 	success = {20/255, 208/255, 0/255},            -- green
 	failed = {255/255, 12/255, 0/255},             -- dark red
 	safezone = {255/255, 25/255, 0/255, 0.5},      -- transparent red
-	uninterruptible = {150/255, 150/255, 150/255}, -- light gray
+	uninterruptible = {128/255, 128/255, 128/255}, -- light gray
 }
 
 
