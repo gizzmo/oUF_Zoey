@@ -318,6 +318,7 @@ local function CastbarOnUpdate(Castbar, elapsed)
 		if Castbar.SafeZone then
 			local width = Castbar:GetWidth() * (latency / 1e3) / Castbar.max
 			if width < 1 then width = 1 end
+			if width > Castbar:GetWidth() then width = Castbar:GetWidth() end
 			Castbar.SafeZone:SetWidth(width)
 		end
 
