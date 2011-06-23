@@ -224,7 +224,7 @@ oUF.Tags['Zoey:RealmIndicator'] = function(unit)
 	local _, realm = UnitName(unit)
 	local r,g,b = 225,225,225
 
-	if realm == nil then
+	if realm ~= nil then
 		if UnitIsInMyGuild(unit) then
 			r,g,b = 195,27,255
 		end
@@ -232,4 +232,4 @@ oUF.Tags['Zoey:RealmIndicator'] = function(unit)
 		return ('|cff%02x%02x%02x%s'):format(r,g,b, '!')
 	end
 end
-oUF.TagEvents['Zoey:RealmIndicator'] = 'UNIT_NAME PARTY_MEMBERS_CHANGED'
+oUF.TagEvents['Zoey:RealmIndicator'] = 'UNIT_NAME_UPDATE'

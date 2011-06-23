@@ -17,6 +17,7 @@ local function OnEnter(self)
 
 	for _, fs in ipairs( self.__tags ) do fs:UpdateTag() end
 end
+
 local function OnLeave(self)
 	ns.Mouse_Focus = nil
 	UnitFrame_OnLeave(self)
@@ -471,7 +472,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Portrait:SetPoint('RIGHT',-1,0)
 
 		--// Up The Offset Value
-		offset = offset + self.Portrait:GetHeight() +1
+		offset = offset + self.Portrait:GetHeight() + 1
 	end
 
 	--//----------------------------
@@ -820,6 +821,15 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	local PowerText = CreateText(Overlay, 12)
 	self:Tag(PowerText, '[Zoey:Power]')
 	PowerText:SetPoint('RIGHT', self.Power, -1, -1)
+
+	-- // Realm Indicator
+	if unit == 'target' or unit == 'party' then
+		local GuildAndRealm = CreateText(Overlay, 12)
+		self:Tag(GuildAndRealm, '[Zoey:RealmIndicator][Zoey:Guild]')
+		GuildAndRealm:SetPoint('TOP', Name, 'BOTTOM')
+		GuildAndRealm:SetPoint('LEFT',  Name)
+		GuildAndRealm:SetPoint('RIGHT', Name)
+	end
 
 	--// Experience Text
 	if self.Experience then
