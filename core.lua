@@ -269,17 +269,6 @@ local function ReputationPostUpdate(Reputation, unit, name, standing, min, max, 
 	Reputation.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
 end
 
---// When a bar hides, resize the parent frame.
-local function BarOnHide(bar)
-	local parent = bar:GetParent()
-	parent:SetHeight(parent:GetHeight() - bar:GetHeight() - 1)
-end
-
-local function BarOnShow(bar)
-	local parent = bar:GetParent()
-	parent:SetHeight(parent:GetHeight() + bar:GetHeight() + 1)
-end
-
 
 
 --// Castbar Functions
@@ -401,6 +390,16 @@ end
 
 
 --// Other Functions
+local function BarOnHide(bar)
+	local parent = bar:GetParent()
+	parent:SetHeight(parent:GetHeight() - bar:GetHeight() - 1)
+end
+
+local function BarOnShow(bar)
+	local parent = bar:GetParent()
+	parent:SetHeight(parent:GetHeight() + bar:GetHeight() + 1)
+end
+
 local function CreateText(parent, size, justify)
 	local fs = parent:CreateFontString(nil, 'OVERLAY')
 	fs:SetFont(config.font, size or 16)
