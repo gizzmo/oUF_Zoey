@@ -483,6 +483,11 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Portrait:SetPoint('LEFT', 1,0)
 		self.Portrait:SetPoint('RIGHT',-1,0)
 
+		--// Darken up the Portrait just a bit
+		self.Portrait.Overlay = self.Portrait:CreateTexture(nil, 'OVERLAY')
+		self.Portrait.Overlay:SetTexture(0,0,0,0.4)
+		self.Portrait.Overlay:SetAllPoints(self.Portrait)
+
 		--// Up The Offset Value
 		offset = offset + self.Portrait:GetHeight() + 1
 	end
