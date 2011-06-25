@@ -837,7 +837,13 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	-- // Realm Indicator
 	if unit == 'target' or unit == 'party' then
 		local GuildAndRealm = CreateText(Overlay, 12)
-		self:Tag(GuildAndRealm, '[Zoey:RealmIndicator][Zoey:Guild]')
+
+		if unit == 'target' then
+			self:Tag(GuildAndRealm, '[Zoey:Guild]')
+		elseif unit == 'party' then
+			self:Tag(GuildAndRealm, '[Zoey:RealmIndicator][Zoey:Guild]')
+		end
+
 		GuildAndRealm:SetPoint('TOP', Name, 'BOTTOM', 0, -1)
 		GuildAndRealm:SetPoint('LEFT',  Name)
 		GuildAndRealm:SetPoint('RIGHT', Name)
