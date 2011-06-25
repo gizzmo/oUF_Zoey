@@ -284,7 +284,11 @@ local function PostCastStart(Castbar, unit, name, rank, castid)
 		r,g,b = unpack(colors.cast.normal)
 	end
 
+	--// Set the Castbar color
 	Castbar:SetStatusBarColor(r,g,b)
+
+	--// Set the background color
+	Castbar.bg:SetVertexColor(r*0.4, g *0.4, b*0.4)
 end
 
 local function PostCastStop(Castbar, unit, name, rank, castid)
@@ -300,7 +304,14 @@ end
 local function PostCastFailed(Castbar, unit, name, rank, castid)
 	Castbar:SetValue(Castbar.max)
 	Castbar:Show()
-	Castbar:SetStatusBarColor(unpack(colors.cast.failed))
+
+	local r,g,b = unpack(colors.cast.failed)
+
+	--// Set the Castbar color
+	Castbar:SetStatusBarColor(r,g,b)
+
+	--// Set the background color
+	Castbar.bg:SetVertexColor(r*0.4, g *0.4, b*0.4)
 end
 
 local function CastbarOnUpdate(Castbar, elapsed)
@@ -934,8 +945,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		--// The Castbar its self
 		self.Castbar = CreateFrame('StatusBar', '$parentCastbar', self)
 		self.Castbar:SetStatusBarTexture(config.statusbar)
-		self.Castbar:SetStatusBarColor(unpack(colors.cast.normal))
-
 		self.Castbar:SetSize(591,38)
 
 		if unit == 'player' then
@@ -943,6 +952,11 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		elseif unit == 'target' then
 			self.Castbar:SetPoint('BOTTOM', self, 'TOP', 0, 76)
 		end
+
+		--// Castbar background
+		self.Castbar.bg = self.Castbar:CreateTexture(nil, 'BACKGROUND')
+		self.Castbar.bg:SetTexture(config.statusbar)
+		self.Castbar.bg:SetAllPoints(self.Castbar)
 
 		--// Add a spark
 		self.Castbar.Spark = self.Castbar:CreateTexture(nil, 'OVERLAY')
@@ -967,7 +981,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Castbar.Time = CreateText(self.Castbar, 16)
 		self.Castbar.Time:SetPoint('RIGHT', -10, 0)
 
-
+		--// Castbar Function Hooks
 		self.Castbar.OnUpdate = CastbarOnUpdate
 		self.Castbar.PostCastStart = PostCastStart
 		self.Castbar.PostChannelStart = PostCastStart
@@ -976,18 +990,11 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Castbar.PostCastFailed = PostCastFailed
 		self.Castbar.PostCastInterrupted = PostCastFailed
 
-
 		--// Castbar Frame
 		local CastbarFrame = CreateFrame('Frame', '$parentFrame', self.Castbar)
 		CastbarFrame:SetPoint('TOPLEFT', -1, 1)
 		CastbarFrame:SetPoint('BOTTOMRIGHT', 1, -1)
 		CastbarFrame:SetFrameLevel(self.Castbar:GetFrameLevel()-1)
-
-		--// Castbar Frame Background
-		local CastbarFrameBackground = CastbarFrame:CreateTexture(nil, 'BACKGROUND')
-		CastbarFrameBackground:SetAllPoints(CastbarFrame)
-		CastbarFrameBackground:SetTexture(config.statusbar)
-		CastbarFrameBackground:SetVertexColor(25/255, 25/255, 25/255)
 
 		--// Castbar Frame Border
 		CreateBorder(CastbarFrame)
