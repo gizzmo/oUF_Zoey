@@ -717,7 +717,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				point.bg:SetAllPoints(point)
 
 				-- // Color
-				local r,g,b = unpack(colors.combo.normal)
+				local r,g,b = unpack(colors.comboPoints.normal)
 
 				point:SetVertexColor(r,g,b)
 				point.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
@@ -726,7 +726,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			end
 
 			--// Last combo point should be red, but not the bg
-			self.CPoints[5]:SetVertexColor(unpack(colors.combo.last))
+			self.CPoints[5]:SetVertexColor(unpack(colors.comboPoints.last))
 
 			--// Toggle the frame when the Druid enters/leaves Cat Form
 			if playerClass == 'DRUID' then
