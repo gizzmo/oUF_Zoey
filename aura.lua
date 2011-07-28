@@ -55,6 +55,7 @@ addAuras({
 	[95223] = 1, -- Recently Mass Resurrected
 	[57724] = 1, -- Sated (Bloodlust)
 	[57723] = 1, -- Exhaustion (Heroism)
+	[15007] = 1, -- Resurrection Sickness
 
 	[87378] = 1, -- Evolution - Corla, Herald of Twilight
 })
@@ -338,7 +339,7 @@ if playerClass == 'HUNTER' then addAuras({
 
 	[82921] = 4, -- Bombardment
 	[51755] = 4, -- Camouflage
-	[15571] = 4, -- Dazed <== Aspect of the Cheetah
+	[15571] = 2, -- Dazed <== Aspect of the Cheetah and Pack
 	[19263] = 4, -- Deterrence
 	[5384]  = 4, -- Feign Death
 	[82926] = 4, -- Fire! <== Lock and Load
