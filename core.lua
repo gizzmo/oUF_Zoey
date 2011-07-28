@@ -1462,7 +1462,6 @@ oUF:Factory(function(self)
 		'UnitFramePanelPartyBackground',
 		'UnitFramePanelPartyPets',
 		'UnitFramePanelFullSizeFocusFrame',
-		'UnitFramePanelRaidStylePartyFrames',
 
 		'CombatPanelTargetOfTarget',
 		'CombatPanelTOTDropDown',
