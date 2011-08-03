@@ -453,27 +453,6 @@ local function StyleHeader(self)
 	--// Highlight
 	HighlightEnable(self)
 
-	--// Heal Prediction
-	local mhpb  = CreateFrame('StatusBar', nil, self.Health)
-	mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
-	mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
-	mhpb:SetWidth(self:GetWidth())
-	mhpb:SetStatusBarTexture(config.statusbar)
-	mhpb:SetStatusBarColor(unpack(colors.HealPrediction.myBar))
-
-	local ohpb = CreateFrame('StatusBar', nil, self.Health)
-	ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
-	ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
-	ohpb:SetWidth(self:GetWidth())
-	ohpb:SetStatusBarTexture(config.statusbar)
-	ohpb:SetStatusBarColor(unpack(colors.HealPrediction.otherBar))
-
-	-- Register it with oUF
-	self.HealPrediction = {
-		myBar = mhpb,
-		otherBar = ohpb
-	}
-
 end
 
 --//----------------------------
@@ -1103,6 +1082,28 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
 	end
 
+	--//----------------------------
+	--// Heal Prediction
+	--//----------------------------
+	local mhpb  = CreateFrame('StatusBar', nil, self.Health)
+	mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
+	mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
+	mhpb:SetWidth(self:GetWidth())
+	mhpb:SetStatusBarTexture(config.statusbar)
+	mhpb:SetStatusBarColor(unpack(colors.HealPrediction.myBar))
+
+	local ohpb = CreateFrame('StatusBar', nil, self.Health)
+	ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
+	ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
+	ohpb:SetWidth(self:GetWidth())
+	ohpb:SetStatusBarTexture(config.statusbar)
+	ohpb:SetStatusBarColor(unpack(colors.HealPrediction.otherBar))
+
+	-- Register it with oUF
+	self.HealPrediction = {
+		myBar = mhpb,
+		otherBar = ohpb
+	}
 end)
 
 oUF:RegisterStyle('ZoeyThin', function(self, unit)
