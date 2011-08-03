@@ -860,7 +860,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self:Tag(PowerText, '[Zoey:Power]')
 	PowerText:SetPoint('RIGHT', self.Power, -1, -1)
 
-	-- // Realm Indicator
+	-- // Guild and Realm Indicator
 	if unit == 'target' or unit == 'party' then
 		local GuildAndRealm = CreateText(Overlay, 12)
 
