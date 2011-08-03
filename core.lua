@@ -398,6 +398,17 @@ local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
 		-- shouldn't actually ever get to this code
 		border:SetVertexColor(1,0,0)
 	end
+
+	if unit == 'player' or button.debuff then
+		button:SetScript('OnMouseUp', function(self, mouseButton)
+			if mouseButton ~= 'RightButton'
+			or InCombatLockdown()
+			then return end
+
+			CancelUnitBuff(unit, index)
+
+		end)
+	end
 end
 
 
