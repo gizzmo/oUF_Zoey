@@ -1344,11 +1344,11 @@ end)
 oUF:Factory(function(self)
 
 	--//----------------------------
-	--// Raid Size 6 - 10
+	--// Raid Size 1 - 10
 	--//----------------------------
 	self:SetActiveStyle('Zoey')
 	self:SpawnHeader('oUF_ZoeyRaid10', nil,
-		'custom [@raid11,exists] hide; [@raid6,exists] show; hide',
+		'custom [@raid11,exists] hide; [@raid1,exists] show; hide',
 
 		'showRaid', true,
 		'yOffset', 21,
