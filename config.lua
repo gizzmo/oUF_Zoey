@@ -86,6 +86,12 @@ oUF.colors.cast =  {
 	uninterruptible = {128/255, 128/255, 128/255}, -- light gray
 }
 
+--// HealPrediction colors
+oUF.colors.HealPrediction = {
+	myBar    = {0/255, 255/255, 128/255, 0.7},
+	otherBar = {0/255, 255/255, 0/255,   0.7}
+}
+
 
 --// Handover
 ns.config = config
