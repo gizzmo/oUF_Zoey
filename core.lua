@@ -1499,15 +1499,17 @@ oUF:Factory(function(self)
 	end
 
 	--// Remove Items from the Rightclick Menu
-	do
-		for k, v in pairs(UnitPopupMenus) do
-			for x, i in pairs(UnitPopupMenus[k]) do
-				if i == 'SET_FOCUS'
-				or i == 'CLEAR_FOCUS'
-				or i == 'MOVE_PLAYER_FRAME'
-				or i == 'MOVE_TARGET_FRAME' then
-					table.remove(UnitPopupMenus[k],x)
-				end
+	for _, menu in pairs( UnitPopupMenus ) do
+		for i = #menu, 1, -1 do
+			local name = menu[ i ]
+			if name == 'SET_FOCUS'
+			or name == 'CLEAR_FOCUS'
+			or name:match( '^LOCK_%u+_FRAME$' )
+			or name:match( '^UNLOCK_%u+_FRAME$' )
+			or name:match( '^MOVE_%u+_FRAME$' )
+			or name:match( '^RESET_%u+_FRAME_POSITION' )
+			then
+				table.remove( menu, i )
 			end
 		end
 	end
