@@ -151,6 +151,66 @@ end
 oUF.TagEvents['Zoey:Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
 
 
+oUF.Tags['Zoey:TargetHealth'] = function(unit)
+	local status = _TAGS['Zoey:Status'](unit)
+	if status then return status end
+
+	local cur = UnitHealth(unit)
+	local max = UnitHealthMax(unit)
+	local class = UnitClass('player')
+
+	local perc = 0
+	if class == 'Hunter' or class == 'Warrior' then
+		perc = 20
+	elseif class == 'Warlock' then
+		perc = 35
+	end
+
+	local SepSh = Short
+	if unit == 'target' or unit == 'player' then
+		SepSh = SeparateDigits
+	end
+
+	if IsMouseOver(unit) then
+		if cur ~= max then
+			return ('|cffff7f7f-%s'):format(SepSh(max - cur))
+		else
+			return ('%s'):format(SepSh(max))
+		end
+	else
+		if cur ~= max then
+			if Percent(cur,max) > perc then
+				return ('%s%%'):format(Percent(cur,max))
+			end
+		end
+	end
+end
+oUF.TagEvents['Zoey:TargetHealth'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
+
+
+oUF.Tags['Zoey:TargetHealth2'] = function(unit)
+	local cur = UnitHealth(unit)
+	local max = UnitHealthMax(unit)
+	local class = UnitClass('player')
+
+	local perc = 0
+	if class == 'Hunter' or class == 'Warrior' then
+		perc = 20
+	elseif class == 'Warlock' then
+		perc = 35
+	end
+
+	if not IsMouseOver(unit) then
+		if cur > 1 then
+			if Percent(cur,max) < perc then
+				return ('|cffe80000%s%%'):format(Percent(cur,max))
+			end
+		end
+	end
+end
+oUF.TagEvents['Zoey:TargetHealth2'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
+
+
 oUF.Tags['Zoey:Power'] = function(unit)
 	local cur = UnitPower(unit)
 	local max = UnitPowerMax(unit)

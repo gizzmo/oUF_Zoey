@@ -841,9 +841,23 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	end
 
 	--// Health Text
-	local HealthText = CreateText(Overlay, 22)
-	self:Tag(HealthText, '[Zoey:Health]')
-	HealthText:SetPoint('RIGHT', self.Health, -1, -1)
+	if unit == 'target' then
+		--[[
+			Target uses two health texts to make the
+			final 20% big and red for Execute and Kill Shot
+		]]
+		local HealthText = CreateText(Overlay, 22)
+		self:Tag(HealthText, '[Zoey:TargetHealth]')
+		HealthText:SetPoint('RIGHT', self.Health, -1, -1)
+
+		local HealthText2 = CreateText(Overlay, 29)
+		self:Tag(HealthText2, '[Zoey:TargetHealth2]')
+		HealthText2:SetPoint('RIGHT', self.Health, -1, -1)
+	else
+		local HealthText = CreateText(Overlay, 22)
+		self:Tag(HealthText, '[Zoey:Health]')
+		HealthText:SetPoint('RIGHT', self.Health, -1, -1)
+	end
 
 	--// Power Text
 	local PowerText = CreateText(Overlay, 12)
