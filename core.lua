@@ -1431,8 +1431,14 @@ oUF:Factory(function(self)
 	TemporaryEnchantFrame:Hide()
 	ConsolidatedBuffs:Hide()
 
-	--// Hide the Compact Raid Frame Manager
+	--// Hide the Compact Raid Frame Manager and Container
+	CompactRaidFrameManager:UnregisterAllEvents()
+	CompactRaidFrameManager.Show = CompactRaidFrameManager.Hide
 	CompactRaidFrameManager:Hide()
+
+	CompactRaidFrameContainer:UnregisterAllEvents()
+	CompactRaidFrameContainer.Show = CompactRaidFrameContainer.Hide
+	CompactRaidFrameContainer:Hide()
 
 	--// Skin the Mirror Timers
 	for i = 1, 3 do
