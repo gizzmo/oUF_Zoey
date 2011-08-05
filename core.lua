@@ -915,7 +915,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.QuestIcon:SetPoint('CENTER', Overlay, 'LEFT', 0, 0)
 	end
 
-	if unit == 'player' or unit == 'party'  or unit == 'raid' then
+	if unit == 'player' or unit == 'party' or unit == 'raid' then
 		--// LFD Role Icon
 		self.LFDRole = Overlay:CreateTexture(nil, 'OVERLAY')
 		self.LFDRole:SetSize(16,16)
