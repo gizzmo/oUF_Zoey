@@ -32,32 +32,6 @@ config.highlight = {
 	alpha = 0.3
 }
 
---// Aura
-config.aura = {
-	texture = [[Interface\AddOns\oUF_Zoey\media\AuraBorder]],
-	rules = {
-		my_buffs      = { friend = 'caster', enemy = 'type'},
-		my_debuffs    = { friend = 'type',   enemy = 'caster'},
-		other_buffs   = { friend = 'caster', enemy = 'type'},
-		other_debuffs = { friend = 'type',   enemy = 'caster'}
-	},
-	colors = {
-		caster = {
-			my    = {0, 1, 0},       -- Green
-			other = {1, 0, 0}        -- Red
-		},
-		type = {
-			Poison  = {0, 1, 0},     -- Green
-			Magic   = {0, 0, 1},     -- Blue
-			Disease = {.55, .15, 0}, -- Brown
-			Curse   = {5, 0, 5},     -- Purple
-			Enrage  = {1, .55, 0},   -- Orange
-			['nil'] = {1, 0, 0}      -- Red
-		},
-	}
-}
-
-
 --//-------------------------
 --// COLORS
 --//-------------------------

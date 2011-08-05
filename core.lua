@@ -43,7 +43,7 @@ end
 
 
 --// Border Creation
-local function CreateBorder(self)
+local function CreateBorder(self, size)
 
 	--// Want to change the Color? Use SetBorderColor
 	local size = config.border.size
@@ -368,35 +368,17 @@ local function PostCreateAuraIcon(iconframe, button)
 	button.cd:SetReverse(true)
 	button.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
 
-	button.border = button:CreateTexture(nil, 'OVERLAY')
-	button.border:SetTexture(config.aura.texture)
-	button.border:SetAllPoints(button)
+	CreateBorder(button)
 end
 
 local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
 	local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, button.filter)
 
-	local border = button.border
-	border:Show()
-
-	local is_mine = caster == 'player' or caster == 'pet'
-	local who = is_mine and 'my' or 'other'
-
-	local rule = who .. '_' .. (iconframe.isDebuff and 'debuffs' or 'buffs')
-
-	local is_friend = UnitIsFriend('player', unit)
-	local color_type  = config.aura.rules[rule][is_friend and 'friend' or 'enemy']
-
-	if color_type == 'type' then
-		local color = config.aura.colors.type[tostring(dtype)]
-		if not color then color = config.aura.colors.type['nil'] end
-		border:SetVertexColor(unpack(color))
-	elseif color_type == 'caster' then
-		border:SetVertexColor(unpack(config.aura.colors.caster[who]))
+	local playerUnits = { player = true, pet = true, vehicle = true }
+	if playerUnits[caster] then
+		button.icon:SetDesaturated(false)
 	else
-		-- Unknown color type just set it to red,
-		-- shouldn't actually ever get to this code
-		border:SetVertexColor(1,0,0)
+		button.icon:SetDesaturated(true)
 	end
 
 	if unit == 'player' or button.debuff then
@@ -406,7 +388,6 @@ local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
 			then return end
 
 			CancelUnitBuff(unit, index)
-
 		end)
 	end
 end
@@ -1033,27 +1014,25 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		--// Buffs
 		self.Buffs = CreateFrame('Frame', nil, self)
 
-		if unit == 'player' then
-			self.Buffs:SetSize(285, 64)
-			self.Buffs:SetPoint('TOP', self, 'BOTTOM', 0, -7)
+		self.Buffs:SetHeight(25)
+		self.Buffs:SetPoint('LEFT', 0, 0)
+		self.Buffs:SetPoint('RIGHT', 0, 0)
 
+		self.Buffs['growth-x'] = 'RIGHT'
+		self.Buffs['spacing'] = 7
+		self.Buffs['size'] = 25
+		self.Buffs['num'] = 9
+
+		if unit == 'player' then
+			self.Buffs:SetPoint('TOP', self, 'BOTTOM', 0, -7)
 			self.Buffs['initialAnchor'] = 'TOPLEFT'
-			self.Buffs['growth-x'] = 'RIGHT'
 			self.Buffs['growth-y'] = 'DOWN'
-			self.Buffs['num'] = 18
 
 		elseif unit == 'target' then
-			self.Buffs:SetSize(285, 26)
 			self.Buffs:SetPoint('BOTTOM', self, 'TOP', 0, 7)
-
 			self.Buffs['initialAnchor'] = 'BOTTOMLEFT'
-			self.Buffs['growth-x'] = 'RIGHT'
 			self.Buffs['growth-y'] = 'UP'
-			self.Buffs['num'] = 9
 		end
-
-		self.Buffs['spacing'] = 2
-		self.Buffs['size'] = 30
 
 		self.Buffs.CustomFilter   = ns.CustomAuraFilters[unit]
 		self.Buffs.PostCreateIcon = PostCreateAuraIcon
@@ -1062,27 +1041,23 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		--// Debuffs
 		self.Debuffs = CreateFrame('Frame', nil, self)
 
-		if unit == 'player' then
-			self.Debuffs:SetSize(139, 38)
-			self.Debuffs:SetPoint('LEFT', self, 'RIGHT', 13, 0)
+		self.Debuffs['growth-x'] = 'RIGHT'
+		self.Debuffs['growth-y'] = 'UP'
+		self.Debuffs['spacing'] = 7
+		self.Debuffs['size'] = 34
 
-			self.Debuffs['initialAnchor'] = 'TOPLEFT'
-			self.Debuffs['growth-x'] = 'RIGHT'
-			self.Debuffs['growth-y'] = 'DOWN'
+		if unit == 'player' then
+			self.Debuffs:SetSize(139, 34)
+			self.Debuffs:SetPoint('LEFT', self, 'RIGHT', 13, 0)
+			self.Debuffs['initialAnchor'] = 'LEFT'
 			self.Debuffs['num'] = 4
 
 		elseif unit == 'target' then
-			self.Debuffs:SetSize(285, 100)
+			self.Debuffs:SetSize(285,75)
 			self.Debuffs:SetPoint('BOTTOM', self.Buffs, 'TOP', 0, 8)
-
 			self.Debuffs['initialAnchor'] = 'BOTTOMLEFT'
-			self.Debuffs['growth-x'] = 'RIGHT'
-			self.Debuffs['growth-y'] = 'UP'
 			self.Debuffs['num'] = 16
 		end
-
-		self.Debuffs['spacing'] = 2
-		self.Debuffs['size'] = 34
 
 		self.Debuffs.CustomFilter   = ns.CustomAuraFilters[unit]
 		self.Debuffs.PostCreateIcon = PostCreateAuraIcon
@@ -1092,7 +1067,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	if unit == 'party' then
 		--// Debuffs
 		self.Debuffs = CreateFrame('Frame', nil, self)
-		self.Debuffs:SetSize(139, 38)
+		self.Debuffs:SetSize(139, 34)
 		self.Debuffs:SetPoint('TOPLEFT', self, 'TOPRIGHT', 13, 0)
 
 		self.Debuffs['initialAnchor'] = 'TOPLEFT'
