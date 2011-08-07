@@ -46,6 +46,10 @@ addAuras({
 	[55502] = 4, -- Lifeblood [Rank 6]
 	[55503] = 4, -- Lifeblood [Rank 7]
 	[74497] = 4, -- Lifeblood [Rank 8]
+
+	--// Toys
+	[98445] = 4, -- Trapped In Amber
+	[55001] = 4, -- Parachute
 })
 
 ------------------------------------------------------------------------
