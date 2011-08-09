@@ -158,7 +158,7 @@ oUF.Tags['Zoey:Health'] = function(unit)
 		return ('%s%%'):format(Percent(cur,max))
 	end
 end
-oUF.TagEvents['Zoey:Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
+oUF.TagEvents['Zoey:Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
 
 
 oUF.Tags['Zoey:TargetHealth'] = function(unit)
@@ -193,7 +193,7 @@ oUF.Tags['Zoey:TargetHealth'] = function(unit)
 		end
 	end
 end
-oUF.TagEvents['Zoey:TargetHealth'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
+oUF.TagEvents['Zoey:TargetHealth'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
 
 
 oUF.Tags['Zoey:TargetHealth2'] = function(unit)
