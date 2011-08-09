@@ -149,15 +149,13 @@ oUF.Tags['Zoey:Health'] = function(unit)
 	end
 
 	if IsMouseOver(unit) then
-		if cur ~= max then
+		if cur < max then
 			return ('|cffff7f7f-%s'):format(SepSh(max - cur))
 		else
 			return ('%s'):format(SepSh(max))
 		end
-	else
-		if cur ~= max then
-			return ('%s%%'):format(Percent(cur,max))
-		end
+	elseif cur < max then
+		return ('%s%%'):format(Percent(cur,max))
 	end
 end
 oUF.TagEvents['Zoey:Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
@@ -184,16 +182,14 @@ oUF.Tags['Zoey:TargetHealth'] = function(unit)
 	end
 
 	if IsMouseOver(unit) then
-		if cur ~= max then
+		if cur < max then
 			return ('|cffff7f7f-%s'):format(SepSh(max - cur))
 		else
 			return ('%s'):format(SepSh(max))
 		end
-	else
-		if cur ~= max then
-			if Percent(cur,max) > perc then
-				return ('%s%%'):format(Percent(cur,max))
-			end
+	elseif cur < max then
+		if Percent(cur,max) > perc then
+			return ('%s%%'):format(Percent(cur,max))
 		end
 	end
 end
@@ -213,10 +209,8 @@ oUF.Tags['Zoey:TargetHealth2'] = function(unit)
 	end
 
 	if not IsMouseOver(unit) then
-		if cur > 1 then
-			if Percent(cur,max) < perc then
-				return ('|cffe80000%s%%'):format(Percent(cur,max))
-			end
+		if Percent(cur,max) < perc then
+			return ('|cffe80000%s%%'):format(Percent(cur,max))
 		end
 	end
 end
