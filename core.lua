@@ -1055,7 +1055,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			self.Debuffs:SetSize(285,75)
 			self.Debuffs:SetPoint('BOTTOM', self.Buffs, 'TOP', 0, 8)
 			self.Debuffs['initialAnchor'] = 'BOTTOMLEFT'
-			self.Debuffs['num'] = 16
+			self.Debuffs['num'] = 14
 		end
 
 		self.Debuffs.CustomFilter   = ns.CustomAuraFilters[unit]
