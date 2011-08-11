@@ -414,6 +414,17 @@ local function CreateText(parent, size, justify)
 	return fs
 end
 
+local function CreateStatusBar(parent, name)
+	local sb = CreateFrame("StatusBar", (name and '$parent'..name or nil), parent)
+	sb:SetStatusBarTexture(config.statusbar)
+
+	sb.bg = sb:CreateTexture(nil, "BACKGROUND")
+	sb.bg:SetTexture(config.statusbar)
+	sb.bg:SetAllPoints(true)
+
+	return sb
+end
+
 --// Things that all the styles use
 local function StyleHeader(self)
 
@@ -486,18 +497,12 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--//----------------------------
 	--// Health Bar
 	--//----------------------------
-	self.Health = CreateFrame('StatusBar', '$parentHealthBar', self)
-	self.Health:SetStatusBarTexture(config.statusbar)
+	self.Health = CreateStatusBar(self, 'HealthBar')
 	self.Health:SetHeight(31)
 	self.Health:SetPoint('TOP', 0, -offset)
 	self.Health:SetPoint('LEFT', 1,0)
 	self.Health:SetPoint('RIGHT',-1,0)
 	self.Health.PostUpdate = PostUpdateHealth
-
-	--// Healthbar Background
-	self.Health.bg = self.Health:CreateTexture(nil, 'BACKGROUND')
-	self.Health.bg:SetTexture(config.statusbar)
-	self.Health.bg:SetAllPoints(self.Health)
 
 	--// Up The Offset Value
 	offset = offset + self.Health:GetHeight() + 1
@@ -505,18 +510,12 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--//----------------------------
 	--// Power Bar
 	--//----------------------------
-	self.Power = CreateFrame('StatusBar', '$parentPowerBar', self)
-	self.Power:SetStatusBarTexture(config.statusbar)
+	self.Power = CreateStatusBar(self,'PowerBar')
 	self.Power:SetHeight(5)
 	self.Power:SetPoint('TOP', 0, -offset)
 	self.Power:SetPoint('LEFT', 1,0)
 	self.Power:SetPoint('RIGHT',-1,0)
 	self.Power.PostUpdate = PostUpdatePower
-
-	--// Powerbar Background
-	self.Power.bg = self.Power:CreateTexture(nil, 'BACKGROUND')
-	self.Power.bg:SetTexture(config.statusbar)
-	self.Power.bg:SetAllPoints(self.Power)
 
 	--// Up The Offset Value
 	offset = offset + self.Power:GetHeight() + 1
@@ -541,9 +540,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			local width = ((self:GetWidth() - 2) / 6) - ((6 - 1) / 6)
 
 			for i = 1, 6 do
-				local rune = CreateFrame('StatusBar', '$parentRune'..i, self.Runes)
-				rune:SetStatusBarTexture(config.statusbar)
+				local rune = CreateStatusBar(self.Runes, 'Rune'..i)
 				rune:SetSize(width, self.Runes:GetHeight())
+				rune.bg.multiplier = 0.4
 
 				if i == 1 then
 					rune:SetPoint('LEFT')
@@ -551,10 +550,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 					rune:SetPoint('LEFT', self.Runes[i-1], 'RIGHT', 1, 0)
 				end
 
-				rune.bg = rune:CreateTexture(nil, 'BACKGROUND')
-				rune.bg:SetTexture(config.statusbar)
-				rune.bg:SetAllPoints(rune)
-				rune.bg.multiplier = 0.4
 
 				self.Runes[i] = rune
 			end
@@ -739,20 +734,14 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Experience Bar
 	--//----------------------------
 	if unit == 'player' and IsAddOnLoaded('oUF_Experience') and UnitLevel(unit) ~= MAX_PLAYER_LEVEL then
-		self.Experience = CreateFrame('Statusbar', '$parentExperience', self)
-		self.Experience:SetStatusBarTexture(config.statusbar)
+		self.Experience = CreateStatusbar(self, 'Experience')
 		self.Experience:SetHeight(5)
 		self.Experience:SetPoint('TOP', 0, -offset)
 		self.Experience:SetPoint('LEFT', 1,0)
 		self.Experience:SetPoint('RIGHT',-1,0)
 
-		self.Experience.Rested = CreateFrame('StatusBar', '$parentRested', self.Experience)
-		self.Experience.Rested:SetStatusBarTexture(config.statusbar)
+		self.Experience.Rested = CreateStatusBar(self.Experience, 'Rested')
 		self.Experience.Rested:SetAllPoints(self.Experience)
-
-		self.Experience.bg = self.Experience.Rested:CreateTexture(nil, 'BACKGROUND')
-		self.Experience.bg:SetAllPoints(self.Experience)
-		self.Experience.bg:SetTexture(config.statusbar)
 
 		--// Resize the main frame when this frame Hides or Shows
 		self.Experience:SetScript('OnShow', BarOnShow)
@@ -775,16 +764,11 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Reputation Bar
 	--//----------------------------
 	if unit == 'player' and IsAddOnLoaded('oUF_Reputation') then
-		self.Reputation = CreateFrame('StatusBar', '$parentReputation', self)
-		self.Reputation:SetStatusBarTexture(config.statusbar)
+		self.Reputation = CreateStatusBar(self, 'Reputation')
 		self.Reputation:SetHeight(5)
 		self.Reputation:SetPoint('TOP', 0, -offset)
 		self.Reputation:SetPoint('LEFT', 1,0)
 		self.Reputation:SetPoint('RIGHT',-1,0)
-
-		self.Reputation.bg = self.Reputation:CreateTexture(nil, 'BACKGROUND')
-		self.Reputation.bg:SetAllPoints(self.Reputation)
-		self.Reputation.bg:SetTexture(config.statusbar)
 
 		--// Resize the main frame when this frame Hides or Shows
 		self.Reputation:SetScript('OnShow', BarOnShow)
@@ -948,8 +932,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	if unit == 'player' or unit == 'target' then
 
 		--// The Castbar its self
-		self.Castbar = CreateFrame('StatusBar', '$parentCastbar', self)
-		self.Castbar:SetStatusBarTexture(config.statusbar)
+		self.Castbar = CreateStatusBar(self, '$parentCastbar')
 		self.Castbar:SetSize(591,38)
 
 		if unit == 'player' then
@@ -957,11 +940,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		elseif unit == 'target' then
 			self.Castbar:SetPoint('BOTTOM', self, 'TOP', 0, 85)
 		end
-
-		--// Castbar background
-		self.Castbar.bg = self.Castbar:CreateTexture(nil, 'BACKGROUND')
-		self.Castbar.bg:SetTexture(config.statusbar)
-		self.Castbar.bg:SetAllPoints(self.Castbar)
 
 		--// Add a spark
 		self.Castbar.Spark = self.Castbar:CreateTexture(nil, 'OVERLAY')
