@@ -197,6 +197,9 @@ oUF.TagEvents['Zoey:TargetHealth'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION
 
 
 oUF.Tags['Zoey:TargetHealth2'] = function(unit)
+	local status = _TAGS['Zoey:Status'](unit)
+	if status then return end
+
 	local cur = UnitHealth(unit)
 	local max = UnitHealthMax(unit)
 	local class = UnitClass('player')
@@ -214,7 +217,7 @@ oUF.Tags['Zoey:TargetHealth2'] = function(unit)
 		end
 	end
 end
-oUF.TagEvents['Zoey:TargetHealth2'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
+oUF.TagEvents['Zoey:TargetHealth2'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
 
 
 oUF.Tags['Zoey:Power'] = function(unit)
