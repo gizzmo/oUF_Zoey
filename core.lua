@@ -277,12 +277,7 @@ local function PostCastStart(Castbar, unit, name, rank, castid)
 	Castbar:SetAlpha(1.0)
 	Castbar.Spark:Show()
 
-	local r,g,b
-	if Castbar.interrupt then
-		r,g,b = unpack(colors.cast.uninterruptible)
-	else
-		r,g,b = unpack(colors.cast.normal)
-	end
+	local r,g,b = unpack(colors.cast.normal)
 
 	--// Set the Castbar color
 	Castbar:SetStatusBarColor(r,g,b)
