@@ -420,8 +420,10 @@ local function CreateStatusBar(parent, name)
 	return sb
 end
 
---// Things that all the styles use
-local function StyleHeader(self)
+--//----------------------------
+--// STYLE FUNCTION
+--//----------------------------
+oUF:RegisterStyle('Zoey', function(self, unit)
 
 	--// Rightclick Menu
 	self.menu = Menu
@@ -449,16 +451,6 @@ local function StyleHeader(self)
 
 	--// Highlight
 	HighlightEnable(self)
-
-end
-
---//----------------------------
---// STYLE FUNCTION
---//----------------------------
-oUF:RegisterStyle('Zoey', function(self, unit)
-
-	-- // Style Header
-	StyleHeader(self)
 
 	-- // Frame Width. Height will be set after bars are created
 	if unit == 'player' or unit == 'target' then
@@ -544,7 +536,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				else
 					rune:SetPoint('LEFT', self.Runes[i-1], 'RIGHT', 1, 0)
 				end
-
 
 				self.Runes[i] = rune
 			end
@@ -1080,8 +1071,32 @@ end)
 
 oUF:RegisterStyle('ZoeyThin', function(self, unit)
 
-	--// StyleHeader
-	StyleHeader(self)
+	--// Rightclick Menu
+	self.menu = Menu
+	self:RegisterForClicks('AnyUp')
+
+	--// Hover Effects
+	self:SetScript('OnEnter', OnEnter)
+	self:SetScript('OnLeave', OnLeave)
+
+	--// Range Fading
+	self.SpellRange = {
+		insideAlpha = 1,
+		outsideAlpha = 0.5
+	}
+
+	--// Background
+	local Background = self:CreateTexture(nil, 'BACKGROUND')
+	Background:SetAllPoints(self)
+	Background:SetTexture(0, 0, 0, 1)
+
+	--// Border
+	CreateBorder(self)
+	self:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', UpdateUnitBorderColor)
+	table.insert(self.__elements, UpdateUnitBorderColor)
+
+	--// Highlight
+	HighlightEnable(self)
 
 	-- // Frame Width. Height will be set after bars are created
 	self:SetWidth(139)
@@ -1154,8 +1169,32 @@ end)
 
 oUF:RegisterStyle('ZoeySquare', function(self, unit)
 
-	--// StyleHeader
-	StyleHeader(self)
+	--// Rightclick Menu
+	self.menu = Menu
+	self:RegisterForClicks('AnyUp')
+
+	--// Hover Effects
+	self:SetScript('OnEnter', OnEnter)
+	self:SetScript('OnLeave', OnLeave)
+
+	--// Range Fading
+	self.SpellRange = {
+		insideAlpha = 1,
+		outsideAlpha = 0.5
+	}
+
+	--// Background
+	local Background = self:CreateTexture(nil, 'BACKGROUND')
+	Background:SetAllPoints(self)
+	Background:SetTexture(0, 0, 0, 1)
+
+	--// Border
+	CreateBorder(self)
+	self:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', UpdateUnitBorderColor)
+	table.insert(self.__elements, UpdateUnitBorderColor)
+
+	--// Highlight
+	HighlightEnable(self)
 
 	-- // Frame Width. Height will be set after bars are created
 	self:SetWidth(53)
