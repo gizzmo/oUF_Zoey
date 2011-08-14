@@ -273,17 +273,15 @@ oUF.TagEvents['Zoey:Rep'] = 'UPDATE_FACTION'
 
 
 oUF.Tags['Zoey:Guild'] = function(unit)
-	if IsInGuild(unit) then
-		local GuildName = GetGuildInfo(unit) or ''
-		local r,g,b = 255,255,255
+	local GuildName = GetGuildInfo(unit) or ''
+	local r,g,b = 255,255,255
 
-		if GuildName ~= '' then
-			if UnitIsInMyGuild(unit) then
-				r,g,b = 195,27,255
-			end
-
-			return ('|cff%02x%02x%02x%s'):format(r,g,b, '<'..GuildName..'>')
+	if GuildName ~= '' then
+		if UnitIsInMyGuild(unit) then
+			r,g,b = 195,27,255
 		end
+
+		return ('|cff%02x%02x%02x%s'):format(r,g,b, '<'..GuildName..'>')
 	end
 end
 oUF.TagEvents['Zoey:Guild'] = ''
