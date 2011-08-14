@@ -1328,6 +1328,8 @@ oUF:Factory(function(self)
 		'yOffset', 101,
 		'oUF-initialConfigFunction', [[
 			self:SetAttribute('unitsuffix', 'target')
+			self:SetWidth( 139 )
+			self:SetHeight( 93 )
 		]],
 
 		'point', 'BOTTOM'
@@ -1342,6 +1344,8 @@ oUF:Factory(function(self)
 		'yOffset', 121,
 		'oUF-initialConfigFunction', [[
 			self:SetAttribute('unitsuffix', 'pet')
+			self:SetWidth( 139 )
+			self:SetHeight( 19 )
 		]],
 
 		'point', 'BOTTOM'
@@ -1366,6 +1370,11 @@ oUF:Factory(function(self)
 			'showRaid', true,
 			'yOffset', 10.2,
 			'groupFilter', tostring(i),
+
+			'oUF-initialConfigFunction', [[
+				self:SetWidth( 139 )
+				self:SetHeight( 39 )
+			]],
 
 			'point', 'BOTTOM'
 		)
@@ -1394,6 +1403,11 @@ oUF:Factory(function(self)
 			'groupFilter', tostring(i),
 			'sortDir', 'DESC',
 
+			'oUF-initialConfigFunction', [[
+				self:SetWidth( 139 )
+				self:SetHeight( 19 )
+			]],
+
 			'point', 'BOTTOM'
 		)
 
@@ -1418,6 +1432,11 @@ oUF:Factory(function(self)
 			'showRaid', true,
 			'xOffset', 10,
 			'groupFilter', tostring(i),
+
+			'oUF-initialConfigFunction', [[
+				self:SetWidth( 53 )
+				self:SetHeight( 33 )
+			]],
 
 			'point', 'LEFT'
 		)
