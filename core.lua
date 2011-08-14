@@ -1082,7 +1082,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 	--// Range Fading
 	self.SpellRange = {
 		insideAlpha = 1,
-		outsideAlpha = 0.5
+		outsideAlpha = 0.3
 	}
 
 	--// Background
@@ -1180,7 +1180,7 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
 	--// Range Fading
 	self.SpellRange = {
 		insideAlpha = 1,
-		outsideAlpha = 0.5
+		outsideAlpha = 0.3
 	}
 
 	--// Background
