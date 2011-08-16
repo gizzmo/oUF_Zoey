@@ -1287,28 +1287,34 @@ end)
 --//----------------------------
 --// SPAWN UNITS
 --//----------------------------
+local u = {}
+local Spawn = function(unit)
+	local object = oUF:Spawn(unit)
+	u[unit:lower()] = object
+	return object
+end
+
 oUF:Factory(function(self)
 
-	local u = self.units
 	local offset = 15
 
 	--// Player
-	self:Spawn('Player'				):SetPoint('TOP', UIParent, 'CENTER', 0, -302)
+	Spawn('Player'				):SetPoint('TOP', UIParent, 'CENTER', 0, -302)
 
 	--// Player Pet
-	self:Spawn('Pet'				):SetPoint('TOPRIGHT', u.player, 'TOPLEFT', -offset, 0)
-	self:Spawn('PetTarget'			):SetPoint('BOTTOM', u.pet, 'TOP', 0, offset)
-	self:Spawn('PetTargetTarget'	):SetPoint('BOTTOM', u.pettarget, 'TOP', 0, offset)
+	Spawn('Pet'					):SetPoint('TOPRIGHT', u.player, 'TOPLEFT', -offset, 0)
+	Spawn('PetTarget'			):SetPoint('BOTTOM', u.pet, 'TOP', 0, offset)
+	Spawn('PetTargetTarget'		):SetPoint('BOTTOM', u.pettarget, 'TOP', 0, offset)
 
 	--// Targets
-	self:Spawn('Target'				):SetPoint('BOTTOM', u.player, 'TOP', 0, offset)
-	self:Spawn('TargetTarget'		):SetPoint('TOPLEFT', u.target, 'TOPRIGHT', offset, 0)
-	self:Spawn('TargetTargetTarget'	):SetPoint('TOP', u.targettarget, 'BOTTOM', 0, -offset)
+	Spawn('Target'				):SetPoint('BOTTOM', u.player, 'TOP', 0, offset)
+	Spawn('TargetTarget'		):SetPoint('TOPLEFT', u.target, 'TOPRIGHT', offset, 0)
+	Spawn('TargetTargetTarget'	):SetPoint('TOP', u.targettarget, 'BOTTOM', 0, -offset)
 
 	--// Focus
-	self:Spawn('Focus'				):SetPoint('TOPRIGHT', u.pet, 'TOPLEFT', -offset, 0)
-	self:Spawn('FocusTarget'		):SetPoint('BOTTOM', u.focus, 'TOP', 0, offset)
-	self:Spawn('FocusTargetTarget'	):SetPoint('BOTTOM', u.focustarget, 'TOP', 0, offset)
+	Spawn('Focus'				):SetPoint('TOPRIGHT', u.pet, 'TOPLEFT', -offset, 0)
+	Spawn('FocusTarget'			):SetPoint('BOTTOM', u.focus, 'TOP', 0, offset)
+	Spawn('FocusTargetTarget'	):SetPoint('BOTTOM', u.focustarget, 'TOP', 0, offset)
 
 	--//----------------------------
 	--// Party
