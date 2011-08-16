@@ -257,6 +257,7 @@ oUF.TagEvents['Zoey:Exp'] = 'PLAYER_XP_UPDATE'
 
 oUF.Tags['Zoey:Rep'] = function(unit)
 	local name, standingID, min, max, cur = GetWatchedFactionInfo(unit)
+	local cur, max = cur-min, max-min
 
 	--// if name is a string then we are tracking something
 	if type(name) == 'string' then
