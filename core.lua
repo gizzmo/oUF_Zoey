@@ -9,39 +9,6 @@ local colors = oUF.colors
 --// FUNCTIONS
 --//----------------------------
 
---// Mouse hovering
-ns.Mouse_Focus = nil
-local function OnEnter(self)
-	ns.Mouse_Focus = self
-	UnitFrame_OnEnter(self)
-
-	for _, fs in ipairs( self.__tags ) do fs:UpdateTag() end
-end
-
-local function OnLeave(self)
-	ns.Mouse_Focus = nil
-	UnitFrame_OnLeave(self)
-
-	for _, fs in ipairs( self.__tags ) do fs:UpdateTag() end
-end
-
-local function Menu(self)
-	local unit = self.unit:sub(1, -2)
-	if unit == 'party' or unit == 'partypet' then
-		ToggleDropDownMenu(1, nil, _G['PartyMemberFrame' .. self.id .. 'DropDown'], 'cursor', 0, 0)
-	else
-		local cunit = self.unit:gsub('^%l', string.upper)
-		if cunit == 'Vehicle' then
-			cunit = 'Pet'
-		end
-		if _G[cunit .. 'FrameDropDown'] then
-			ToggleDropDownMenu(1, nil, _G[cunit .. 'FrameDropDown'], 'cursor', 0, 0)
-		end
-	end
-end
-
-
-
 --// Border Creation
 local function CreateBorder(self, size)
 
@@ -388,7 +355,38 @@ local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
 end
 
 
+
 --// Other Functions
+ns.Mouse_Focus = nil
+local function OnEnter(self)
+	ns.Mouse_Focus = self
+	UnitFrame_OnEnter(self)
+
+	for _, fs in ipairs( self.__tags ) do fs:UpdateTag() end
+end
+
+local function OnLeave(self)
+	ns.Mouse_Focus = nil
+	UnitFrame_OnLeave(self)
+
+	for _, fs in ipairs( self.__tags ) do fs:UpdateTag() end
+end
+
+local function Menu(self)
+	local unit = self.unit:sub(1, -2)
+	if unit == 'party' or unit == 'partypet' then
+		ToggleDropDownMenu(1, nil, _G['PartyMemberFrame' .. self.id .. 'DropDown'], 'cursor', 0, 0)
+	else
+		local cunit = self.unit:gsub('^%l', string.upper)
+		if cunit == 'Vehicle' then
+			cunit = 'Pet'
+		end
+		if _G[cunit .. 'FrameDropDown'] then
+			ToggleDropDownMenu(1, nil, _G[cunit .. 'FrameDropDown'], 'cursor', 0, 0)
+		end
+	end
+end
+
 local function BarOnHide(bar)
 	local parent = bar:GetParent()
 	parent:SetHeight(parent:GetHeight() - bar:GetHeight() - 1)
