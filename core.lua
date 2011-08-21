@@ -108,7 +108,6 @@ local function UpdateUnitBorderColor(self, r,g,b)
 end
 
 
-
 --// Mouseover and Target Highlighting
 local function HighlightShouldShow(self)
 
@@ -175,7 +174,6 @@ local function HighlightEnable(self)
 end
 
 
-
 --// Health and Power, mostly for setting color
 local function PostUpdateHealth(Health, unit, min, max)
 	local r,g,b,t
@@ -228,7 +226,6 @@ local function PostUpdatePower(Power, unit, min, max)
 end
 
 
-
 --// Reputation bar update
 local function ReputationPostUpdate(Reputation, unit, name, standing, min, max, value)
 	local r,g,b = unpack(colors.reaction[standing])
@@ -236,7 +233,6 @@ local function ReputationPostUpdate(Reputation, unit, name, standing, min, max, 
 	Reputation:SetStatusBarColor(r,g,b)
 	Reputation.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
 end
-
 
 
 --// Castbar Functions
@@ -353,7 +349,6 @@ local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
 		end)
 	end
 end
-
 
 
 --// Other Functions
@@ -1105,18 +1100,12 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 	--//----------------------------
 	--// Health Bar
 	--//----------------------------
-	self.Health = CreateFrame('StatusBar', '$parentHealthBar', self)
-	self.Health:SetStatusBarTexture(config.statusbar)
+	self.Health = CreateStatusBar(self, 'HealthBar')
 	self.Health:SetHeight(17)
 	self.Health:SetPoint('TOP', 0, -offset)
 	self.Health:SetPoint('LEFT', 1,0)
 	self.Health:SetPoint('RIGHT',-1,0)
 	self.Health.PostUpdate = PostUpdateHealth
-
-	--// Healthbar Background
-	self.Health.bg = self.Health:CreateTexture(nil, 'BACKGROUND')
-	self.Health.bg:SetTexture(config.statusbar)
-	self.Health.bg:SetAllPoints(self.Health)
 
 	--// Up The Offset Value
 	offset = offset + self.Health:GetHeight() + 1
@@ -1203,18 +1192,12 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
 	--//----------------------------
 	--// Health Bar
 	--//----------------------------
-	self.Health = CreateFrame('StatusBar', '$parentHealthBar', self)
-	self.Health:SetStatusBarTexture(config.statusbar)
+	self.Health = CreateStatusBar(self, 'HealthBar')
 	self.Health:SetHeight(25)
 	self.Health:SetPoint('TOP', 0, -offset)
 	self.Health:SetPoint('LEFT', 1,0)
 	self.Health:SetPoint('RIGHT',-1,0)
 	self.Health.PostUpdate = PostUpdateHealth
-
-	--// Healthbar Background
-	self.Health.bg = self.Health:CreateTexture(nil, 'BACKGROUND')
-	self.Health.bg:SetTexture(config.statusbar)
-	self.Health.bg:SetAllPoints(self.Health)
 
 	--// Up The Offset Value
 	offset = offset + self.Health:GetHeight() + 1
@@ -1222,18 +1205,12 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
 	--//----------------------------
 	--// Power Bar
 	--//----------------------------
-	self.Power = CreateFrame('StatusBar', '$parentPowerBar', self)
-	self.Power:SetStatusBarTexture(config.statusbar)
+	self.Power = CreateStatusBar(self, 'PowerBar')
 	self.Power:SetHeight(5)
 	self.Power:SetPoint('TOP', 0, -offset)
 	self.Power:SetPoint('LEFT', 1,0)
 	self.Power:SetPoint('RIGHT',-1,0)
 	self.Power.PostUpdate = PostUpdatePower
-
-	--// Powerbar Background
-	self.Power.bg = self.Power:CreateTexture(nil, 'BACKGROUND')
-	self.Power.bg:SetTexture(config.statusbar)
-	self.Power.bg:SetAllPoints(self.Power)
 
 	--// Up The Offset Value
 	offset = offset + self.Power:GetHeight() + 1

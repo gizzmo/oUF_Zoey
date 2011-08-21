@@ -121,6 +121,7 @@ oUF.Tags['Zoey:Level'] = function(unit)
 end
 oUF.TagEvents['Zoey:Level'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
 
+
 oUF.Tags['Zoey:Status'] = function(unit)
 	--// Status
 	if not UnitIsConnected(unit)  then
