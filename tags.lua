@@ -72,6 +72,36 @@ local function Percent(cur, max)
 	end
 end
 
+local tt = CreateFrame("GameTooltip", 'ZoeyTooltip', UIParent, 'GameTooltipTemplate')
+tt:SetOwner(UIParent, "ANCHOR_NONE")
+
+local nextTime, lastUnit, lastName = 0
+
+local function updateTT(unit)
+	local name = UnitName(unit)
+	local time = GetTime()
+	if lastUnit == unit and lastName == name and nextTime < time then
+		return
+	end
+	lastUnit = unit
+	lastName = name
+	nextTime = time + 1
+	tt:ClearLines()
+	tt:SetUnit(unit)
+	if not tt:IsOwned(UIParent) then
+		tt:SetOwner(UIParent, "ANCHOR_NONE")
+	end
+end
+
+local function FigureNPCGuild(unit)
+	updateTT(unit)
+	local text = ZoeyTooltipTextLeft2:GetText()
+	if not text or text:find(LEVEL) then
+		return nil
+	end
+	return text
+end
+
 oUF.Tags['Zoey:Name'] = function(unit)
 	local name = UnitName(unit)
 	local _, class = UnitClass(unit)
@@ -275,10 +305,13 @@ oUF.TagEvents['Zoey:Rep'] = 'UPDATE_FACTION'
 
 
 oUF.Tags['Zoey:Guild'] = function(unit)
-	local GuildName = GetGuildInfo(unit) or ''
 	local r,g,b = 255,255,255
 
-	if GuildName ~= '' then
+	local GuildName = UnitIsPlayer(unit) and
+		GetGuildInfo(unit) or
+		FigureNPCGuild(unit)
+
+	if GuildName then
 		if UnitIsInMyGuild(unit) then
 			r,g,b = 195,27,255
 		end
