@@ -1015,6 +1015,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Buffs.CustomFilter   = ns.CustomAuraFilters[unit]
 		self.Buffs.PostCreateIcon = PostCreateAuraIcon
 		self.Buffs.PostUpdateIcon = PostUpdateAuraIcon
+	end
+
+	if unit == 'player' or unit == 'target' or unit == 'party' then
 
 		--// Debuffs
 		self.Debuffs = CreateFrame('Frame', nil, self)
@@ -1024,7 +1027,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Debuffs['spacing'] = 7
 		self.Debuffs['size'] = 34
 
-		if unit == 'player' then
+		if unit == 'player' or unit == 'party' then
 			self.Debuffs:SetSize(139, 34)
 			self.Debuffs:SetPoint('LEFT', self, 'RIGHT', 13, 0)
 			self.Debuffs['initialAnchor'] = 'LEFT'
@@ -1036,24 +1039,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 			self.Debuffs['initialAnchor'] = 'BOTTOMLEFT'
 			self.Debuffs['num'] = 14
 		end
-
-		self.Debuffs.CustomFilter   = ns.CustomAuraFilters[unit]
-		self.Debuffs.PostCreateIcon = PostCreateAuraIcon
-		self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
-	end
-
-	if unit == 'party' then
-		--// Debuffs
-		self.Debuffs = CreateFrame('Frame', nil, self)
-		self.Debuffs:SetSize(139, 34)
-		self.Debuffs:SetPoint('TOPLEFT', self, 'TOPRIGHT', 13, 0)
-
-		self.Debuffs['initialAnchor'] = 'TOPLEFT'
-		self.Debuffs['growth-x'] = 'RIGHT'
-		self.Debuffs['growth-y'] = 'DOWN'
-		self.Debuffs['num'] = 4
-		self.Debuffs['spacing'] = 2
-		self.Debuffs['size'] = 34
 
 		self.Debuffs.CustomFilter   = ns.CustomAuraFilters[unit]
 		self.Debuffs.PostCreateIcon = PostCreateAuraIcon
