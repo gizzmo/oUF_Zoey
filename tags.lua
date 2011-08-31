@@ -319,7 +319,7 @@ oUF.Tags['Zoey:Guild'] = function(unit)
 		return ('|cff%02x%02x%02x%s'):format(r,g,b, '<'..GuildName..'>')
 	end
 end
-oUF.TagEvents['Zoey:Guild'] = ''
+oUF.TagEvents['Zoey:Guild'] = 'UNIT_NAME_UPDATE'
 
 
 oUF.Tags['Zoey:RealmIndicator'] = function(unit)
