@@ -881,26 +881,27 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	end
 
 	if unit == 'player' or unit == 'party' or unit == 'raid' then
-		--// LFD Role Icon
-		self.LFDRole = Overlay:CreateTexture(nil, 'OVERLAY')
-		self.LFDRole:SetSize(16,16)
-		self.LFDRole:SetPoint('CENTER', Overlay, 'TOPRIGHT', 1, 0)
-
 		--// Ready Check icon
 		self.ReadyCheck = Overlay:CreateTexture(nil, 'OVERLAY')
 		self.ReadyCheck:SetSize(20,20)
 		self.ReadyCheck:SetPoint('CENTER', Overlay, 'CENTER', 0, 0)
 
-		--// Leader Icon
-		self.Leader = Overlay:CreateTexture(nil, 'OVERLAY')
-		self.Leader:SetSize(16,16)
-		self.Leader:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 3)
-
-		--// Assistant Icon
-		self.Assistant = Overlay:CreateTexture(nil, "OVERLAY")
-		self.Assistant:SetSize(16,16)
-		self.Assistant:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 3)
 	end
+
+	--// LFD Role Icon
+	self.LFDRole = Overlay:CreateTexture(nil, 'OVERLAY')
+	self.LFDRole:SetSize(15,15)
+	self.LFDRole:SetPoint('CENTER', Overlay, 'TOPRIGHT', 1, 0)
+
+	--// Leader Icon
+	self.Leader = Overlay:CreateTexture(nil, 'OVERLAY')
+	self.Leader:SetSize(15,15)
+	self.Leader:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 3)
+
+	--// Assistant Icon
+	self.Assistant = Overlay:CreateTexture(nil, "OVERLAY")
+	self.Assistant:SetSize(15,15)
+	self.Assistant:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 3)
 
 	--// Raid Icon (Skull, Cross, Square ...)
 	self.RaidIcon = Overlay:CreateTexture(nil, 'OVERLAY')
@@ -1123,18 +1124,28 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 	--//----------------------------
 	--// Leader Icon
 	self.Leader = Overlay:CreateTexture(nil, 'OVERLAY')
-	self.Leader:SetSize(10,10)
+	self.Leader:SetSize(13,13)
 	self.Leader:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 0)
+
+	--// Assistant Icon
+	self.Assistant = Overlay:CreateTexture(nil, "OVERLAY")
+	self.Assistant:SetSize(13,13)
+	self.Assistant:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 0)
 
 	--// Ready Check icon
 	self.ReadyCheck = Overlay:CreateTexture(nil, 'OVERLAY')
-	self.ReadyCheck:SetSize(14, 14)
+	self.ReadyCheck:SetSize(16,16)
 	self.ReadyCheck:SetPoint('CENTER', Overlay, 'BOTTOM', 0, 0)
 
 	--// Raid Icon (Skull, Cross, Square ...)
 	self.RaidIcon = Overlay:CreateTexture(nil, 'OVERLAY')
 	self.RaidIcon:SetSize(16,16)
 	self.RaidIcon:SetPoint('CENTER', Overlay, 'LEFT', 0, 0)
+
+	--// LFD Role Icon
+	self.LFDRole = Overlay:CreateTexture(nil, 'OVERLAY')
+	self.LFDRole:SetSize(13,13)
+	self.LFDRole:SetPoint('CENTER', Overlay, 'TOPRIGHT', 0, 0)
 
 end)
 
