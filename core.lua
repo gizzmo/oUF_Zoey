@@ -1029,7 +1029,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 		if unit == 'player' or unit == 'party' then
 			self.Debuffs:SetSize(139, 34)
-			self.Debuffs:SetPoint('LEFT', self, 'RIGHT', 13, 0)
+			self.Debuffs:SetPoint('TOPLEFT', self, 'TOPRIGHT', 13, 0)
 			self.Debuffs['initialAnchor'] = 'LEFT'
 			self.Debuffs['num'] = 4
 
