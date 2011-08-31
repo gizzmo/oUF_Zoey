@@ -62,3 +62,11 @@ oUF.colors.cast =  {
 
 --// Handover
 ns.config = config
+
+--// Register Some stuf with Shared Media
+if LibStub then
+	local LSM = LibStub("LibSharedMedia-3.0")
+	LSM:Register("border", "thinsquare", config.border.texture)
+	LSM:Register("statusbar", "Armory", config.statusbar)
+	LSM:Register("font", "DorisPP", config.font)
+end
