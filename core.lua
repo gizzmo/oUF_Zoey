@@ -1269,7 +1269,7 @@ oUF:Factory(function(self)
 	local offset = 15
 
 	--// Player
-	Spawn('Player'				):SetPoint('TOP', UIParent, 'CENTER', 0, -302)
+	Spawn('Player'				):SetPoint('TOP', UIParent, 'CENTER', 0, -382)
 
 	--// Player Pet
 	Spawn('Pet'					):SetPoint('TOPRIGHT', u.player, 'TOPLEFT', -offset, 0)
@@ -1281,8 +1281,8 @@ oUF:Factory(function(self)
 	Spawn('TargetTarget'		):SetPoint('TOPLEFT', u.target, 'TOPRIGHT', offset, 0)
 	Spawn('TargetTargetTarget'	):SetPoint('TOP', u.targettarget, 'BOTTOM', 0, -offset)
 
-	--// Focus
-	Spawn('Focus'				):SetPoint('TOPRIGHT', u.pet, 'TOPLEFT', -offset, 0)
+	--// Focus  -- ofset = (285/2) + 15 + 139 + (139/2)
+	Spawn('Focus'				):SetPoint('TOP', UIParent, 'CENTER', -381, -302)
 	Spawn('FocusTarget'			):SetPoint('BOTTOM', u.focus, 'TOP', 0, offset)
 	Spawn('FocusTargetTarget'	):SetPoint('BOTTOM', u.focustarget, 'TOP', 0, offset)
 
