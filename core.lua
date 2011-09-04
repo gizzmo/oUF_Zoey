@@ -735,7 +735,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Experience Bar
 	--//----------------------------
 	if unit == 'player' and IsAddOnLoaded('oUF_Experience') and UnitLevel(unit) ~= MAX_PLAYER_LEVEL then
-		self.Experience = CreateStatusbar(self, 'Experience')
+		self.Experience = CreateStatusBar(self, 'Experience')
 		self.Experience:SetHeight(5)
 		self.Experience:SetPoint('TOP', 0, -offset)
 		self.Experience:SetPoint('LEFT', 1,0)
