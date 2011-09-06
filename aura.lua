@@ -61,6 +61,7 @@ addAuras({
 	[57724] = 1, -- Sated (Bloodlust)
 	[57723] = 1, -- Exhaustion (Heroism)
 	[15007] = 1, -- Resurrection Sickness
+	[26013] = 1, -- Deserter
 
 	[87378] = 1, -- Evolution - Corla, Herald of Twilight
 })
