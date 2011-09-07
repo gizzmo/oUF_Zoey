@@ -934,11 +934,11 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	if unit == 'player' or unit == 'target' then
 
 		--// The Castbar its self
-		self.Castbar = CreateStatusBar(self, '$parentCastbar')
+		self.Castbar = CreateStatusBar(self, 'Castbar')
 		self.Castbar:SetSize(591,38)
 
 		if unit == 'player' then
-			self.Castbar:SetPoint('TOP', self, 'BOTTOM', 0, -39)
+			self.Castbar:SetPoint('TOP', self, 'BOTTOM', 0, -41)
 		elseif unit == 'target' then
 			self.Castbar:SetPoint('BOTTOM', self, 'TOP', 0, 85)
 		end
