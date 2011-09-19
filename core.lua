@@ -326,6 +326,9 @@ local function PostCreateAuraIcon(iconframe, button)
 	button.cd:SetReverse(true)
 	button.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
 
+	button.count:ClearAllPoints()
+	button.count:SetPoint('CENTER', button, 'BOTTOMRIGHT', -1, 0)
+
 	CreateBorder(button)
 end
 
