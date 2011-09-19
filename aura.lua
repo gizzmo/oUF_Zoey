@@ -564,6 +564,8 @@ if playerClass == 'SHAMAN' then addAuras({
 
 	[974]   = 2, -- Earth Shield
 	[61295] = 2, -- Riptide
+	[324]   = 4, -- Lightning Shield
+	[52127] = 4, -- Water Shield
 }) end
 
 ------------------------------------------------------------------------
