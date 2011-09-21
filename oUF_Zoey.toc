@@ -4,7 +4,7 @@
 ## Author: Gizzmo
 ## Version: 0.1
 ## RequiredDeps: oUF
-## OptionalDeps: oUF_SpellRange, oUF_Experience
+## OptionalDeps: oUF_SpellRange, oUF_Experience, oUF_Reputation
 ## X-eMail: justgiz@gmail.com
 ## X-Category: UnitFrame
 
