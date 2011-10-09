@@ -325,11 +325,11 @@ if playerClass == 'HUNTER' then addAuras({
 	[20736] = 2, -- Distracting Shot
 	[64803] = 2, -- Entrapment
 	[53301] = 2, -- Explosive Shot
-	[13812] = 2, -- Explosive Trap -- NEEDS CHECK 43446
-	[3355]  = 2, -- Freezing Trap -- NEEDS CHECK 31932 43415 55041
+	[13812] = 2, -- Explosive Trap
+	[3355]  = 2, -- Freezing Trap
 	[1130]  = 1, -- Hunter's Mark
 	[13810] = 2, -- Ice Trap
-	[13797] = 2, -- Immolation Trap -- NEEDS CHECK 51740
+	[13797] = 2, -- Immolation Trap
 	[24394] = 2, -- Intimidation
 	[88691] = 1, -- Marked for Death
 	[63468] = 2, -- Piercing Shots
@@ -356,7 +356,8 @@ if playerClass == 'HUNTER' then addAuras({
 	[34477] = 4, -- Misdirection
 	[3045]  = 4, -- Rapid Fire
 	[35099] = 4, -- Rapid Killing
---	[82925] = 4, -- Ready, Set, Aim...
+	[82925] = 4, -- Ready, Set, Aim...
+	[53220] = 4, -- Improved Steady Shot
 
 	[19574] = 2, -- Bestial Wrath
 	[1539]  = 2, -- Feed Pet

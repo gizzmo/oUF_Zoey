@@ -941,7 +941,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Castbar:SetSize(591,38)
 
 		if unit == 'player' then
-			self.Castbar:SetPoint('TOP', self, 'BOTTOM', 0, -41)
+			self.Castbar:SetPoint('TOP', self, 'BOTTOM', 0, -44)
 		elseif unit == 'target' then
 			self.Castbar:SetPoint('BOTTOM', self, 'TOP', 0, 85)
 		end
@@ -1001,9 +1001,10 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Buffs:SetPoint('RIGHT', 0, 0)
 
 		self.Buffs['growth-x'] = 'RIGHT'
-		self.Buffs['spacing'] = 7
+		self.Buffs['spacing'] = 7.5
 		self.Buffs['size'] = 25
 		self.Buffs['num'] = 9
+
 
 		if unit == 'player' then
 			self.Buffs:SetPoint('TOP', self, 'BOTTOM', 0, -7)
@@ -1028,7 +1029,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 		self.Debuffs['growth-x'] = 'RIGHT'
 		self.Debuffs['growth-y'] = 'UP'
-		self.Debuffs['spacing'] = 7
+		self.Debuffs['spacing'] = 7.5
 		self.Debuffs['size'] = 34
 
 		if unit == 'player' or unit == 'party' then
@@ -1039,7 +1040,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 		elseif unit == 'target' then
 			self.Debuffs:SetSize(285,75)
-			self.Debuffs:SetPoint('BOTTOM', self.Buffs, 'TOP', 0, 8)
+			self.Debuffs:SetPoint('BOTTOM', self.Buffs, 'TOP', 0, 9)
 			self.Debuffs['initialAnchor'] = 'BOTTOMLEFT'
 			self.Debuffs['num'] = 14
 		end
