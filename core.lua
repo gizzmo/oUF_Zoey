@@ -738,14 +738,20 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Experience Bar
 	--//----------------------------
 	if unit == 'player' and IsAddOnLoaded('oUF_Experience') and UnitLevel(unit) ~= MAX_PLAYER_LEVEL then
-		self.Experience = CreateStatusBar(self, 'Experience')
+		self.Experience = CreateFrame('Statusbar', '$parentExperience', self)
+		self.Experience:SetStatusBarTexture(config.statusbar)
 		self.Experience:SetHeight(5)
 		self.Experience:SetPoint('TOP', 0, -offset)
 		self.Experience:SetPoint('LEFT', 1,0)
 		self.Experience:SetPoint('RIGHT',-1,0)
 
-		self.Experience.Rested = CreateStatusBar(self.Experience, 'Rested')
+		self.Experience.Rested = CreateFrame('StatusBar', '$parentRested', self.Experience)
+		self.Experience.Rested:SetStatusBarTexture(config.statusbar)
 		self.Experience.Rested:SetAllPoints(self.Experience)
+
+		self.Experience.bg = self.Experience.Rested:CreateTexture(nil, 'BACKGROUND')
+		self.Experience.bg:SetAllPoints(self.Experience)
+		self.Experience.bg:SetTexture(config.statusbar)
 
 		--// Resize the main frame when this frame Hides or Shows
 		self.Experience:SetScript('OnShow', BarOnShow)
