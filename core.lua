@@ -4,6 +4,8 @@ local addon, ns = ...
 local config = ns.config
 local colors = oUF.colors
 
+local playerClass = select(2, UnitClass('player'))
+local playerUnits = { player = true, pet = true, vehicle = true }
 
 --//----------------------------
 --// FUNCTIONS
@@ -335,7 +337,6 @@ end
 local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
 	local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, button.filter)
 
-	local playerUnits = { player = true, pet = true, vehicle = true }
 	if playerUnits[caster] then
 		button.icon:SetDesaturated(false)
 	else
@@ -529,7 +530,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--// Class Bars
 	--//----------------------------
 	if unit == 'player' then
-		local playerClass = select(2, UnitClass('player'))
 
 		--//----------------------------
 		--// Death Knight Runes
@@ -666,7 +666,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		end
 
 	elseif unit == 'target' then
-		local playerClass = select(2, UnitClass('player'))
 
 		--//----------------------------
 		--// Combo Points
