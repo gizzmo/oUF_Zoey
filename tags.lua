@@ -216,7 +216,7 @@ oUF.Tags['Zoey:TargetHealth'] = function(unit)
 		end
 	end
 end
-oUF.TagEvents['Zoey:TargetHealth'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
+oUF.TagEvents['Zoey:TargetHealth'] = oUF.TagEvents['Zoey:Health']
 
 
 oUF.Tags['Zoey:TargetHealth2'] = function(unit)
@@ -232,7 +232,7 @@ oUF.Tags['Zoey:TargetHealth2'] = function(unit)
 		end
 	end
 end
-oUF.TagEvents['Zoey:TargetHealth2'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
+oUF.TagEvents['Zoey:TargetHealth2'] = oUF.TagEvents['Zoey:Health']
 
 
 oUF.Tags['Zoey:Power'] = function(unit)
