@@ -8,4 +8,7 @@
 ## X-eMail: justgiz@gmail.com
 ## X-Category: UnitFrame
 
-load.xml
+config.lua
+aura.lua
+core.lua
+tags.lua
