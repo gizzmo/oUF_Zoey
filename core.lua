@@ -1054,6 +1054,30 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		self.Debuffs.PostCreateIcon = PostCreateAuraIcon
 		self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
 	end
+
+	--//----------------------------
+	--// Heal Prediction Bar
+	--//----------------------------
+	local mhpb = CreateFrame('StatusBar', nil, self.Health)
+	mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
+	mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
+	mhpb:SetWidth(self:GetWidth())
+	mhpb:SetStatusBarTexture(config.statusbar)
+	mhpb:SetStatusBarColor(0, 1, 0, 0.25) -- TODO: tweek colors
+
+	local ohpb = CreateFrame('StatusBar', nil, self.Health)
+	ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
+	ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
+	ohpb:SetWidth(self:GetWidth())
+	ohpb:SetStatusBarTexture(config.statusbar)
+	ohpb:SetStatusBarColor(0, 1, 0, 0.25) -- TODO: tweek colors
+
+	-- Register it with oUF
+	self.HealPrediction = {
+		myBar = mhpb,    -- status bar to show my incoming heals
+		otherBar = ohpb, -- status bar to show other peoples incoming heals
+		maxOverflow = 1, -- amount of overflow past the end of the health bar
+	}
 end)
 
 oUF:RegisterStyle('ZoeyThin', function(self, unit)
