@@ -65,8 +65,11 @@ ns.config = config
 
 --// Register Some stuf with Shared Media
 if LibStub then
-	local LSM = LibStub("LibSharedMedia-3.0")
-	LSM:Register("border", "thinsquare", config.border.texture)
-	LSM:Register("statusbar", "Armory", config.statusbar)
-	LSM:Register("font", "DorisPP", config.font)
+	local LSM = LibStub("LibSharedMedia-3.0", true)
+
+	if LSM then
+		LSM:Register("border", "thinsquare", config.border.texture)
+		LSM:Register("statusbar", "Armory", config.statusbar)
+		LSM:Register("font", "DorisPP", config.font)
+	end
 end
