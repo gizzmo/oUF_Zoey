@@ -228,15 +228,6 @@ local function PostUpdatePower(Power, unit, min, max)
 end
 
 
---// Reputation bar update
-local function ReputationPostUpdate(Reputation, unit, name, standing, min, max, value)
-	local r,g,b = unpack(colors.reaction[standing])
-
-	Reputation:SetStatusBarColor(r,g,b)
-	Reputation.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
-end
-
-
 --// Castbar Functions
 local function PostCastStart(Castbar, unit, name, rank, castid)
 	Castbar:SetAlpha(1.0)
@@ -769,26 +760,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		offset = offset + self.Experience:GetHeight() + 1
 	end
 
-	--//----------------------------
-	--// Reputation Bar
-	--//----------------------------
-	if unit == 'player' and IsAddOnLoaded('oUF_Reputation') then
-		self.Reputation = CreateStatusBar(self, 'Reputation')
-		self.Reputation:SetHeight(5)
-		self.Reputation:SetPoint('TOP', 0, -offset)
-		self.Reputation:SetPoint('LEFT', 1,0)
-		self.Reputation:SetPoint('RIGHT',-1,0)
-
-		--// Resize the main frame when this frame Hides or Shows
-		self.Reputation:SetScript('OnShow', BarOnShow)
-		self.Reputation:SetScript('OnHide', BarOnHide)
-
-		self.Reputation.PostUpdate = ReputationPostUpdate
-
-		--// Up The Offset Value
-		offset = offset + self.Reputation:GetHeight() + 1
-	end
-
 
 	--// Frame Height
 	self:SetHeight(offset)
@@ -857,13 +828,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		local Experience = CreateText(Overlay, 10)
 		self:Tag(Experience, '[Zoey:Exp]')
 		Experience:SetPoint('CENTER', self.Experience, 'BOTTOM', 0, -5)
-	end
-
-	--// Reputation Text
-	if self.Reputation then
-		local Reputation = CreateText(Overlay, 10, 'CENTER')
-		self:Tag(Reputation, '[Zoey:Rep]')
-		Reputation:SetPoint('CENTER', self.Reputation, 'BOTTOM', 0, -8)
 	end
 
 	--//----------------------------
