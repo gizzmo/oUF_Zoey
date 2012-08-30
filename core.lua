@@ -1489,20 +1489,13 @@ oUF:Factory(function(self)
 
 	--// Disable Blizzard options that are rendered useless by having this unit frame addon
 	for _, button in pairs({
-		'UnitFramePanelPartyBackground',
-		'UnitFramePanelPartyPets',
-		'UnitFramePanelFullSizeFocusFrame',
-
 		'CombatPanelTargetOfTarget',
-		'CombatPanelTOTDropDown',
-		'CombatPanelTOTDropDownButton',
 		'CombatPanelEnemyCastBarsOnPortrait',
-
 		'DisplayPanelShowAggroPercentage',
-
-		'FrameCategoriesButton9',
-		'FrameCategoriesButton11',
-		'FrameCategoriesButton12',
+		'FrameCategoriesButton9',  -- Status Text
+		'FrameCategoriesButton10', -- Unit Frames
+		'FrameCategoriesButton11', -- Raid Profiles
+		'FrameCategoriesButton12', -- Buffs and Debuffs
 	}) do
 		_G['InterfaceOptions'..button]:SetAlpha(0.35)
 		_G['InterfaceOptions'..button]:Disable()
