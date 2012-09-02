@@ -72,34 +72,39 @@ local function Percent(cur, max)
 	end
 end
 
-local tt = CreateFrame("GameTooltip", 'ZoeyTooltip', UIParent, 'GameTooltipTemplate')
-tt:SetOwner(UIParent, "ANCHOR_NONE")
 
-local nextTime, lastUnit, lastName = 0
+local FigureNPCGuild
+do
+	local tt = CreateFrame("GameTooltip", 'ZoeyTooltip', UIParent, 'GameTooltipTemplate')
+	tt:SetOwner(UIParent, "ANCHOR_NONE")
 
-local function updateTT(unit)
-	local name = UnitName(unit)
-	local time = GetTime()
-	if lastUnit == unit and lastName == name and nextTime < time then
-		return
-	end
-	lastUnit = unit
-	lastName = name
-	nextTime = time + 1
-	tt:ClearLines()
-	tt:SetUnit(unit)
-	if not tt:IsOwned(UIParent) then
-		tt:SetOwner(UIParent, "ANCHOR_NONE")
-	end
-end
+	local nextTime, lastUnit, lastName = 0
 
-local function FigureNPCGuild(unit)
-	updateTT(unit)
-	local text = ZoeyTooltipTextLeft2:GetText()
-	if not text or text:find(LEVEL) then
-		return nil
+	function FigureNPCGuild(unit)
+
+		--// Update Tooltip
+		local name = UnitName(unit)
+		local time = GetTime()
+		if lastUnit == unit and lastName == name and nextTime < time then
+			return
+		end
+		lastUnit = unit
+		lastName = name
+		nextTime = time + 1
+		tt:ClearLines()
+		tt:SetUnit(unit)
+		if not tt:IsOwned(UIParent) then
+			tt:SetOwner(UIParent, "ANCHOR_NONE")
+		end
+
+
+		local text = ZoeyTooltipTextLeft2:GetText()
+		if not text or text:find(LEVEL) then
+			return nil
+		end
+		return text
 	end
-	return text
+
 end
 
 oUF.Tags.Methods['Zoey:Name'] = function(unit)
@@ -147,7 +152,6 @@ oUF.Tags.Methods['Zoey:Level'] = function(unit)
 	then
 		return levelColor..level
 	end
-
 end
 oUF.Tags.Events['Zoey:Level'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
 
@@ -251,7 +255,6 @@ oUF.Tags.Methods['Zoey:Power'] = function(unit)
 			return ('%s'):format(SepSh(max))
 		end
 	end
-
 end
 oUF.Tags.Events['Zoey:Power'] = 'UNIT_POWER UNIT_MAXPOWER'
 
