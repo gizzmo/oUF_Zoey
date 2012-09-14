@@ -1042,6 +1042,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		otherBar = ohpb, -- status bar to show other peoples incoming heals
 		maxOverflow = 1, -- amount of overflow past the end of the health bar
 	}
+
 end)
 
 oUF:RegisterStyle('ZoeyThin', function(self, unit)
@@ -1266,7 +1267,7 @@ oUF:Factory(function(self)
 	local offset = 15
 
 	--// Player
-	Spawn('Player'				):SetPoint('TOP', UIParent, 'CENTER', 0, -382)
+	Spawn('Player'				):SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 151)
 
 	--// Player Pet
 	Spawn('Pet'					):SetPoint('TOPRIGHT', u.player, 'TOPLEFT', -offset, 0)
@@ -1279,16 +1280,22 @@ oUF:Factory(function(self)
 	Spawn('TargetTargetTarget'	):SetPoint('TOP', u.targettarget, 'BOTTOM', 0, -offset)
 
 	--// Focus  -- ofset = (285/2) + 15 + 139 + (139/2)
-	Spawn('Focus'				):SetPoint('TOP', UIParent, 'CENTER', -381, -302)
+	self:SetActiveStyle('ZoeyThin')
+	Spawn('Focus'				):SetPoint('BOTTOM', UIParent, 'BOTTOM', -381, 301)
 	Spawn('FocusTarget'			):SetPoint('BOTTOM', u.focus, 'TOP', 0, offset)
 	Spawn('FocusTargetTarget'	):SetPoint('BOTTOM', u.focustarget, 'TOP', 0, offset)
 
 	--//----------------------------
 	--// Party
 	--//----------------------------
+	self:SetActiveStyle('Zoey')
 	self:SpawnHeader('oUF_ZoeyParty', nil, 'party',
 		'showParty', true,
 		'yOffset', 47,
+		'oUF-initialConfigFunction', [[
+			self:SetWidth( 139 )
+			self:SetHeight( 93 )
+		]],
 
 		'point', 'BOTTOM'
 	):SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -341)
@@ -1302,7 +1309,7 @@ oUF:Factory(function(self)
 		'oUF-initialConfigFunction', [[
 			self:SetAttribute('unitsuffix', 'target')
 			self:SetWidth( 139 )
-			self:SetHeight( 93 )
+			self:SetHeight( 39 )
 		]],
 
 		'point', 'BOTTOM'
