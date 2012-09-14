@@ -1042,6 +1042,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		otherBar = ohpb, -- status bar to show other peoples incoming heals
 		maxOverflow = 1, -- amount of overflow past the end of the health bar
 	}
+
 end)
 
 oUF:RegisterStyle('ZoeyThin', function(self, unit)
@@ -1291,6 +1292,10 @@ oUF:Factory(function(self)
 	self:SpawnHeader('oUF_ZoeyParty', nil, 'party',
 		'showParty', true,
 		'yOffset', 47,
+		'oUF-initialConfigFunction', [[
+			self:SetWidth( 139 )
+			self:SetHeight( 93 )
+		]],
 
 		'point', 'BOTTOM'
 	):SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -341)
@@ -1304,7 +1309,7 @@ oUF:Factory(function(self)
 		'oUF-initialConfigFunction', [[
 			self:SetAttribute('unitsuffix', 'target')
 			self:SetWidth( 139 )
-			self:SetHeight( 93 )
+			self:SetHeight( 39 )
 		]],
 
 		'point', 'BOTTOM'
