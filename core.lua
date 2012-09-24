@@ -914,7 +914,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 		--// The Castbar its self
 		self.Castbar = CreateStatusBar(self, 'Castbar')
-		self.Castbar:SetSize(591,38)
+		self.Castbar:SetSize(590,38)
 
 		if unit == 'player' then
 			self.Castbar:SetPoint('TOP', self, 'BOTTOM', 0, -44)
@@ -959,6 +959,10 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		CastbarFrame:SetPoint('TOPLEFT', -1, 1)
 		CastbarFrame:SetPoint('BOTTOMRIGHT', 1, -1)
 		CastbarFrame:SetFrameLevel(self.Castbar:GetFrameLevel()-1)
+
+		local Background = self.Castbar:CreateTexture(nil, 'BACKGROUND')
+		Background:SetAllPoints(CastbarFrame)
+		Background:SetTexture(0, 0, 0, 1)
 
 		--// Castbar Frame Border
 		CreateBorder(CastbarFrame)
