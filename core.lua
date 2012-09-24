@@ -626,26 +626,26 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		--//----------------------------
 		if playerClass == 'WARLOCK' then
 
-			self.SoulShards = CreateFrame('Frame', '$parentSoulShardsBar', self)
-			self.SoulShards:SetHeight(5)
-			self.SoulShards:SetPoint('TOP', 0, -offset)
-			self.SoulShards:SetPoint('LEFT', 1,0)
-			self.SoulShards:SetPoint('RIGHT', -1,0)
+			self.ClassIcons = CreateFrame('Frame', '$parentClassIconsBar', self)
+			self.ClassIcons:SetHeight(5)
+			self.ClassIcons:SetPoint('TOP', 0, -offset)
+			self.ClassIcons:SetPoint('LEFT', 1,0)
+			self.ClassIcons:SetPoint('RIGHT', -1,0)
 
 			local width = ((self:GetWidth() - 2) / 3) - ((3 - 1) / 3)
 
 			for i = 1, 3 do
-				local shard = self.SoulShards:CreateTexture(nil, 'ARTWORK')
+				local shard = self.ClassIcons:CreateTexture(nil, 'ARTWORK')
 				shard:SetTexture(config.statusbar)
-				shard:SetSize(width, self.SoulShards:GetHeight())
+				shard:SetSize(width, self.ClassIcons:GetHeight())
 
 				if i == 1 then
-					shard:SetPoint('LEFT', self.SoulShards, 0, 0)
+					shard:SetPoint('LEFT', self.ClassIcons, 0, 0)
 				else
-					shard:SetPoint('LEFT', self.SoulShards[i-1], 'RIGHT', 1, 0)
+					shard:SetPoint('LEFT', self.ClassIcons[i-1], 'RIGHT', 1, 0)
 				end
 
-				shard.bg = self.SoulShards:CreateTexture(nil, 'BACKGROUND')
+				shard.bg = self.ClassIcons:CreateTexture(nil, 'BACKGROUND')
 				shard.bg:SetTexture(config.statusbar)
 				shard.bg:SetAllPoints(shard)
 
@@ -655,11 +655,16 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				shard:SetVertexColor(r,g,b)
 				shard.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
 
-				self.SoulShards[i] = shard
+				self.ClassIcons[i] = shard
+			end
+
+			--// There is no 4th and 5th soul shards, but ClassIcon requires it.
+			for i= 4, 5 do
+				self.ClassIcons[i] = self.ClassIcons:CreateTexture(nil, 'ARTWORK')
 			end
 
 			--// Up The Offset Value
-			offset = offset + self.SoulShards:GetHeight() + 1
+			offset = offset + self.ClassIcons:GetHeight() + 1
 
 		end
 
