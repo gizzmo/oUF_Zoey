@@ -569,26 +569,26 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 		--//----------------------------
 		if playerClass == 'PALADIN' then
 
-			self.HolyPower = CreateFrame('Frame', '$parentHolyPowerBar', self)
-			self.HolyPower:SetHeight(5)
-			self.HolyPower:SetPoint('TOP', 0, -offset)
-			self.HolyPower:SetPoint('LEFT', 1,0)
-			self.HolyPower:SetPoint('RIGHT', -1,0)
+			self.ClassIcons = CreateFrame('Frame', '$parentHolyPowerBar', self)
+			self.ClassIcons:SetHeight(5)
+			self.ClassIcons:SetPoint('TOP', 0, -offset)
+			self.ClassIcons:SetPoint('LEFT', 1,0)
+			self.ClassIcons:SetPoint('RIGHT', -1,0)
 
 			local width = ((self:GetWidth() - 2) / 3) - ((3 - 1) / 3)
 
 			for i = 1, 3 do
-				local power = self.HolyPower:CreateTexture(nil, 'ARTWORK')
+				local power = self.ClassIcons:CreateTexture(nil, 'ARTWORK')
 				power:SetTexture(config.statusbar)
-				power:SetSize(width, self.HolyPower:GetHeight())
+				power:SetSize(width, self.ClassIcons:GetHeight())
 
 				if i == 1 then
-					power:SetPoint('LEFT', self.HolyPower, 0, 0)
+					power:SetPoint('LEFT', self.ClassIcons, 0, 0)
 				else
-					power:SetPoint('LEFT', self.HolyPower[i-1], 'RIGHT', 1, 0)
+					power:SetPoint('LEFT', self.ClassIcons[i-1], 'RIGHT', 1, 0)
 				end
 
-				power.bg = self.HolyPower:CreateTexture(nil, 'BACKGROUND')
+				power.bg = self.ClassIcons:CreateTexture(nil, 'BACKGROUND')
 				power.bg:SetTexture(config.statusbar)
 				power.bg:SetAllPoints(power)
 
@@ -598,11 +598,17 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 				power:SetVertexColor(r,g,b)
 				power.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
 
-				self.HolyPower[i] = power
+				self.ClassIcons[i] = power
 			end
 
+			--// There is no 4th and 5th holy power, but ClassIcon requires it.
+			for i= 4, 5 do
+				self.ClassIcons[i] = self.ClassIcons:CreateTexture(nil, 'ARTWORK')
+			end
+
+
 			--// Up The Offset Value
-			offset = offset + self.HolyPower:GetHeight() + 1
+			offset = offset + self.ClassIcons:GetHeight() + 1
 
 		end
 
