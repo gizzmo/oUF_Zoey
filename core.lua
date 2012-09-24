@@ -464,9 +464,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 	-- // Frame Width. Height will be set after bars are created
 	if unit == 'player' or unit == 'target' then
-		self:SetWidth(285)
+		self:SetWidth(284)
 	else
-		self:SetWidth(139)
+		self:SetWidth(138)
 	end
 
 	--// Bar Position
@@ -477,18 +477,19 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	--//----------------------------
 	if unit == 'target' or unit == 'party' then
 		self.Portrait = CreateFrame('PlayerModel', '$parentPortrait', self)
-		self.Portrait:SetHeight(53)
+		self.Portrait:SetHeight(52)
 		self.Portrait:SetPoint('TOP', 0, -offset)
 		self.Portrait:SetPoint('LEFT', 1,0)
-		self.Portrait:SetPoint('RIGHT',-1,0)
+		self.Portrait:SetPoint('RIGHT',-2,0)
 
 		--// Darken up the Portrait just a bit
 		self.Portrait.Overlay = self.Portrait:CreateTexture(nil, 'OVERLAY')
 		self.Portrait.Overlay:SetTexture(0,0,0,0.4)
-		self.Portrait.Overlay:SetAllPoints(self.Portrait)
+		self.Portrait.Overlay:SetPoint("TOPLEFT", 0,0)
+		self.Portrait.Overlay:SetPoint("BOTTOMRIGHT", 1, -1)
 
 		--// Up The Offset Value
-		offset = offset + self.Portrait:GetHeight() + 1
+		offset = offset + self.Portrait:GetHeight() + 2
 	end
 
 	--//----------------------------
@@ -777,8 +778,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 	self:Tag(Name, '[Zoey:Level< ][Zoey:Name]')
 
 	if unit == 'target' or unit == 'party' then
-		Name:SetPoint('TOPLEFT', 3, -2)
-		Name:SetPoint('TOPRIGHT', -3, -2)
+		Name:SetPoint('TOPLEFT', 3, -4)
+		Name:SetPoint('TOPRIGHT', -3, -4)
 	else
 		Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
 		Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
@@ -1075,7 +1076,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 	HighlightEnable(self)
 
 	-- // Frame Width. Height will be set after bars are created
-	self:SetWidth(139)
+	self:SetWidth(138)
 
 	--// Bar Position
 	local offset = 1
@@ -1267,7 +1268,7 @@ oUF:Factory(function(self)
 	local offset = 15
 
 	--// Player
-	Spawn('Player'				):SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 151)
+	Spawn('Player'				):SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 150)
 
 	--// Player Pet
 	Spawn('Pet'					):SetPoint('TOPRIGHT', u.player, 'TOPLEFT', -offset, 0)
@@ -1281,7 +1282,7 @@ oUF:Factory(function(self)
 
 	--// Focus  -- ofset = (285/2) + 15 + 139 + (139/2)
 	self:SetActiveStyle('ZoeyThin')
-	Spawn('Focus'				):SetPoint('BOTTOM', UIParent, 'BOTTOM', -381, 301)
+	Spawn('Focus'				):SetPoint('BOTTOM', UIParent, 'BOTTOM', -380, 300)
 	Spawn('FocusTarget'			):SetPoint('BOTTOM', u.focus, 'TOP', 0, offset)
 	Spawn('FocusTargetTarget'	):SetPoint('BOTTOM', u.focustarget, 'TOP', 0, offset)
 
@@ -1293,7 +1294,7 @@ oUF:Factory(function(self)
 		'showParty', true,
 		'yOffset', 47,
 		'oUF-initialConfigFunction', [[
-			self:SetWidth( 139 )
+			self:SetWidth( 138 )
 			self:SetHeight( 93 )
 		]],
 
@@ -1308,7 +1309,7 @@ oUF:Factory(function(self)
 		'yOffset', 101,
 		'oUF-initialConfigFunction', [[
 			self:SetAttribute('unitsuffix', 'target')
-			self:SetWidth( 139 )
+			self:SetWidth( 138 )
 			self:SetHeight( 39 )
 		]],
 
@@ -1324,7 +1325,7 @@ oUF:Factory(function(self)
 		'yOffset', 121,
 		'oUF-initialConfigFunction', [[
 			self:SetAttribute('unitsuffix', 'pet')
-			self:SetWidth( 139 )
+			self:SetWidth( 138 )
 			self:SetHeight( 19 )
 		]],
 
@@ -1352,7 +1353,7 @@ oUF:Factory(function(self)
 			'groupFilter', tostring(i),
 
 			'oUF-initialConfigFunction', [[
-				self:SetWidth( 139 )
+				self:SetWidth( 138 )
 				self:SetHeight( 39 )
 			]],
 
@@ -1384,7 +1385,7 @@ oUF:Factory(function(self)
 			'sortDir', 'DESC',
 
 			'oUF-initialConfigFunction', [[
-				self:SetWidth( 139 )
+				self:SetWidth( 138 )
 				self:SetHeight( 19 )
 			]],
 
