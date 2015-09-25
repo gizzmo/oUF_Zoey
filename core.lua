@@ -1002,7 +1002,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
             self.Buffs['growth-y'] = 'UP'
         end
 
-        self.Buffs.CustomFilter   = ns.CustomAuraFilters[unit]
         self.Buffs.PostCreateIcon = PostCreateAuraIcon
         self.Buffs.PostUpdateIcon = PostUpdateAuraIcon
     end
@@ -1030,7 +1029,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
             self.Debuffs['num'] = 14
         end
 
-        self.Debuffs.CustomFilter   = ns.CustomAuraFilters[unit]
         self.Debuffs.PostCreateIcon = PostCreateAuraIcon
         self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
     end
