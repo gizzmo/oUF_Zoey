@@ -919,11 +919,12 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
         --// The Castbar its self
         self.Castbar = CreateStatusBar(self, 'Castbar')
-        self.Castbar:SetSize(590,38)
 
         if unit == 'player' then
+            self.Castbar:SetSize(284,20)
             self.Castbar:SetPoint('TOP', self, 'BOTTOM', 0, -44)
         elseif unit == 'target' then
+            self.Castbar:SetSize(590,38)
             self.Castbar:SetPoint('BOTTOM', self, 'TOP', 0, 85)
         end
 
@@ -944,11 +945,20 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         end
 
         --// Castbar Texts
-        self.Castbar.Text = CreateText(self.Castbar, 20)
-        self.Castbar.Text:SetPoint('LEFT', 10, 0)
+        if unit == 'player' then
+            self.Castbar.Text = CreateText(self.Castbar, 14)
+            self.Castbar.Text:SetPoint('LEFT', 10, 0)
 
-        self.Castbar.Time = CreateText(self.Castbar, 16)
-        self.Castbar.Time:SetPoint('RIGHT', -10, 0)
+            self.Castbar.Time = CreateText(self.Castbar, 10)
+            self.Castbar.Time:SetPoint('RIGHT', -10, 0)
+
+        elseif unit == 'target' then
+            self.Castbar.Text = CreateText(self.Castbar, 20)
+            self.Castbar.Text:SetPoint('LEFT', 10, 0)
+
+            self.Castbar.Time = CreateText(self.Castbar, 16)
+            self.Castbar.Time:SetPoint('RIGHT', -10, 0)
+        end
 
         --// Castbar Function Hooks
         self.Castbar.OnUpdate = CastbarOnUpdate
