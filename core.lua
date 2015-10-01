@@ -4,7 +4,7 @@ local addon, ns = ...
 local config = ns.config
 local colors = oUF.colors
 
-local playerClass = select(2, UnitClass('player'))
+local _, playerClass = UnitClass("player")
 local playerUnits = { player = true, pet = true, vehicle = true }
 
 --//----------------------------
@@ -470,33 +470,33 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     end
 
     --// Bar Position
-    local offset = 1
+    local FRAME_HEIGHT  = 1
 
     --//----------------------------
     --// Health Bar
     --//----------------------------
     self.Health = CreateStatusBar(self, 'HealthBar')
-    self.Health:SetPoint('TOP', 0, -offset)
     self.Health:SetHeight(27)
+    self.Health:SetPoint('TOP', 0, -FRAME_HEIGHT)
     self.Health:SetPoint('LEFT', 1,0)
     self.Health:SetPoint('RIGHT',-1,0)
     self.Health.PostUpdate = PostUpdateHealth
 
-    --// Up The Offset Value
-    offset = offset + self.Health:GetHeight() + 1
+    --// Up The FRAME_HEIGHT
+    FRAME_HEIGHT = FRAME_HEIGHT + self.Health:GetHeight() + 1
 
     --//----------------------------
     --// Power Bar
     --//----------------------------
     self.Power = CreateStatusBar(self,'PowerBar')
-    self.Power:SetPoint('TOP', 0, -offset)
     self.Power:SetHeight(8)
+    self.Power:SetPoint('TOP', 0, -FRAME_HEIGHT)
     self.Power:SetPoint('LEFT', 1,0)
     self.Power:SetPoint('RIGHT',-1,0)
     self.Power.PostUpdate = PostUpdatePower
 
-    --// Up The Offset Value
-    offset = offset + self.Power:GetHeight() + 1
+    --// Up The FRAME_HEIGHT
+    FRAME_HEIGHT = FRAME_HEIGHT + self.Power:GetHeight() + 1
 
     --//----------------------------
     --// Class Bars
@@ -510,7 +510,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
             self.Runes = CreateFrame('Frame', '$parentRunebar', self)
             self.Runes:SetHeight(5)
-            self.Runes:SetPoint('TOP', 0, -offset)
+            self.Runes:SetPoint('TOP', 0, -FRAME_HEIGHT)
             self.Runes:SetPoint('LEFT', 1,0)
             self.Runes:SetPoint('RIGHT', -1,0)
 
@@ -530,8 +530,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
                 self.Runes[i] = rune
             end
 
-            --// Up The Offset Value
-            offset = offset + self.Runes:GetHeight() + 1
+            --// Up The FRAME_HEIGHT
+            FRAME_HEIGHT = FRAME_HEIGHT + self.Runes:GetHeight() + 1
 
         end
 
@@ -551,7 +551,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
             self.ClassIcons = CreateFrame('Frame', '$parentHolyPowerBar', self)
             self.ClassIcons:SetHeight(5)
-            self.ClassIcons:SetPoint('TOP', 0, -offset)
+            self.ClassIcons:SetPoint('TOP', 0, -FRAME_HEIGHT)
             self.ClassIcons:SetPoint('LEFT', 1,0)
             self.ClassIcons:SetPoint('RIGHT', -1,0)
 
@@ -587,8 +587,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
             end
 
 
-            --// Up The Offset Value
-            offset = offset + self.ClassIcons:GetHeight() + 1
+            --// Up The FRAME_HEIGHT
+            FRAME_HEIGHT = FRAME_HEIGHT + self.ClassIcons:GetHeight() + 1
 
         end
 
@@ -608,7 +608,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
             self.ClassIcons = CreateFrame('Frame', '$parentClassIconsBar', self)
             self.ClassIcons:SetHeight(5)
-            self.ClassIcons:SetPoint('TOP', 0, -offset)
+            self.ClassIcons:SetPoint('TOP', 0, -FRAME_HEIGHT)
             self.ClassIcons:SetPoint('LEFT', 1,0)
             self.ClassIcons:SetPoint('RIGHT', -1,0)
 
@@ -643,8 +643,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
                 self.ClassIcons[i] = self.ClassIcons:CreateTexture(nil, 'ARTWORK')
             end
 
-            --// Up The Offset Value
-            offset = offset + self.ClassIcons:GetHeight() + 1
+            --// Up The FRAME_HEIGHT
+            FRAME_HEIGHT = FRAME_HEIGHT + self.ClassIcons:GetHeight() + 1
 
         end
 
@@ -723,7 +723,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         self.Experience = CreateFrame('Statusbar', '$parentExperience', self)
         self.Experience:SetStatusBarTexture(config.statusbar)
         self.Experience:SetHeight(5)
-        self.Experience:SetPoint('TOP', 0, -offset)
+        self.Experience:SetPoint('TOP', 0, -FRAME_HEIGHT)
         self.Experience:SetPoint('LEFT', 1,0)
         self.Experience:SetPoint('RIGHT',-1,0)
 
@@ -748,13 +748,13 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         --// Rested Color
         self.Experience.Rested:SetStatusBarColor(unpack(colors.experience.rested))
 
-        --// Up The Offset Value
-        offset = offset + self.Experience:GetHeight() + 1
+        --// Up The FRAME_HEIGHT
+        FRAME_HEIGHT = FRAME_HEIGHT + self.Experience:GetHeight() + 1
     end
 
 
-    --// Frame Height
-    self:SetHeight(offset)
+    --// Finaly time to set the Frame Height
+    self:SetHeight(FRAME_HEIGHT)
 
     --// Overlay Frame -- used to attach icons/text to
     local Overlay = CreateFrame('Frame', '$parentOverlay', self)
