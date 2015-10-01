@@ -413,6 +413,7 @@ local function CreateText(parent, size, justify)
     local fs = parent:CreateFontString(nil, 'OVERLAY')
     fs:SetFont(config.font, size or 16)
     fs:SetJustifyH(justify or 'LEFT')
+    fs:SetWordWrap(false)
     fs:SetShadowOffset(1, -1)
     fs:SetShadowColor(0,0,0,1)
 
