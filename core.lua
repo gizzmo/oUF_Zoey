@@ -464,40 +464,20 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
     -- // Frame Width. Height will be set after bars are created
     if unit == 'player' or unit == 'target' then
-        self:SetWidth(284)
+        self:SetWidth(215)
     else
-        self:SetWidth(138)
+        self:SetWidth(140)
     end
 
     --// Bar Position
     local offset = 1
 
     --//----------------------------
-    --// Portrait
-    --//----------------------------
-    if unit == 'target' or unit == 'party' then
-        self.Portrait = CreateFrame('PlayerModel', '$parentPortrait', self)
-        self.Portrait:SetHeight(52)
-        self.Portrait:SetPoint('TOP', 0, -offset)
-        self.Portrait:SetPoint('LEFT', 1,0)
-        self.Portrait:SetPoint('RIGHT',-2,0)
-
-        --// Darken up the Portrait just a bit
-        self.Portrait.Overlay = self.Portrait:CreateTexture(nil, 'OVERLAY')
-        self.Portrait.Overlay:SetTexture(0,0,0,0.4)
-        self.Portrait.Overlay:SetPoint("TOPLEFT", 0,0)
-        self.Portrait.Overlay:SetPoint("BOTTOMRIGHT", 1, -1)
-
-        --// Up The Offset Value
-        offset = offset + self.Portrait:GetHeight() + 2
-    end
-
-    --//----------------------------
     --// Health Bar
     --//----------------------------
     self.Health = CreateStatusBar(self, 'HealthBar')
-    self.Health:SetHeight(31)
     self.Health:SetPoint('TOP', 0, -offset)
+    self.Health:SetHeight(27)
     self.Health:SetPoint('LEFT', 1,0)
     self.Health:SetPoint('RIGHT',-1,0)
     self.Health.PostUpdate = PostUpdateHealth
@@ -509,8 +489,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     --// Power Bar
     --//----------------------------
     self.Power = CreateStatusBar(self,'PowerBar')
-    self.Power:SetHeight(5)
     self.Power:SetPoint('TOP', 0, -offset)
+    self.Power:SetHeight(8)
     self.Power:SetPoint('LEFT', 1,0)
     self.Power:SetPoint('RIGHT',-1,0)
     self.Power.PostUpdate = PostUpdatePower
@@ -788,13 +768,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     local Name = CreateText(Overlay, 16)
     self:Tag(Name, '[Zoey:Level< ][Zoey:Name]')
 
-    if unit == 'target' or unit == 'party' then
-        Name:SetPoint('TOPLEFT', 3, -4)
-        Name:SetPoint('TOPRIGHT', -3, -4)
-    else
-        Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
-        Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
-    end
+    Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
+    Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
 
     --// Health Text
     if unit == 'target' then
@@ -819,21 +794,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     local PowerText = CreateText(Overlay, 12)
     self:Tag(PowerText, '[Zoey:Power]')
     PowerText:SetPoint('RIGHT', self.Power, -1, -1)
-
-    -- // Guild and Realm Indicator
-    if unit == 'target' or unit == 'party' then
-        local GuildAndRealm = CreateText(Overlay, 12)
-
-        if UnitInParty(unit) then
-            self:Tag(GuildAndRealm, '[Zoey:RealmIndicator][Zoey:Guild]')
-        else
-            self:Tag(GuildAndRealm, '[Zoey:Guild]')
-        end
-
-        GuildAndRealm:SetPoint('TOP', Name, 'BOTTOM', 0, -1)
-        GuildAndRealm:SetPoint('LEFT',  Name)
-        GuildAndRealm:SetPoint('RIGHT', Name)
-    end
 
     --// Experience Text
     if self.Experience then
@@ -872,31 +832,10 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
     end
 
-    --// LFD Role Icon
-    self.LFDRole = Overlay:CreateTexture(nil, 'OVERLAY')
-    self.LFDRole:SetSize(15,15)
-    self.LFDRole:SetPoint('CENTER', Overlay, 'TOPRIGHT', 1, 0)
-
-    --// Leader Icon
-    self.Leader = Overlay:CreateTexture(nil, 'OVERLAY')
-    self.Leader:SetSize(15,15)
-    self.Leader:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 3)
-
-    --// Assistant Icon
-    self.Assistant = Overlay:CreateTexture(nil, "OVERLAY")
-    self.Assistant:SetSize(15,15)
-    self.Assistant:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 3)
-
     --// Raid Icon (Skull, Cross, Square ...)
     self.RaidIcon = Overlay:CreateTexture(nil, 'OVERLAY')
-
-    if unit == 'target' then
-        self.RaidIcon:SetSize(30,30)
-        self.RaidIcon:SetPoint('CENTER', Overlay, 'TOP', 0, 0)
-    else
-        self.RaidIcon:SetSize(23,23)
-        self.RaidIcon:SetPoint('LEFT', Overlay, 3, 0)
-    end
+    self.RaidIcon:SetSize(23,23)
+    self.RaidIcon:SetPoint('LEFT', Overlay, 3, 0)
 
     --// PvP Icon -- The img used isnt perfect, it sucks
     self.PvP = Overlay:CreateTexture(nil, 'OVERLAY')
@@ -921,11 +860,11 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         self.Castbar = CreateStatusBar(self, 'Castbar')
 
         if unit == 'player' then
-            self.Castbar:SetSize(284,20)
-            self.Castbar:SetPoint('TOP', self, 'BOTTOM', 0, -44)
+            self.Castbar:SetSize(300,22)
+            self.Castbar:SetPoint('CENTER', UIParent, 'BOTTOM', 0, 200)
         elseif unit == 'target' then
             self.Castbar:SetSize(590,38)
-            self.Castbar:SetPoint('BOTTOM', self, 'TOP', 0, 85)
+            self.Castbar:SetPoint('CENTER', UIParent, 'BOTTOM', 0, 425)
         end
 
         --// Add a spark
@@ -992,51 +931,43 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         self.Buffs = CreateFrame('Frame', nil, self)
 
         self.Buffs:SetHeight(25)
-        self.Buffs:SetPoint('LEFT', 0, 0)
-        self.Buffs:SetPoint('RIGHT', 0, 0)
+        self.Buffs:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -6)
+        self.Buffs:SetPoint('TOPRIGHT', self, 'BOTTOMRIGHT', 0, -6)
 
-        self.Buffs['growth-x'] = 'RIGHT'
+        self.Buffs['growth-y'] = 'DOWN'
         self.Buffs['spacing'] = 7.5
         self.Buffs['size'] = 25
         self.Buffs['num'] = 9
 
 
         if unit == 'player' then
-            self.Buffs:SetPoint('TOP', self, 'BOTTOM', 0, -7)
             self.Buffs['initialAnchor'] = 'TOPLEFT'
-            self.Buffs['growth-y'] = 'DOWN'
+            self.Buffs['growth-x'] = 'RIGHT'
 
         elseif unit == 'target' then
-            self.Buffs:SetPoint('BOTTOM', self, 'TOP', 0, 7)
-            self.Buffs['initialAnchor'] = 'BOTTOMLEFT'
-            self.Buffs['growth-y'] = 'UP'
+            self.Buffs['initialAnchor'] = 'TOPRIGHT'
+            self.Buffs['growth-x'] = 'LEFT'
         end
 
         self.Buffs.PostCreateIcon = PostCreateAuraIcon
         self.Buffs.PostUpdateIcon = PostUpdateAuraIcon
-    end
-
-    if unit == 'player' or unit == 'target' or unit == 'party' then
 
         --// Debuffs
         self.Debuffs = CreateFrame('Frame', nil, self)
+        self.Debuffs:SetHeight(75)
+        self.Debuffs:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 6)
+        self.Debuffs:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 6)
 
-        self.Debuffs['growth-x'] = 'RIGHT'
         self.Debuffs['growth-y'] = 'UP'
         self.Debuffs['spacing'] = 7.5
         self.Debuffs['size'] = 34
 
-        if unit == 'player' or unit == 'party' then
-            self.Debuffs:SetSize(139, 34)
-            self.Debuffs:SetPoint('TOPLEFT', self, 'TOPRIGHT', 13, 0)
-            self.Debuffs['initialAnchor'] = 'LEFT'
-            self.Debuffs['num'] = 4
-
+        if unit == 'player' then
+            self.Debuffs['initialAnchor'] = 'BOTTOMRIGHT'
+            self.Debuffs['growth-x'] = 'LEFT'
         elseif unit == 'target' then
-            self.Debuffs:SetSize(285,75)
-            self.Debuffs:SetPoint('BOTTOM', self.Buffs, 'TOP', 0, 9)
             self.Debuffs['initialAnchor'] = 'BOTTOMLEFT'
-            self.Debuffs['num'] = 14
+            self.Debuffs['growth-x'] = 'RIGHT'
         end
 
         self.Debuffs.PostCreateIcon = PostCreateAuraIcon
@@ -1288,26 +1219,22 @@ end
 
 oUF:Factory(function(self)
 
-    local offset = 15
+    local bgap,sgap = 200, 12
 
     --// Player
-    Spawn('Player'                ):SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 150)
+    Spawn('Player'):SetPoint('RIGHT', UIParent, 'BOTTOM', -(bgap/2), 300)
 
     --// Player Pet
-    Spawn('Pet'                    ):SetPoint('TOPRIGHT', u.player, 'TOPLEFT', -offset, 0)
-    Spawn('PetTarget'            ):SetPoint('BOTTOM', u.pet, 'TOP', 0, offset)
-    Spawn('PetTargetTarget'        ):SetPoint('BOTTOM', u.pettarget, 'TOP', 0, offset)
+    Spawn('Pet'      ):SetPoint('RIGHT', u.player, 'LEFT', -sgap, 0)
+    Spawn('PetTarget'):SetPoint('BOTTOM', u.pet, 'TOP', 0, sgap)
 
     --// Targets
-    Spawn('Target'                ):SetPoint('BOTTOM', u.player, 'TOP', 0, offset)
-    Spawn('TargetTarget'        ):SetPoint('TOPLEFT', u.target, 'TOPRIGHT', offset, 0)
-    Spawn('TargetTargetTarget'    ):SetPoint('TOP', u.targettarget, 'BOTTOM', 0, -offset)
+    Spawn('Target'      ):SetPoint('LEFT', u.player, 'RIGHT', bgap, 0)
+    Spawn('TargetTarget'):SetPoint('LEFT', u.target, 'RIGHT', sgap, 0)
 
-    --// Focus  -- ofset = (285/2) + 15 + 139 + (139/2)
-    self:SetActiveStyle('ZoeyThin')
-    Spawn('Focus'                ):SetPoint('BOTTOM', UIParent, 'BOTTOM', -380, 300)
-    Spawn('FocusTarget'            ):SetPoint('BOTTOM', u.focus, 'TOP', 0, offset)
-    Spawn('FocusTargetTarget'    ):SetPoint('BOTTOM', u.focustarget, 'TOP', 0, offset)
+    --// Focus
+    Spawn('Focus'      ):SetPoint('RIGHT', u.pet, 'LEFT', -sgap, 0)
+    Spawn('FocusTarget'):SetPoint('BOTTOM', u.focus, 'TOP', 0, sgap)
 
     --//----------------------------
     --// Party
@@ -1315,21 +1242,19 @@ oUF:Factory(function(self)
     self:SetActiveStyle('Zoey')
     self:SpawnHeader('oUF_ZoeyParty', nil, 'party',
         'showParty', true,
-        'yOffset', 47,
+        'yOffset', 50,
         'oUF-initialConfigFunction', [[
             self:SetWidth( 138 )
             self:SetHeight( 93 )
         ]],
 
         'point', 'BOTTOM'
-    ):SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -341)
+    ):SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -200)
 
-    --//----------------------------
     --// Party Targets
-    --//----------------------------
     self:SpawnHeader('oUF_ZoeyPartyTargets', nil, 'party',
         'showParty', true,
-        'yOffset', 101,
+        'yOffset', 50,
         'oUF-initialConfigFunction', [[
             self:SetAttribute('unitsuffix', 'target')
             self:SetWidth( 138 )
@@ -1339,13 +1264,11 @@ oUF:Factory(function(self)
         'point', 'BOTTOM'
     ):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 'BOTTOMRIGHT', 15, 0)
 
-    --//----------------------------
     --// Party Pets
-    --//----------------------------
     self:SetActiveStyle('ZoeyThin')
     self:SpawnHeader('oUF_ZoeyPartyPets', nil, 'party',
         'showParty', true,
-        'yOffset', 121,
+        'yOffset', 50,
         'oUF-initialConfigFunction', [[
             self:SetAttribute('unitsuffix', 'pet')
             self:SetWidth( 138 )
