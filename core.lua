@@ -845,13 +845,20 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         self.QuestIcon:SetPoint('CENTER', Overlay, 'LEFT', 0, 0)
     end
 
-    if unit == 'player' or unit == 'party' or unit == 'raid' then
-        --// Ready Check icon
-        self.ReadyCheck = Overlay:CreateTexture(nil, 'OVERLAY')
-        self.ReadyCheck:SetSize(20,20)
-        self.ReadyCheck:SetPoint('CENTER', Overlay, 'CENTER', 0, 0)
+    --// Ready Check icon
+    self.ReadyCheck = Overlay:CreateTexture(nil, 'OVERLAY')
+    self.ReadyCheck:SetSize(20,20)
+    self.ReadyCheck:SetPoint('CENTER', Overlay, 'CENTER', 0, 0)
 
-    end
+    --// LFD Role Icon
+    self.LFDRole = Overlay:CreateTexture(nil, 'OVERLAY')
+    self.LFDRole:SetSize(15,15)
+    self.LFDRole:SetPoint('CENTER', Overlay, 'TOPRIGHT', 1, 0)
+
+    --// Leader Icon
+    self.Leader = Overlay:CreateTexture(nil, 'OVERLAY')
+    self.Leader:SetSize(15,15)
+    self.Leader:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 3)
 
     --// Raid Icon (Skull, Cross, Square ...)
     self.RaidIcon = Overlay:CreateTexture(nil, 'OVERLAY')
