@@ -465,13 +465,33 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
     -- // Frame Width. Height will be set after bars are created
     if unit == 'player' or unit == 'target' then
-        self:SetWidth(215)
+        self:SetWidth(222)
     else
-        self:SetWidth(140)
+        self:SetWidth(135)
     end
 
     --// Bar Position
     local FRAME_HEIGHT  = 1
+
+    --//----------------------------
+    --// Portrait
+    --//----------------------------
+    if unit == 'party' then
+        self.Portrait = CreateFrame('PlayerModel', '$parentPortrait', self)
+        self.Portrait:SetHeight(38)
+        self.Portrait:SetPoint('TOP', 0, -FRAME_HEIGHT)
+        self.Portrait:SetPoint('LEFT', 1,0)
+        self.Portrait:SetPoint('RIGHT',-2,0)
+
+        --// Darken up the Portrait just a bit
+        self.Portrait.Overlay = self.Portrait:CreateTexture(nil, 'OVERLAY')
+        self.Portrait.Overlay:SetTexture(0,0,0,0.4)
+        self.Portrait.Overlay:SetPoint("TOPLEFT", 0,0)
+        self.Portrait.Overlay:SetPoint("BOTTOMRIGHT", 1, -1)
+
+        --// Up The Offset Value
+        FRAME_HEIGHT = FRAME_HEIGHT + self.Portrait:GetHeight() + 2
+    end
 
     --//----------------------------
     --// Health Bar
@@ -490,7 +510,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     --// Power Bar
     --//----------------------------
     self.Power = CreateStatusBar(self,'PowerBar')
-    self.Power:SetHeight(8)
+    self.Power:SetHeight(10)
     self.Power:SetPoint('TOP', 0, -FRAME_HEIGHT)
     self.Power:SetPoint('LEFT', 1,0)
     self.Power:SetPoint('RIGHT',-1,0)
@@ -1031,7 +1051,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
     HighlightEnable(self)
 
     -- // Frame Width. Height will be set after bars are created
-    self:SetWidth(138)
+    self:SetWidth(135)
 
     --// Bar Position
     local offset = 1
@@ -1040,7 +1060,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
     --// Health Bar
     --//----------------------------
     self.Health = CreateStatusBar(self, 'HealthBar')
-    self.Health:SetHeight(17)
+    self.Health:SetHeight(18)
     self.Health:SetPoint('TOP', 0, -offset)
     self.Health:SetPoint('LEFT', 1,0)
     self.Health:SetPoint('RIGHT',-1,0)
@@ -1245,35 +1265,35 @@ oUF:Factory(function(self)
         'showParty', true,
         'yOffset', 50,
         'oUF-initialConfigFunction', [[
-            self:SetWidth( 138 )
-            self:SetHeight( 93 )
+            self:SetWidth( 135 )
+            self:SetHeight( 80 )
         ]],
 
         'point', 'BOTTOM'
-    ):SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -200)
+    ):SetPoint('BOTTOMLEFT', UIParent, 'LEFT', sgap, -200)
 
     --// Party Targets
     self:SpawnHeader('oUF_ZoeyPartyTargets', nil, 'party',
         'showParty', true,
-        'yOffset', 50,
+        'yOffset', 90,
         'oUF-initialConfigFunction', [[
             self:SetAttribute('unitsuffix', 'target')
-            self:SetWidth( 138 )
-            self:SetHeight( 39 )
+            self:SetWidth( 135 )
+            self:SetHeight( 40 )
         ]],
 
         'point', 'BOTTOM'
-    ):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 'BOTTOMRIGHT', 15, 0)
+    ):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 'BOTTOMRIGHT', sgap, 0)
 
     --// Party Pets
     self:SetActiveStyle('ZoeyThin')
     self:SpawnHeader('oUF_ZoeyPartyPets', nil, 'party',
         'showParty', true,
-        'yOffset', 50,
+        'yOffset', 110,
         'oUF-initialConfigFunction', [[
             self:SetAttribute('unitsuffix', 'pet')
-            self:SetWidth( 138 )
-            self:SetHeight( 19 )
+            self:SetWidth( 135 )
+            self:SetHeight( 20 )
         ]],
 
         'point', 'BOTTOM'
