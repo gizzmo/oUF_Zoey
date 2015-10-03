@@ -1268,6 +1268,7 @@ oUF:Factory(function(self)
 
     local bgap,sgap = 200, 12
 
+    --//----------------------------
     --// Player
     Spawn('Player'):SetPoint('RIGHT', UIParent, 'BOTTOM', -(bgap/2), 300)
 
@@ -1285,7 +1286,6 @@ oUF:Factory(function(self)
 
     --//----------------------------
     --// Party
-    --//----------------------------
     self:SetActiveStyle('Zoey')
     self:SpawnHeader('oUF_ZoeyParty', nil, 'party',
         'showParty', true,
@@ -1325,16 +1325,8 @@ oUF:Factory(function(self)
         'point', 'BOTTOM'
     ):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 0, -28)
 
-end)
-
---//----------------------------
---// SPAWN RAIDS
---//----------------------------
-oUF:Factory(function(self)
-
     --//----------------------------
     --// Raid Size 1 - 10
-    --//----------------------------
     self:SetActiveStyle('Zoey')
     local Raid = {}
     for i = 1, 2 do
@@ -1354,7 +1346,7 @@ oUF:Factory(function(self)
         )
 
         if i == 1 then
-            group:SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -341)
+            group:SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -200)
         else
             group:SetPoint('BOTTOMLEFT', Raid[i - 1], 'BOTTOMRIGHT', 16, 0)
         end
@@ -1362,10 +1354,7 @@ oUF:Factory(function(self)
         Raid[i] = group
     end
 
-
-    --//----------------------------
     --// Raid Size 11 - 25
-    --//----------------------------
     self:SetActiveStyle('ZoeyThin')
     local Raid = {}
     for i = 1, 5 do
@@ -1394,9 +1383,7 @@ oUF:Factory(function(self)
         Raid[i] = group
     end
 
-    --//----------------------------
     --// Raid Size 26 - 40
-    --//----------------------------
     self:SetActiveStyle('ZoeySquare')
     local Raid = {}
     for i = 1, 8 do
