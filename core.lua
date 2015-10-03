@@ -1375,7 +1375,7 @@ oUF:Factory(function(self)
         )
 
         if i == 1 then
-            group:SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -341)
+            group:SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -200)
         else
             group:SetPoint('BOTTOM', Raid[i - 1], 'TOP', 0, 15)
         end
@@ -1403,7 +1403,7 @@ oUF:Factory(function(self)
         )
 
         if i == 1 then
-            group:SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -341)
+            group:SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -200)
         else
             group:SetPoint('BOTTOMLEFT', Raid[i - 1], 'TOPLEFT', 0, 10)
         end
