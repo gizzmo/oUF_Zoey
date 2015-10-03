@@ -794,10 +794,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
     --// Health Text
     if unit == 'target' then
-        --[[
-            Target uses two health texts to make the
-            final 20% big and red for Execute and Kill Shot
-        ]]
+        --// Target uses two health texts to make the
+        --// final 20% big and red for Execute and Kill Shot
         local HealthText = CreateText(Overlay, 22)
         self:Tag(HealthText, '[Zoey:TargetHealth]')
         HealthText:SetPoint('RIGHT', self.Health, -1, -1)
@@ -1061,25 +1059,25 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
     self:SetWidth(135)
 
     --// Bar Position
-    local offset = 1
+    local FRAME_HEIGHT = 1
 
     --//----------------------------
     --// Health Bar
     --//----------------------------
     self.Health = CreateStatusBar(self, 'HealthBar')
     self.Health:SetHeight(18)
-    self.Health:SetPoint('TOP', 0, -offset)
+    self.Health:SetPoint('TOP', 0, -FRAME_HEIGHT)
     self.Health:SetPoint('LEFT', 1,0)
     self.Health:SetPoint('RIGHT',-1,0)
     self.Health.PostUpdate = PostUpdateHealth
 
-    --// Up The Offset Value
-    offset = offset + self.Health:GetHeight() + 1
+    --// Up The FRAME_HEIGHT
+    FRAME_HEIGHT = FRAME_HEIGHT + self.Health:GetHeight() + 1
 
     --//----------------------------
     --// Frame Size
     --//----------------------------
-    self:SetHeight(offset)
+    self:SetHeight(FRAME_HEIGHT)
 
     --// Overlay Frame -- used to attach icons/text to
     local Overlay = CreateFrame('Frame', '$parentOverlay', self)
@@ -1163,38 +1161,38 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
     self:SetWidth(53)
 
     --// Bar Position
-    local offset = 1
+    local FRAME_HEIGHT = 1
 
     --//----------------------------
     --// Health Bar
     --//----------------------------
     self.Health = CreateStatusBar(self, 'HealthBar')
     self.Health:SetHeight(25)
-    self.Health:SetPoint('TOP', 0, -offset)
+    self.Health:SetPoint('TOP', 0, -FRAME_HEIGHT)
     self.Health:SetPoint('LEFT', 1,0)
     self.Health:SetPoint('RIGHT',-1,0)
     self.Health.PostUpdate = PostUpdateHealth
 
-    --// Up The Offset Value
-    offset = offset + self.Health:GetHeight() + 1
+    --// Up The FRAME_HEIGHT
+    FRAME_HEIGHT = FRAME_HEIGHT + self.Health:GetHeight() + 1
 
     --//----------------------------
     --// Power Bar
     --//----------------------------
     self.Power = CreateStatusBar(self, 'PowerBar')
     self.Power:SetHeight(5)
-    self.Power:SetPoint('TOP', 0, -offset)
+    self.Power:SetPoint('TOP', 0, -FRAME_HEIGHT)
     self.Power:SetPoint('LEFT', 1,0)
     self.Power:SetPoint('RIGHT',-1,0)
     self.Power.PostUpdate = PostUpdatePower
 
-    --// Up The Offset Value
-    offset = offset + self.Power:GetHeight() + 1
+    --// Up The FRAME_HEIGHT
+    FRAME_HEIGHT = FRAME_HEIGHT + self.Power:GetHeight() + 1
 
     --//----------------------------
     --// Frame Size
     --//----------------------------
-    self:SetHeight(offset)
+    self:SetHeight(FRAME_HEIGHT)
 
     --// Overlay Frame -- used to attach icons/text to
     local Overlay = CreateFrame('Frame', '$parentOverlay', self)
