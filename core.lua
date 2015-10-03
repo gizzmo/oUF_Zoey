@@ -444,12 +444,6 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     self:SetScript('OnEnter', OnEnter)
     self:SetScript('OnLeave', OnLeave)
 
-    --// Range Fading
-    self.SpellRange = {
-        insideAlpha = 1,
-        outsideAlpha = 0.5
-    }
-
     --// Background
     local Background = self:CreateTexture(nil, 'BACKGROUND')
     Background:SetAllPoints(self)
@@ -1024,6 +1018,19 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         maxOverflow = 1, -- amount of overflow past the end of the health bar
     }
 
+    --//----------------------------
+    --// Spell Range
+    --//----------------------------
+    local ranger = "Range"
+    if IsAddOnLoaded("oUF_SpellRange") then
+        ranger = "SpellRange"
+    end
+
+    self[ranger] = {
+        insideAlpha = 1,
+        outsideAlpha = 0.5
+    }
+
 end)
 
 oUF:RegisterStyle('ZoeyThin', function(self, unit)
@@ -1035,12 +1042,6 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
     --// Hover Effects
     self:SetScript('OnEnter', OnEnter)
     self:SetScript('OnLeave', OnLeave)
-
-    --// Range Fading
-    self.SpellRange = {
-        insideAlpha = 1,
-        outsideAlpha = 0.3
-    }
 
     --// Background
     local Background = self:CreateTexture(nil, 'BACKGROUND')
@@ -1126,6 +1127,19 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
     self.LFDRole:SetSize(13,13)
     self.LFDRole:SetPoint('CENTER', Overlay, 'TOPRIGHT', 0, 0)
 
+    --//----------------------------
+    --// Spell Range
+    --//----------------------------
+    local ranger = "Range"
+    if IsAddOnLoaded("oUF_SpellRange") then
+        ranger = "SpellRange"
+    end
+
+    self[ranger] = {
+        insideAlpha = 1,
+        outsideAlpha = 0.5
+    }
+
 end)
 
 oUF:RegisterStyle('ZoeySquare', function(self, unit)
@@ -1137,12 +1151,6 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
     --// Hover Effects
     self:SetScript('OnEnter', OnEnter)
     self:SetScript('OnLeave', OnLeave)
-
-    --// Range Fading
-    self.SpellRange = {
-        insideAlpha = 1,
-        outsideAlpha = 0.3
-    }
 
     --// Background
     local Background = self:CreateTexture(nil, 'BACKGROUND')
@@ -1230,6 +1238,19 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
     self.RaidIcon = Overlay:CreateTexture(nil, 'OVERLAY')
     self.RaidIcon:SetSize(16,16)
     self.RaidIcon:SetPoint('CENTER', Overlay, 'LEFT', 0, 0)
+
+    --//----------------------------
+    --// Spell Range
+    --//----------------------------
+    local ranger = "Range"
+    if IsAddOnLoaded("oUF_SpellRange") then
+        ranger = "SpellRange"
+    end
+
+    self[ranger] = {
+        insideAlpha = 1,
+        outsideAlpha = 0.5
+    }
 
 end)
 
