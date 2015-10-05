@@ -107,6 +107,7 @@ do
 
 end
 
+oUF.Tags.Events['Zoey:Name'] = 'UNIT_NAME_UPDATE'
 oUF.Tags.Methods['Zoey:Name'] = function(unit)
     local name = UnitName(unit)
     local _, class = UnitClass(unit)
@@ -123,9 +124,9 @@ oUF.Tags.Methods['Zoey:Name'] = function(unit)
         return classColor..name
     end
 end
-oUF.Tags.Events['Zoey:Name'] = 'UNIT_NAME_UPDATE'
 
 
+oUF.Tags.Events['Zoey:Level'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
 oUF.Tags.Methods['Zoey:Level'] = function(unit)
     local level = UnitLevel(unit)
     local levelColor = Hex(GetQuestDifficultyColor(level <= 0 and 99 or level))
@@ -153,9 +154,9 @@ oUF.Tags.Methods['Zoey:Level'] = function(unit)
         return levelColor..level
     end
 end
-oUF.Tags.Events['Zoey:Level'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
 
 
+oUF.Tags.Events['Zoey:Status'] = 'UNIT_HEALTH UNIT_CONNECTION'
 oUF.Tags.Methods['Zoey:Status'] = function(unit)
     --// Status
     if not UnitIsConnected(unit)  then
@@ -168,9 +169,9 @@ oUF.Tags.Methods['Zoey:Status'] = function(unit)
         return 'Ghost'
     end
 end
-oUF.Tags.Events['Zoey:Status'] = 'UNIT_HEALTH UNIT_CONNECTION'
 
 
+oUF.Tags.Events['Zoey:Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
 oUF.Tags.Methods['Zoey:Health'] = function(unit)
     local status = _TAGS['Zoey:Status'](unit)
     if status then return status end
@@ -193,9 +194,9 @@ oUF.Tags.Methods['Zoey:Health'] = function(unit)
         return ('%s%%'):format(Percent(cur,max))
     end
 end
-oUF.Tags.Events['Zoey:Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
 
 
+oUF.Tags.Events['Zoey:TargetHealth'] = oUF.Tags.Events['Zoey:Health']
 oUF.Tags.Methods['Zoey:TargetHealth'] = function(unit)
     local status = _TAGS['Zoey:Status'](unit)
     if status then return status end
@@ -220,9 +221,9 @@ oUF.Tags.Methods['Zoey:TargetHealth'] = function(unit)
         end
     end
 end
-oUF.Tags.Events['Zoey:TargetHealth'] = oUF.Tags.Events['Zoey:Health']
 
 
+oUF.Tags.Events['Zoey:TargetHealth2'] = oUF.Tags.Events['Zoey:Health']
 oUF.Tags.Methods['Zoey:TargetHealth2'] = function(unit)
     local status = _TAGS['Zoey:Status'](unit)
     if status then return end
@@ -236,9 +237,9 @@ oUF.Tags.Methods['Zoey:TargetHealth2'] = function(unit)
         end
     end
 end
-oUF.Tags.Events['Zoey:TargetHealth2'] = oUF.Tags.Events['Zoey:Health']
 
 
+oUF.Tags.Events['Zoey:Power'] = 'UNIT_POWER UNIT_MAXPOWER'
 oUF.Tags.Methods['Zoey:Power'] = function(unit)
     local cur = UnitPower(unit)
     local max = UnitPowerMax(unit)
@@ -256,9 +257,9 @@ oUF.Tags.Methods['Zoey:Power'] = function(unit)
         end
     end
 end
-oUF.Tags.Events['Zoey:Power'] = 'UNIT_POWER UNIT_MAXPOWER'
 
 
+oUF.Tags.Events['Zoey:Exp'] = 'PLAYER_XP_UPDATE'
 oUF.Tags.Methods['Zoey:Exp'] = function(unit)
     local cur, max, rest = UnitXP(unit), UnitXPMax(unit), GetXPExhaustion(unit)
 
@@ -270,9 +271,9 @@ oUF.Tags.Methods['Zoey:Exp'] = function(unit)
         end
     end
 end
-oUF.Tags.Events['Zoey:Exp'] = 'PLAYER_XP_UPDATE'
 
 
+oUF.Tags.Events['Zoey:Guild'] = 'UNIT_NAME_UPDATE'
 oUF.Tags.Methods['Zoey:Guild'] = function(unit)
     local r,g,b = 255,255,255
 
@@ -288,9 +289,9 @@ oUF.Tags.Methods['Zoey:Guild'] = function(unit)
         return ('|cff%02x%02x%02x%s'):format(r,g,b, '<'..GuildName..'>')
     end
 end
-oUF.Tags.Events['Zoey:Guild'] = 'UNIT_NAME_UPDATE'
 
 
+oUF.Tags.Events['Zoey:RealmIndicator'] = 'UNIT_NAME_UPDATE'
 oUF.Tags.Methods['Zoey:RealmIndicator'] = function(unit)
     local _, realm = UnitName(unit)
     local r,g,b = 225,225,225
@@ -303,4 +304,3 @@ oUF.Tags.Methods['Zoey:RealmIndicator'] = function(unit)
         return ('|cff%02x%02x%02x%s'):format(r,g,b, '(*)')
     end
 end
-oUF.Tags.Events['Zoey:RealmIndicator'] = 'UNIT_NAME_UPDATE'
