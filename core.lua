@@ -109,6 +109,12 @@ local function UpdateUnitBorderColor(self, r,g,b)
     SetBorderColor(self, t)
 end
 
+local function UnitBorderEnable(self)
+
+    CreateBorder(self)
+    self:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', UpdateUnitBorderColor)
+    table.insert(self.__elements, UpdateUnitBorderColor)
+end
 
 --// Mouseover and Target Highlighting
 local function HighlightShouldShow(self)
@@ -444,9 +450,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     Background:SetTexture(0, 0, 0, 1)
 
     --// Border
-    CreateBorder(self)
-    self:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', UpdateUnitBorderColor)
-    table.insert(self.__elements, UpdateUnitBorderColor)
+    UnitBorderEnable(self)
 
     --// Highlight
     HighlightEnable(self)
@@ -1043,9 +1047,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
     Background:SetTexture(0, 0, 0, 1)
 
     --// Border
-    CreateBorder(self)
-    self:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', UpdateUnitBorderColor)
-    table.insert(self.__elements, UpdateUnitBorderColor)
+    UnitBorderEnable(self)
 
     --// Highlight
     HighlightEnable(self)
@@ -1152,9 +1154,7 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
     Background:SetTexture(0, 0, 0, 1)
 
     --// Border
-    CreateBorder(self)
-    self:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', UpdateUnitBorderColor)
-    table.insert(self.__elements, UpdateUnitBorderColor)
+    UnitBorderEnable(self)
 
     --// Highlight
     HighlightEnable(self)
