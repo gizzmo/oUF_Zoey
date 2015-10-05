@@ -132,39 +132,33 @@ local function HighlightShouldShow(self)
 end
 
 local function HighlightUpdate(self)
-    local highlight = self.Highlight
 
-    if not HighlightShouldShow(self) then
-        if highlight then highlight:Hide() end
-        return false
+    if HighlightShouldShow(self) then
+        self.Highlight:Show()
+    else
+        self.Highlight:Hide()
     end
-
-    if not self.Highlight then
-
-        --// Create the highlight
-        local hl = CreateFrame('Frame', '$parentHighlight', self)
-        hl:SetAllPoints(self)
-        hl:SetFrameLevel(15)
-        hl:Hide()
-
-        local tex = hl:CreateTexture(nil, 'OVERLAY')
-        tex:SetTexture(config.highlight.texture)
-        tex:SetBlendMode('ADD')
-        tex:SetAllPoints(hl)
-        tex:SetVertexColor(unpack(config.highlight.color))
-        tex:SetAlpha(config.highlight.alpha)
-
-        self.Highlight = hl
-        self.Highlight.tex = tex
-
-    end
-
-    self.Highlight:Show()
 
     return false
 end
 
 local function HighlightEnable(self)
+
+    --// Create the highlight
+    local hl = CreateFrame('Frame', '$parentHighlight', self)
+    hl:SetAllPoints(self)
+    hl:SetFrameLevel(15)
+    hl:Hide()
+
+    local tex = hl:CreateTexture(nil, 'OVERLAY')
+    tex:SetTexture(config.highlight.texture)
+    tex:SetBlendMode('ADD')
+    tex:SetAllPoints(hl)
+    tex:SetVertexColor(unpack(config.highlight.color))
+    tex:SetAlpha(config.highlight.alpha)
+
+    self.Highlight = hl
+    self.Highlight.tex = tex
 
     --// Mouseover Events
     self:HookScript('OnEnter', HighlightUpdate)
