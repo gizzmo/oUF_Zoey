@@ -21,7 +21,7 @@ config.border = {
         elite  = {185/255, 185/255, 80/255},  -- Yellow
         boss   = {150/255, 80/255, 200/255}   -- Purple
     },
-    size    = 12
+    size = 12
 }
 
 --// Highlight

@@ -15,33 +15,33 @@ local function SetBorderColor(self, r,g,b)
     local t = self.BorderTextures
     if not t then return end
 
-    --// If no color set, then grab the default
     if not r or not g or not b then
         r,g,b = unpack(config.border.colors.normal)
     end
 
-    --// Set the border color
     for _, tex in pairs(t) do
-        tex:SetVertexColor(r, g, b)
+        tex:SetVertexColor(r,g,b)
     end
 end
 
-local function SetBorderSize(self, size)
+local function SetBorderSize(self, size, offset)
     local t = self.BorderTextures
     if not t then return end
 
-    size = size or config.border.size
+    if not size then
+        size = config.border.size
+    end
+
+    local d = offset or (floor(size / 2 + 0.5) - 2)
 
     for _, tex in pairs(t) do
         tex:SetSize(size, size)
     end
 
-    local padding = floor(size * 5 / 16 + 0.5)
-
-    t.TOPLEFT:SetPoint('TOPLEFT', -padding, padding)
-    t.TOPRIGHT:SetPoint('TOPRIGHT', padding, padding)
-    t.BOTTOMLEFT:SetPoint('BOTTOMLEFT', -padding, -padding)
-    t.BOTTOMRIGHT:SetPoint('BOTTOMRIGHT', padding, -padding)
+    t.TOPLEFT:SetPoint('TOPLEFT', -d, d)
+    t.TOPRIGHT:SetPoint('TOPRIGHT', d, d)
+    t.BOTTOMLEFT:SetPoint('BOTTOMLEFT', -d, -d)
+    t.BOTTOMRIGHT:SetPoint('BOTTOMRIGHT', d, -d)
 end
 
 local function CreateBorder(self, size)
@@ -51,7 +51,7 @@ local function CreateBorder(self, size)
 
     local sections = { "TOPLEFT", "TOP", "TOPRIGHT", "LEFT", "RIGHT", "BOTTOMLEFT", "BOTTOM", "BOTTOMRIGHT" }
     for i = 1, #sections do
-        local x = self:CreateTexture(nil, 'ARTWORK')
+        local x = self:CreateTexture(nil, 'BORDER')
         x:SetTexture(config.border.texture)
         t[sections[i]] = x
     end
@@ -79,7 +79,7 @@ local function CreateBorder(self, size)
     self.BorderTextures = t
 
     SetBorderColor(self)
-    SetBorderSize(self, size)
+    SetBorderSize(self, size, offset)
 end
 
 local function UpdateUnitBorderColor(self)
