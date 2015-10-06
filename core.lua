@@ -11,75 +11,9 @@ local playerUnits = { player = true, pet = true, vehicle = true }
 --// FUNCTIONS
 --//----------------------------
 
---// Border Creation
-local function CreateBorder(self, size)
-
-    --// Want to change the Color? Use SetBorderColor
-    local size = config.border.size
-    local padding = config.border.padding
-    local texture = config.border.texture
-    local color = config.border.colors.normal
-
-    --// Temp hold the textures
-    local t = {}
-
-    --// Shared for all 8 textures
-    for i = 1, 8 do
-        t[i] = self:CreateTexture(nil, 'ARTWORK')
-        t[i]:SetTexture(texture)
-        t[i]:SetSize(size, size)
-        t[i]:SetVertexColor(unpack(color))
-    end
-
-    t[1].name = 'Top Left'
-    t[1]:SetPoint('TOPLEFT', -padding, padding)
-    t[1]:SetTexCoord(0.5, 0, 0.5, 1, 0.625, 0, 0.625, 1)
-
-    t[2].name = 'Top'
-    t[2]:SetPoint('TOPLEFT', size - padding, padding)
-    t[2]:SetPoint('TOPRIGHT', -size + padding, padding)
-    t[2]:SetTexCoord(0.25, 1, 0.375, 1, 0.25, 0, 0.375, 0)
-
-    t[3].name = 'Top Right'
-    t[3]:SetPoint('TOPRIGHT', padding, padding)
-    t[3]:SetTexCoord(0.625, 0, 0.625, 1,0.75, 0, 0.75, 1)
-
-    t[4].name = 'Left'
-    t[4]:SetPoint('TOPLEFT', -padding, -size + padding)
-    t[4]:SetPoint('BOTTOMLEFT', -padding, size - padding)
-    t[4]:SetTexCoord(0, 0, 0, 1, 0.125, 0, 0.125, 1)
-
-    t[5].name = 'Right'
-    t[5]:SetPoint('TOPRIGHT', padding, -size + padding)
-    t[5]:SetPoint('BOTTOMRIGHT', padding, size - padding)
-    t[5]:SetTexCoord(0.125, 0, 0.125, 1, 0.25, 0, 0.25, 1)
-
-    t[6].name = 'Bottom Left'
-    t[6]:SetPoint('BOTTOMLEFT', -padding, -padding)
-    t[6]:SetTexCoord(0.75, 0, 0.75, 1, 0.875, 0, 0.875, 1)
-
-    t[7].name = 'Bottom'
-    t[7]:SetPoint('BOTTOMLEFT', size - padding, -padding)
-    t[7]:SetPoint('BOTTOMRIGHT', -size + padding, -padding)
-    t[7]:SetTexCoord(0.375, 1, 0.5, 1, 0.375, 0, 0.5, 0)
-
-    t[8].name = 'Bottom Right'
-    t[8]:SetPoint('BOTTOMRIGHT', padding, -padding)
-    t[8]:SetTexCoord(0.875, 0, 0.875, 1, 1, 0, 1, 1)
-
-    self.BorderTextures = t
-end
-
-local function SetBorderColor(self, r,g,b)
-    if not self.BorderTextures then return end
-
-    if type(r) == 'table' then
-        if r.r then
-            r, g, b = r.r, r.g, r.b
-        else
-            r, g, b = unpack(r)
-        end
-    end
+local function SetBorderColor(self, r,g,b,a)
+    local t = self.BorderTextures
+    if not t then return end
 
     --// If no color set, then grab the default
     if not r or not g or not b then
@@ -87,9 +21,87 @@ local function SetBorderColor(self, r,g,b)
     end
 
     --// Set the border color
-    for _, tex in ipairs(self.BorderTextures) do
+    for _, tex in ipairs(t) do
         tex:SetVertexColor(r, g, b)
     end
+end
+
+local function SetBorderSize(self, size, padding)
+    local t = self.BorderTextures
+    if not t then return end
+
+    if not size then
+        size = config.border.size
+    end
+
+    if not padding then
+        padding = config.border.padding
+    end
+
+    for i, tex in ipairs(t) do
+        tex:SetSize(size, size)
+    end
+
+    t[1]:SetPoint('TOPLEFT', -padding, padding)
+
+    t[2]:SetPoint('TOPLEFT', size - padding, padding)
+    t[2]:SetPoint('TOPRIGHT', -size + padding, padding)
+
+    t[3]:SetPoint('TOPRIGHT', padding, padding)
+
+    t[4]:SetPoint('TOPLEFT', -padding, -size + padding)
+    t[4]:SetPoint('BOTTOMLEFT', -padding, size - padding)
+
+    t[5]:SetPoint('TOPRIGHT', padding, -size + padding)
+    t[5]:SetPoint('BOTTOMRIGHT', padding, size - padding)
+
+    t[6]:SetPoint('BOTTOMLEFT', -padding, -padding)
+
+    t[7]:SetPoint('BOTTOMLEFT', size - padding, -padding)
+    t[7]:SetPoint('BOTTOMRIGHT', -size + padding, -padding)
+
+    t[8]:SetPoint('BOTTOMRIGHT', padding, -padding)
+end
+
+local function CreateBorder(self, size, padding)
+    if type(self) ~= 'table' or not self.CreateTexture or self.BorderTextures then return end
+
+    local t = {}
+
+    --// Shared for all 8 textures
+    for i = 1, 8 do
+        t[i] = self:CreateTexture(nil, 'BORDER')
+        t[i]:SetTexture(config.border.texture)
+    end
+
+    t[1].name = 'TOPLEFT'
+    t[1]:SetTexCoord(0.5, 0, 0.5, 1, 0.625, 0, 0.625, 1)
+
+    t[2].name = 'TOP'
+    t[2]:SetTexCoord(0.25, 1, 0.375, 1, 0.25, 0, 0.375, 0)
+
+    t[3].name = 'TOPRIGHT'
+    t[3]:SetTexCoord(0.625, 0, 0.625, 1,0.75, 0, 0.75, 1)
+
+    t[4].name = 'LEFT'
+    t[4]:SetTexCoord(0, 0, 0, 1, 0.125, 0, 0.125, 1)
+
+    t[5].name = 'RIGHT'
+    t[5]:SetTexCoord(0.125, 0, 0.125, 1, 0.25, 0, 0.25, 1)
+
+    t[6].name = 'BOTTOMLEFT'
+    t[6]:SetTexCoord(0.75, 0, 0.75, 1, 0.875, 0, 0.875, 1)
+
+    t[7].name = 'BOTTOM'
+    t[7]:SetTexCoord(0.375, 1, 0.5, 1, 0.375, 0, 0.5, 0)
+
+    t[8].name = 'BOTTOMRIGHT'
+    t[8]:SetTexCoord(0.875, 0, 0.875, 1, 1, 0, 1, 1)
+
+    self.BorderTextures = t
+
+    SetBorderColor(self)
+    SetBorderSize(self, size, padding)
 end
 
 local function UpdateUnitBorderColor(self, r,g,b)
@@ -106,8 +118,9 @@ local function UpdateUnitBorderColor(self, r,g,b)
 
     --// Threat coloring could also be put in here
 
-    SetBorderColor(self, t)
+    SetBorderColor(self, unpack(t))
 end
+
 
 --// Mouseover and Target Highlighting
 local function HighlightShouldShow(self)
