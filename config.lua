@@ -4,32 +4,32 @@ local addon, ns = ...
 --//----------------------------
 --// CONFIG
 --//----------------------------
-local config = {}
+local config = {
+    statusbar = [[Interface\AddOns\oUF_Zoey\media\Armory]],
+    font = [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]],
 
---// Status bar
-config.statusbar = [[Interface\AddOns\oUF_Zoey\media\Armory]]
-
---// Font
-config.font = [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]]
-
---// Border
-config.border = {
-    texture = [[Interface\AddOns\oUF_Zoey\media\ThinSquare]],
-    colors = {
-        normal = {113/255, 113/255, 113/255}, -- Dark Grey
-        rare   = {1, 1, 1},                   -- White
-        elite  = {185/255, 185/255, 80/255},  -- Yellow
-        boss   = {150/255, 80/255, 200/255}   -- Purple
+    border = {
+        texture = [[Interface\AddOns\oUF_Zoey\media\ThinSquare]],
+        size = 12,
+        colors = {
+            normal = {113/255, 113/255, 113/255}, -- Dark Grey
+            rare   = {1, 1, 1},                   -- White
+            elite  = {185/255, 185/255, 80/255},  -- Yellow
+            boss   = {150/255, 80/255, 200/255}   -- Purple
+        },
     },
-    size = 12
+
+    highlight = {
+        texture = [[Interface\QuestFrame\UI-QuestLogTitleHighlight]],
+        color = {1, 1, 1}, -- White
+        alpha = 0.3
+    },
+
+    units = {}
 }
 
---// Highlight
-config.highlight = {
-    texture = [[Interface\QuestFrame\UI-QuestLogTitleHighlight]],
-    color = {1, 1, 1}, -- White
-    alpha = 0.3
-}
+--// Handover
+ns.config = config
 
 --//-------------------------
 --// COLORS
@@ -57,10 +57,6 @@ oUF.colors.cast =  {
     failed = {255/255, 12/255, 0/255},             -- dark red
     safezone = {255/255, 25/255, 0/255, 0.5},      -- transparent red
 }
-
-
---// Handover
-ns.config = config
 
 --// Register Some stuf with Shared Media
 if LibStub then
