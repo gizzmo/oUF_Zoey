@@ -11,7 +11,7 @@ local playerUnits = { player = true, pet = true, vehicle = true }
 --// FUNCTIONS
 --//----------------------------
 
-local function SetBorderColor(self, r,g,b,a)
+local function SetBorderColor(self, r,g,b)
     local t = self.BorderTextures
     if not t then return end
 
@@ -21,102 +21,74 @@ local function SetBorderColor(self, r,g,b,a)
     end
 
     --// Set the border color
-    for _, tex in ipairs(t) do
+    for _, tex in pairs(t) do
         tex:SetVertexColor(r, g, b)
     end
 end
 
-local function SetBorderSize(self, size, padding)
+local function SetBorderSize(self, size)
     local t = self.BorderTextures
     if not t then return end
 
-    if not size then
-        size = config.border.size
-    end
+    size = size or config.border.size
 
-    if not padding then
-        padding = config.border.padding
-    end
-
-    for i, tex in ipairs(t) do
+    for _, tex in pairs(t) do
         tex:SetSize(size, size)
     end
 
-    t[1]:SetPoint('TOPLEFT', -padding, padding)
+    local padding = floor(size * 5 / 16 + 0.5)
 
-    t[2]:SetPoint('TOPLEFT', size - padding, padding)
-    t[2]:SetPoint('TOPRIGHT', -size + padding, padding)
-
-    t[3]:SetPoint('TOPRIGHT', padding, padding)
-
-    t[4]:SetPoint('TOPLEFT', -padding, -size + padding)
-    t[4]:SetPoint('BOTTOMLEFT', -padding, size - padding)
-
-    t[5]:SetPoint('TOPRIGHT', padding, -size + padding)
-    t[5]:SetPoint('BOTTOMRIGHT', padding, size - padding)
-
-    t[6]:SetPoint('BOTTOMLEFT', -padding, -padding)
-
-    t[7]:SetPoint('BOTTOMLEFT', size - padding, -padding)
-    t[7]:SetPoint('BOTTOMRIGHT', -size + padding, -padding)
-
-    t[8]:SetPoint('BOTTOMRIGHT', padding, -padding)
+    t.TOPLEFT:SetPoint('TOPLEFT', -padding, padding)
+    t.TOPRIGHT:SetPoint('TOPRIGHT', padding, padding)
+    t.BOTTOMLEFT:SetPoint('BOTTOMLEFT', -padding, -padding)
+    t.BOTTOMRIGHT:SetPoint('BOTTOMRIGHT', padding, -padding)
 end
 
-local function CreateBorder(self, size, padding)
-    if type(self) ~= 'table' or not self.CreateTexture or self.BorderTextures then return end
+local function CreateBorder(self, size)
+    if type(self) ~= 'table' or self.BorderTextures then return end
 
     local t = {}
 
-    --// Shared for all 8 textures
-    for i = 1, 8 do
-        t[i] = self:CreateTexture(nil, 'BORDER')
-        t[i]:SetTexture(config.border.texture)
+    local sections = { "TOPLEFT", "TOP", "TOPRIGHT", "LEFT", "RIGHT", "BOTTOMLEFT", "BOTTOM", "BOTTOMRIGHT" }
+    for i = 1, #sections do
+        local x = self:CreateTexture(nil, 'ARTWORK')
+        x:SetTexture(config.border.texture)
+        t[sections[i]] = x
     end
 
-    t[1].name = 'TOPLEFT'
-    t[1]:SetTexCoord(0.5, 0, 0.5, 1, 0.625, 0, 0.625, 1)
+    --                        ULx, ULy,    LLx, LLy,    URx, URy,    LRx, LRy
+    t.LEFT:SetTexCoord       (0,   0,      0,   1,      1/8, 0,      1/8, 1)
+    t.RIGHT:SetTexCoord      (1/8, 0,      1/8, 1,      2/8, 0,      2/8, 1)
+    t.TOP:SetTexCoord        (2/8, 1,      3/8, 1,      2/8, 0,      3/8, 0)
+    t.BOTTOM:SetTexCoord     (3/8, 1,      4/8, 1,      3/8, 0,      4/8, 0)
+    t.TOPLEFT:SetTexCoord    (4/8, 0,      4/8, 1,      5/8, 0,      5/8, 1)
+    t.TOPRIGHT:SetTexCoord   (5/8, 0,      5/8, 1,      6/8, 0,      6/8, 1)
+    t.BOTTOMLEFT:SetTexCoord (6/8, 0,      6/8, 1,      7/8, 0,      7/8, 1)
+    t.BOTTOMRIGHT:SetTexCoord(7/8, 0,      7/8, 1,      1,   0,      1,   1)
 
-    t[2].name = 'TOP'
-    t[2]:SetTexCoord(0.25, 1, 0.375, 1, 0.25, 0, 0.375, 0)
-
-    t[3].name = 'TOPRIGHT'
-    t[3]:SetTexCoord(0.625, 0, 0.625, 1,0.75, 0, 0.75, 1)
-
-    t[4].name = 'LEFT'
-    t[4]:SetTexCoord(0, 0, 0, 1, 0.125, 0, 0.125, 1)
-
-    t[5].name = 'RIGHT'
-    t[5]:SetTexCoord(0.125, 0, 0.125, 1, 0.25, 0, 0.25, 1)
-
-    t[6].name = 'BOTTOMLEFT'
-    t[6]:SetTexCoord(0.75, 0, 0.75, 1, 0.875, 0, 0.875, 1)
-
-    t[7].name = 'BOTTOM'
-    t[7]:SetTexCoord(0.375, 1, 0.5, 1, 0.375, 0, 0.5, 0)
-
-    t[8].name = 'BOTTOMRIGHT'
-    t[8]:SetTexCoord(0.875, 0, 0.875, 1, 1, 0, 1, 1)
+    -- Attach the edges to the corners
+    t.TOP:SetPoint("TOPLEFT", t.TOPLEFT, "TOPRIGHT")
+    t.TOP:SetPoint("TOPRIGHT", t.TOPRIGHT, "TOPLEFT")
+    t.LEFT:SetPoint("TOPLEFT", t.TOPLEFT, "BOTTOMLEFT")
+    t.LEFT:SetPoint("BOTTOMLEFT", t.BOTTOMLEFT, "TOPLEFT")
+    t.RIGHT:SetPoint("TOPRIGHT", t.TOPRIGHT, "BOTTOMRIGHT")
+    t.RIGHT:SetPoint("BOTTOMRIGHT", t.BOTTOMRIGHT, "TOPRIGHT")
+    t.BOTTOM:SetPoint("BOTTOMLEFT", t.BOTTOMLEFT, "BOTTOMRIGHT")
+    t.BOTTOM:SetPoint("BOTTOMRIGHT", t.BOTTOMRIGHT, "BOTTOMLEFT")
 
     self.BorderTextures = t
 
     SetBorderColor(self)
-    SetBorderSize(self, size, padding)
+    SetBorderSize(self, size)
 end
 
-local function UpdateUnitBorderColor(self, r,g,b)
-    if not self.BorderTextures then return end
+local function UpdateUnitBorderColor(self)
+    if not self.BorderTextures or not self.unit then return end
 
-    local t
-
-    if self.unit then
-        local c = UnitClassification(self.unit)
-        if c == 'worldboss' then c = 'boss' end
-        if c == 'rareelite' then c = 'rare' end
-        t = config.border.colors[c]
-    end
-
-    --// Threat coloring could also be put in here
+    local c = UnitClassification(self.unit)
+    if c == 'worldboss' then c = 'boss' end
+    if c == 'rareelite' then c = 'rare' end
+    local t = config.border.colors[c]
 
     SetBorderColor(self, unpack(t))
 end
