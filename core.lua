@@ -88,6 +88,7 @@ local function UpdateUnitBorderColor(self)
     local c = UnitClassification(self.unit)
     if c == 'worldboss' then c = 'boss' end
     if c == 'rareelite' then c = 'rare' end
+    if c == 'minus' then c = 'normal' end
     local t = config.border.colors[c]
 
     SetBorderColor(self, unpack(t))
