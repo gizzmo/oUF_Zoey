@@ -1151,6 +1151,7 @@ oUF:Factory(function(self)
     Spawn('TargetTarget'):SetPoint('LEFT', u.target, 'RIGHT', sgap, 0)
 
     --// Focus
+    self:SetActiveStyle('ZoeyThin')
     Spawn('Focus'      ):SetPoint('RIGHT', u.pet, 'LEFT', -sgap, 0)
     Spawn('FocusTarget'):SetPoint('BOTTOM', u.focus, 'TOP', 0, sgap)
 
