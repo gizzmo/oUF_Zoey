@@ -109,13 +109,6 @@ local function UpdateUnitBorderColor(self, r,g,b)
     SetBorderColor(self, t)
 end
 
-local function UnitBorderEnable(self)
-
-    CreateBorder(self)
-    self:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', UpdateUnitBorderColor)
-    table.insert(self.__elements, UpdateUnitBorderColor)
-end
-
 --// Mouseover and Target Highlighting
 local function HighlightShouldShow(self)
 
@@ -146,33 +139,6 @@ local function HighlightUpdate(self)
     end
 
     return false
-end
-
-local function HighlightEnable(self)
-
-    --// Create the highlight
-    local hl = CreateFrame('Frame', '$parentHighlight', self)
-    hl:SetAllPoints(self)
-    hl:SetFrameLevel(15)
-    hl:Hide()
-
-    local tex = hl:CreateTexture(nil, 'OVERLAY')
-    tex:SetTexture(config.highlight.texture)
-    tex:SetBlendMode('ADD')
-    tex:SetAllPoints(hl)
-    tex:SetVertexColor(unpack(config.highlight.color))
-    tex:SetAlpha(config.highlight.alpha)
-
-    self.Highlight = hl
-    self.Highlight.tex = tex
-
-    --// Mouseover Events
-    self:HookScript('OnEnter', HighlightUpdate)
-    self:HookScript('OnLeave', HighlightUpdate)
-
-    --// Target Events
-    self:RegisterEvent('PLAYER_TARGET_CHANGED', HighlightUpdate)
-    table.insert(self.__elements, HighlightUpdate)
 end
 
 
@@ -349,17 +315,21 @@ end
 --// Other Functions
 ns.Mouse_Focus = nil
 local function OnEnter(self)
-    ns.Mouse_Focus = self
     UnitFrame_OnEnter(self)
 
-    for _, fs in ipairs( self.__tags ) do fs:UpdateTag() end
+    ns.Mouse_Focus = self
+    for _, fs in ipairs( self.__tags ) do
+        fs:UpdateTag()
+    end
 end
 
 local function OnLeave(self)
-    ns.Mouse_Focus = nil
     UnitFrame_OnLeave(self)
 
-    for _, fs in ipairs( self.__tags ) do fs:UpdateTag() end
+    ns.Mouse_Focus = nil
+    for _, fs in ipairs( self.__tags ) do
+        fs:UpdateTag()
+    end
 end
 
 local function BarOnHide(bar)
@@ -397,12 +367,11 @@ end
 --//----------------------------
 --// STYLE FUNCTION
 --//----------------------------
-oUF:RegisterStyle('Zoey', function(self, unit)
+--// Things every style will have
+local function SharedStyle(self)
 
-    --// Rightclick Menu
+    --// Make the frame interactiveable
     self:RegisterForClicks('AnyUp')
-
-    --// Hover Effects
     self:SetScript('OnEnter', OnEnter)
     self:SetScript('OnLeave', OnLeave)
 
@@ -411,11 +380,51 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     Background:SetAllPoints(self)
     Background:SetTexture(0, 0, 0, 1)
 
-    --// Border
-    UnitBorderEnable(self)
+    --// Border: changes color depending on the unit's classification (rare,elite)
+    CreateBorder(self)
+    self:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', UpdateUnitBorderColor)
+    table.insert(self.__elements, UpdateUnitBorderColor)
 
-    --// Highlight
-    HighlightEnable(self)
+    --// Highlight: create the highlight
+    self.Highlight = CreateFrame('Frame', '$parentHighlight', self)
+    self.Highlight:SetAllPoints(self)
+    self.Highlight:SetFrameLevel(15) -- needs to be the very top
+    self.Highlight:Hide()
+
+    self.Highlight.texture = self.Highlight:CreateTexture(nil, 'OVERLAY')
+    self.Highlight.texture:SetAllPoints(self.Highlight)
+    self.Highlight.texture:SetTexture(config.highlight.texture)
+    self.Highlight.texture:SetBlendMode('ADD')
+    self.Highlight.texture:SetVertexColor(unpack(config.highlight.color))
+    self.Highlight.texture:SetAlpha(config.highlight.alpha)
+
+    --// Highlight: enable Updates
+    self:HookScript('OnEnter', HighlightUpdate)
+    self:HookScript('OnLeave', HighlightUpdate)
+    self:RegisterEvent('PLAYER_TARGET_CHANGED', HighlightUpdate)
+    table.insert(self.__elements, HighlightUpdate)
+
+    --// Overlay Frame -- used to attach icons/text to
+    self.overlay = CreateFrame('Frame', '$parentOverlay', self)
+    self.overlay:SetAllPoints(self)
+    self.overlay:SetFrameLevel(10)
+
+    --// Spell Range
+    local ranger = "Range"
+    if IsAddOnLoaded("oUF_SpellRange") then
+        ranger = "SpellRange"
+    end
+
+    self[ranger] = {
+        insideAlpha = 1,
+        outsideAlpha = 0.5
+    }
+
+end
+
+--// Main Core style
+oUF:RegisterStyle('Zoey', function(self, unit)
+    SharedStyle(self)
 
     -- // Frame Width. Height will be set after bars are created
     if unit == 'player' or unit == 'target' then
@@ -424,7 +433,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         self:SetWidth(135)
     end
 
-    --// Bar Position
+    --// Used for bar positioning
     local FRAME_HEIGHT  = 1
 
     --//----------------------------
@@ -731,48 +740,42 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     --// Finaly time to set the Frame Height
     self:SetHeight(FRAME_HEIGHT)
 
-    --// Overlay Frame -- used to attach icons/text to
-    local Overlay = CreateFrame('Frame', '$parentOverlay', self)
-    Overlay:SetAllPoints(self)
-    Overlay:SetFrameLevel(10)
-
     --//----------------------------
     --// Texts
     --//----------------------------
     --// Name Text
-    local Name = CreateText(Overlay, 16)
-    self:Tag(Name, '[Zoey:Level< ][Zoey:Name]')
-
+    local Name = CreateText(self.overlay, 16)
     Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
     Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
+    self:Tag(Name, '[Zoey:Level< ][Zoey:Name]')
 
     --// Health Text
     if unit == 'target' then
         --// Target uses two health texts to make the
         --// final 20% big and red for Execute and Kill Shot
-        local HealthText = CreateText(Overlay, 22)
+        local HealthText = CreateText(self.overlay, 22)
+        HealthText:SetPoint('RIGHT', self.Health, -1, -1)
         self:Tag(HealthText, '[Zoey:TargetHealth]')
-        HealthText:SetPoint('RIGHT', self.Health, -1, -1)
 
-        local HealthText2 = CreateText(Overlay, 29)
-        self:Tag(HealthText2, '[Zoey:TargetHealth2]')
+        local HealthText2 = CreateText(self.overlay, 29)
         HealthText2:SetPoint('RIGHT', self.Health, -1, -1)
+        self:Tag(HealthText2, '[Zoey:TargetHealth2]')
     else
-        local HealthText = CreateText(Overlay, 22)
-        self:Tag(HealthText, '[Zoey:Health]')
+        local HealthText = CreateText(self.overlay, 22)
         HealthText:SetPoint('RIGHT', self.Health, -1, -1)
+        self:Tag(HealthText, '[Zoey:Health]')
     end
 
     --// Power Text
-    local PowerText = CreateText(Overlay, 12)
-    self:Tag(PowerText, '[Zoey:Power]')
+    local PowerText = CreateText(self.overlay, 12)
     PowerText:SetPoint('RIGHT', self.Power, -1, -1)
+    self:Tag(PowerText, '[Zoey:Power]')
 
     --// Experience Text
     if self.Experience then
-        local Experience = CreateText(Overlay, 10)
-        self:Tag(Experience, '[Zoey:Exp]')
+        local Experience = CreateText(self.overlay, 10)
         Experience:SetPoint('CENTER', self.Experience, 'BOTTOM', 0, -5)
+        self:Tag(Experience, '[Zoey:Exp]')
     end
 
     --//----------------------------
@@ -780,47 +783,47 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     --//----------------------------
     if unit == 'player' then
         --// Resting Icon
-        self.Resting = Overlay:CreateTexture(nil, 'OVERLAY')
+        self.Resting = self.overlay:CreateTexture(nil, 'OVERLAY')
         self.Resting:SetSize(25,25)
-        self.Resting:SetPoint('LEFT', Overlay, 'BOTTOMLEFT', 0, -2)
+        self.Resting:SetPoint('LEFT', self.overlay, 'BOTTOMLEFT', 0, -2)
 
         --// Combat Icon
-        self.Combat = Overlay:CreateTexture(nil, 'OVERLAY')
+        self.Combat = self.overlay:CreateTexture(nil, 'OVERLAY')
         self.Combat:SetSize(25,25)
-        self.Combat:SetPoint('RIGHT', Overlay, 'BOTTOMRIGHT', 0, -2)
+        self.Combat:SetPoint('RIGHT', self.overlay, 'BOTTOMRIGHT', 0, -2)
     end
 
     if unit == 'target' then
         --// Quest Mob Icon
-        self.QuestIcon = Overlay:CreateTexture(nil, 'OVERLAY')
+        self.QuestIcon = self.overlay:CreateTexture(nil, 'OVERLAY')
         self.QuestIcon:SetSize(32,32)
-        self.QuestIcon:SetPoint('CENTER', Overlay, 'LEFT', 0, 0)
+        self.QuestIcon:SetPoint('CENTER', self.overlay, 'LEFT', 0, 0)
     end
 
-    --// Ready Check icon
-    self.ReadyCheck = Overlay:CreateTexture(nil, 'OVERLAY')
-    self.ReadyCheck:SetSize(20,20)
-    self.ReadyCheck:SetPoint('CENTER', Overlay, 'CENTER', 0, 0)
+    --// Leader Icon
+    self.Leader = self.overlay:CreateTexture(nil, 'OVERLAY')
+    self.Leader:SetSize(15,15)
+    self.Leader:SetPoint('CENTER', self.overlay, 'TOPLEFT', 0, 3)
 
     --// LFD Role Icon
-    self.LFDRole = Overlay:CreateTexture(nil, 'OVERLAY')
+    self.LFDRole = self.overlay:CreateTexture(nil, 'OVERLAY')
     self.LFDRole:SetSize(15,15)
-    self.LFDRole:SetPoint('CENTER', Overlay, 'TOPRIGHT', 1, 0)
+    self.LFDRole:SetPoint('CENTER', self.overlay, 'TOPRIGHT', 1, 0)
 
-    --// Leader Icon
-    self.Leader = Overlay:CreateTexture(nil, 'OVERLAY')
-    self.Leader:SetSize(15,15)
-    self.Leader:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 3)
+    --// Ready Check icon
+    self.ReadyCheck = self.overlay:CreateTexture(nil, 'OVERLAY')
+    self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
+    self.ReadyCheck:SetPoint('CENTER', self.overlay, 'CENTER', 0, 0)
 
     --// Raid Icon (Skull, Cross, Square ...)
-    self.RaidIcon = Overlay:CreateTexture(nil, 'OVERLAY')
+    self.RaidIcon = self.overlay:CreateTexture(nil, 'OVERLAY')
     self.RaidIcon:SetSize(23,23)
-    self.RaidIcon:SetPoint('LEFT', Overlay, 3, 0)
+    self.RaidIcon:SetPoint('LEFT', self.overlay, 3, 0)
 
     --// PvP Icon -- The img used isnt perfect, it sucks
-    self.PvP = Overlay:CreateTexture(nil, 'OVERLAY')
+    self.PvP = self.overlay:CreateTexture(nil, 'OVERLAY')
     self.PvP:SetSize(21,21)
-    self.PvP:SetPoint('CENTER', Overlay, 'LEFT', 0,0)
+    self.PvP:SetPoint('CENTER', self.overlay, 'LEFT', 0,0)
 
     local faction = UnitFactionGroup(unit)
     if faction == 'Horde' then
@@ -978,47 +981,16 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         maxOverflow = 1, -- amount of overflow past the end of the health bar
     }
 
-    --//----------------------------
-    --// Spell Range
-    --//----------------------------
-    local ranger = "Range"
-    if IsAddOnLoaded("oUF_SpellRange") then
-        ranger = "SpellRange"
-    end
-
-    self[ranger] = {
-        insideAlpha = 1,
-        outsideAlpha = 0.5
-    }
-
 end)
 
 oUF:RegisterStyle('ZoeyThin', function(self, unit)
-
-    --// Rightclick Menu
-    self.menu = Menu
-    self:RegisterForClicks('AnyUp')
-
-    --// Hover Effects
-    self:SetScript('OnEnter', OnEnter)
-    self:SetScript('OnLeave', OnLeave)
-
-    --// Background
-    local Background = self:CreateTexture(nil, 'BACKGROUND')
-    Background:SetAllPoints(self)
-    Background:SetTexture(0, 0, 0, 1)
-
-    --// Border
-    UnitBorderEnable(self)
-
-    --// Highlight
-    HighlightEnable(self)
+    SharedStyle(self)
 
     -- // Frame Width. Height will be set after bars are created
     self:SetWidth(135)
 
-    --// Bar Position
-    local FRAME_HEIGHT = 1
+    --// Used for bar positioning
+    local FRAME_HEIGHT  = 1
 
     --//----------------------------
     --// Health Bar
@@ -1033,98 +1005,55 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
     --// Up The FRAME_HEIGHT
     FRAME_HEIGHT = FRAME_HEIGHT + self.Health:GetHeight() + 1
 
-    --//----------------------------
-    --// Frame Size
-    --//----------------------------
+    --// Finaly time to set the Frame Height
     self:SetHeight(FRAME_HEIGHT)
-
-    --// Overlay Frame -- used to attach icons/text to
-    local Overlay = CreateFrame('Frame', '$parentOverlay', self)
-    Overlay:SetAllPoints(self)
-    Overlay:SetFrameLevel(10)
 
     --//----------------------------
     --// Texts
     --//----------------------------
     --// Name Text
-    local Name = CreateText(Overlay, 12)
-    self:Tag(Name, '[Zoey:Level< ][Zoey:Name]')
+    local Name = CreateText(self.overlay, 12)
     Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
     Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
+    self:Tag(Name, '[Zoey:Level< ][Zoey:Name]')
 
     --// Status Text
-    local StatusText = CreateText(Overlay, 16)
-    self:Tag(StatusText, '[Zoey:Status]')
+    local StatusText = CreateText(self.overlay, 16)
     StatusText:SetPoint('RIGHT', self.Health, -1, 0)
+    self:Tag(StatusText, '[Zoey:Status]')
 
     --//----------------------------
     --// Icons
     --//----------------------------
     --// Leader Icon
-    self.Leader = Overlay:CreateTexture(nil, 'OVERLAY')
+    self.Leader = self.overlay:CreateTexture(nil, 'OVERLAY')
     self.Leader:SetSize(13,13)
-    self.Leader:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 0)
-
-    --// Assistant Icon
-    self.Assistant = Overlay:CreateTexture(nil, "OVERLAY")
-    self.Assistant:SetSize(13,13)
-    self.Assistant:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 0)
-
-    --// Ready Check icon
-    self.ReadyCheck = Overlay:CreateTexture(nil, 'OVERLAY')
-    self.ReadyCheck:SetSize(16,16)
-    self.ReadyCheck:SetPoint('CENTER', Overlay, 'BOTTOM', 0, 0)
-
-    --// Raid Icon (Skull, Cross, Square ...)
-    self.RaidIcon = Overlay:CreateTexture(nil, 'OVERLAY')
-    self.RaidIcon:SetSize(16,16)
-    self.RaidIcon:SetPoint('CENTER', Overlay, 'LEFT', 0, 0)
+    self.Leader:SetPoint('CENTER', self.overlay, 'TOPLEFT', 0, 0)
 
     --// LFD Role Icon
-    self.LFDRole = Overlay:CreateTexture(nil, 'OVERLAY')
+    self.LFDRole = self.overlay:CreateTexture(nil, 'OVERLAY')
     self.LFDRole:SetSize(13,13)
-    self.LFDRole:SetPoint('CENTER', Overlay, 'TOPRIGHT', 0, 0)
+    self.LFDRole:SetPoint('CENTER', self.overlay, 'TOPRIGHT', 0, 0)
 
-    --//----------------------------
-    --// Spell Range
-    --//----------------------------
-    local ranger = "Range"
-    if IsAddOnLoaded("oUF_SpellRange") then
-        ranger = "SpellRange"
-    end
+    --// Ready Check icon
+    self.ReadyCheck = self.overlay:CreateTexture(nil, 'OVERLAY')
+    self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
+    self.ReadyCheck:SetPoint('CENTER', self.overlay, 'CENTER', 0, 0)
 
-    self[ranger] = {
-        insideAlpha = 1,
-        outsideAlpha = 0.5
-    }
+    --// Raid Icon (Skull, Cross, Square ...)
+    self.RaidIcon = self.overlay:CreateTexture(nil, 'OVERLAY')
+    self.RaidIcon:SetSize(16,16)
+    self.RaidIcon:SetPoint('CENTER', self.overlay, 'LEFT', 0, 0)
 
 end)
 
 oUF:RegisterStyle('ZoeySquare', function(self, unit)
-
-    --// Rightclick Menu
-    self.menu = Menu
-    self:RegisterForClicks('AnyUp')
-
-    --// Hover Effects
-    self:SetScript('OnEnter', OnEnter)
-    self:SetScript('OnLeave', OnLeave)
-
-    --// Background
-    local Background = self:CreateTexture(nil, 'BACKGROUND')
-    Background:SetAllPoints(self)
-    Background:SetTexture(0, 0, 0, 1)
-
-    --// Border
-    UnitBorderEnable(self)
-
-    --// Highlight
-    HighlightEnable(self)
+    SharedStyle(self)
 
     -- // Frame Width. Height will be set after bars are created
     self:SetWidth(53)
 
-    --// Bar Position
+    --// Used for bar positioning
     local FRAME_HEIGHT = 1
 
     --//----------------------------
@@ -1153,29 +1082,22 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
     --// Up The FRAME_HEIGHT
     FRAME_HEIGHT = FRAME_HEIGHT + self.Power:GetHeight() + 1
 
-    --//----------------------------
-    --// Frame Size
-    --//----------------------------
+    --// Finaly time to set the Frame Height
     self:SetHeight(FRAME_HEIGHT)
-
-    --// Overlay Frame -- used to attach icons/text to
-    local Overlay = CreateFrame('Frame', '$parentOverlay', self)
-    Overlay:SetAllPoints(self)
-    Overlay:SetFrameLevel(10)
 
     --//----------------------------
     --// Texts
     --//----------------------------
     --// Name Text
     local Name = CreateText(Overlay, 10, 'center')
-    self:Tag(Name, '[Zoey:Name]')
     Name:SetPoint('TOPLEFT', self, 'TOPLEFT', 1, -1)
     Name:SetPoint('TOPRIGHT', self, 'TOPRIGHT', -1, -1)
+    self:Tag(Name, '[Zoey:Name]')
 
     --// Status Text
     local StatusText = CreateText(Overlay, 12, 'center')
-    self:Tag(StatusText, '[Zoey:Status]')
     StatusText:SetPoint('BOTTOM',  self)
+    self:Tag(StatusText, '[Zoey:Status]')
 
     --//----------------------------
     --// Icons
@@ -1185,28 +1107,20 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
     self.Leader:SetSize(10,10)
     self.Leader:SetPoint('CENTER', Overlay, 'TOPLEFT', 0, 0)
 
+    --// LFD Role Icon
+    self.LFDRole = self.overlay:CreateTexture(nil, 'OVERLAY')
+    self.LFDRole:SetSize(13,13)
+    self.LFDRole:SetPoint('CENTER', self.overlay, 'TOPRIGHT', 0, 0)
+
     --// Ready Check icon
-    self.ReadyCheck = Overlay:CreateTexture(nil, 'OVERLAY')
-    self.ReadyCheck:SetSize(14, 14)
-    self.ReadyCheck:SetPoint('CENTER', Overlay, 'BOTTOM', 0, 0)
+    self.ReadyCheck = self.overlay:CreateTexture(nil, 'OVERLAY')
+    self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
+    self.ReadyCheck:SetPoint('CENTER', self.overlay, 'CENTER', 0, 0)
 
     --// Raid Icon (Skull, Cross, Square ...)
     self.RaidIcon = Overlay:CreateTexture(nil, 'OVERLAY')
     self.RaidIcon:SetSize(16,16)
     self.RaidIcon:SetPoint('CENTER', Overlay, 'LEFT', 0, 0)
-
-    --//----------------------------
-    --// Spell Range
-    --//----------------------------
-    local ranger = "Range"
-    if IsAddOnLoaded("oUF_SpellRange") then
-        ranger = "SpellRange"
-    end
-
-    self[ranger] = {
-        insideAlpha = 1,
-        outsideAlpha = 0.5
-    }
 
 end)
 
