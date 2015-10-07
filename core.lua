@@ -181,7 +181,7 @@ end
 
 
 --// Castbar Functions
-local function PostCastStart(Castbar, unit, name, rank, castid)
+local function PostCastStart(Castbar, unit, name, castid)
     Castbar:SetAlpha(1.0)
     Castbar.Spark:Show()
 
@@ -194,17 +194,17 @@ local function PostCastStart(Castbar, unit, name, rank, castid)
     Castbar.bg:SetVertexColor(r*0.4, g *0.4, b*0.4)
 end
 
-local function PostCastStop(Castbar, unit, name, rank, castid)
+local function PostCastStop(Castbar, unit, name, castid)
     Castbar:SetValue(Castbar.max)
     Castbar:Show()
 end
 
-local function PostChannelStop(Castbar, unit, name, rank, castid)
+local function PostChannelStop(Castbar, unit, name)
     Castbar:SetValue(0)
     Castbar:Show()
 end
 
-local function PostCastFailed(Castbar, unit, name, rank, castid)
+local function PostCastFailed(Castbar, unit, name, castid)
     Castbar:SetValue(Castbar.max)
     Castbar:Show()
 
