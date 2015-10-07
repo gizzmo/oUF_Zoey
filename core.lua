@@ -869,18 +869,14 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         --// Castbar Texts
         if unit == 'player' then
             self.Castbar.Text = CreateText(self.Castbar, 14)
-            self.Castbar.Text:SetPoint('LEFT', 10, 0)
-
             self.Castbar.Time = CreateText(self.Castbar, 10)
-            self.Castbar.Time:SetPoint('RIGHT', -10, 0)
 
         elseif unit == 'target' then
             self.Castbar.Text = CreateText(self.Castbar, 20)
-            self.Castbar.Text:SetPoint('LEFT', 10, 0)
-
             self.Castbar.Time = CreateText(self.Castbar, 16)
-            self.Castbar.Time:SetPoint('RIGHT', -10, 0)
         end
+        self.Castbar.Text:SetPoint('LEFT', 10, 0)
+        self.Castbar.Time:SetPoint('RIGHT', -10, 0)
 
         --// Castbar Function Hooks
         self.Castbar.OnUpdate = CastbarOnUpdate
