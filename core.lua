@@ -820,6 +820,20 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         self.PvP:SetTexCoord(0.05, 0.605, 0.015, 0.57)
     end
 
+    if unit == 'party' or unit == 'target' or unit == 'focus' then
+        --// Phase Icon -- is the unit in a different phase then the player
+        self.PhaseIcon = self.overlay:CreateTexture(nil, 'OVERLAY')
+        self.PhaseIcon:SetPoint('TOP', self)
+        self.PhaseIcon:SetPoint('BOTTOM', self)
+        self.PhaseIcon:SetWidth(FRAME_HEIGHT * 2)
+        self.PhaseIcon:SetTexture([[Interface\Icons\Spell_Frost_Stun]])
+        self.PhaseIcon:SetTexCoord(0.05, 0.95, 0.25, 0.75)
+        self.PhaseIcon:SetAlpha(0.5)
+        self.PhaseIcon:SetBlendMode("ADD")
+        self.PhaseIcon:SetDesaturated(true)
+        self.PhaseIcon:SetVertexColor(0.4, 0.8, 1)
+    end
+
     --//----------------------------
     --// Cast Bars
     --//----------------------------
