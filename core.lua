@@ -887,18 +887,17 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         self.Castbar.PostCastFailed = PostCastFailed
         self.Castbar.PostCastInterrupted = PostCastFailed
 
-        --// Castbar Frame
-        local CastbarFrame = CreateFrame('Frame', '$parentFrame', self.Castbar)
-        CastbarFrame:SetPoint('TOPLEFT', -1, 1)
-        CastbarFrame:SetPoint('BOTTOMRIGHT', 1, -1)
-        CastbarFrame:SetFrameLevel(self.Castbar:GetFrameLevel()-1)
+        --// Build a frame around the Castbar
+        self.Castbar.Frame = CreateFrame('Frame', '$parentFrame', self.Castbar)
+        self.Castbar.Frame:SetPoint('TOPLEFT', -1, 1)
+        self.Castbar.Frame:SetPoint('BOTTOMRIGHT', 1, -1)
+        self.Castbar.Frame:SetFrameLevel(self.Castbar:GetFrameLevel()-1)
 
-        local Background = self.Castbar:CreateTexture(nil, 'BACKGROUND')
-        Background:SetAllPoints(CastbarFrame)
-        Background:SetTexture(0, 0, 0, 1)
+        self.Castbar.Frame.bg = self.Castbar.Frame:CreateTexture(nil, 'BACKGROUND')
+        self.Castbar.Frame.bg:SetAllPoints(self.Castbar.Frame)
+        self.Castbar.Frame.bg:SetTexture(0, 0, 0, 1)
 
-        --// Castbar Frame Border
-        CreateBorder(CastbarFrame)
+        CreateBorder(self.Castbar.Frame)
     end
 
     --//----------------------------
