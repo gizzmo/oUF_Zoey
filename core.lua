@@ -192,6 +192,12 @@ local function PostCastStart(Castbar, unit, name, castid)
 
     --// Set the background color
     Castbar.bg:SetVertexColor(r*0.4, g *0.4, b*0.4)
+
+    if Castbar.interrupt then
+        Castbar:PostCastNotInterruptible(unit)
+    else
+        Castbar:PostCastInterruptible(unit)
+    end
 end
 
 local function PostCastStop(Castbar, unit, name, castid)
@@ -215,6 +221,18 @@ local function PostCastFailed(Castbar, unit, name, castid)
 
     --// Set the background color
     Castbar.bg:SetVertexColor(r*0.4, g *0.4, b*0.4)
+end
+
+local function PostCastInterruptible(Castbar, unit)
+    if unit == 'target' then
+        SetBorderColor(Castbar.Frame)
+    end
+end
+
+local function PostCastNotInterruptible(Castbar, unit)
+    if unit == 'target' then
+        SetBorderColor(Castbar.Frame, 1,1,1)
+    end
 end
 
 local function CastbarOnUpdate(Castbar, elapsed)
@@ -886,6 +904,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         self.Castbar.PostChannelStop = PostChannelStop
         self.Castbar.PostCastFailed = PostCastFailed
         self.Castbar.PostCastInterrupted = PostCastFailed
+        self.Castbar.PostCastInterruptible = PostCastInterruptible
+        self.Castbar.PostCastNotInterruptible = PostCastNotInterruptible
 
         --// Build a frame around the Castbar
         self.Castbar.Frame = CreateFrame('Frame', '$parentFrame', self.Castbar)
