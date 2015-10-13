@@ -11,79 +11,8 @@ local playerUnits = { player = true, pet = true, vehicle = true }
 --// FUNCTIONS
 --//----------------------------
 
-local function SetBorderColor(self, r,g,b)
-    local t = self.BorderTextures
-    if not t then return end
-
-    if not r or not g or not b then
-        r,g,b = unpack(config.border.colors.normal)
-    end
-
-    for _, tex in pairs(t) do
-        tex:SetVertexColor(r,g,b)
-    end
-end
-
-local function SetBorderSize(self, size, offset)
-    local t = self.BorderTextures
-    if not t then return end
-
-    if not size then
-        size = config.border.size
-    end
-
-    local d = offset or (floor(size / 2 + 0.5) - 2)
-
-    for _, tex in pairs(t) do
-        tex:SetSize(size, size)
-    end
-
-    t.TOPLEFT:SetPoint('TOPLEFT', -d, d)
-    t.TOPRIGHT:SetPoint('TOPRIGHT', d, d)
-    t.BOTTOMLEFT:SetPoint('BOTTOMLEFT', -d, -d)
-    t.BOTTOMRIGHT:SetPoint('BOTTOMRIGHT', d, -d)
-end
-
-local function CreateBorder(self, size)
-    if type(self) ~= 'table' or self.BorderTextures then return end
-
-    local t = {}
-
-    local sections = { "TOPLEFT", "TOP", "TOPRIGHT", "LEFT", "RIGHT", "BOTTOMLEFT", "BOTTOM", "BOTTOMRIGHT" }
-    for i = 1, #sections do
-        local x = self:CreateTexture(nil, 'BORDER')
-        x:SetTexture(config.border.texture)
-        t[sections[i]] = x
-    end
-
-    --                        ULx, ULy,    LLx, LLy,    URx, URy,    LRx, LRy
-    t.LEFT:SetTexCoord       (0,   0,      0,   1,      1/8, 0,      1/8, 1)
-    t.RIGHT:SetTexCoord      (1/8, 0,      1/8, 1,      2/8, 0,      2/8, 1)
-    t.TOP:SetTexCoord        (2/8, 1,      3/8, 1,      2/8, 0,      3/8, 0)
-    t.BOTTOM:SetTexCoord     (3/8, 1,      4/8, 1,      3/8, 0,      4/8, 0)
-    t.TOPLEFT:SetTexCoord    (4/8, 0,      4/8, 1,      5/8, 0,      5/8, 1)
-    t.TOPRIGHT:SetTexCoord   (5/8, 0,      5/8, 1,      6/8, 0,      6/8, 1)
-    t.BOTTOMLEFT:SetTexCoord (6/8, 0,      6/8, 1,      7/8, 0,      7/8, 1)
-    t.BOTTOMRIGHT:SetTexCoord(7/8, 0,      7/8, 1,      1,   0,      1,   1)
-
-    -- Attach the edges to the corners
-    t.TOP:SetPoint("TOPLEFT", t.TOPLEFT, "TOPRIGHT")
-    t.TOP:SetPoint("TOPRIGHT", t.TOPRIGHT, "TOPLEFT")
-    t.LEFT:SetPoint("TOPLEFT", t.TOPLEFT, "BOTTOMLEFT")
-    t.LEFT:SetPoint("BOTTOMLEFT", t.BOTTOMLEFT, "TOPLEFT")
-    t.RIGHT:SetPoint("TOPRIGHT", t.TOPRIGHT, "BOTTOMRIGHT")
-    t.RIGHT:SetPoint("BOTTOMRIGHT", t.BOTTOMRIGHT, "TOPRIGHT")
-    t.BOTTOM:SetPoint("BOTTOMLEFT", t.BOTTOMLEFT, "BOTTOMRIGHT")
-    t.BOTTOM:SetPoint("BOTTOMRIGHT", t.BOTTOMRIGHT, "BOTTOMLEFT")
-
-    self.BorderTextures = t
-
-    SetBorderColor(self)
-    SetBorderSize(self, size, offset)
-end
-
 local function UpdateUnitBorderColor(self)
-    if not self.BorderTextures or not self.unit then return end
+    if not self.Border or not self.unit then return end
 
     local c = UnitClassification(self.unit)
     if c == 'worldboss' then c = 'boss' end
@@ -91,7 +20,7 @@ local function UpdateUnitBorderColor(self)
     if c == 'minus' then c = 'normal' end
     local t = config.border.colors[c]
 
-    SetBorderColor(self, unpack(t))
+    self.Border:SetColor(unpack(t))
 end
 
 
@@ -225,13 +154,13 @@ end
 
 local function PostCastInterruptible(Castbar, unit)
     if unit == 'target' then
-        SetBorderColor(Castbar.Frame)
+        Castbar.Frame.Border:SetColor()
     end
 end
 
 local function PostCastNotInterruptible(Castbar, unit)
     if unit == 'target' then
-        SetBorderColor(Castbar.Frame, 1,1,1)
+        Castbar.Frame.Border:SetColor(1,1,1)
     end
 end
 
@@ -292,7 +221,7 @@ local function PostCreateAuraIcon(iconframe, button)
     button.count:ClearAllPoints()
     button.count:SetPoint('CENTER', button, 'BOTTOMRIGHT', -1, 0)
 
-    CreateBorder(button)
+    ns.CreateBorder(button)
 end
 
 local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
@@ -385,7 +314,7 @@ local function SharedStyle(self)
     Background:SetTexture(0, 0, 0, 1)
 
     --// Border: changes color depending on the unit's classification (rare,elite)
-    CreateBorder(self)
+    ns.CreateBorder(self)
     self:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', UpdateUnitBorderColor)
     table.insert(self.__elements, UpdateUnitBorderColor)
 
@@ -917,7 +846,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         self.Castbar.Frame.bg:SetAllPoints(self.Castbar.Frame)
         self.Castbar.Frame.bg:SetTexture(0, 0, 0, 1)
 
-        CreateBorder(self.Castbar.Frame)
+        ns.CreateBorder(self.Castbar.Frame)
     end
 
     --//----------------------------
@@ -1330,7 +1259,7 @@ oUF:Factory(function(self)
             end
         end
 
-        CreateBorder( bar )
+        ns.CreateBorder(bar)
 
         bar:SetParent( UIParent )
         bar:SetSize(285, 28)

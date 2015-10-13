@@ -9,6 +9,6 @@
 ## X-Category: UnitFrame
 
 config.lua
-aura.lua
+border.lua
 core.lua
 tags.lua
