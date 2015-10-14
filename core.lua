@@ -1076,7 +1076,7 @@ end)
 --//----------------------------
 local u = {}
 local Spawn = function(unit)
-    local object = oUF:Spawn(unit)
+    local object = oUF:Spawn(unit, 'oUF_Zoey'..unit)
     u[unit:lower()] = object
     return object
 end
