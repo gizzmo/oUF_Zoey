@@ -1083,64 +1083,61 @@ end
 
 oUF:Factory(function(self)
 
-    local bgap,sgap = 200, 12
+    local ptgap, gap = 180, 12
 
     --//----------------------------
     --// Player
-    Spawn('Player'):SetPoint('RIGHT', UIParent, 'BOTTOM', -(bgap/2), 300)
+    Spawn('Player'):SetPoint('RIGHT', UIParent, 'BOTTOM', -(ptgap/2), 300)
 
     --// Player Pet
-    Spawn('Pet'      ):SetPoint('RIGHT', u.player, 'LEFT', -sgap, 0)
-    Spawn('PetTarget'):SetPoint('BOTTOM', u.pet, 'TOP', 0, sgap)
+    Spawn('Pet'      ):SetPoint('RIGHT', u.player, 'LEFT', -gap, 0)
+    Spawn('PetTarget'):SetPoint('BOTTOM', u.pet, 'TOP', 0, gap)
 
     --// Targets
-    Spawn('Target'      ):SetPoint('LEFT', u.player, 'RIGHT', bgap, 0)
-    Spawn('TargetTarget'):SetPoint('LEFT', u.target, 'RIGHT', sgap, 0)
+    Spawn('Target'      ):SetPoint('LEFT', u.player, 'RIGHT', ptgap, 0)
+    Spawn('TargetTarget'):SetPoint('LEFT', u.target, 'RIGHT', gap, 0)
 
     --// Focus
     self:SetActiveStyle('ZoeyThin')
-    Spawn('Focus'      ):SetPoint('RIGHT', u.pet, 'LEFT', -sgap, 0)
-    Spawn('FocusTarget'):SetPoint('BOTTOM', u.focus, 'TOP', 0, sgap)
+    Spawn('Focus'      ):SetPoint('RIGHT', u.pet, 'LEFT', -gap, 0)
+    Spawn('FocusTarget'):SetPoint('BOTTOM', u.focus, 'TOP', 0, gap)
 
     --//----------------------------
-    --// Party
+    --// Party -- note: 130 - height = yoffset
     self:SetActiveStyle('Zoey')
     self:SpawnHeader('oUF_ZoeyParty', nil, 'party',
         'showParty', true,
         'yOffset', 50,
+        'point', 'BOTTOM',
         'oUF-initialConfigFunction', [[
             self:SetWidth( 135 )
             self:SetHeight( 80 )
-        ]],
-
-        'point', 'BOTTOM'
-    ):SetPoint('BOTTOMLEFT', UIParent, 'LEFT', sgap, -200)
+        ]]
+    ):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 300)
 
     --// Party Targets
     self:SpawnHeader('oUF_ZoeyPartyTargets', nil, 'party',
         'showParty', true,
         'yOffset', 90,
+        'point', 'BOTTOM',
         'oUF-initialConfigFunction', [[
             self:SetAttribute('unitsuffix', 'target')
             self:SetWidth( 135 )
             self:SetHeight( 40 )
-        ]],
-
-        'point', 'BOTTOM'
-    ):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 'BOTTOMRIGHT', sgap, 0)
+        ]]
+    ):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 'BOTTOMRIGHT', gap, 0)
 
     --// Party Pets
     self:SetActiveStyle('ZoeyThin')
     self:SpawnHeader('oUF_ZoeyPartyPets', nil, 'party',
         'showParty', true,
         'yOffset', 110,
+        'point', 'BOTTOM',
         'oUF-initialConfigFunction', [[
             self:SetAttribute('unitsuffix', 'pet')
             self:SetWidth( 135 )
             self:SetHeight( 20 )
-        ]],
-
-        'point', 'BOTTOM'
+        ]]
     ):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 0, -28)
 
     --//----------------------------
@@ -1148,85 +1145,73 @@ oUF:Factory(function(self)
     self:SetActiveStyle('Zoey')
     local Raid = {}
     for i = 1, 2 do
-        local group = self:SpawnHeader('oUF_ZoeyRaid10_g'..i, nil,
+        Raid[i] = self:SpawnHeader('oUF_ZoeyRaid10_g'..i, nil,
             'custom [@raid11,exists] hide; [@raid1,exists] show; hide',
 
             'showRaid', true,
-            'yOffset', 10.2,
+            'yOffset', gap,
             'groupFilter', tostring(i),
-
+            'point', 'BOTTOM',
             'oUF-initialConfigFunction', [[
-                self:SetWidth( 138 )
-                self:SetHeight( 39 )
-            ]],
-
-            'point', 'BOTTOM'
+                self:SetWidth( 135 )
+                self:SetHeight( 40 )
+            ]]
         )
 
         if i == 1 then
-            group:SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -200)
+            Raid[i]:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, -300)
         else
-            group:SetPoint('BOTTOMLEFT', Raid[i - 1], 'BOTTOMRIGHT', 16, 0)
+            Raid[i]:SetPoint('BOTTOMLEFT', Raid[i - 1], 'BOTTOMRIGHT', gap, 0)
         end
-
-        Raid[i] = group
     end
 
     --// Raid Size 11 - 25
     self:SetActiveStyle('ZoeyThin')
     local Raid = {}
     for i = 1, 5 do
-        local group = self:SpawnHeader('oUF_ZoeyRaid25_g'..i, nil,
+        Raid[i] = self:SpawnHeader('oUF_ZoeyRaid25_g'..i, nil,
             'custom [@raid26,exists] hide; [@raid11,exists] show; hide ',
 
             'showRaid', true,
-            'yOffset', 7.1,
+            'yOffset', gap/2,
             'groupFilter', tostring(i),
             'sortDir', 'DESC',
-
+            'point', 'BOTTOM',
             'oUF-initialConfigFunction', [[
-                self:SetWidth( 138 )
-                self:SetHeight( 19 )
-            ]],
-
-            'point', 'BOTTOM'
+                self:SetWidth( 135 )
+                self:SetHeight( 20 )
+            ]]
         )
 
         if i == 1 then
-            group:SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -200)
+            Raid[i]:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 300)
         else
-            group:SetPoint('BOTTOM', Raid[i - 1], 'TOP', 0, 15)
+            Raid[i]:SetPoint('BOTTOM', Raid[i - 1], 'TOP', 0, gap)
         end
-
-        Raid[i] = group
     end
 
     --// Raid Size 26 - 40
     self:SetActiveStyle('ZoeySquare')
     local Raid = {}
     for i = 1, 8 do
-        local group = self:SpawnHeader('oUF_ZoeyRaid40_g'..i, nil,
+        Raid[i] = self:SpawnHeader('oUF_ZoeyRaid40_g'..i, nil,
             'custom [@raid26,exists] show; hide',
 
             'showRaid', true,
-            'xOffset', 10,
+            'xOffset', gap/2,
             'groupFilter', tostring(i),
-
+            'point', 'LEFT',
             'oUF-initialConfigFunction', [[
                 self:SetWidth( 53 )
                 self:SetHeight( 33 )
-            ]],
-
-            'point', 'LEFT'
+            ]]
         )
 
         if i == 1 then
-            group:SetPoint('BOTTOMLEFT', UIParent, 'LEFT', 16, -200)
+            Raid[i]:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 300)
         else
-            group:SetPoint('BOTTOMLEFT', Raid[i - 1], 'TOPLEFT', 0, 10)
+            Raid[i]:SetPoint('BOTTOMLEFT', Raid[i - 1], 'TOPLEFT', 0, gap)
         end
-
-        Raid[i] = group
     end
 
 end)
