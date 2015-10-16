@@ -4,6 +4,8 @@ local addon, ns = ...
 -- keep track of what objects we've put borders on?
 ns.borderedObjects = {}
 
+local sections = { "TOPLEFT", "TOP", "TOPRIGHT", "LEFT", "RIGHT", "BOTTOMLEFT", "BOTTOM", "BOTTOMRIGHT" }
+
 methods = {
     SetColor = function(self, r,g,b)
         if not r or not g or not b then
@@ -42,7 +44,6 @@ function ns.CreateBorder(self)
     local B = setmetatable({}, { __index = methods })
 
     -- create the border textures
-    local sections = { "TOPLEFT", "TOP", "TOPRIGHT", "LEFT", "RIGHT", "BOTTOMLEFT", "BOTTOM", "BOTTOMRIGHT" }
     for i = 1, #sections do
         local x = self:CreateTexture(nil, 'BORDER')
         x:SetTexture(ns.config.border.texture)
