@@ -10,13 +10,7 @@ local config = {
 
     border = {
         texture = [[Interface\AddOns\oUF_Zoey\media\ThinSquare]],
-        size = 12,
-        colors = {
-            normal = {113/255, 113/255, 113/255}, -- Dark Grey
-            rare   = {1, 1, 1},                   -- White
-            elite  = {185/255, 185/255, 80/255},  -- Yellow
-            boss   = {150/255, 80/255, 200/255}   -- Purple
-        },
+        size = 12
     },
 
     highlight = {
@@ -56,6 +50,14 @@ oUF.colors.cast =  {
     success = {20/255, 208/255, 0/255},            -- green
     failed = {255/255, 12/255, 0/255},             -- dark red
     safezone = {255/255, 25/255, 0/255, 0.5},      -- transparent red
+}
+
+--// Border colors
+oUF.colors.border = {
+    normal    = {113/255, 113/255, 113/255}, -- Dark Grey
+    rare      = {1, 1, 1},                   -- White
+    elite     = {185/255, 185/255, 80/255},  -- Yellow
+    boss      = {150/255, 80/255, 200/255}   -- Purple
 }
 
 --// Register Some stuf with Shared Media

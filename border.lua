@@ -7,7 +7,7 @@ ns.borderedObjects = {}
 methods = {
     SetColor = function(self, r,g,b)
         if not r or not g or not b then
-            r,g,b = unpack(ns.config.border.colors.normal)
+            r,g,b = unpack(oUF.colors.border.normal)
         end
 
         for _, tex in pairs(self) do

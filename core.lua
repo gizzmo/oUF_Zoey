@@ -20,7 +20,7 @@ local function UpdateUnitBorderColor(self)
     local t = config.border.colors[c]
 
     if not t then
-        t = config.border.colors.normal
+        t = colors.border.normal
     end
 
     self.Border:SetColor(unpack(t))
