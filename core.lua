@@ -679,7 +679,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     --// Texts
     --//----------------------------
     --// Name Text
-    local Name = CreateText(self.Overlay, 16)
+    local Name = CreateText(self.Overlay, 14)
     Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
     Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
     self:Tag(Name, '[Zoey:Level< ][Zoey:Name]')
@@ -688,15 +688,15 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     if unit == 'target' then
         --// Target uses two health texts to make the
         --// final 20% big and red for Execute and Kill Shot
-        local HealthText = CreateText(self.Overlay, 22)
+        local HealthText = CreateText(self.Overlay, 19)
         HealthText:SetPoint('RIGHT', self.Health, -1, -1)
         self:Tag(HealthText, '[Zoey:TargetHealth]')
 
-        local HealthText2 = CreateText(self.Overlay, 29)
+        local HealthText2 = CreateText(self.Overlay, 27)
         HealthText2:SetPoint('RIGHT', self.Health, -1, -1)
         self:Tag(HealthText2, '[Zoey:TargetHealth2]')
     else
-        local HealthText = CreateText(self.Overlay, 22)
+        local HealthText = CreateText(self.Overlay, 19)
         HealthText:SetPoint('RIGHT', self.Health, -1, -1)
         self:Tag(HealthText, '[Zoey:Health]')
     end
