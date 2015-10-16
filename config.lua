@@ -56,8 +56,9 @@ oUF.colors.cast =  {
 oUF.colors.border = {
     normal    = {113/255, 113/255, 113/255}, -- Dark Grey
     rare      = {1, 1, 1},                   -- White
-    elite     = {185/255, 185/255, 80/255},  -- Yellow
-    boss      = {150/255, 80/255, 200/255}   -- Purple
+    elite     = {204/255, 177/255, 41/255},  -- Yellow
+    boss      = {136/255, 41/255, 204/255}   -- Purple
+
 }
 
 --// Register Some stuf with Shared Media
