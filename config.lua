@@ -40,16 +40,16 @@ oUF.colors.comboPoints = {
 
 --// Experience bar colors
 oUF.colors.experience = {
-    main = {176/255, 72/255, 176/255}, -- purple
-    rested = {80/255, 80/255, 222/255} -- blue
+    main   = {176/255, 72/255, 176/255}, -- purple
+    rested = {80/255, 80/255, 222/255}   -- blue
 }
 
 --// Cast bar colors
 oUF.colors.cast =  {
-    normal = {89/255, 89/255, 89/255},             -- dark gray
-    success = {20/255, 208/255, 0/255},            -- green
-    failed = {255/255, 12/255, 0/255},             -- dark red
-    safezone = {255/255, 25/255, 0/255, 0.5},      -- transparent red
+    normal   = {89/255, 89/255, 89/255},      -- dark gray
+    success  = {20/255, 208/255, 0/255},      -- green
+    failed   = {255/255, 12/255, 0/255},      -- dark red
+    safezone = {255/255, 25/255, 0/255, 0.5}, -- transparent red
 }
 
 --// Border colors
