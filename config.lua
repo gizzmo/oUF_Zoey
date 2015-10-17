@@ -5,11 +5,11 @@ local addon, ns = ...
 --// CONFIG
 --//----------------------------
 local config = {
-    statusbar = [[Interface\AddOns\oUF_Zoey\media\Armory]],
+    statusbar = [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]],
     font = [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]],
 
     border = {
-        texture = [[Interface\AddOns\oUF_Zoey\media\ThinSquare]],
+        texture = [[Interface\AddOns\oUF_Zoey\media\Border.tga]],
         size = 12
     },
 
@@ -19,7 +19,6 @@ local config = {
         alpha = 0.3
     },
 
-    units = {}
 }
 
 --// Handover
