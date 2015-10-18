@@ -156,6 +156,16 @@ oUF.Tags.Methods['Zoey:Level'] = function(unit)
 end
 
 
+oUF.Tags.Events['Zoey:Realm'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['Zoey:Realm'] = function(unit)
+    local _, realm = UnitName(unit)
+
+    if realm ~= nil then
+        return realm
+    end
+end
+
+
 oUF.Tags.Events['Zoey:Status'] = 'UNIT_HEALTH UNIT_CONNECTION'
 oUF.Tags.Methods['Zoey:Status'] = function(unit)
     --// Status
@@ -287,20 +297,5 @@ oUF.Tags.Methods['Zoey:Guild'] = function(unit)
         end
 
         return ('|cff%02x%02x%02x%s'):format(r,g,b, '<'..GuildName..'>')
-    end
-end
-
-
-oUF.Tags.Events['Zoey:RealmIndicator'] = 'UNIT_NAME_UPDATE'
-oUF.Tags.Methods['Zoey:RealmIndicator'] = function(unit)
-    local _, realm = UnitName(unit)
-    local r,g,b = 225,225,225
-
-    if realm == nil then
-        if UnitIsInMyGuild(unit) then
-            r,g,b = 195,27,255
-        end
-
-        return ('|cff%02x%02x%02x%s'):format(r,g,b, '(*)')
     end
 end

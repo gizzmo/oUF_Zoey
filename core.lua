@@ -682,7 +682,8 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     local Name = CreateText(self.Overlay, 14)
     Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
     Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
-    self:Tag(Name, '[Zoey:Level< ][Zoey:Name]')
+    --note: we should reset colors returned from the tags
+    self:Tag(Name, '[Zoey:Level< ][Zoey:Name][|r - >Zoey:Realm]')
 
     --// Health Text
     if unit == 'target' then
