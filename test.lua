@@ -1,8 +1,13 @@
 local addon, ns = ...
 
 local RealUnitAura = UnitAura
-local function FakeUnitAura()
-    -- todo: give back random aura
+local function FakeUnitAura(unit, index, rank, filter)
+    -- if a aura really does exist, show that one.
+    local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff = RealUnitAura(unit, index, rank, filter)
+    if name then
+        return name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff
+    end
+
     return "Hunter's Mark", "", "Interface\\Icons\\Ability_Hunter_SniperShot", 0, "", 0, 0, "player"
 end
 
