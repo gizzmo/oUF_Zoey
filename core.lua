@@ -223,7 +223,11 @@ local function PostCreateAuraIcon(iconframe, button)
     button.count:ClearAllPoints()
     button.count:SetPoint('CENTER', button, 'BOTTOMRIGHT', -1, 0)
 
-    ns.CreateBorder(button)
+    button.bg = button:CreateTexture(nil, 'BACKGROUND')
+    button.bg:SetPoint('TOPLEFT', -1, 1)
+    button.bg:SetPoint('BOTTOMRIGHT', 1, -1)
+    button.bg:SetTexture(0, 0, 0, 1)
+    -- ns.CreateBorder(button)
 end
 
 local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
@@ -859,16 +863,14 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
         --// Buffs
         self.Buffs = CreateFrame('Frame', nil, self)
-
-        self.Buffs:SetHeight(25)
+        self.Buffs:SetHeight(1) -- Needs a size to display
         self.Buffs:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -6)
         self.Buffs:SetPoint('TOPRIGHT', self, 'BOTTOMRIGHT', 0, -6)
 
         self.Buffs['growth-y'] = 'DOWN'
-        self.Buffs['spacing'] = 7.5
+        self.Buffs['spacing'] = 3
         self.Buffs['size'] = 25
-        self.Buffs['num'] = 9
-
+        self.Buffs['num'] = 16
 
         if unit == 'player' then
             self.Buffs['initialAnchor'] = 'TOPLEFT'
@@ -884,13 +886,14 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
         --// Debuffs
         self.Debuffs = CreateFrame('Frame', nil, self)
-        self.Debuffs:SetHeight(75)
+        self.Debuffs:SetHeight(1) -- Needs a size to display
         self.Debuffs:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 6)
         self.Debuffs:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 6)
 
         self.Debuffs['growth-y'] = 'UP'
-        self.Debuffs['spacing'] = 7.5
+        self.Debuffs['spacing'] = 3
         self.Debuffs['size'] = 34
+        self.Debuffs['num'] = 12
 
         if unit == 'player' then
             self.Debuffs['initialAnchor'] = 'BOTTOMRIGHT'
