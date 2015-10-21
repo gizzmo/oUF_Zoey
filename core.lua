@@ -1102,7 +1102,7 @@ oUF:Factory(function(self)
 
     --// Focus
     self:SetActiveStyle('ZoeyThin')
-    Spawn('Focus'      ):SetPoint('RIGHT', u.pet, 'LEFT', -gap, 0)
+    Spawn('Focus'      ):SetPoint('BOTTOMRIGHT', u.player, 'TOPLEFT', -100, 75)
     Spawn('FocusTarget'):SetPoint('BOTTOM', u.focus, 'TOP', 0, gap)
 
     --//----------------------------
