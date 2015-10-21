@@ -1217,6 +1217,19 @@ oUF:Factory(function(self)
         end
     end
 
+    --//----------------------------
+    --// Boss Frames
+    self:SetActiveStyle('Zoey')
+    local Boss = {}
+    for i = 1, MAX_BOSS_FRAMES do
+        Boss[i] = Spawn('boss'..i)
+
+        if i == 1 then
+            Boss[i]:SetPoint('BOTTOMLEFT', u.target, 'TOPRIGHT', 100, 75)
+        else
+            Boss[i]:SetPoint('BOTTOM', Boss[i - 1], 'TOP', 0, gap)
+        end
+    end
 end)
 
 --//----------------------------
