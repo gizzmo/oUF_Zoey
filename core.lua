@@ -1078,9 +1078,15 @@ end)
 --// SPAWN UNITS
 --//----------------------------
 local u = {}
-local Spawn = function(unit)
+local function SpawnUnit(unit)
     local object = oUF:Spawn(unit, 'oUF_Zoey'..unit)
     u[unit:lower()] = object
+    return object
+end
+
+local function SpawnHeader(name, visibility, ...)
+    local object = oUF:SpawnHeader('oUF_Zoey'..name, nil, visibility, ...)
+    u[name:lower()] = object
     return object
 end
 
@@ -1090,25 +1096,25 @@ oUF:Factory(function(self)
 
     --//----------------------------
     --// Player
-    Spawn('Player'):SetPoint('RIGHT', UIParent, 'BOTTOM', -(ptgap/2), 300)
+    SpawnUnit('Player'):SetPoint('RIGHT', UIParent, 'BOTTOM', -(ptgap/2), 300)
 
     --// Player Pet
-    Spawn('Pet'      ):SetPoint('RIGHT', u.player, 'LEFT', -gap, 0)
-    Spawn('PetTarget'):SetPoint('BOTTOM', u.pet, 'TOP', 0, gap)
+    SpawnUnit('Pet'      ):SetPoint('RIGHT', u.player, 'LEFT', -gap, 0)
+    SpawnUnit('PetTarget'):SetPoint('BOTTOM', u.pet, 'TOP', 0, gap)
 
     --// Targets
-    Spawn('Target'      ):SetPoint('LEFT', u.player, 'RIGHT', ptgap, 0)
-    Spawn('TargetTarget'):SetPoint('LEFT', u.target, 'RIGHT', gap, 0)
+    SpawnUnit('Target'      ):SetPoint('LEFT', u.player, 'RIGHT', ptgap, 0)
+    SpawnUnit('TargetTarget'):SetPoint('LEFT', u.target, 'RIGHT', gap, 0)
 
     --// Focus
     self:SetActiveStyle('ZoeyThin')
-    Spawn('Focus'      ):SetPoint('BOTTOMRIGHT', u.player, 'TOPLEFT', -100, 75)
-    Spawn('FocusTarget'):SetPoint('BOTTOM', u.focus, 'TOP', 0, gap)
+    SpawnUnit('Focus'      ):SetPoint('BOTTOMRIGHT', u.player, 'TOPLEFT', -100, 75)
+    SpawnUnit('FocusTarget'):SetPoint('BOTTOM', u.focus, 'TOP', 0, gap)
 
     --//----------------------------
     --// Party -- note: 130 - height = yoffset
     self:SetActiveStyle('Zoey')
-    self:SpawnHeader('oUF_ZoeyParty', nil, 'party',
+    SpawnHeader('Party', 'party',
         'showParty', true,
         'yOffset', 50,
         'point', 'BOTTOM',
@@ -1119,7 +1125,7 @@ oUF:Factory(function(self)
     ):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 300)
 
     --// Party Targets
-    self:SpawnHeader('oUF_ZoeyPartyTargets', nil, 'party',
+    SpawnHeader('PartyTargets', 'party',
         'showParty', true,
         'yOffset', 90,
         'point', 'BOTTOM',
@@ -1128,11 +1134,11 @@ oUF:Factory(function(self)
             self:SetWidth( 135 )
             self:SetHeight( 40 )
         ]]
-    ):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 'BOTTOMRIGHT', gap, 0)
+    ):SetPoint('BOTTOMLEFT', u.party, 'BOTTOMRIGHT', gap, 0)
 
     --// Party Pets
     self:SetActiveStyle('ZoeyThin')
-    self:SpawnHeader('oUF_ZoeyPartyPets', nil, 'party',
+    SpawnHeader('PartyPets', 'party',
         'showParty', true,
         'yOffset', 110,
         'point', 'BOTTOM',
@@ -1141,14 +1147,14 @@ oUF:Factory(function(self)
             self:SetWidth( 135 )
             self:SetHeight( 20 )
         ]]
-    ):SetPoint('BOTTOMLEFT', oUF_ZoeyParty, 0, -28)
+    ):SetPoint('BOTTOMLEFT', u.party, 0, -28)
 
     --//----------------------------
     --// Raid Size 1 - 10
     self:SetActiveStyle('Zoey')
     local Raid = {}
     for i = 1, 2 do
-        Raid[i] = self:SpawnHeader('oUF_ZoeyRaid10_g'..i, nil,
+        Raid[i] = SpawnHeader('Raid10_g'..i,
             'custom [@raid11,exists] hide; [@raid1,exists] show; hide',
 
             'showRaid', true,
@@ -1172,7 +1178,7 @@ oUF:Factory(function(self)
     self:SetActiveStyle('ZoeyThin')
     local Raid = {}
     for i = 1, 5 do
-        Raid[i] = self:SpawnHeader('oUF_ZoeyRaid25_g'..i, nil,
+        Raid[i] = SpawnHeader('Raid25_g'..i,
             'custom [@raid26,exists] hide; [@raid11,exists] show; hide ',
 
             'showRaid', true,
@@ -1197,7 +1203,7 @@ oUF:Factory(function(self)
     self:SetActiveStyle('ZoeySquare')
     local Raid = {}
     for i = 1, 8 do
-        Raid[i] = self:SpawnHeader('oUF_ZoeyRaid40_g'..i, nil,
+        Raid[i] = SpawnHeader('Raid40_g'..i,
             'custom [@raid26,exists] show; hide',
 
             'showRaid', true,
@@ -1222,7 +1228,7 @@ oUF:Factory(function(self)
     self:SetActiveStyle('Zoey')
     local Boss = {}
     for i = 1, MAX_BOSS_FRAMES do
-        Boss[i] = Spawn('boss'..i)
+        Boss[i] = SpawnUnit('boss'..i)
 
         if i == 1 then
             Boss[i]:SetPoint('BOTTOMLEFT', u.target, 'TOPRIGHT', 100, 75)
