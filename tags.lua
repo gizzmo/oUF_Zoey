@@ -131,16 +131,17 @@ oUF.Tags.Methods['Zoey:Level'] = function(unit)
     local level = UnitLevel(unit)
     local levelColor = Hex(GetQuestDifficultyColor(level <= 0 and 99 or level))
 
-    if UnitIsPlayer(unit) then
-        if level == MAX_PLAYER_LEVEL then
-            level = nil
-        end
-    else
-        if level == 1 or level == MAX_PLAYER_LEVEL then
-            level = nil
-        elseif level < 1 then
-            level = '??'
-        end
+    -- Hide level for max level players
+    if UnitIsPlayer(unit) and level == MAX_PLAYER_LEVEL then
+        level = nil
+
+    -- Battle pet level
+    elseif UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) then
+        level = UnitBattlePetLevel(unit)
+
+    -- Double question marks instead of '-1'
+    elseif level < 1 then
+        level = '??'
     end
 
     -- Show Player on mouse over, all others just show
