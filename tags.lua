@@ -9,6 +9,15 @@ local function IsMouseOver(unit)
     return false
 end
 
+local function ShouldShow(unit)
+    -- Show Player and pet on mouseover, all others just show
+    if (unit == 'player' or unit == 'pet') and not IsMouseOver(unit) then
+        return false
+    end
+
+    return true
+end
+
 local function Short(value)
     if value >= 1e7 then
         return ('%.1fm'):format(value / 1e6):gsub('%.?0+([km])$', '%1')
@@ -113,14 +122,7 @@ oUF.Tags.Methods['Zoey:Name'] = function(unit)
     local _, class = UnitClass(unit)
     local classColor = Hex(UnitIsPlayer(unit) and _COLORS.class[class] or {1,1,1})
 
-    -- Show Player on mouse over, all others just show
-    if name
-    and (
-        (unit == 'player' and IsMouseOver(unit)) or
-        (unit == 'pet' and IsMouseOver(unit)) or
-        (unit ~= 'player' and unit ~= 'pet')
-    )
-    then
+    if name and ShouldShow(unit) then
         return classColor..name
     end
 end
@@ -144,14 +146,7 @@ oUF.Tags.Methods['Zoey:Level'] = function(unit)
         level = '??'
     end
 
-    -- Show Player on mouse over, all others just show
-    if level
-    and (
-        (unit == 'player' and IsMouseOver(unit)) or
-        (unit == 'pet' and IsMouseOver(unit)) or
-        (unit ~= 'player' and unit ~= 'pet')
-    )
-    then
+    if level and ShouldShow(unit) then
         return levelColor..level
     end
 end
