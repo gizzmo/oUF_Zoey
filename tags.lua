@@ -164,8 +164,7 @@ end
 
 oUF.Tags.Events['Zoey:Status'] = 'UNIT_HEALTH UNIT_CONNECTION'
 oUF.Tags.Methods['Zoey:Status'] = function(unit)
-    --// Status
-    if not UnitIsConnected(unit)  then
+    if not UnitIsConnected(unit) then
         return 'Offline'
     elseif UnitIsFeignDeath(unit) then
         return 'Feign Death'
