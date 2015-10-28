@@ -141,9 +141,9 @@ oUF.Tags.Methods['Zoey:Level'] = function(unit)
     elseif UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) then
         level = UnitBattlePetLevel(unit)
 
-    -- Double question marks instead of '-1'
+    -- Skull instead of double question marks
     elseif level < 1 then
-        level = '??'
+        level = [[|TInterface/TARGETINGFRAME/UI-TargetingFrame-Skull:0:0:2|t]]
     end
 
     if level and ShouldShow(unit) then
