@@ -10,6 +10,7 @@
 
 config.lua
 border.lua
+layout.lua
 core.lua
 tags.lua
 test.lua
