@@ -718,6 +718,15 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         self:Tag(Experience, '[Zoey:Exp]')
     end
 
+    --// Guild Name
+    if unit == 'party' then
+        local Guild = CreateText(self.Overlay, 12)
+        Guild:SetPoint('TOP', Name, 'BOTTOM', 0, -1)
+        Guild:SetPoint('LEFT',  Name)
+        Guild:SetPoint('RIGHT', Name)
+        self:Tag(Guild, '[Zoey:Guild]')
+    end
+
     --//----------------------------
     --// Icons
     --//----------------------------

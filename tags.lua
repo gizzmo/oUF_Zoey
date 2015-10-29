@@ -277,7 +277,7 @@ oUF.Tags.Methods['Zoey:Exp'] = function(unit)
     end
 end
 
-
+-- TODO: Find event to makesure party frame shows this. As of now it always show.
 oUF.Tags.Events['Zoey:Guild'] = 'UNIT_NAME_UPDATE'
 oUF.Tags.Methods['Zoey:Guild'] = function(unit)
     local r,g,b = 255,255,255
