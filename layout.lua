@@ -28,7 +28,6 @@ end
 
 --// Mouseover and Target Highlighting
 local function HighlightShouldShow(self)
-
     --// Frame is curently mouse focused
     if ns.Mouse_Focus == self then
         return true
@@ -48,7 +47,6 @@ local function HighlightShouldShow(self)
 end
 
 local function HighlightUpdate(self)
-
     if HighlightShouldShow(self) then
         self.Highlight:Show()
     else
@@ -77,10 +75,7 @@ local function PostUpdateHealth(Health, unit, min, max)
     end
 
     if b then
-        --// Set the health bar color
         Health:SetStatusBarColor(r, g, b)
-
-        --// Set the background color
         Health.bg:SetVertexColor(r*0.4, g *0.4, b*0.4)
     end
 end
@@ -102,10 +97,7 @@ local function PostUpdatePower(Power, unit, min, max)
     end
 
     if b then
-        --// Set the power bar color
         Power:SetStatusBarColor(r, g, b)
-
-        --// Set the background color
         Power.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
     end
 end
@@ -113,15 +105,12 @@ end
 
 --// Castbar Functions
 local function PostCastStart(Castbar, unit, name, castid)
+    local r,g,b = unpack(colors.cast.normal)
+
     Castbar:SetAlpha(1.0)
     Castbar.Spark:Show()
 
-    local r,g,b = unpack(colors.cast.normal)
-
-    --// Set the Castbar color
     Castbar:SetStatusBarColor(r,g,b)
-
-    --// Set the background color
     Castbar.bg:SetVertexColor(r*0.4, g *0.4, b*0.4)
 
     if Castbar.interrupt then
@@ -142,15 +131,12 @@ local function PostChannelStop(Castbar, unit, name)
 end
 
 local function PostCastFailed(Castbar, unit, name, castid)
+    local r,g,b = unpack(colors.cast.failed)
+
     Castbar:SetValue(Castbar.max)
     Castbar:Show()
 
-    local r,g,b = unpack(colors.cast.failed)
-
-    --// Set the Castbar color
     Castbar:SetStatusBarColor(r,g,b)
-
-    --// Set the background color
     Castbar.bg:SetVertexColor(r*0.4, g *0.4, b*0.4)
 end
 
@@ -166,6 +152,7 @@ local function PostCastNotInterruptible(Castbar, unit)
     end
 end
 
+--// We overwrite the `OnUpdate` function so we can fade out after.
 local function CastbarOnUpdate(Castbar, elapsed)
     if Castbar.casting or Castbar.channeling then
         local duration = Castbar.casting and Castbar.duration + elapsed or Castbar.duration - elapsed
@@ -227,7 +214,6 @@ local function PostCreateAuraIcon(iconframe, button)
     button.bg:SetPoint('TOPLEFT', -1, 1)
     button.bg:SetPoint('BOTTOMRIGHT', 1, -1)
     button.bg:SetTexture(0, 0, 0, 1)
-    -- ns.CreateBorder(button)
 end
 
 local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
@@ -682,11 +668,12 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     --//----------------------------
     --// Texts
     --//----------------------------
+    --TODO: we should save the tags to a table on the frame.
     --// Name Text
     local Name = CreateText(self.Overlay, 14)
     Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
     Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
-    --note: we should reset colors returned from the tags
+    --TODO: we should reset colors returned from the tags
     self:Tag(Name, '[Zoey:Level< ][Zoey:Name][|r - >Zoey:Realm]')
 
     --// Health Text
