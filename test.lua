@@ -8,15 +8,15 @@ local function FakeUnitAura(unit, index, rank, filter)
         return name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff
     end
 
-    return "Hunter's Mark", "", "Interface\\Icons\\Ability_Hunter_SniperShot", 0, "", 0, 0, "player"
+    return 'Hunter\'s Mark', '', 'Interface\\Icons\\Ability_Hunter_SniperShot', 0, '', 0, 0, 'player'
 end
 
 local function toggle_unit(f)
     if not f.__realunit then
         -- Set the unit to 'player' and show it
-        f.__realunit = f:GetAttribute("unit") or f.unit
-        f:SetAttribute("unit", "player")
-        f.unit = "player"
+        f.__realunit = f:GetAttribute('unit') or f.unit
+        f:SetAttribute('unit', 'player')
+        f.unit = 'player'
         f:Show()
 
         -- Refresh auras
@@ -24,39 +24,39 @@ local function toggle_unit(f)
         if (f.Buffs) then f.Buffs:ForceUpdate() end
         if (f.Defuffs) then f.Defuffs:ForceUpdate() end
 
-        f.old_OnUpdate = f:GetScript("OnUpdate")
-        f:SetScript("OnUpdate", nil)
+        f.old_OnUpdate = f:GetScript('OnUpdate')
+        f:SetScript('OnUpdate', nil)
 
         UnregisterUnitWatch(f)
         RegisterUnitWatch(f, true)
 
     else
         -- Reset all units and cleanup
-        f:SetAttribute("unit", f.__realunit)
+        f:SetAttribute('unit', f.__realunit)
         f.unit = f.__realunit
         f.__realunit = nil
         f:Hide()
 
-        f:SetScript("OnUpdate", f.old_OnUpdate)
+        f:SetScript('OnUpdate', f.old_OnUpdate)
         f.old_OnUpdate = nil
 
         UnregisterUnitWatch(f) -- Reset the fect
         RegisterUnitWatch(f)
 
-        -- f:UpdateAllElements("OnShow")
+        -- f:UpdateAllElements('OnShow')
     end
 end
 
 local function ToggleHeader(f)
-    -- /run SecureStateDriverManager:SetAttribute("setframe", oUF_ZoeyRaid10_g1)  print(SecureStateDriverManager:GetAttribute("setstate"):gsub("state%-visibility%s", ""))
+    -- /run SecureStateDriverManager:SetAttribute('setframe', oUF_ZoeyRaid10_g1)  print(SecureStateDriverManager:GetAttribute('setstate'):gsub('state%-visibility%s', ''))
     if not f.oldstate_driver then
-        -- This is just a "hack" to get the old visibility attribute
+        -- This is just a 'hack' to get the old visibility attribute
         SecureStateDriverManager:SetAttribute('setframe', f)
-        f.oldstate_driver = SecureStateDriverManager:GetAttribute("setstate"):gsub("state%-visibility%s", "")
+        f.oldstate_driver = SecureStateDriverManager:GetAttribute('setstate'):gsub('state%-visibility%s', '')
         RegisterAttributeDriver(f, 'state-visibility', 'show')
 
         -- Setting the starting index to -3, so we have three frames: -3, -2, -1, 0
-        f:SetAttribute("startingIndex", 3)
+        f:SetAttribute('startingIndex', 3)
 
         for i = 1, f:GetNumChildren() do
             local obj = select(i, f:GetChildren())
@@ -68,7 +68,7 @@ local function ToggleHeader(f)
         f.oldstate_driver = nil
 
         -- Setting it to default (1)
-        f:SetAttribute("startingIndex", nil)
+        f:SetAttribute('startingIndex', nil)
 
         for i = 1, f:GetNumChildren() do
             local obj = select(i, f:GetChildren())
@@ -121,7 +121,7 @@ SlashCmdList.OUF_ZOEY = function(param)
         --     ToggleHeader(oUF_ZoeyRaid40_g8)
         -- end
     else
-        print("No param given.")
+        print('No param given.')
     end
 
 end

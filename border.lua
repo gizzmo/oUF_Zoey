@@ -1,10 +1,10 @@
---// Get the addon namespace
+-- Get the addon namespace
 local addon, ns = ...
 
 -- keep track of what objects we've put borders on?
 ns.borderedObjects = {}
 
-local sections = { "TOPLEFT", "TOP", "TOPRIGHT", "LEFT", "RIGHT", "BOTTOMLEFT", "BOTTOM", "BOTTOMRIGHT" }
+local sections = { 'TOPLEFT', 'TOP', 'TOPRIGHT', 'LEFT', 'RIGHT', 'BOTTOMLEFT', 'BOTTOM', 'BOTTOMRIGHT' }
 
 methods = {
     SetColor = function(self, r,g,b)
@@ -62,14 +62,14 @@ function ns.CreateBorder(self)
 
     -- Attach the edges to the corners. So we dont
     -- have to adjust their size just the corners
-    B.TOP:SetPoint("TOPLEFT", B.TOPLEFT, "TOPRIGHT")
-    B.TOP:SetPoint("TOPRIGHT", B.TOPRIGHT, "TOPLEFT")
-    B.LEFT:SetPoint("TOPLEFT", B.TOPLEFT, "BOTTOMLEFT")
-    B.LEFT:SetPoint("BOTTOMLEFT", B.BOTTOMLEFT, "TOPLEFT")
-    B.RIGHT:SetPoint("TOPRIGHT", B.TOPRIGHT, "BOTTOMRIGHT")
-    B.RIGHT:SetPoint("BOTTOMRIGHT", B.BOTTOMRIGHT, "TOPRIGHT")
-    B.BOTTOM:SetPoint("BOTTOMLEFT", B.BOTTOMLEFT, "BOTTOMRIGHT")
-    B.BOTTOM:SetPoint("BOTTOMRIGHT", B.BOTTOMRIGHT, "BOTTOMLEFT")
+    B.TOP:SetPoint('TOPLEFT', B.TOPLEFT, 'TOPRIGHT')
+    B.TOP:SetPoint('TOPRIGHT', B.TOPRIGHT, 'TOPLEFT')
+    B.LEFT:SetPoint('TOPLEFT', B.TOPLEFT, 'BOTTOMLEFT')
+    B.LEFT:SetPoint('BOTTOMLEFT', B.BOTTOMLEFT, 'TOPLEFT')
+    B.RIGHT:SetPoint('TOPRIGHT', B.TOPRIGHT, 'BOTTOMRIGHT')
+    B.RIGHT:SetPoint('BOTTOMRIGHT', B.BOTTOMRIGHT, 'TOPRIGHT')
+    B.BOTTOM:SetPoint('BOTTOMLEFT', B.BOTTOMLEFT, 'BOTTOMRIGHT')
+    B.BOTTOM:SetPoint('BOTTOMRIGHT', B.BOTTOMRIGHT, 'BOTTOMLEFT')
 
     -- set the default color and size
     B:SetColor()

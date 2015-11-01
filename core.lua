@@ -1,4 +1,4 @@
---// Get the addon namespace
+-- Get the addon namespace
 local addon, ns = ...
 
 local config = ns.config
@@ -24,24 +24,24 @@ oUF:Factory(function(self)
     local ptgap, gap = 180, 12
 
     --//----------------------------
-    --// Player
+    -- Player
     SpawnUnit('Player'):SetPoint('RIGHT', UIParent, 'BOTTOM', -(ptgap/2), 300)
 
-    --// Player Pet
+    -- Player Pet
     SpawnUnit('Pet'      ):SetPoint('RIGHT', u.player, 'LEFT', -gap, 0)
     SpawnUnit('PetTarget'):SetPoint('BOTTOM', u.pet, 'TOP', 0, gap)
 
-    --// Targets
+    -- Targets
     SpawnUnit('Target'      ):SetPoint('LEFT', u.player, 'RIGHT', ptgap, 0)
     SpawnUnit('TargetTarget'):SetPoint('LEFT', u.target, 'RIGHT', gap, 0)
 
-    --// Focus
+    -- Focus
     self:SetActiveStyle('ZoeyThin')
     SpawnUnit('Focus'      ):SetPoint('BOTTOMRIGHT', u.player, 'TOPLEFT', -100, 75)
     SpawnUnit('FocusTarget'):SetPoint('BOTTOM', u.focus, 'TOP', 0, gap)
 
     --//----------------------------
-    --// Party -- note: 130 - height = yoffset
+    -- Party -- note: 130 - height = yoffset
     self:SetActiveStyle('Zoey')
     SpawnHeader('Party', 'party',
         'showParty', true,
@@ -53,7 +53,7 @@ oUF:Factory(function(self)
         ]]
     ):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 300)
 
-    --// Party Targets
+    -- Party Targets
     SpawnHeader('PartyTargets', 'party',
         'showParty', true,
         'yOffset', 90,
@@ -65,7 +65,7 @@ oUF:Factory(function(self)
         ]]
     ):SetPoint('BOTTOMLEFT', u.party, 'BOTTOMRIGHT', gap, 0)
 
-    --// Party Pets
+    -- Party Pets
     self:SetActiveStyle('ZoeyThin')
     SpawnHeader('PartyPets', 'party',
         'showParty', true,
@@ -79,7 +79,7 @@ oUF:Factory(function(self)
     ):SetPoint('BOTTOMLEFT', u.party, 0, -28)
 
     --//----------------------------
-    --// Raid Size 1 - 10
+    -- Raid Size 1 - 10
     self:SetActiveStyle('Zoey')
     local Raid = {}
     for i = 1, 2 do
@@ -103,7 +103,7 @@ oUF:Factory(function(self)
         end
     end
 
-    --// Raid Size 11 - 25
+    -- Raid Size 11 - 25
     self:SetActiveStyle('ZoeyThin')
     local Raid = {}
     for i = 1, 5 do
@@ -128,7 +128,7 @@ oUF:Factory(function(self)
         end
     end
 
-    --// Raid Size 26 - 40
+    -- Raid Size 26 - 40
     self:SetActiveStyle('ZoeySquare')
     local Raid = {}
     for i = 1, 8 do
@@ -153,7 +153,7 @@ oUF:Factory(function(self)
     end
 
     --//----------------------------
-    --// Boss Frames
+    -- Boss Frames
     self:SetActiveStyle('Zoey')
     local Boss = {}
     for i = 1, MAX_BOSS_FRAMES do
@@ -172,13 +172,13 @@ end)
 --//----------------------------
 oUF:Factory(function(self)
 
-    --// Hide the Blizzard Buffs
+    -- Hide the Blizzard Buffs
     BuffFrame:Hide()
     BuffFrame:UnregisterAllEvents()
     TemporaryEnchantFrame:Hide()
     ConsolidatedBuffs:Hide()
 
-    --// Hide the Compact Raid Frame Manager and Container
+    -- Hide the Compact Raid Frame Manager and Container
     CompactRaidFrameManager:UnregisterAllEvents()
     CompactRaidFrameManager.Show = CompactRaidFrameManager.Hide
     CompactRaidFrameManager:Hide()
@@ -187,7 +187,7 @@ oUF:Factory(function(self)
     CompactRaidFrameContainer.Show = CompactRaidFrameContainer.Hide
     CompactRaidFrameContainer:Hide()
 
-    --// Skin the Mirror Timers
+    -- Skin the Mirror Timers
     for i = 1, 3 do
         local barname = 'MirrorTimer' .. i
         local bar = _G[ barname ]
@@ -229,7 +229,7 @@ oUF:Factory(function(self)
         bar.bar:SetAlpha( 0.8 )
     end
 
-    --// Disable Blizzard options that are rendered useless by having this unit frame addon
+    -- Disable Blizzard options that are rendered useless by having this unit frame addon
     for _, button in pairs({
         'CombatPanelTargetOfTarget',
         'CombatPanelEnemyCastBarsOnPortrait',
@@ -244,7 +244,7 @@ oUF:Factory(function(self)
         _G['InterfaceOptions'..button]:EnableMouse(false)
     end
 
-    --// Remove Items from the Rightclick Menu
+    -- Remove Items from the Rightclick Menu
     for _, menu in pairs( UnitPopupMenus ) do
         for i = #menu, 1, -1 do
             local name = menu[ i ]
@@ -262,4 +262,4 @@ oUF:Factory(function(self)
 end)
 
 --//----------------------------
---// THE END
+-- THE END

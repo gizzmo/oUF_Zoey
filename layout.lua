@@ -1,10 +1,10 @@
---// Get the addon namespace
+-- Get the addon namespace
 local addon, ns = ...
 
 local config = ns.config
 local colors = oUF.colors
 
-local _, playerClass = UnitClass("player")
+local _, playerClass = UnitClass('player')
 local playerUnits = { player = true, pet = true, vehicle = true }
 
 --//----------------------------
@@ -26,19 +26,19 @@ local function UpdateUnitBorderColor(self)
 end
 
 
---// Mouseover and Target Highlighting
+-- Mouseover and Target Highlighting
 local function HighlightShouldShow(self)
-    --// Frame is curently mouse focused
+    -- Frame is curently mouse focused
     if ns.Mouse_Focus == self then
         return true
     end
 
-    --// Frame is not the current target
+    -- Frame is not the current target
     if not UnitIsUnit(self.unit, 'target') then
         return false
     end
 
-    --// We dont want to show target highlighting for these frames
+    -- We dont want to show target highlighting for these frames
     if self.unit == 'player' or strsub(self.unit, 1, 6) == 'target' then
         return false
     end
@@ -57,11 +57,11 @@ local function HighlightUpdate(self)
 end
 
 
---// Health and Power, mostly for setting color
+-- Health and Power, mostly for setting color
 local function PostUpdateHealth(Health, unit, min, max)
     local r,g,b,t
 
-    --// Determin the color we want to use
+    -- Determin the color we want to use
     if UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit) then
         t = colors.tapped
     elseif not UnitIsConnected(unit) then
@@ -83,7 +83,7 @@ end
 local function PostUpdatePower(Power, unit, min, max)
     local r,g,b,t
 
-    --// Determin the color we want to use
+    -- Determin the color we want to use
     if UnitIsPlayer(unit) then
         local class = select(2, UnitClass(unit))
         t = colors.class[class]
@@ -103,7 +103,7 @@ local function PostUpdatePower(Power, unit, min, max)
 end
 
 
---// Castbar Functions
+-- Castbar Functions
 local function PostCastStart(Castbar, unit, name, castid)
     local r,g,b = unpack(colors.cast.normal)
 
@@ -152,7 +152,7 @@ local function PostCastNotInterruptible(Castbar, unit)
     end
 end
 
---// We overwrite the `OnUpdate` function so we can fade out after.
+-- We overwrite the `OnUpdate` function so we can fade out after.
 local function CastbarOnUpdate(Castbar, elapsed)
     if Castbar.casting or Castbar.channeling then
         local duration = Castbar.casting and Castbar.duration + elapsed or Castbar.duration - elapsed
@@ -202,7 +202,7 @@ local function CastbarOnUpdate(Castbar, elapsed)
 end
 
 
---// Aura Function
+-- Aura Function
 local function PostCreateAuraIcon(iconframe, button)
     button.cd:SetReverse(true)
     button.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
@@ -237,7 +237,7 @@ local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
 end
 
 
---// Other Functions
+-- Other Functions
 ns.Mouse_Focus = nil
 local function OnEnter(self)
     UnitFrame_OnEnter(self)
@@ -279,10 +279,10 @@ local function CreateText(parent, size, justify)
 end
 
 local function CreateStatusBar(parent, name)
-    local sb = CreateFrame("StatusBar", (name and '$parent'..name or nil), parent)
+    local sb = CreateFrame('StatusBar', (name and '$parent'..name or nil), parent)
     sb:SetStatusBarTexture(config.statusbar)
 
-    sb.bg = sb:CreateTexture(nil, "BACKGROUND")
+    sb.bg = sb:CreateTexture(nil, 'BACKGROUND')
     sb.bg:SetTexture(config.statusbar)
     sb.bg:SetAllPoints(true)
 
@@ -292,25 +292,25 @@ end
 --//----------------------------
 --// STYLE FUNCTION
 --//----------------------------
---// Things every style will have
+-- Things every style will have
 local function SharedStyle(self)
 
-    --// Make the frame interactiveable
+    -- Make the frame interactiveable
     self:RegisterForClicks('AnyUp')
     self:SetScript('OnEnter', OnEnter)
     self:SetScript('OnLeave', OnLeave)
 
-    --// Background
+    -- Background
     local Background = self:CreateTexture(nil, 'BACKGROUND')
     Background:SetAllPoints(self)
     Background:SetTexture(0, 0, 0, 1)
 
-    --// Border: changes color depending on the unit's classification (rare,elite)
+    -- Border: changes color depending on the unit's classification (rare,elite)
     ns.CreateBorder(self)
     self:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', UpdateUnitBorderColor)
     table.insert(self.__elements, UpdateUnitBorderColor)
 
-    --// Highlight: create the highlight
+    -- Highlight: create the highlight
     self.Highlight = CreateFrame('Frame', '$parentHighlight', self)
     self.Highlight:SetAllPoints(self)
     self.Highlight:SetFrameLevel(15) -- needs to be the very top
@@ -323,21 +323,21 @@ local function SharedStyle(self)
     self.Highlight.texture:SetVertexColor(unpack(config.highlight.color))
     self.Highlight.texture:SetAlpha(config.highlight.alpha)
 
-    --// Highlight: enable Updates
+    -- Highlight: enable Updates
     self:HookScript('OnEnter', HighlightUpdate)
     self:HookScript('OnLeave', HighlightUpdate)
     self:RegisterEvent('PLAYER_TARGET_CHANGED', HighlightUpdate)
     table.insert(self.__elements, HighlightUpdate)
 
-    --// Overlay Frame -- used to attach icons/text to
+    -- Overlay Frame -- used to attach icons/text to
     self.Overlay = CreateFrame('Frame', '$parentOverlay', self)
     self.Overlay:SetAllPoints(self)
     self.Overlay:SetFrameLevel(10)
 
-    --// Spell Range
-    local ranger = "Range"
-    if IsAddOnLoaded("oUF_SpellRange") then
-        ranger = "SpellRange"
+    -- Spell Range
+    local ranger = 'Range'
+    if IsAddOnLoaded('oUF_SpellRange') then
+        ranger = 'SpellRange'
     end
 
     self[ranger] = {
@@ -347,7 +347,7 @@ local function SharedStyle(self)
 
 end
 
---// Main Core style
+-- Main Core style
 oUF:RegisterStyle('Zoey', function(self, unit)
     SharedStyle(self)
 
@@ -358,7 +358,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         self:SetWidth(135)
     end
 
-    --// Used for bar positioning
+    -- Used for bar positioning
     local FRAME_HEIGHT  = 1
 
     --//----------------------------
@@ -371,13 +371,13 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         self.Portrait:SetPoint('LEFT', 1,0)
         self.Portrait:SetPoint('RIGHT',-2,0)
 
-        --// Darken up the Portrait just a bit
+        -- Darken up the Portrait just a bit
         self.Portrait.Overlay = self.Portrait:CreateTexture(nil, 'OVERLAY')
         self.Portrait.Overlay:SetTexture(0,0,0,0.4)
-        self.Portrait.Overlay:SetPoint("TOPLEFT", 0,0)
-        self.Portrait.Overlay:SetPoint("BOTTOMRIGHT", 1, -1)
+        self.Portrait.Overlay:SetPoint('TOPLEFT', 0,0)
+        self.Portrait.Overlay:SetPoint('BOTTOMRIGHT', 1, -1)
 
-        --// Up The Offset Value
+        -- Up The Offset Value
         FRAME_HEIGHT = FRAME_HEIGHT + self.Portrait:GetHeight() + 2
     end
 
@@ -391,7 +391,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     self.Health:SetPoint('RIGHT',-1,0)
     self.Health.PostUpdate = PostUpdateHealth
 
-    --// Up The FRAME_HEIGHT
+    -- Up The FRAME_HEIGHT
     FRAME_HEIGHT = FRAME_HEIGHT + self.Health:GetHeight() + 1
 
     --//----------------------------
@@ -404,7 +404,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     self.Power:SetPoint('RIGHT',-1,0)
     self.Power.PostUpdate = PostUpdatePower
 
-    --// Up The FRAME_HEIGHT
+    -- Up The FRAME_HEIGHT
     FRAME_HEIGHT = FRAME_HEIGHT + self.Power:GetHeight() + 1
 
     --//----------------------------
@@ -439,7 +439,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
                 self.Runes[i] = rune
             end
 
-            --// Up The FRAME_HEIGHT
+            -- Up The FRAME_HEIGHT
             FRAME_HEIGHT = FRAME_HEIGHT + self.Runes:GetHeight() + 1
 
         end
@@ -490,13 +490,13 @@ oUF:RegisterStyle('Zoey', function(self, unit)
                 self.ClassIcons[i] = power
             end
 
-            --// There is no 4th and 5th holy power, but ClassIcon requires it.
+            -- There is no 4th and 5th holy power, but ClassIcon requires it.
             for i= 4, 5 do
                 self.ClassIcons[i] = self.ClassIcons:CreateTexture(nil, 'ARTWORK')
             end
 
 
-            --// Up The FRAME_HEIGHT
+            -- Up The FRAME_HEIGHT
             FRAME_HEIGHT = FRAME_HEIGHT + self.ClassIcons:GetHeight() + 1
 
         end
@@ -547,12 +547,12 @@ oUF:RegisterStyle('Zoey', function(self, unit)
                 self.ClassIcons[i] = shard
             end
 
-            --// There is no 4th and 5th soul shards, but ClassIcon requires it.
+            -- There is no 4th and 5th soul shards, but ClassIcon requires it.
             for i= 4, 5 do
                 self.ClassIcons[i] = self.ClassIcons:CreateTexture(nil, 'ARTWORK')
             end
 
-            --// Up The FRAME_HEIGHT
+            -- Up The FRAME_HEIGHT
             FRAME_HEIGHT = FRAME_HEIGHT + self.ClassIcons:GetHeight() + 1
 
         end
@@ -564,17 +564,17 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         --//----------------------------
         if playerClass == 'ROGUE' or playerClass == 'DRUID' then
 
-            --// Combo points float above the healthbar
-            --// so they can be hidden if the druid isnt in cat form
+            -- Combo points float above the healthbar
+            -- so they can be hidden if the druid isnt in cat form
 
             self.CPoints = CreateFrame('Frame', '$parentCPointsFrame', self)
             self.CPoints:SetHeight(5)
             self.CPoints:SetPoint('BOTTOMLEFT', self.Health, 'TOPLEFT', 0, 1)
             self.CPoints:SetPoint('BOTTOMRIGHT', self.Health, 'TOPRIGHT', 0, 1)
 
-            self.CPoints:SetFrameLevel(3) --// Push it above the portrait
+            self.CPoints:SetFrameLevel(3) -- Push it above the portrait
 
-            --// Background
+            -- Background
             local Background = self.CPoints:CreateTexture(nil, 'BACKGROUND')
             Background:SetPoint('TOPLEFT', -1, 1)
             Background:SetPoint('BOTTOMRIGHT', 1, -1)
@@ -606,10 +606,10 @@ oUF:RegisterStyle('Zoey', function(self, unit)
                 self.CPoints[i] = point
             end
 
-            --// Last combo point should be red, but not the bg
+            -- Last combo point should be red, but not the bg
             self.CPoints[5]:SetVertexColor(unpack(colors.comboPoints.last))
 
-            --// Toggle the frame when the Druid enters/leaves Cat Form
+            -- Toggle the frame when the Druid enters/leaves Cat Form
             if playerClass == 'DRUID' then
                 local f = CreateFrame('Frame', nil, self)
                 f:RegisterEvent('PLAYER_LOGIN')
@@ -644,42 +644,42 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         self.Experience.bg:SetAllPoints(self.Experience)
         self.Experience.bg:SetTexture(config.statusbar)
 
-        --// Resize the main frame when this frame Hides or Shows
+        -- Resize the main frame when this frame Hides or Shows
         self.Experience:SetScript('OnShow', BarOnShow)
         self.Experience:SetScript('OnHide', BarOnHide)
 
-        --// Main Color
+        -- Main Color
         local r,g,b = unpack(colors.experience.main)
 
         self.Experience:SetStatusBarColor(r,g,b)
         self.Experience.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
 
-        --// Rested Color
+        -- Rested Color
         self.Experience.Rested:SetStatusBarColor(unpack(colors.experience.rested))
 
-        --// Up The FRAME_HEIGHT
+        -- Up The FRAME_HEIGHT
         FRAME_HEIGHT = FRAME_HEIGHT + self.Experience:GetHeight() + 1
     end
 
 
-    --// Finaly time to set the Frame Height
+    -- Finaly time to set the Frame Height
     self:SetHeight(FRAME_HEIGHT)
 
     --//----------------------------
     --// Texts
     --//----------------------------
     --TODO: we should save the tags to a table on the frame.
-    --// Name Text
+    -- Name Text
     local Name = CreateText(self.Overlay, 14)
     Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
     Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
     --TODO: we should reset colors returned from the tags
     self:Tag(Name, '[Zoey:Level< ][Zoey:Name][|r - >Zoey:Realm]')
 
-    --// Health Text
+    -- Health Text
     if unit == 'target' then
-        --// Target uses two health texts to make the
-        --// final 20% big and red for Execute and Kill Shot
+        -- Target uses two health texts to make the
+        -- final 20% big and red for Execute and Kill Shot
         local HealthText = CreateText(self.Overlay, 19)
         HealthText:SetPoint('RIGHT', self.Health, -1, -1)
         self:Tag(HealthText, '[Zoey:TargetHealth]')
@@ -693,19 +693,19 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         self:Tag(HealthText, '[Zoey:Health]')
     end
 
-    --// Power Text
+    -- Power Text
     local PowerText = CreateText(self.Overlay, 12)
     PowerText:SetPoint('RIGHT', self.Power, -1, -1)
     self:Tag(PowerText, '[Zoey:Power]')
 
-    --// Experience Text
+    -- Experience Text
     if self.Experience then
         local Experience = CreateText(self.Overlay, 10)
         Experience:SetPoint('CENTER', self.Experience, 'BOTTOM', 0, -5)
         self:Tag(Experience, '[Zoey:Exp]')
     end
 
-    --// Guild Name
+    -- Guild Name
     if unit == 'party' then
         local Guild = CreateText(self.Overlay, 12)
         Guild:SetPoint('TOP', Name, 'BOTTOM', 0, -1)
@@ -718,45 +718,45 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     --// Icons
     --//----------------------------
     if unit == 'player' then
-        --// Resting Icon
+        -- Resting Icon
         self.Resting = self.Overlay:CreateTexture(nil, 'OVERLAY')
         self.Resting:SetSize(25,25)
         self.Resting:SetPoint('LEFT', self.Overlay, 'BOTTOMLEFT', 0, -2)
 
-        --// Combat Icon
+        -- Combat Icon
         self.Combat = self.Overlay:CreateTexture(nil, 'OVERLAY')
         self.Combat:SetSize(25,25)
         self.Combat:SetPoint('RIGHT', self.Overlay, 'BOTTOMRIGHT', 0, -2)
     end
 
     if unit == 'target' then
-        --// Quest Mob Icon
+        -- Quest Mob Icon
         self.QuestIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
         self.QuestIcon:SetSize(32,32)
         self.QuestIcon:SetPoint('CENTER', self.Overlay, 'LEFT', 0, 0)
     end
 
-    --// Leader Icon
+    -- Leader Icon
     self.Leader = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.Leader:SetSize(15,15)
     self.Leader:SetPoint('CENTER', self.Overlay, 'TOPLEFT', 0, 3)
 
-    --// LFD Role Icon
+    -- LFD Role Icon
     self.LFDRole = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.LFDRole:SetSize(15,15)
     self.LFDRole:SetPoint('CENTER', self.Overlay, 'TOPRIGHT', 1, 0)
 
-    --// Ready Check icon
+    -- Ready Check icon
     self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
     self.ReadyCheck:SetPoint('CENTER', self.Overlay, 'CENTER', 0, 0)
 
-    --// Raid Icon (Skull, Cross, Square ...)
+    -- Raid Icon (Skull, Cross, Square ...)
     self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.RaidIcon:SetSize(23,23)
     self.RaidIcon:SetPoint('LEFT', self.Overlay, 3, 0)
 
-    --// PvP Icon -- The img used isnt perfect, it sucks
+    -- PvP Icon -- The img used isnt perfect, it sucks
     self.PvP = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.PvP:SetSize(21,21)
     self.PvP:SetPoint('CENTER', self.Overlay, 'LEFT', 0,0)
@@ -771,7 +771,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     end
 
     if unit == 'party' or unit == 'target' or unit == 'focus' then
-        --// Phase Icon -- is the unit in a different phase then the player
+        -- Phase Icon -- is the unit in a different phase then the player
         self.PhaseIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
         self.PhaseIcon:SetPoint('TOP', self)
         self.PhaseIcon:SetPoint('BOTTOM', self)
@@ -779,7 +779,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         self.PhaseIcon:SetTexture([[Interface\Icons\Spell_Frost_Stun]])
         self.PhaseIcon:SetTexCoord(0.05, 0.95, 0.25, 0.75)
         self.PhaseIcon:SetAlpha(0.5)
-        self.PhaseIcon:SetBlendMode("ADD")
+        self.PhaseIcon:SetBlendMode('ADD')
         self.PhaseIcon:SetDesaturated(true)
         self.PhaseIcon:SetVertexColor(0.4, 0.8, 1)
     end
@@ -789,7 +789,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     --//----------------------------
     if unit == 'player' or unit == 'target' then
 
-        --// The Castbar its self
+        -- The Castbar its self
         self.Castbar = CreateStatusBar(self, 'Castbar')
 
         if unit == 'player' then
@@ -800,13 +800,13 @@ oUF:RegisterStyle('Zoey', function(self, unit)
             self.Castbar:SetPoint('CENTER', UIParent, 'BOTTOM', 0, 425)
         end
 
-        --// Add a spark
+        -- Add a spark
         self.Castbar.Spark = self.Castbar:CreateTexture(nil, 'OVERLAY')
         self.Castbar.Spark:SetHeight(self.Castbar:GetHeight()*2.5)
         self.Castbar.Spark:SetBlendMode('ADD')
         self.Castbar.Spark:SetAlpha(0.5)
 
-        --// Player only Latency
+        -- Player only Latency
         if unit == 'player' then
             self.Castbar.SafeZone = self.Castbar:CreateTexture(nil,'OVERLAY')
             self.Castbar.SafeZone:SetTexture(config.statusbar)
@@ -816,7 +816,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
             self.Castbar.Lag:SetPoint('TOPRIGHT', self.Castbar, 'BOTTOMRIGHT', 0, -7)
         end
 
-        --// Castbar Texts
+        -- Castbar Texts
         if unit == 'player' then
             self.Castbar.Text = CreateText(self.Castbar, 14)
             self.Castbar.Time = CreateText(self.Castbar, 10)
@@ -828,7 +828,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         self.Castbar.Text:SetPoint('LEFT', 10, 0)
         self.Castbar.Time:SetPoint('RIGHT', -10, 0)
 
-        --// Castbar Function Hooks
+        -- Castbar Function Hooks
         self.Castbar.OnUpdate = CastbarOnUpdate
         self.Castbar.PostCastStart = PostCastStart
         self.Castbar.PostChannelStart = PostCastStart
@@ -839,7 +839,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         self.Castbar.PostCastInterruptible = PostCastInterruptible
         self.Castbar.PostCastNotInterruptible = PostCastNotInterruptible
 
-        --// Build a frame around the Castbar
+        -- Build a frame around the Castbar
         self.Castbar.Frame = CreateFrame('Frame', '$parentFrame', self.Castbar)
         self.Castbar.Frame:SetPoint('TOPLEFT', -1, 1)
         self.Castbar.Frame:SetPoint('BOTTOMRIGHT', 1, -1)
@@ -857,7 +857,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     --//----------------------------
     if unit == 'player' or unit == 'target' then
 
-        --// Buffs
+        -- Buffs
         self.Buffs = CreateFrame('Frame', nil, self)
         self.Buffs:SetHeight(1) -- Needs a size to display
         self.Buffs:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -6)
@@ -880,7 +880,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         self.Buffs.PostCreateIcon = PostCreateAuraIcon
         self.Buffs.PostUpdateIcon = PostUpdateAuraIcon
 
-        --// Debuffs
+        -- Debuffs
         self.Debuffs = CreateFrame('Frame', nil, self)
         self.Debuffs:SetHeight(1) -- Needs a size to display
         self.Debuffs:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 6)
@@ -935,7 +935,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
     -- // Frame Width. Height will be set after bars are created
     self:SetWidth(135)
 
-    --// Used for bar positioning
+    -- Used for bar positioning
     local FRAME_HEIGHT  = 1
 
     --//----------------------------
@@ -948,22 +948,22 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
     self.Health:SetPoint('RIGHT',-1,0)
     self.Health.PostUpdate = PostUpdateHealth
 
-    --// Up The FRAME_HEIGHT
+    -- Up The FRAME_HEIGHT
     FRAME_HEIGHT = FRAME_HEIGHT + self.Health:GetHeight() + 1
 
-    --// Finaly time to set the Frame Height
+    -- Finaly time to set the Frame Height
     self:SetHeight(FRAME_HEIGHT)
 
     --//----------------------------
     --// Texts
     --//----------------------------
-    --// Name Text
+    -- Name Text
     local Name = CreateText(self.Overlay, 12)
     Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
     Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
     self:Tag(Name, '[Zoey:Level< ][Zoey:Name]')
 
-    --// Status Text
+    -- Status Text
     local StatusText = CreateText(self.Overlay, 16)
     StatusText:SetPoint('RIGHT', self.Health, -1, 0)
     self:Tag(StatusText, '[Zoey:Status]')
@@ -971,22 +971,22 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
     --//----------------------------
     --// Icons
     --//----------------------------
-    --// Leader Icon
+    -- Leader Icon
     self.Leader = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.Leader:SetSize(13,13)
     self.Leader:SetPoint('CENTER', self.Overlay, 'TOPLEFT', 0, 0)
 
-    --// LFD Role Icon
+    -- LFD Role Icon
     self.LFDRole = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.LFDRole:SetSize(13,13)
     self.LFDRole:SetPoint('CENTER', self.Overlay, 'TOPRIGHT', 0, 0)
 
-    --// Ready Check icon
+    -- Ready Check icon
     self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
     self.ReadyCheck:SetPoint('CENTER', self.Overlay, 'CENTER', 0, 0)
 
-    --// Raid Icon (Skull, Cross, Square ...)
+    -- Raid Icon (Skull, Cross, Square ...)
     self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.RaidIcon:SetSize(16,16)
     self.RaidIcon:SetPoint('CENTER', self.Overlay, 'LEFT', 0, 0)
@@ -999,7 +999,7 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
     -- // Frame Width. Height will be set after bars are created
     self:SetWidth(53)
 
-    --// Used for bar positioning
+    -- Used for bar positioning
     local FRAME_HEIGHT = 1
 
     --//----------------------------
@@ -1012,7 +1012,7 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
     self.Health:SetPoint('RIGHT',-1,0)
     self.Health.PostUpdate = PostUpdateHealth
 
-    --// Up The FRAME_HEIGHT
+    -- Up The FRAME_HEIGHT
     FRAME_HEIGHT = FRAME_HEIGHT + self.Health:GetHeight() + 1
 
     --//----------------------------
@@ -1025,22 +1025,22 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
     self.Power:SetPoint('RIGHT',-1,0)
     self.Power.PostUpdate = PostUpdatePower
 
-    --// Up The FRAME_HEIGHT
+    -- Up The FRAME_HEIGHT
     FRAME_HEIGHT = FRAME_HEIGHT + self.Power:GetHeight() + 1
 
-    --// Finaly time to set the Frame Height
+    -- Finaly time to set the Frame Height
     self:SetHeight(FRAME_HEIGHT)
 
     --//----------------------------
     --// Texts
     --//----------------------------
-    --// Name Text
+    -- Name Text
     local Name = CreateText(self.Overlay, 10, 'center')
     Name:SetPoint('TOPLEFT', self, 'TOPLEFT', 1, -1)
     Name:SetPoint('TOPRIGHT', self, 'TOPRIGHT', -1, -1)
     self:Tag(Name, '[Zoey:Name]')
 
-    --// Status Text
+    -- Status Text
     local StatusText = CreateText(self.Overlay, 12, 'center')
     StatusText:SetPoint('BOTTOM',  self)
     self:Tag(StatusText, '[Zoey:Status]')
@@ -1048,22 +1048,22 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
     --//----------------------------
     --// Icons
     --//----------------------------
-    --// Leader Icon
+    -- Leader Icon
     self.Leader = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.Leader:SetSize(10,10)
     self.Leader:SetPoint('CENTER', self.Overlay, 'TOPLEFT', 0, 0)
 
-    --// LFD Role Icon
+    -- LFD Role Icon
     self.LFDRole = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.LFDRole:SetSize(13,13)
     self.LFDRole:SetPoint('CENTER', self.Overlay, 'TOPRIGHT', 0, 0)
 
-    --// Ready Check icon
+    -- Ready Check icon
     self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
     self.ReadyCheck:SetPoint('CENTER', self.Overlay, 'CENTER', 0, 0)
 
-    --// Raid Icon (Skull, Cross, Square ...)
+    -- Raid Icon (Skull, Cross, Square ...)
     self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.RaidIcon:SetSize(16,16)
     self.RaidIcon:SetPoint('CENTER', self.Overlay, 'LEFT', 0, 0)

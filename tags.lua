@@ -1,4 +1,4 @@
---// Get the addon namespace
+-- Get the addon namespace
 local addon, ns = ...
 
 local function IsMouseOver(unit)
@@ -84,14 +84,14 @@ end
 
 local FigureNPCGuild
 do
-    local tt = CreateFrame("GameTooltip", 'ZoeyTooltip', UIParent, 'GameTooltipTemplate')
-    tt:SetOwner(UIParent, "ANCHOR_NONE")
+    local tt = CreateFrame('GameTooltip', 'ZoeyTooltip', UIParent, 'GameTooltipTemplate')
+    tt:SetOwner(UIParent, 'ANCHOR_NONE')
 
     local nextTime, lastUnit, lastName = 0
 
     function FigureNPCGuild(unit)
 
-        --// Update Tooltip
+        -- Update Tooltip
         local name = UnitName(unit)
         local time = GetTime()
         if lastUnit == unit and lastName == name and nextTime < time then
@@ -103,7 +103,7 @@ do
         tt:ClearLines()
         tt:SetUnit(unit)
         if not tt:IsOwned(UIParent) then
-            tt:SetOwner(UIParent, "ANCHOR_NONE")
+            tt:SetOwner(UIParent, 'ANCHOR_NONE')
         end
 
 
@@ -277,8 +277,7 @@ oUF.Tags.Methods['Zoey:Exp'] = function(unit)
     end
 end
 
--- TODO: Find event to makesure party frame shows this. As of now it always show.
-oUF.Tags.Events['Zoey:Guild'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Events['Zoey:Guild'] = 'UNIT_NAME_UPDATE PARTY_MEMBER_ENABLE'
 oUF.Tags.Methods['Zoey:Guild'] = function(unit)
     local r,g,b = 255,255,255
 
