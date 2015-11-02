@@ -8,6 +8,8 @@
 ## X-eMail: justgiz@gmail.com
 ## X-Category: UnitFrame
 
+elements\oUF_Experience.lua
+
 config.lua
 border.lua
 layout.lua

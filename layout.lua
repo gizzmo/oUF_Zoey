@@ -628,7 +628,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     --//----------------------------
     --// Experience Bar
     --//----------------------------
-    if unit == 'player' and IsAddOnLoaded('oUF_Experience') and UnitLevel(unit) ~= MAX_PLAYER_LEVEL then
+    if unit == 'player' and UnitLevel(unit) ~= MAX_PLAYER_LEVEL then
         self.Experience = CreateFrame('Statusbar', '$parentExperience', self)
         self.Experience:SetStatusBarTexture(config.statusbar)
         self.Experience:SetHeight(5)
