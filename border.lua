@@ -6,7 +6,7 @@ ns.borderedObjects = {}
 
 local sections = { 'TOPLEFT', 'TOP', 'TOPRIGHT', 'LEFT', 'RIGHT', 'BOTTOMLEFT', 'BOTTOM', 'BOTTOMRIGHT' }
 
-methods = {
+local methods = {
     SetColor = function(self, r,g,b)
         if not r or not g or not b then
             r,g,b = unpack(oUF.colors.border.normal)
