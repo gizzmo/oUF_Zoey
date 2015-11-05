@@ -252,6 +252,7 @@ oUF:Factory(function(self)
             or name:match( '^UNLOCK_%u+_FRAME$' )
             or name:match( '^MOVE_%u+_FRAME$' )
             or name:match( '^RESET_%u+_FRAME_POSITION' )
+            or name:match( '^SET_FOCUS' )
             then
                 table.remove( menu, i )
             end
