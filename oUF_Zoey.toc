@@ -10,9 +10,10 @@
 
 elements\oUF_Experience.lua
 
+features\border.lua
+features\tags.lua
+features\test.lua
+
 config.lua
-border.lua
 layout.lua
 core.lua
-tags.lua
-test.lua
