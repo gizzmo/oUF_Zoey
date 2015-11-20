@@ -1,10 +1,9 @@
-## Interface: 50001
+## Interface: 60200
 ## Title: oUF_Zoey
 ## Notes: An oUF layout
 ## Author: Gizzmo
 ## Version: 0.1
 ## RequiredDeps: oUF
-## OptionalDeps: oUF_SpellRange, oUF_Experience
 ## X-eMail: justgiz@gmail.com
 ## X-Category: UnitFrame
 
