@@ -56,7 +56,7 @@ oUF.colors.border = {
     normal    = {113/255, 113/255, 113/255}, -- Dark Grey
     rare      = {1, 1, 1},                   -- White
     elite     = {204/255, 177/255, 41/255},  -- Yellow
-    rareelite = {255/255, 238/255, 153/255}, -- Yellow-ish/White-ish
+    rareelite = {41/255,  128/255, 204/255}, -- Blue
     boss      = {136/255, 41/255, 204/255}   -- Purple
 
 }
