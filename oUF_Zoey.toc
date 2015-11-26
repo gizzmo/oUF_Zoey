@@ -6,6 +6,7 @@
 ## RequiredDeps: oUF
 ## X-eMail: justgiz@gmail.com
 ## X-Category: UnitFrame
+## SavedVariables: oUF_ZoeyConfig
 
 libs\LibStub.lua
 libs\CallbackHandler-1.0.lua
