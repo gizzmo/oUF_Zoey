@@ -7,6 +7,23 @@
 ## X-eMail: justgiz@gmail.com
 ## X-Category: UnitFrame
 
+libs\LibStub.lua
+libs\CallbackHandler-1.0.lua
+libs\LibSharedMedia-3.0.lua
+
+# Disabled untill we need them
+# libs\PhanxConfig-OptionsPanel.lua
+# libs/PhanxConfig-Button.lua
+# libs/PhanxConfig-Checkbox.lua
+# libs/PhanxConfig-ColorPicker.lua
+# libs/PhanxConfig-Dropdown.lua
+# libs/PhanxConfig-EditBox.lua
+# libs/PhanxConfig-Header.lua
+# libs/PhanxConfig-KeyBinding.lua
+# libs/PhanxConfig-MediaDropdown.lua
+# libs/PhanxConfig-Panel.lua
+# libs/PhanxConfig-Slider.lua
+
 elements\oUF_Experience.lua
 
 features\border.lua
