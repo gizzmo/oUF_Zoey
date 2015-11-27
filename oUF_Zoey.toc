@@ -12,16 +12,17 @@ libs\LibStub.lua
 libs\CallbackHandler-1.0.lua
 libs\LibSharedMedia-3.0.lua
 
+libs\PhanxConfig-OptionsPanel.lua
+libs\PhanxConfig-Header.lua
+libs\PhanxConfig-Dropdown.lua
+libs\PhanxConfig-MediaDropdown.lua
+
 # Disabled untill we need them
-# libs\PhanxConfig-OptionsPanel.lua
 # libs/PhanxConfig-Button.lua
 # libs/PhanxConfig-Checkbox.lua
 # libs/PhanxConfig-ColorPicker.lua
-# libs/PhanxConfig-Dropdown.lua
 # libs/PhanxConfig-EditBox.lua
-# libs/PhanxConfig-Header.lua
 # libs/PhanxConfig-KeyBinding.lua
-# libs/PhanxConfig-MediaDropdown.lua
 # libs/PhanxConfig-Panel.lua
 # libs/PhanxConfig-Slider.lua
 
@@ -32,5 +33,6 @@ features\tags.lua
 features\test.lua
 
 config.lua
+options.lua
 layout.lua
 core.lua
