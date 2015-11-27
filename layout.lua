@@ -289,7 +289,41 @@ local function CreateStatusBar(parent, name)
     sb.bg:SetTexture(texture)
     sb.bg:SetAllPoints(true)
 
+    tinsert(ns.statusbars, sb)
     return sb
+end
+
+function ns.SetAllStatusBarTextures()
+    local texture = LibStub('LibSharedMedia-3.0'):Fetch("statusbar", ns.config.statusbar)
+
+    for i = 1, #ns.statusbars do
+        local sb = ns.statusbars[i]
+
+        --// update statusbar
+        local r, g, b, a = sb:GetStatusBarColor()
+        sb:SetStatusBarTexture(texture)
+        sb:SetStatusBarColor(r, g, b, a)
+
+        --// update background texture
+        local r, g, b, a = sb.bg:GetVertexColor()
+        sb.bg:SetTexture(texture)
+        sb.bg:SetVertexColor(r, g, b, a)
+    end
+
+    if not MirrorTimer3.bar then return end -- too soon!
+    for i = 1, 3 do
+        local bar = _G["MirrorTimer" .. i]
+
+        --// update statusbar
+        local r, g, b, a = bar.bar:GetStatusBarColor()
+        bar.bar:SetStatusBarTexture(texture)
+        bar.bar:SetStatusBarColor(r, g, b, a)
+
+        --// update background texture
+        local r, g, b, a = bar.bg:GetVertexColor()
+        bar.bg:SetTexture(texture)
+        bar.bg:SetVertexColor(r, g, b, a)
+    end
 end
 
 --//----------------------------

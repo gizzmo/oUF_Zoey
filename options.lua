@@ -24,14 +24,14 @@ LibStub("PhanxConfig-OptionsPanel"):New('oUF Zoey', nil, function(panel)
     local title, notes = panel:CreateHeader(panel.name, 'oUF_Zoey is a layout for Haste\'s oUF framework. Use this panel to configure some basic options for this layout.')
 
     --------------------------------------------------------------------
-    local statusbar = panel:CreateMediaDropdown('Bar texture', nil, "statusbar")
+    local statusbar = panel:CreateMediaDropdown('Statusbar texture', nil, "statusbar")
     statusbar:SetPoint("TOPLEFT", notes, "BOTTOMLEFT", 0, -12)
     statusbar:SetPoint("TOPRIGHT", notes, "BOTTOM", -12, -16)
 
     function statusbar:OnValueChanged(value)
         if value == db.statusbar then return end
         db.statusbar = value
-        -- ns.SetAllStatusBarTextures()
+        ns.SetAllStatusBarTextures()
     end
 
 end)
