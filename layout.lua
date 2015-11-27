@@ -267,8 +267,10 @@ local function BarOnShow(bar)
 end
 
 local function CreateText(parent, size, justify)
+    local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.config.font)
+
     local fs = parent:CreateFontString(nil, 'OVERLAY')
-    fs:SetFont(ns.config.font, size or 16)
+    fs:SetFont(font, size or 16)
     fs:SetJustifyH(justify or 'LEFT')
     fs:SetWordWrap(false)
     fs:SetShadowOffset(1, -1)
@@ -278,11 +280,13 @@ local function CreateText(parent, size, justify)
 end
 
 local function CreateStatusBar(parent, name)
+    local texture = LibStub("LibSharedMedia-3.0"):Fetch("statusbar", ns.config.statusbar)
+
     local sb = CreateFrame('StatusBar', (name and '$parent'..name or nil), parent)
-    sb:SetStatusBarTexture(ns.config.statusbar)
+    sb:SetStatusBarTexture(texture)
 
     sb.bg = sb:CreateTexture(nil, 'BACKGROUND')
-    sb.bg:SetTexture(ns.config.statusbar)
+    sb.bg:SetTexture(texture)
     sb.bg:SetAllPoints(true)
 
     return sb
@@ -628,20 +632,22 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     --// Experience Bar
     --//----------------------------
     if unit == 'player' and UnitLevel(unit) ~= MAX_PLAYER_LEVEL then
+        local texture = LibStub("LibSharedMedia-3.0"):Fetch("statusbar", ns.config.statusbar)
+
         self.Experience = CreateFrame('Statusbar', '$parentExperience', self)
-        self.Experience:SetStatusBarTexture(ns.config.statusbar)
+        self.Experience:SetStatusBarTexture(texture)
         self.Experience:SetHeight(5)
         self.Experience:SetPoint('TOP', 0, -FRAME_HEIGHT)
         self.Experience:SetPoint('LEFT', 1,0)
         self.Experience:SetPoint('RIGHT',-1,0)
 
         self.Experience.Rested = CreateFrame('StatusBar', '$parentRested', self.Experience)
-        self.Experience.Rested:SetStatusBarTexture(ns.config.statusbar)
+        self.Experience.Rested:SetStatusBarTexture(texture)
         self.Experience.Rested:SetAllPoints(self.Experience)
 
         self.Experience.bg = self.Experience.Rested:CreateTexture(nil, 'BACKGROUND')
         self.Experience.bg:SetAllPoints(self.Experience)
-        self.Experience.bg:SetTexture(ns.config.statusbar)
+        self.Experience.bg:SetTexture(texture)
 
         -- Resize the main frame when this frame Hides or Shows
         self.Experience:SetScript('OnShow', BarOnShow)

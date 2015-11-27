@@ -5,8 +5,8 @@ local addon, ns = ...
 --// DEFAULT CONFIGURATION
 --//----------------------------
 local configDefault = {
-    statusbar = [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]],
-    font = [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]],
+    statusbar = 'Armory',
+    font = 'DorisPP',
 
     border = {
         texture = [[Interface\AddOns\oUF_Zoey\media\Border.tga]],
@@ -95,11 +95,8 @@ function Loader:ADDON_LOADED(event, addon)
     -- Register Some stuf with Shared Media
     local LSM = LibStub('LibSharedMedia-3.0', true)
     if LSM then
-        LSM:Register('border', 'thinsquare', ns.config.border.texture)
-        LSM:Register('statusbar', 'Armory', ns.config.statusbar)
-        LSM:Register('font', 'DorisPP', ns.config.font)
-
-        -- TODO: hardcode list and reference name in config
+        LSM:Register('statusbar', 'Armory', [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]])
+        LSM:Register('font', 'DorisPP', [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]])
     end
 end
 
