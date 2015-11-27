@@ -5,7 +5,7 @@ local addon, ns = ...
 SLASH_oUF_Zoey1 = '/zoey'
 function SlashCmdList.oUF_Zoey(cmd)
     cmd = strlower(cmd)
-    if cmd == 'config' or cmd == nil then
+    if cmd == 'config' or cmd == '' then
         InterfaceOptionsFrame_OpenToCategory('oUF Zoey')
         InterfaceOptionsFrame_OpenToCategory('oUF Zoey')
     end
