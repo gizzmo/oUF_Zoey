@@ -34,4 +34,10 @@ LibStub("PhanxConfig-OptionsPanel"):New('oUF Zoey', nil, function(panel)
         ns.SetAllStatusBarTextures()
     end
 
+    --------------------------------------------------------------------
+    -- Update when the options panel is shown
+    function panel.refresh()
+        statusbar:SetValue(db.statusbar)
+        statusbar.valueBG:SetTexture(Media:Fetch("statusbar", db.statusbar))
+    end
 end)
