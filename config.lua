@@ -62,7 +62,14 @@ oUF.colors.border = {
 ns.statusbars = {}
 
 --//-----------------------------------------------------------------
---// Load stuff
+--// Register Some stuf with Shared Media
+--//-----------------------------------------------------------------
+local Media = LibStub('LibSharedMedia-3.0', true)
+Media:Register('statusbar', 'Armory', [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]])
+Media:Register('font', 'DorisPP', [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]])
+
+--//-----------------------------------------------------------------
+--// Load config variables
 --//-----------------------------------------------------------------
 local Loader = CreateFrame('Frame')
 Loader:SetScript('OnEvent', function(self, event, ...)
@@ -94,13 +101,6 @@ function Loader:ADDON_LOADED(event, addon)
 
     oUF_ZoeyConfig = initDB(oUF_ZoeyConfig, configDefault)
     ns.config = oUF_ZoeyConfig
-
-    -- Register Some stuf with Shared Media
-    local LSM = LibStub('LibSharedMedia-3.0', true)
-    if LSM then
-        LSM:Register('statusbar', 'Armory', [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]])
-        LSM:Register('font', 'DorisPP', [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]])
-    end
 end
 
 -- Fires immediately before the player is logged out of the game
