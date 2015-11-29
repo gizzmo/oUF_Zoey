@@ -192,14 +192,10 @@ oUF:Factory(function(self)
         local barname = 'MirrorTimer'..i
         local bar = _G[barname]
 
-        for i, region in pairs({bar:GetRegions()}) do
-            if region.GetTexture and region:GetTexture() == 'SolidTexture' then
-                region:Hide()
-            end
-        end
+        -- Hide old border
+        _G[barname..'Border']:Hide()
 
-        ns.CreateBorder(bar)
-
+        -- Place where we want
         bar:SetParent(UIParent)
         bar:SetSize(285, 28)
 
@@ -207,6 +203,13 @@ oUF:Factory(function(self)
             local p1, p2, p3, p4, p5 = bar:GetPoint()
             bar:SetPoint(p1, p2, p3, p4, p5 - 15)
         end
+
+        -- Add our style
+        bar.bar = _G[ barname..'StatusBar' ]
+        bar.bar:SetPoint('TOPLEFT', bar, 1, -1)
+        bar.bar:SetPoint('BOTTOMRIGHT', bar, -1, 1)
+        bar.bar:SetStatusBarTexture(config.statusbar)
+        bar.bar:SetAlpha(0.8)
 
         bar.bg = bar:GetRegions()
         bar.bg:ClearAllPoints()
@@ -216,17 +219,10 @@ oUF:Factory(function(self)
 
         bar.text = _G[barname..'Text']
         bar.text:ClearAllPoints()
-        bar.text:SetPoint('LEFT', bar, 4, 1)
+        bar.text:SetPoint('LEFT', bar, 6, -1)
         bar.text:SetFont(config.font, 16)
 
-        bar.border = _G[barname..'Border']
-        bar.border:Hide()
-
-        bar.bar = _G[ barname..'StatusBar' ]
-        bar.bar:SetPoint('TOPLEFT', bar, 1, -1)
-        bar.bar:SetPoint('BOTTOMRIGHT', bar, -1, 1)
-        bar.bar:SetStatusBarTexture(config.statusbar)
-        bar.bar:SetAlpha(0.8)
+        ns.CreateBorder(bar)
     end
 
     -- Disable Blizzard options that are rendered useless by having this unit frame addon
