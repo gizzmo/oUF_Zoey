@@ -844,7 +844,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         -- Player only Latency
         if unit == 'player' then
             self.Castbar.SafeZone = self.Castbar:CreateTexture(nil,'OVERLAY')
-            self.Castbar.SafeZone:SetTexture(ns.config.statusbar)
+            self.Castbar.SafeZone:SetTexture(self.Castbar:GetStatusBarTexture():GetTexture())
             self.Castbar.SafeZone:SetVertexColor(unpack(colors.cast.safezone))
 
             self.Castbar.Lag = CreateText(self.Castbar, 10)
