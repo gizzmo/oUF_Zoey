@@ -284,14 +284,15 @@ local function CreateStatusBar(parent, name, noBG)
 
     local sb = CreateFrame('StatusBar', (name and '$parent'..name or nil), parent)
     sb:SetStatusBarTexture(texture)
+    tinsert(ns.statusbars, sb)
 
     if not noBG then
         sb.bg = sb:CreateTexture(nil, 'BACKGROUND')
         sb.bg:SetTexture(texture)
         sb.bg:SetAllPoints(true)
+        tinsert(ns.statusbars, sb.bg)
     end
 
-    tinsert(ns.statusbars, sb)
     return sb
 end
 
@@ -301,16 +302,16 @@ function ns.SetAllStatusBarTextures()
     for i = 1, #ns.statusbars do
         local sb = ns.statusbars[i]
 
-        --// update statusbar
-        local r, g, b, a = sb:GetStatusBarColor()
-        sb:SetStatusBarTexture(texture)
-        sb:SetStatusBarColor(r, g, b, a)
+        --// Is it a statusbar or a texture
+        if sb.SetStatusBarTexture then
+            local r, g, b, a = sb:GetStatusBarColor()
+            sb:SetStatusBarTexture(texture)
+            sb:SetStatusBarColor(r, g, b, a)
 
-        --// update background texture
-        if sb.bg then
-            local r, g, b, a = sb.bg:GetVertexColor()
-            sb.bg:SetTexture(texture)
-            sb.bg:SetVertexColor(r, g, b, a)
+        else
+            local r, g, b, a = sb:GetVertexColor()
+            sb:SetTexture(texture)
+            sb:SetVertexColor(r, g, b, a)
         end
     end
 
@@ -846,6 +847,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
             self.Castbar.SafeZone = self.Castbar:CreateTexture(nil,'OVERLAY')
             self.Castbar.SafeZone:SetTexture(self.Castbar:GetStatusBarTexture():GetTexture())
             self.Castbar.SafeZone:SetVertexColor(unpack(colors.cast.safezone))
+            tinsert(ns.statusbars, self.Castbar.SafeZone)
 
             self.Castbar.Lag = CreateText(self.Castbar, 10)
             self.Castbar.Lag:SetPoint('TOPRIGHT', self.Castbar, 'BOTTOMRIGHT', 0, -7)
