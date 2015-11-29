@@ -95,7 +95,7 @@ oUF:Factory(function(self)
         )
 
         if i == 1 then
-            Raid[i]:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, -300)
+            Raid[i]:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 300)
         else
             Raid[i]:SetPoint('BOTTOMLEFT', Raid[i - 1], 'BOTTOMRIGHT', gap, 0)
         end
