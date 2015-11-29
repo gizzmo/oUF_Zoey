@@ -229,6 +229,9 @@ oUF:Factory(function(self)
         bar.bar:SetPoint('BOTTOMRIGHT', bar, -1, 1)
         bar.bar:SetStatusBarTexture(texture)
         bar.bar:SetAlpha(0.8)
+
+        tinsert(ns.statusbars, bar.bar)
+        tinsert(ns.statusbars, bar.bg)
     end
 
     -- Disable Blizzard options that are rendered useless by having this unit frame addon

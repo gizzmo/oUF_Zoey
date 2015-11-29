@@ -314,21 +314,6 @@ function ns.SetAllStatusBarTextures()
             sb:SetVertexColor(r, g, b, a)
         end
     end
-
-    if not MirrorTimer3.bar then return end -- too soon!
-    for i = 1, 3 do
-        local bar = _G["MirrorTimer" .. i]
-
-        --// update statusbar
-        local r, g, b, a = bar.bar:GetStatusBarColor()
-        bar.bar:SetStatusBarTexture(texture)
-        bar.bar:SetStatusBarColor(r, g, b, a)
-
-        --// update background texture
-        local r, g, b, a = bar.bg:GetVertexColor()
-        bar.bg:SetTexture(texture)
-        bar.bg:SetVertexColor(r, g, b, a)
-    end
 end
 
 --//----------------------------
