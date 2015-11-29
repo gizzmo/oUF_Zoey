@@ -279,15 +279,17 @@ local function CreateText(parent, size, justify)
     return fs
 end
 
-local function CreateStatusBar(parent, name)
+local function CreateStatusBar(parent, name, noBG)
     local texture = LibStub("LibSharedMedia-3.0"):Fetch("statusbar", ns.config.statusbar)
 
     local sb = CreateFrame('StatusBar', (name and '$parent'..name or nil), parent)
     sb:SetStatusBarTexture(texture)
 
-    sb.bg = sb:CreateTexture(nil, 'BACKGROUND')
-    sb.bg:SetTexture(texture)
-    sb.bg:SetAllPoints(true)
+    if not noBG then
+        sb.bg = sb:CreateTexture(nil, 'BACKGROUND')
+        sb.bg:SetTexture(texture)
+        sb.bg:SetAllPoints(true)
+    end
 
     tinsert(ns.statusbars, sb)
     return sb
@@ -305,9 +307,11 @@ function ns.SetAllStatusBarTextures()
         sb:SetStatusBarColor(r, g, b, a)
 
         --// update background texture
-        local r, g, b, a = sb.bg:GetVertexColor()
-        sb.bg:SetTexture(texture)
-        sb.bg:SetVertexColor(r, g, b, a)
+        if sb.bg then
+            local r, g, b, a = sb.bg:GetVertexColor()
+            sb.bg:SetTexture(texture)
+            sb.bg:SetVertexColor(r, g, b, a)
+        end
     end
 
     if not MirrorTimer3.bar then return end -- too soon!
@@ -666,22 +670,14 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     --// Experience Bar
     --//----------------------------
     if unit == 'player' and UnitLevel(unit) ~= MAX_PLAYER_LEVEL then
-        local texture = LibStub("LibSharedMedia-3.0"):Fetch("statusbar", ns.config.statusbar)
-
-        self.Experience = CreateFrame('Statusbar', '$parentExperience', self)
-        self.Experience:SetStatusBarTexture(texture)
+        self.Experience = CreateStatusBar(self, 'Experience', true)
         self.Experience:SetHeight(5)
         self.Experience:SetPoint('TOP', 0, -FRAME_HEIGHT)
         self.Experience:SetPoint('LEFT', 1,0)
         self.Experience:SetPoint('RIGHT',-1,0)
 
-        self.Experience.Rested = CreateFrame('StatusBar', '$parentRested', self.Experience)
-        self.Experience.Rested:SetStatusBarTexture(texture)
+        self.Experience.Rested = CreateStatusBar(self.Experience, 'Rested')
         self.Experience.Rested:SetAllPoints(self.Experience)
-
-        self.Experience.bg = self.Experience.Rested:CreateTexture(nil, 'BACKGROUND')
-        self.Experience.bg:SetAllPoints(self.Experience)
-        self.Experience.bg:SetTexture(texture)
 
         -- Resize the main frame when this frame Hides or Shows
         self.Experience:SetScript('OnShow', BarOnShow)
@@ -691,7 +687,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         local r,g,b = unpack(colors.experience.main)
 
         self.Experience:SetStatusBarColor(r,g,b)
-        self.Experience.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
+        self.Experience.Rested.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
 
         -- Rested Color
         self.Experience.Rested:SetStatusBarColor(unpack(colors.experience.rested))
@@ -945,18 +941,16 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     --//----------------------------
     --// Heal Prediction Bar
     --//----------------------------
-    local mhpb = CreateFrame('StatusBar', nil, self.Health)
+    local mhpb = CreateStatusBar(self.Health, nil, true)
     mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
     mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
     mhpb:SetWidth(self:GetWidth())
-    mhpb:SetStatusBarTexture(ns.config.statusbar)
     mhpb:SetStatusBarColor(0, 1, 0, 0.25) -- TODO: tweek colors
 
-    local ohpb = CreateFrame('StatusBar', nil, self.Health)
+    local ohpb = CreateStatusBar(self.Health, nil, true)
     ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
     ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
     ohpb:SetWidth(self:GetWidth())
-    ohpb:SetStatusBarTexture(ns.config.statusbar)
     ohpb:SetStatusBarColor(0, 1, 0, 0.25) -- TODO: tweek colors
 
     -- Register it with oUF
