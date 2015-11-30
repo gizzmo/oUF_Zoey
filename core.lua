@@ -19,12 +19,11 @@ end
 
 oUF:Factory(function(self)
 
-    local ptgap = ns.config.ptgap
-    local gap = 12
+    local frames_offset, ptgap, gap = ns.config.frames_offset, ns.config.ptgap, 12
 
     --//----------------------------
     -- Player
-    SpawnUnit('Player'):SetPoint('RIGHT', UIParent, 'BOTTOM', -(ptgap/2), 300)
+    SpawnUnit('Player'):SetPoint('RIGHT', UIParent, 'BOTTOM', -(ptgap/2), frames_offset)
 
     -- Player Pet
     SpawnUnit('Pet'      ):SetPoint('RIGHT', u.player, 'LEFT', -gap, 0)

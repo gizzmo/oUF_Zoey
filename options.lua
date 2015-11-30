@@ -58,11 +58,36 @@ LibStub("PhanxConfig-OptionsPanel"):New('oUF Zoey', nil, function(panel)
     end
 
     --------------------------------------------------------------------
+    local frames_offset = panel:CreateSlider('Unit frames offset', 'The distance from the bottom of the window.',
+        50, -- minValue
+        500, --maxValue
+        1 -- valueStep
+
+        -- TODO: figure out the max values possible and keep auras and other frames visibility
+    )
+    frames_offset:SetPoint('TOPLEFT', player_target_gap, 'BOTTOMLEFT', 0, -10)
+    frames_offset:SetPoint('TOPRIGHT', player_target_gap, 'BOTTOMRIGHT', 0, -10)
+
+    function frames_offset:OnValueChanged(value)
+        local point, relativeTo, relativePoint, xOffset, yOffset
+
+        db.frames_offset = value
+
+        -- everything is connected to player
+        point, relativeTo, relativePoint, xOffset, yOffset = oUF_ZoeyPlayer:GetPoint(1)
+        oUF_ZoeyPlayer:SetPoint(point, relativeTo, relativePoint, xOffset, value)
+
+        -- TODO: adjust raid and party frames
+    end
+
+    --------------------------------------------------------------------
     -- Update when the options panel is shown
     function panel.refresh()
         statusbar:SetValue(db.statusbar)
         statusbar.valueBG:SetTexture(Media:Fetch("statusbar", db.statusbar))
 
         player_target_gap:SetValue(db.ptgap)
+
+        frames_offset:SetValue(db.frames_offset)
     end
 end)

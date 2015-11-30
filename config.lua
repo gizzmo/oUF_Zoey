@@ -9,6 +9,7 @@ local configDefault = {
     font = 'DorisPP',
 
     ptgap = 180,
+    frames_offset = 300,
 
     border = {
         texture = [[Interface\AddOns\oUF_Zoey\media\Border.tga]],
