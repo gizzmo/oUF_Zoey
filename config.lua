@@ -8,6 +8,8 @@ local configDefault = {
     statusbar = 'Armory',
     font = 'DorisPP',
 
+    ptgap = 180,
+
     border = {
         texture = [[Interface\AddOns\oUF_Zoey\media\Border.tga]],
         size = 12

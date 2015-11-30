@@ -19,7 +19,8 @@ end
 
 oUF:Factory(function(self)
 
-    local ptgap, gap = 180, 12
+    local ptgap = ns.config.ptgap
+    local gap = 12
 
     --//----------------------------
     -- Player

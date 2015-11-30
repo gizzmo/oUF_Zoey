@@ -35,9 +35,34 @@ LibStub("PhanxConfig-OptionsPanel"):New('oUF Zoey', nil, function(panel)
     end
 
     --------------------------------------------------------------------
+    local player_target_gap = panel:CreateSlider('Player Target gap', 'The gap between the Player and Target frames',
+        12, -- minValue
+        500, --maxValue
+        2 -- valueStep
+    )
+    player_target_gap:SetPoint('TOPLEFT', statusbar, 'BOTTOMLEFT', 0, -10)
+    player_target_gap:SetPoint('TOPRIGHT', statusbar, 'BOTTOMRIGHT', 0, -10)
+
+    function player_target_gap:OnValueChanged(value)
+        local point, relativeTo, relativePoint, xOffset, yOffset
+
+        db.ptgap = value
+
+        -- adjust Player frame
+        point, relativeTo, relativePoint, xOffset, yOffset = oUF_ZoeyPlayer:GetPoint(1)
+        oUF_ZoeyPlayer:SetPoint(point, relativeTo, relativePoint, -(value/2), yOffset)
+
+        -- adjust Target frame
+        point, relativeTo, relativePoint, xOffset, yOffset = oUF_ZoeyTarget:GetPoint(1)
+        oUF_ZoeyTarget:SetPoint(point, relativeTo, relativePoint, value, yOffset)
+    end
+
+    --------------------------------------------------------------------
     -- Update when the options panel is shown
     function panel.refresh()
         statusbar:SetValue(db.statusbar)
         statusbar.valueBG:SetTexture(Media:Fetch("statusbar", db.statusbar))
+
+        player_target_gap:SetValue(db.ptgap)
     end
 end)

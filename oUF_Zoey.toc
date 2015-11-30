@@ -16,6 +16,7 @@ libs\PhanxConfig-OptionsPanel.lua
 libs\PhanxConfig-Header.lua
 libs\PhanxConfig-Dropdown.lua
 libs\PhanxConfig-MediaDropdown.lua
+libs\PhanxConfig-Slider.lua
 
 # Disabled untill we need them
 # libs/PhanxConfig-Button.lua
@@ -24,7 +25,6 @@ libs\PhanxConfig-MediaDropdown.lua
 # libs/PhanxConfig-EditBox.lua
 # libs/PhanxConfig-KeyBinding.lua
 # libs/PhanxConfig-Panel.lua
-# libs/PhanxConfig-Slider.lua
 
 elements\oUF_Experience.lua
 
