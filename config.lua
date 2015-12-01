@@ -2,11 +2,14 @@
 local addon, ns = ...
 
 --//----------------------------
---// CONFIG
+--// DEFAULT CONFIGURATION
 --//----------------------------
-local config = {
-    statusbar = [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]],
-    font = [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]],
+local configDefault = {
+    statusbar = 'Armory',
+    font = 'DorisPP',
+
+    ptgap = 180,
+    frames_offset = 300,
 
     border = {
         texture = [[Interface\AddOns\oUF_Zoey\media\Border.tga]],
@@ -20,9 +23,6 @@ local config = {
     },
 
 }
-
--- Handover
-ns.config = config
 
 --//-------------------------
 --// COLORS
@@ -61,13 +61,72 @@ oUF.colors.border = {
 
 }
 
--- Register Some stuf with Shared Media
-if LibStub then
-    local LSM = LibStub('LibSharedMedia-3.0', true)
+-- setup some global namespace variables
+ns.statusbars = {}
 
-    if LSM then
-        LSM:Register('border', 'thinsquare', config.border.texture)
-        LSM:Register('statusbar', 'Armory', config.statusbar)
-        LSM:Register('font', 'DorisPP', config.font)
+--//-----------------------------------------------------------------
+--// Register Some stuf with Shared Media
+--//-----------------------------------------------------------------
+local Media = LibStub('LibSharedMedia-3.0', true)
+Media:Register('statusbar', 'Armory', [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]])
+Media:Register('font', 'DorisPP', [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]])
+
+--//-----------------------------------------------------------------
+--// Load config variables
+--//-----------------------------------------------------------------
+local Loader = CreateFrame('Frame')
+Loader:SetScript('OnEvent', function(self, event, ...)
+    return self[event] and self[event](self, event, ...)
+end)
+
+-- Fires when an addon and its saved variables are loaded
+Loader:RegisterEvent('ADDON_LOADED')
+function Loader:ADDON_LOADED(event, addon)
+    if addon ~= 'oUF_Zoey' then return end
+
+    -- Event has fired. Run only once
+    self:UnregisterEvent(event)
+    self.ADDON_LOADED = nil
+
+    -- Merge saved settigns with defaults
+    local function initDB(db, defaults)
+        if type(db) ~= 'table' then db = {} end
+        if type(defaults) ~= 'table' then return db end
+        for k, v in pairs(defaults) do
+            if type(v) == 'table' then
+                db[k] = initDB(db[k], v)
+            elseif type(v) ~= type(db[k]) then
+                db[k] = v
+            end
+        end
+        return db
     end
+
+    oUF_ZoeyConfig = initDB(oUF_ZoeyConfig, configDefault)
+    ns.config = oUF_ZoeyConfig
+end
+
+-- Fires immediately before the player is logged out of the game
+Loader:RegisterEvent('PLAYER_LOGOUT')
+function Loader:PLAYER_LOGOUT(event)
+
+    -- Remove defaults from config.
+    local function cleanDB(db, defaults)
+        if type(db) ~= 'table' then return {} end
+        if type(defaults) ~= 'table' then return db end
+        for k, v in pairs(db) do
+            if type(v) == 'table' then
+                if not next(cleanDB(v, defaults[k])) then
+                    -- Remove empty subtables
+                    db[k] = nil
+                end
+            elseif v == defaults[k] then
+                -- Remove default values
+                db[k] = nil
+            end
+        end
+        return db
+    end
+
+    oUF_ZoeyConfig = cleanDB(oUF_ZoeyConfig, configDefault)
 end

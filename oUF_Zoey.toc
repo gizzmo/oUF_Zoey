@@ -6,6 +6,25 @@
 ## RequiredDeps: oUF
 ## X-eMail: justgiz@gmail.com
 ## X-Category: UnitFrame
+## SavedVariables: oUF_ZoeyConfig
+
+libs\LibStub.lua
+libs\CallbackHandler-1.0.lua
+libs\LibSharedMedia-3.0.lua
+
+libs\PhanxConfig-OptionsPanel.lua
+libs\PhanxConfig-Header.lua
+libs\PhanxConfig-Dropdown.lua
+libs\PhanxConfig-MediaDropdown.lua
+libs\PhanxConfig-Slider.lua
+
+# Disabled untill we need them
+# libs/PhanxConfig-Button.lua
+# libs/PhanxConfig-Checkbox.lua
+# libs/PhanxConfig-ColorPicker.lua
+# libs/PhanxConfig-EditBox.lua
+# libs/PhanxConfig-KeyBinding.lua
+# libs/PhanxConfig-Panel.lua
 
 elements\oUF_Experience.lua
 
@@ -14,5 +33,6 @@ features\tags.lua
 features\test.lua
 
 config.lua
+options.lua
 layout.lua
 core.lua

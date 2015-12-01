@@ -1,7 +1,6 @@
 -- Get the addon namespace
 local addon, ns = ...
 
-local config = ns.config
 local colors = oUF.colors
 
 local _, playerClass = UnitClass('player')
@@ -268,8 +267,10 @@ local function BarOnShow(bar)
 end
 
 local function CreateText(parent, size, justify)
+    local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.config.font)
+
     local fs = parent:CreateFontString(nil, 'OVERLAY')
-    fs:SetFont(config.font, size or 16)
+    fs:SetFont(font, size or 16)
     fs:SetJustifyH(justify or 'LEFT')
     fs:SetWordWrap(false)
     fs:SetShadowOffset(1, -1)
@@ -278,15 +279,41 @@ local function CreateText(parent, size, justify)
     return fs
 end
 
-local function CreateStatusBar(parent, name)
-    local sb = CreateFrame('StatusBar', (name and '$parent'..name or nil), parent)
-    sb:SetStatusBarTexture(config.statusbar)
+local function CreateStatusBar(parent, name, noBG)
+    local texture = LibStub("LibSharedMedia-3.0"):Fetch("statusbar", ns.config.statusbar)
 
-    sb.bg = sb:CreateTexture(nil, 'BACKGROUND')
-    sb.bg:SetTexture(config.statusbar)
-    sb.bg:SetAllPoints(true)
+    local sb = CreateFrame('StatusBar', (name and '$parent'..name or nil), parent)
+    sb:SetStatusBarTexture(texture)
+    tinsert(ns.statusbars, sb)
+
+    if not noBG then
+        sb.bg = sb:CreateTexture(nil, 'BACKGROUND')
+        sb.bg:SetTexture(texture)
+        sb.bg:SetAllPoints(true)
+        tinsert(ns.statusbars, sb.bg)
+    end
 
     return sb
+end
+
+function ns.SetAllStatusBarTextures()
+    local texture = LibStub('LibSharedMedia-3.0'):Fetch("statusbar", ns.config.statusbar)
+
+    for i = 1, #ns.statusbars do
+        local sb = ns.statusbars[i]
+
+        --// Is it a statusbar or a texture
+        if sb.SetStatusBarTexture then
+            local r, g, b, a = sb:GetStatusBarColor()
+            sb:SetStatusBarTexture(texture)
+            sb:SetStatusBarColor(r, g, b, a)
+
+        else
+            local r, g, b, a = sb:GetVertexColor()
+            sb:SetTexture(texture)
+            sb:SetVertexColor(r, g, b, a)
+        end
+    end
 end
 
 --//----------------------------
@@ -318,10 +345,10 @@ local function SharedStyle(self)
 
     self.Highlight.texture = self.Highlight:CreateTexture(nil, 'OVERLAY')
     self.Highlight.texture:SetAllPoints(self.Highlight)
-    self.Highlight.texture:SetTexture(config.highlight.texture)
+    self.Highlight.texture:SetTexture(ns.config.highlight.texture)
     self.Highlight.texture:SetBlendMode('ADD')
-    self.Highlight.texture:SetVertexColor(unpack(config.highlight.color))
-    self.Highlight.texture:SetAlpha(config.highlight.alpha)
+    self.Highlight.texture:SetVertexColor(unpack(ns.config.highlight.color))
+    self.Highlight.texture:SetAlpha(ns.config.highlight.alpha)
 
     -- Highlight: enable Updates
     self:HookScript('OnEnter', HighlightUpdate)
@@ -468,7 +495,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
             for i = 1, 3 do
                 local power = self.ClassIcons:CreateTexture(nil, 'ARTWORK')
-                power:SetTexture(config.statusbar)
+                power:SetTexture(ns.config.statusbar)
                 power:SetSize(width, self.ClassIcons:GetHeight())
 
                 if i == 1 then
@@ -478,7 +505,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
                 end
 
                 power.bg = self.ClassIcons:CreateTexture(nil, 'BACKGROUND')
-                power.bg:SetTexture(config.statusbar)
+                power.bg:SetTexture(ns.config.statusbar)
                 power.bg:SetAllPoints(power)
 
                 -- // Color
@@ -525,7 +552,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
             for i = 1, 3 do
                 local shard = self.ClassIcons:CreateTexture(nil, 'ARTWORK')
-                shard:SetTexture(config.statusbar)
+                shard:SetTexture(ns.config.statusbar)
                 shard:SetSize(width, self.ClassIcons:GetHeight())
 
                 if i == 1 then
@@ -535,7 +562,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
                 end
 
                 shard.bg = self.ClassIcons:CreateTexture(nil, 'BACKGROUND')
-                shard.bg:SetTexture(config.statusbar)
+                shard.bg:SetTexture(ns.config.statusbar)
                 shard.bg:SetAllPoints(shard)
 
                 -- // Color
@@ -584,7 +611,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
             for i = 1, 5 do
                 local point = self.CPoints:CreateTexture(nil, 'ARTWORK')
-                point:SetTexture(config.statusbar)
+                point:SetTexture(ns.config.statusbar)
                 point:SetSize(width, self.CPoints:GetHeight())
 
                 if i == 1 then
@@ -594,7 +621,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
                 end
 
                 point.bg = self.CPoints:CreateTexture(nil, 'BACKGROUND')
-                point.bg:SetTexture(config.statusbar)
+                point.bg:SetTexture(ns.config.statusbar)
                 point.bg:SetAllPoints(point)
 
                 -- // Color
@@ -629,20 +656,14 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     --// Experience Bar
     --//----------------------------
     if unit == 'player' and UnitLevel(unit) ~= MAX_PLAYER_LEVEL then
-        self.Experience = CreateFrame('Statusbar', '$parentExperience', self)
-        self.Experience:SetStatusBarTexture(config.statusbar)
+        self.Experience = CreateStatusBar(self, 'Experience', true)
         self.Experience:SetHeight(5)
         self.Experience:SetPoint('TOP', 0, -FRAME_HEIGHT)
         self.Experience:SetPoint('LEFT', 1,0)
         self.Experience:SetPoint('RIGHT',-1,0)
 
-        self.Experience.Rested = CreateFrame('StatusBar', '$parentRested', self.Experience)
-        self.Experience.Rested:SetStatusBarTexture(config.statusbar)
+        self.Experience.Rested = CreateStatusBar(self.Experience, 'Rested')
         self.Experience.Rested:SetAllPoints(self.Experience)
-
-        self.Experience.bg = self.Experience.Rested:CreateTexture(nil, 'BACKGROUND')
-        self.Experience.bg:SetAllPoints(self.Experience)
-        self.Experience.bg:SetTexture(config.statusbar)
 
         -- Resize the main frame when this frame Hides or Shows
         self.Experience:SetScript('OnShow', BarOnShow)
@@ -652,7 +673,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         local r,g,b = unpack(colors.experience.main)
 
         self.Experience:SetStatusBarColor(r,g,b)
-        self.Experience.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
+        self.Experience.Rested.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
 
         -- Rested Color
         self.Experience.Rested:SetStatusBarColor(unpack(colors.experience.rested))
@@ -809,8 +830,9 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         -- Player only Latency
         if unit == 'player' then
             self.Castbar.SafeZone = self.Castbar:CreateTexture(nil,'OVERLAY')
-            self.Castbar.SafeZone:SetTexture(config.statusbar)
+            self.Castbar.SafeZone:SetTexture(self.Castbar:GetStatusBarTexture():GetTexture())
             self.Castbar.SafeZone:SetVertexColor(unpack(colors.cast.safezone))
+            tinsert(ns.statusbars, self.Castbar.SafeZone)
 
             self.Castbar.Lag = CreateText(self.Castbar, 10)
             self.Castbar.Lag:SetPoint('TOPRIGHT', self.Castbar, 'BOTTOMRIGHT', 0, -7)
@@ -906,18 +928,16 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     --//----------------------------
     --// Heal Prediction Bar
     --//----------------------------
-    local mhpb = CreateFrame('StatusBar', nil, self.Health)
+    local mhpb = CreateStatusBar(self.Health, nil, true)
     mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
     mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
     mhpb:SetWidth(self:GetWidth())
-    mhpb:SetStatusBarTexture(config.statusbar)
     mhpb:SetStatusBarColor(0, 1, 0, 0.25) -- TODO: tweek colors
 
-    local ohpb = CreateFrame('StatusBar', nil, self.Health)
+    local ohpb = CreateStatusBar(self.Health, nil, true)
     ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
     ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
     ohpb:SetWidth(self:GetWidth())
-    ohpb:SetStatusBarTexture(config.statusbar)
     ohpb:SetStatusBarColor(0, 1, 0, 0.25) -- TODO: tweek colors
 
     -- Register it with oUF

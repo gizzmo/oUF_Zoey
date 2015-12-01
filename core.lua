@@ -1,8 +1,6 @@
 -- Get the addon namespace
 local addon, ns = ...
 
-local config = ns.config
-
 --//----------------------------
 --// SPAWN UNITS
 --//----------------------------
@@ -21,11 +19,11 @@ end
 
 oUF:Factory(function(self)
 
-    local ptgap, gap = 180, 12
+    local frames_offset, ptgap, gap = ns.config.frames_offset, ns.config.ptgap, 12
 
     --//----------------------------
     -- Player
-    SpawnUnit('Player'):SetPoint('RIGHT', UIParent, 'BOTTOM', -(ptgap/2), 300)
+    SpawnUnit('Player'):SetPoint('RIGHT', UIParent, 'BOTTOM', -(ptgap/2), frames_offset)
 
     -- Player Pet
     SpawnUnit('Pet'      ):SetPoint('RIGHT', u.player, 'LEFT', -gap, 0)
@@ -188,6 +186,10 @@ oUF:Factory(function(self)
     CompactRaidFrameContainer:Hide()
 
     -- Skin the Mirror Timers
+    local Media = LibStub("LibSharedMedia-3.0")
+    local font = Media:Fetch("font", ns.config.font)
+    local texture = Media:Fetch("statusbar", ns.config.statusbar)
+
     for i = 1, 3 do
         local barname = 'MirrorTimer'..i
         local bar = _G[barname]
@@ -208,21 +210,24 @@ oUF:Factory(function(self)
         bar.bar = _G[ barname..'StatusBar' ]
         bar.bar:SetPoint('TOPLEFT', bar, 1, -1)
         bar.bar:SetPoint('BOTTOMRIGHT', bar, -1, 1)
-        bar.bar:SetStatusBarTexture(config.statusbar)
+        bar.bar:SetStatusBarTexture(texture)
         bar.bar:SetAlpha(0.8)
 
         bar.bg = bar:GetRegions()
         bar.bg:ClearAllPoints()
         bar.bg:SetAllPoints(bar)
-        bar.bg:SetTexture(config.statusbar)
+        bar.bg:SetTexture(texture)
         bar.bg:SetVertexColor(0.2, 0.2, 0.2, 1)
 
         bar.text = _G[barname..'Text']
         bar.text:ClearAllPoints()
         bar.text:SetPoint('LEFT', bar, 6, -1)
-        bar.text:SetFont(config.font, 16)
+        bar.text:SetFont(font, 16)
 
         ns.CreateBorder(bar)
+
+        tinsert(ns.statusbars, bar.bar)
+        tinsert(ns.statusbars, bar.bg)
     end
 
     -- Disable Blizzard options that are rendered useless by having this unit frame addon
