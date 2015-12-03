@@ -815,10 +815,10 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
         if unit == 'player' then
             self.Castbar:SetSize(300,22)
-            self.Castbar:SetPoint('CENTER', UIParent, 'BOTTOM', 0, 200)
+            self.Castbar:SetPoint('CENTER', oUF_ZoeyUnitFrameAnchor, 0, -100)
         elseif unit == 'target' then
             self.Castbar:SetSize(590,38)
-            self.Castbar:SetPoint('CENTER', UIParent, 'BOTTOM', 0, 425)
+            self.Castbar:SetPoint('CENTER', oUF_ZoeyUnitFrameAnchor, 0, 150)
         end
 
         -- Add a spark

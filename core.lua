@@ -21,16 +21,21 @@ oUF:Factory(function(self)
 
     local frames_offset, ptgap, gap = ns.config.frames_offset, ns.config.ptgap, 12
 
+    -- The frame that all unitframes are attached to.
+    local Anchor = CreateFrame('Frame', 'oUF_ZoeyUnitFrameAnchor', UIParent)
+    Anchor:SetSize(ptgap, 1)
+    Anchor:SetPoint('CENTER', UIParent, 'BOTTOM', 0, frames_offset)
+
     --//----------------------------
     -- Player
-    SpawnUnit('Player'):SetPoint('RIGHT', UIParent, 'BOTTOM', -(ptgap/2), frames_offset)
+    SpawnUnit('Player'):SetPoint('RIGHT', Anchor, 'LEFT', 0, 0)
 
     -- Player Pet
     SpawnUnit('Pet'      ):SetPoint('RIGHT', u.player, 'LEFT', -gap, 0)
     SpawnUnit('PetTarget'):SetPoint('BOTTOM', u.pet, 'TOP', 0, gap)
 
     -- Targets
-    SpawnUnit('Target'      ):SetPoint('LEFT', u.player, 'RIGHT', ptgap, 0)
+    SpawnUnit('Target'      ):SetPoint('LEFT', Anchor, 'RIGHT', 0, 0)
     SpawnUnit('TargetTarget'):SetPoint('LEFT', u.target, 'RIGHT', gap, 0)
 
     -- Focus
@@ -41,7 +46,7 @@ oUF:Factory(function(self)
     --//----------------------------
     -- Party -- note: 130 - height = yoffset
     self:SetActiveStyle('Zoey')
-    SpawnHeader('Party', 'party',
+    local party = SpawnHeader('Party', 'party',
         'showParty', true,
         'yOffset', 50,
         'point', 'BOTTOM',
@@ -49,7 +54,9 @@ oUF:Factory(function(self)
             self:SetWidth( 135 )
             self:SetHeight( 80 )
         ]]
-    ):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 300)
+    )
+    party:SetPoint('BOTTOM', Anchor, 'CENTER', 0, 0)
+    party:SetPoint('LEFT', UIParent, 'LEFT', gap, 0)
 
     -- Party Targets
     SpawnHeader('PartyTargets', 'party',
@@ -95,7 +102,8 @@ oUF:Factory(function(self)
         )
 
         if i == 1 then
-            Raid[i]:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 300)
+            Raid[i]:SetPoint('BOTTOM', Anchor, 'CENTER', 0, 0)
+            Raid[i]:SetPoint('LEFT', UIParent, 'LEFT', gap, 0)
         else
             Raid[i]:SetPoint('BOTTOMLEFT', Raid[i - 1], 'BOTTOMRIGHT', gap, 0)
         end
@@ -120,7 +128,8 @@ oUF:Factory(function(self)
         )
 
         if i == 1 then
-            Raid[i]:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 300)
+            Raid[i]:SetPoint('BOTTOM', Anchor, 'CENTER', 0, 0)
+            Raid[i]:SetPoint('LEFT', UIParent, 'LEFT', gap, 0)
         else
             Raid[i]:SetPoint('BOTTOM', Raid[i - 1], 'TOP', 0, gap)
         end
@@ -144,7 +153,8 @@ oUF:Factory(function(self)
         )
 
         if i == 1 then
-            Raid[i]:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 300)
+            Raid[i]:SetPoint('BOTTOM', Anchor, 'BOTTOM', 0, 0)
+            Raid[i]:SetPoint('LEFT', UIParent, 'LEFT', gap, 0)
         else
             Raid[i]:SetPoint('BOTTOMLEFT', Raid[i - 1], 'TOPLEFT', 0, gap)
         end

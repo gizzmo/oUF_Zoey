@@ -44,17 +44,9 @@ LibStub("PhanxConfig-OptionsPanel"):New('oUF Zoey', nil, function(panel)
     player_target_gap:SetPoint('TOPRIGHT', statusbar, 'BOTTOMRIGHT', 0, -10)
 
     function player_target_gap:OnValueChanged(value)
-        local point, relativeTo, relativePoint, xOffset, yOffset
-
         db.ptgap = value
 
-        -- adjust Player frame
-        point, relativeTo, relativePoint, xOffset, yOffset = oUF_ZoeyPlayer:GetPoint(1)
-        oUF_ZoeyPlayer:SetPoint(point, relativeTo, relativePoint, -(value/2), yOffset)
-
-        -- adjust Target frame
-        point, relativeTo, relativePoint, xOffset, yOffset = oUF_ZoeyTarget:GetPoint(1)
-        oUF_ZoeyTarget:SetPoint(point, relativeTo, relativePoint, value, yOffset)
+        oUF_ZoeyUnitFrameAnchor:SetWidth(value)
     end
 
     --------------------------------------------------------------------
@@ -69,15 +61,10 @@ LibStub("PhanxConfig-OptionsPanel"):New('oUF Zoey', nil, function(panel)
     frames_offset:SetPoint('TOPRIGHT', player_target_gap, 'BOTTOMRIGHT', 0, -10)
 
     function frames_offset:OnValueChanged(value)
-        local point, relativeTo, relativePoint, xOffset, yOffset
-
         db.frames_offset = value
 
-        -- everything is connected to player
-        point, relativeTo, relativePoint, xOffset, yOffset = oUF_ZoeyPlayer:GetPoint(1)
-        oUF_ZoeyPlayer:SetPoint(point, relativeTo, relativePoint, xOffset, value)
-
-        -- TODO: adjust raid and party frames
+        local point, relativeTo, relativePoint, xOffset, yOffset = oUF_ZoeyUnitFrameAnchor:GetPoint(1)
+        oUF_ZoeyUnitFrameAnchor:SetPoint(point, relativeTo, relativePoint, xOffset, value)
     end
 
     --------------------------------------------------------------------
