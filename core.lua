@@ -85,7 +85,7 @@ oUF:Factory(function(self)
 
     --//----------------------------
     -- Raid Size 1 - 10
-    self:SetActiveStyle('Zoey')
+    self:SetActiveStyle('ZoeyThin')
     local Raid = {}
     for i = 1, 2 do
         Raid[i] = SpawnHeader('Raid10_g'..i,
@@ -94,32 +94,6 @@ oUF:Factory(function(self)
             'showRaid', true,
             'yOffset', gap,
             'groupFilter', tostring(i),
-            'point', 'BOTTOM',
-            'oUF-initialConfigFunction', [[
-                self:SetWidth( 135 )
-                self:SetHeight( 40 )
-            ]]
-        )
-
-        if i == 1 then
-            Raid[i]:SetPoint('BOTTOM', Anchor, 'CENTER', 0, 0)
-            Raid[i]:SetPoint('LEFT', UIParent, 'LEFT', gap, 0)
-        else
-            Raid[i]:SetPoint('BOTTOMLEFT', Raid[i - 1], 'BOTTOMRIGHT', gap, 0)
-        end
-    end
-
-    -- Raid Size 11 - 25
-    self:SetActiveStyle('ZoeyThin')
-    local Raid = {}
-    for i = 1, 5 do
-        Raid[i] = SpawnHeader('Raid25_g'..i,
-            'custom [@raid26,exists] hide; [@raid11,exists] show; hide ',
-
-            'showRaid', true,
-            'yOffset', gap/2,
-            'groupFilter', tostring(i),
-            'sortDir', 'DESC',
             'point', 'BOTTOM',
             'oUF-initialConfigFunction', [[
                 self:SetWidth( 135 )
@@ -135,12 +109,12 @@ oUF:Factory(function(self)
         end
     end
 
-    -- Raid Size 26 - 40
+    -- Raid Size 11 - 40
     self:SetActiveStyle('ZoeySquare')
     local Raid = {}
     for i = 1, 8 do
-        Raid[i] = SpawnHeader('Raid40_g'..i,
-            'custom [@raid26,exists] show; hide',
+        Raid[i] = SpawnHeader('Raid25_g'..i,
+            'custom [@raid11,exists] show; hide ',
 
             'showRaid', true,
             'xOffset', gap/2,
@@ -153,7 +127,7 @@ oUF:Factory(function(self)
         )
 
         if i == 1 then
-            Raid[i]:SetPoint('BOTTOM', Anchor, 'BOTTOM', 0, 0)
+            Raid[i]:SetPoint('BOTTOM', Anchor, 'CENTER', 0, 0)
             Raid[i]:SetPoint('LEFT', UIParent, 'LEFT', gap, 0)
         else
             Raid[i]:SetPoint('BOTTOMLEFT', Raid[i - 1], 'TOPLEFT', 0, gap)
