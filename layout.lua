@@ -770,7 +770,7 @@ oUF:RegisterStyle('Zoey', function(self, unit)
     -- Ready Check icon
     self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
-    self.ReadyCheck:SetPoint('CENTER', self.Overlay, 'CENTER', 0, 0)
+    self.ReadyCheck:SetPoint('CENTER', self.Overlay, 0, 0)
 
     -- Raid Icon (Skull, Cross, Square ...)
     self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
@@ -1004,7 +1004,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
     -- Ready Check icon
     self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
-    self.ReadyCheck:SetPoint('CENTER', self.Overlay, 'CENTER', 0, 0)
+    self.ReadyCheck:SetPoint('CENTER', self.Overlay, 0, 0)
 
     -- Raid Icon (Skull, Cross, Square ...)
     self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
@@ -1056,8 +1056,8 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
     --//----------------------------
     -- Name Text
     local Name = CreateText(self.Overlay, 10, 'center')
-    Name:SetPoint('TOPLEFT', self, 'TOPLEFT', 1, -1)
-    Name:SetPoint('TOPRIGHT', self, 'TOPRIGHT', -1, -1)
+    Name:SetPoint('TOPLEFT', self, 1, -1)
+    Name:SetPoint('TOPRIGHT', self, -1, -1)
     self:Tag(Name, '[Zoey:Name]')
 
     -- Status Text
@@ -1082,7 +1082,7 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
     -- Ready Check icon
     self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
-    self.ReadyCheck:SetPoint('CENTER', self.Overlay, 'CENTER', 0, 0)
+    self.ReadyCheck:SetPoint('CENTER', self.Overlay, 0, 0)
 
     -- Raid Icon (Skull, Cross, Square ...)
     self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
