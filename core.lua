@@ -55,7 +55,7 @@ oUF:Factory(function(self)
             self:SetHeight( 80 )
         ]]
     )
-    party:SetPoint('BOTTOM', Anchor, 'CENTER', 0, 0)
+    party:SetPoint('BOTTOM', Anchor, 'CENTER', 0, -20)
     party:SetPoint('LEFT', UIParent, 'LEFT', gap, 0)
 
     -- Party Targets
@@ -102,7 +102,7 @@ oUF:Factory(function(self)
         )
 
         if i == 1 then
-            Raid[i]:SetPoint('BOTTOM', Anchor, 'CENTER', 0, 0)
+            Raid[i]:SetPoint('BOTTOM', Anchor, 'CENTER', 0, -20)
             Raid[i]:SetPoint('LEFT', UIParent, 'LEFT', gap, 0)
         else
             Raid[i]:SetPoint('BOTTOM', Raid[i - 1], 'TOP', 0, gap)
@@ -127,7 +127,7 @@ oUF:Factory(function(self)
         )
 
         if i == 1 then
-            Raid[i]:SetPoint('BOTTOM', Anchor, 'CENTER', 0, 0)
+            Raid[i]:SetPoint('BOTTOM', Anchor, 'CENTER', 0, -20)
             Raid[i]:SetPoint('LEFT', UIParent, 'LEFT', gap, 0)
         else
             Raid[i]:SetPoint('BOTTOMLEFT', Raid[i - 1], 'TOPLEFT', 0, gap)
