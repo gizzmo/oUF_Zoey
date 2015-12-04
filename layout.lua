@@ -1062,7 +1062,8 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
 
     -- Status Text
     local StatusText = CreateText(self.Overlay, 12, 'center')
-    StatusText:SetPoint('BOTTOM',  self)
+    StatusText:SetPoint('BOTTOMLEFT',  self.Health, 1, 1)
+    StatusText:SetPoint('BOTTOMRIGHT',  self.Health, -1, 1)
     self:Tag(StatusText, '[Zoey:Status]')
 
     --//----------------------------
