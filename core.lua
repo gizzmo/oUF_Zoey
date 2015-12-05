@@ -63,8 +63,8 @@ oUF:Factory(function(self)
         'showParty', true,
         'yOffset', 90,
         'point', 'BOTTOM',
-        'unitsuffix', 'target',
         'oUF-initialConfigFunction', [[
+            self:SetAttribute('unitsuffix', 'target')
             self:SetWidth( 135 )
             self:SetHeight( 40 )
         ]]
@@ -76,8 +76,8 @@ oUF:Factory(function(self)
         'showParty', true,
         'yOffset', 110,
         'point', 'BOTTOM',
-        'unitsuffix', 'pet',
         'oUF-initialConfigFunction', [[
+            self:SetAttribute('unitsuffix', 'pet')
             self:SetWidth( 135 )
             self:SetHeight( 20 )
         ]]
