@@ -375,18 +375,18 @@ local function SharedStyle(self)
 end
 
 -- Main Core style
-oUF:RegisterStyle('Zoey', function(self, unit)
+oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     SharedStyle(self)
 
-    -- // Frame Width. Height will be set after bars are created
-    if unit == 'player' or unit == 'target' then
-        self:SetWidth(222)
-    else
-        self:SetWidth(135)
-    end
+    -- Frame size is set after creating status bars
+    -- but the info is needed to create and place the bars
+    local FRAME_HEIGHT, FRAME_WIDTH = 1
 
-    -- Used for bar positioning
-    local FRAME_HEIGHT  = 1
+    if unit == 'player' or unit == 'target' then
+        FRAME_WIDTH = 222
+    else
+        FRAME_WIDTH = 135
+    end
 
     --//----------------------------
     --// Portrait
@@ -682,9 +682,11 @@ oUF:RegisterStyle('Zoey', function(self, unit)
         FRAME_HEIGHT = FRAME_HEIGHT + self.Experience:GetHeight() + 1
     end
 
-
-    -- Finaly time to set the Frame Height
-    self:SetHeight(FRAME_HEIGHT)
+    -- Finely time to set the frame size
+    if isSingle then
+        self:SetWidth(FRAME_WIDTH)
+        self:SetHeight(FRAME_HEIGHT)
+    end
 
     --//----------------------------
     --// Texts
@@ -949,14 +951,11 @@ oUF:RegisterStyle('Zoey', function(self, unit)
 
 end)
 
-oUF:RegisterStyle('ZoeyThin', function(self, unit)
+oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
     SharedStyle(self)
 
-    -- // Frame Width. Height will be set after bars are created
-    self:SetWidth(135)
-
-    -- Used for bar positioning
-    local FRAME_HEIGHT  = 1
+    -- Frame size is set after creating status bars
+    local FRAME_HEIGHT,FRAME_WIDTH  = 1,135
 
     --//----------------------------
     --// Health Bar
@@ -971,8 +970,11 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
     -- Up The FRAME_HEIGHT
     FRAME_HEIGHT = FRAME_HEIGHT + self.Health:GetHeight() + 1
 
-    -- Finaly time to set the Frame Height
-    self:SetHeight(FRAME_HEIGHT)
+    -- Finely time to set the frame size
+    if isSingle then
+        self:SetWidth(FRAME_WIDTH)
+        self:SetHeight(FRAME_HEIGHT)
+    end
 
     --//----------------------------
     --// Texts
@@ -1013,14 +1015,11 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit)
 
 end)
 
-oUF:RegisterStyle('ZoeySquare', function(self, unit)
+oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     SharedStyle(self)
 
-    -- // Frame Width. Height will be set after bars are created
-    self:SetWidth(53)
-
-    -- Used for bar positioning
-    local FRAME_HEIGHT = 1
+    -- Frame size is set after creating status bars
+    local FRAME_HEIGHT,FRAME_WIDTH = 1,53
 
     --//----------------------------
     --// Health Bar
@@ -1048,8 +1047,11 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit)
     -- Up The FRAME_HEIGHT
     FRAME_HEIGHT = FRAME_HEIGHT + self.Power:GetHeight() + 1
 
-    -- Finaly time to set the Frame Height
-    self:SetHeight(FRAME_HEIGHT)
+    -- Finely time to set the frame size
+    if isSingle then
+        self:SetWidth(FRAME_WIDTH)
+        self:SetHeight(FRAME_HEIGHT)
+    end
 
     --//----------------------------
     --// Texts
