@@ -729,7 +729,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     end
 
     -- Guild Name
-    if unit == 'party' then
+    if self.Portrait then
         local Guild = CreateText(self.Overlay, 12)
         Guild:SetPoint('TOP', Name, 'BOTTOM', 0, -1)
         Guild:SetPoint('LEFT',  Name)
