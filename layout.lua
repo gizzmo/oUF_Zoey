@@ -235,6 +235,20 @@ local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
     end
 end
 
+-- PvP Icon
+local function PvPPostUpdate(icon, status)
+    if not status then return end
+
+    -- Fix the texture
+    if status == 'Horde' then
+        icon:SetTexCoord(0.08, 0.58, 0.045, 0.545)
+    elseif status == 'Alliance' then
+        icon:SetTexCoord(0.07, 0.58, 0.06, 0.57)
+    elseif status == 'ffa' then
+        icon:SetTexCoord(0.05, 0.605, 0.015, 0.57)
+    end
+end
+
 
 -- Other Functions
 ns.Mouse_Focus = nil
@@ -779,19 +793,11 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     self.RaidIcon:SetSize(23,23)
     self.RaidIcon:SetPoint('LEFT', self.Overlay, 3, 0)
 
-    -- PvP Icon -- The img used isnt perfect, it sucks
+    -- PvP Icon
     self.PvP = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.PvP:SetSize(21,21)
     self.PvP:SetPoint('CENTER', self.Overlay, 'LEFT', 0,0)
-
-    local faction = UnitFactionGroup(unit)
-    if faction == 'Horde' then
-        self.PvP:SetTexCoord(0.08, 0.58, 0.045, 0.545)
-    elseif faction == 'Alliance' then
-        self.PvP:SetTexCoord(0.07, 0.58, 0.06, 0.57)
-    else
-        self.PvP:SetTexCoord(0.05, 0.605, 0.015, 0.57)
-    end
+    self.PvP.PostUpdate = PvPPostUpdate
 
     if unit == 'party' or unit == 'target' or unit == 'focus' then
         -- Phase Icon -- is the unit in a different phase then the player
