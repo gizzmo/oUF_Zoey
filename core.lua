@@ -1,9 +1,12 @@
 -- Get the addon namespace
-local addon, ns = ...
+local addonName, ns = ...
 
---//----------------------------
---// DEFAULT CONFIGURATION
---//----------------------------
+-- Set global name of addon
+_G[addonName] = ns
+
+--------------------------------------------------------------------------------
+--  Default configuration
+--------------------------------------------------------------------------------
 local configDefault = {
     statusbar = 'Armory',
     font = 'DorisPP',
@@ -24,9 +27,9 @@ local configDefault = {
 
 }
 
---//-------------------------
---// COLORS
---//-------------------------
+--------------------------------------------------------------------------------
+-- Colors
+--------------------------------------------------------------------------------
 
 -- Health bar color
 oUF.colors.health = {89/255, 89/255, 89/255} -- dark grey
@@ -64,29 +67,100 @@ oUF.colors.border = {
 -- setup some global namespace variables
 ns.statusbars = {}
 
---//-----------------------------------------------------------------
---// Register Some stuf with Shared Media
---//-----------------------------------------------------------------
-local Media = LibStub('LibSharedMedia-3.0', true)
-Media:Register('statusbar', 'Armory', [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]])
-Media:Register('font', 'DorisPP', [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]])
+--------------------------------------------------------------------------------
+--  Print/Printf support
+--------------------------------------------------------------------------------
+local printHeader = "|cFF33FF99%s|r: "
 
---//-----------------------------------------------------------------
---// Load config variables
---//-----------------------------------------------------------------
-local Loader = CreateFrame('Frame')
-Loader:SetScript('OnEvent', function(self, event, ...)
-    return self[event] and self[event](self, event, ...)
+function ns:Printf(msg, ...)
+    msg = printHeader .. msg
+    local success, txt = pcall(string.format, msg, addonName, ...)
+    if success then
+        print(txt)
+    else
+        error(string.gsub(txt, "'%?'", string.format("'%s'", "Printf")), 3)
+    end
+end
+
+
+--------------------------------------------------------------------------------
+-- Event registration and dispatch
+--------------------------------------------------------------------------------
+ns.eventFrame = CreateFrame('Frame', addonName .. 'EventFrame', UIParent)
+local eventMap = {}
+
+function ns:RegisterEvent(event, handler)
+    assert(eventMap[event] == nil, 'Attempt to re-register event: ' .. tostring(event))
+    eventMap[event] = handler and handler or event
+    ns.eventFrame:RegisterEvent(event)
+end
+
+function ns:UnregisterEvent(event)
+    assert(type(event) == 'string', 'Invalid argument to \'UnregisterEvent\'')
+    eventMap[event] = nil
+    ns.eventFrame:UnregisterEvent(event)
+end
+
+ns.eventFrame:SetScript("OnEvent", function(frame, event, ...)
+    local handler = eventMap[event]
+    local handler_t = type(handler)
+    if handler_t == "function" then
+        handler(event, ...)
+    elseif handler_t == "string" and ns[handler] then
+        ns[handler](ns, event, ...)
+    end
 end)
 
--- Fires when an addon and its saved variables are loaded
-Loader:RegisterEvent('ADDON_LOADED')
-function Loader:ADDON_LOADED(event, addon)
-    if addon ~= 'oUF_Zoey' then return end
 
-    -- Event has fired. Run only once
-    self:UnregisterEvent(event)
-    self.ADDON_LOADED = nil
+--------------------------------------------------------------------------------
+-- Support for deferred execution (when in-combat)
+--------------------------------------------------------------------------------
+local deferframe = CreateFrame("Frame")
+deferframe.queue = {}
+
+local function runDeferred(thing)
+    local thing_t = type(thing)
+    if thing_t == "string" and ns[thing] then
+        ns[thing](ns)
+    elseif thing_t == "function" then
+        thing(ns)
+    end
+end
+
+-- This method will defer the execution of a method or function until the
+-- player has exited combat. If they are already out of combat, it will
+-- execute the function immediately.
+function ns:Defer(...)
+    for i = 1, select("#", ...) do
+        local thing = select(i, ...)
+        local thing_t = type(thing)
+        if thing_t == "string" or thing_t == "function" then
+            if InCombatLockdown() then
+                deferframe.queue[#deferframe.queue + 1] = select(i, ...)
+            else
+                runDeferred(thing)
+            end
+        else
+            error("Invalid object passed to 'Defer'")
+        end
+    end
+end
+
+deferframe:RegisterEvent("PLAYER_REGEN_ENABLED")
+deferframe:SetScript("OnEvent", function(self, event, ...)
+    for idx, thing in ipairs(deferframe.queue) do
+        runDeferred(thing)
+    end
+    table.wipe(deferframe.queue)
+end)
+
+
+--------------------------------------------------------------------------------
+-- Time to initialize the addon by loading the config
+--------------------------------------------------------------------------------
+ns:RegisterEvent('ADDON_LOADED', function(event, ...)
+    if ... ~= addonName then return end
+    ns:UnregisterEvent(event)
 
     -- Merge saved settigns with defaults
     local function initDB(db, defaults)
@@ -104,12 +178,13 @@ function Loader:ADDON_LOADED(event, addon)
 
     oUF_ZoeyConfig = initDB(oUF_ZoeyConfig, configDefault)
     ns.config = oUF_ZoeyConfig
+
+    --
+    oUF:Factory(ns.SpawnFrames)
 end
 
 -- Fires immediately before the player is logged out of the game
-Loader:RegisterEvent('PLAYER_LOGOUT')
-function Loader:PLAYER_LOGOUT(event)
-
+ns:RegisterEvent('PLAYER_LOGOUT', function(event)
     -- Remove defaults from config.
     local function cleanDB(db, defaults)
         if type(db) ~= 'table' then return {} end
@@ -130,3 +205,15 @@ function Loader:PLAYER_LOGOUT(event)
 
     oUF_ZoeyConfig = cleanDB(oUF_ZoeyConfig, configDefault)
 end
+
+
+--------------------------------------------------------------------------------
+-- Register Some stuf with Shared Media
+--------------------------------------------------------------------------------
+local Media = LibStub('LibSharedMedia-3.0', true)
+Media:Register('statusbar', 'Armory', [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]])
+Media:Register('font', 'DorisPP', [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]])
+
+
+--------------------------------------------------------------------------------
+-- Fin
