@@ -179,7 +179,7 @@ ns:RegisterEvent('ADDON_LOADED', function(event, ...)
     oUF_ZoeyConfig = initDB(oUF_ZoeyConfig, configDefault)
     ns.config = oUF_ZoeyConfig
 
-    --
+    -- Register our spawn function with oUF
     oUF:Factory(ns.SpawnFrames)
 end
 

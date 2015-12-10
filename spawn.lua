@@ -17,7 +17,7 @@ local function SpawnHeader(name, visibility, ...)
     return object
 end
 
-oUF:Factory(function(self)
+function ns.SpawnFrames()
 
     local frames_offset, ptgap, gap = ns.config.frames_offset, ns.config.ptgap, 12
 
@@ -39,13 +39,13 @@ oUF:Factory(function(self)
     SpawnUnit('TargetTarget'):SetPoint('LEFT', u.target, 'RIGHT', gap, 0)
 
     -- Focus
-    self:SetActiveStyle('ZoeyThin')
+    oUF:SetActiveStyle('ZoeyThin')
     SpawnUnit('Focus'      ):SetPoint('BOTTOMRIGHT', u.player, 'TOPLEFT', -100, 75)
     SpawnUnit('FocusTarget'):SetPoint('BOTTOM', u.focus, 'TOP', 0, gap)
 
     --//----------------------------
     -- Party -- note: 130 - height = yoffset
-    self:SetActiveStyle('Zoey')
+    oUF:SetActiveStyle('Zoey')
     local party = SpawnHeader('Party', 'party',
         'showParty', true,
         'yOffset', 50,
@@ -71,7 +71,7 @@ oUF:Factory(function(self)
     ):SetPoint('BOTTOMLEFT', u.party, 'BOTTOMRIGHT', gap, 0)
 
     -- Party Pets
-    self:SetActiveStyle('ZoeyThin')
+    oUF:SetActiveStyle('ZoeyThin')
     SpawnHeader('PartyPets', 'party',
         'showParty', true,
         'yOffset', 110,
@@ -85,7 +85,7 @@ oUF:Factory(function(self)
 
     --//----------------------------
     -- Raid Size 1 - 10
-    self:SetActiveStyle('ZoeyThin')
+    oUF:SetActiveStyle('ZoeyThin')
     local Raid = {}
     for i = 1, 2 do
         Raid[i] = SpawnHeader('Raid10_g'..i,
@@ -110,7 +110,7 @@ oUF:Factory(function(self)
     end
 
     -- Raid Size 11 - 40
-    self:SetActiveStyle('ZoeySquare')
+    oUF:SetActiveStyle('ZoeySquare')
     local Raid = {}
     for i = 1, 8 do
         Raid[i] = SpawnHeader('Raid25_g'..i,
@@ -136,7 +136,7 @@ oUF:Factory(function(self)
 
     --//----------------------------
     -- Boss Frames
-    self:SetActiveStyle('Zoey')
+    oUF:SetActiveStyle('Zoey')
     local Boss = {}
     for i = 1, MAX_BOSS_FRAMES do
         Boss[i] = SpawnUnit('boss'..i)
