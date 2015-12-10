@@ -1,11 +1,15 @@
 ## Interface: 60200
-## Title: oUF_Zoey
-## Notes: An oUF layout
-## Author: Gizzmo
 ## Version: 0.1
+
+## Title: oUF_Zoey
+## Notes: A personal oUF layout
+
+## Author: Gizzmo
+## X-eMail: addons@justgizzmo.com
+## X-Copyright: Copyright (c) 2011-2015 Gizzmo. All rights reserved
+## X-Website: http://github.com/gizzmo/oUF_Zoey
+
 ## RequiredDeps: oUF
-## X-eMail: justgiz@gmail.com
-## X-Category: UnitFrame
 ## SavedVariables: oUF_ZoeyConfig
 
 libs\LibStub.lua
@@ -19,12 +23,12 @@ libs\PhanxConfig-MediaDropdown.lua
 libs\PhanxConfig-Slider.lua
 
 # Disabled untill we need them
-# libs/PhanxConfig-Button.lua
-# libs/PhanxConfig-Checkbox.lua
-# libs/PhanxConfig-ColorPicker.lua
-# libs/PhanxConfig-EditBox.lua
-# libs/PhanxConfig-KeyBinding.lua
-# libs/PhanxConfig-Panel.lua
+# libs\PhanxConfig-Button.lua
+# libs\PhanxConfig-Checkbox.lua
+# libs\PhanxConfig-ColorPicker.lua
+# libs\PhanxConfig-EditBox.lua
+# libs\PhanxConfig-KeyBinding.lua
+# libs\PhanxConfig-Panel.lua
 
 elements\oUF_Experience.lua
 
