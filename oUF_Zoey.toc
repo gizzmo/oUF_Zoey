@@ -32,11 +32,12 @@ libs\PhanxConfig-Slider.lua
 
 elements\oUF_Experience.lua
 
+core.lua
+
 features\border.lua
 features\tags.lua
 features\test.lua
 
-config.lua
 options.lua
 layout.lua
-core.lua
+spawn.lua
