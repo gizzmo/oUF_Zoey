@@ -147,4 +147,4 @@ function ns.SpawnFrames()
             Boss[i]:SetPoint('BOTTOM', Boss[i - 1], 'TOP', 0, gap)
         end
     end
-end)
+end

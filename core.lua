@@ -181,7 +181,7 @@ ns:RegisterEvent('ADDON_LOADED', function(event, ...)
 
     -- Register our spawn function with oUF
     oUF:Factory(ns.SpawnFrames)
-end
+end)
 
 -- Fires immediately before the player is logged out of the game
 ns:RegisterEvent('PLAYER_LOGOUT', function(event)
@@ -204,7 +204,7 @@ ns:RegisterEvent('PLAYER_LOGOUT', function(event)
     end
 
     oUF_ZoeyConfig = cleanDB(oUF_ZoeyConfig, configDefault)
-end
+end)
 
 --------------------------------------------------------------------------------
 -- Setup extra stuff for the UI
