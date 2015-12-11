@@ -272,12 +272,16 @@ end
 
 local function BarOnHide(bar)
     local parent = bar:GetParent()
-    parent:SetHeight(parent:GetHeight() - bar:GetHeight() - 1)
+    ns:Defer(function()
+        parent:SetHeight(parent:GetHeight() - bar:GetHeight() - 1)
+    end)
 end
 
 local function BarOnShow(bar)
     local parent = bar:GetParent()
-    parent:SetHeight(parent:GetHeight() + bar:GetHeight() + 1)
+    ns:Defer(function()
+        parent:SetHeight(parent:GetHeight() + bar:GetHeight() + 1)
+    end)
 end
 
 local function CreateText(parent, size, justify)

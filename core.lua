@@ -133,7 +133,7 @@ function ns:Defer(...)
         local thing_t = type(thing)
         if thing_t == "string" or thing_t == "function" then
             if InCombatLockdown() then
-                deferframe.queue[#deferframe.queue + 1] = select(i, ...)
+                deferframe.queue[#deferframe.queue + 1] = thing
             else
                 runDeferred(thing)
             end
