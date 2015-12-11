@@ -293,6 +293,7 @@ local function CreateText(parent, size, justify)
     return fs
 end
 
+ns.statusbars = {}
 local function CreateStatusBar(parent, name, noBG)
     local texture = LibStub("LibSharedMedia-3.0"):Fetch("statusbar", ns.config.statusbar)
 
