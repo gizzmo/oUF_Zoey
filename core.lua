@@ -203,26 +203,11 @@ ns:RegisterEvent('PLAYER_LOGOUT', function(event)
     oUF_ZoeyConfig = cleanDB(oUF_ZoeyConfig, configDefault)
 end)
 
+
 --------------------------------------------------------------------------------
--- Setup extra stuff for the UI
+-- Skin the Mirror Timers
 --------------------------------------------------------------------------------
-ns:RegisterEvent('PLAYER_LOGIN', function(event, ...)
-    -- Hide the Blizzard Buffs
-    BuffFrame:Hide()
-    BuffFrame:UnregisterAllEvents()
-    TemporaryEnchantFrame:Hide()
-    ConsolidatedBuffs:Hide()
-
-    -- Hide the Compact Raid Frame Manager and Container
-    CompactRaidFrameManager:UnregisterAllEvents()
-    CompactRaidFrameManager.Show = CompactRaidFrameManager.Hide
-    CompactRaidFrameManager:Hide()
-
-    CompactRaidFrameContainer:UnregisterAllEvents()
-    CompactRaidFrameContainer.Show = CompactRaidFrameContainer.Hide
-    CompactRaidFrameContainer:Hide()
-
-    -- Skin the Mirror Timers
+ns:RegisterEvent('MIRROR_TIMER_START', function(event, ...)
     local Media = LibStub("LibSharedMedia-3.0")
     local font = Media:Fetch("font", ns.config.font)
     local texture = Media:Fetch("statusbar", ns.config.statusbar)
@@ -266,6 +251,26 @@ ns:RegisterEvent('PLAYER_LOGIN', function(event, ...)
         tinsert(ns.statusbars, bar.bar)
         tinsert(ns.statusbars, bar.bg)
     end
+end)
+
+--------------------------------------------------------------------------------
+-- Setup extra stuff for the UI
+--------------------------------------------------------------------------------
+ns:RegisterEvent('PLAYER_LOGIN', function(event, ...)
+    -- Hide the Blizzard Buffs
+    BuffFrame:Hide()
+    BuffFrame:UnregisterAllEvents()
+    TemporaryEnchantFrame:Hide()
+    ConsolidatedBuffs:Hide()
+
+    -- Hide the Compact Raid Frame Manager and Container
+    CompactRaidFrameManager:UnregisterAllEvents()
+    CompactRaidFrameManager.Show = CompactRaidFrameManager.Hide
+    CompactRaidFrameManager:Hide()
+
+    CompactRaidFrameContainer:UnregisterAllEvents()
+    CompactRaidFrameContainer.Show = CompactRaidFrameContainer.Hide
+    CompactRaidFrameContainer:Hide()
 
     -- Disable Blizzard options that are rendered useless by having this unit frame addon
     for _, button in pairs({
@@ -297,7 +302,6 @@ ns:RegisterEvent('PLAYER_LOGIN', function(event, ...)
             end
         end
     end
-
 end)
 
 
