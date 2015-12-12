@@ -310,4 +310,19 @@ Media:Register('font', 'DorisPP', [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]
 
 
 --------------------------------------------------------------------------------
+-- Slash command handler
+--------------------------------------------------------------------------------
+SLASH_oUF_Zoey1 = '/zoey'
+function SlashCmdList.oUF_Zoey(message)
+    local command, parameters = string.split(' ', message, 2)
+
+    -- Option the options window
+    if command == '' or command == 'config' then
+        InterfaceOptionsFrame_OpenToCategory('oUF Zoey')
+        InterfaceOptionsFrame_OpenToCategory('oUF Zoey')
+    end
+end
+
+
+--------------------------------------------------------------------------------
 -- Fin

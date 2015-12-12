@@ -1,18 +1,6 @@
 -- Get the addon namespace
 local addon, ns = ...
 
--- command to open options panel
-SLASH_oUF_Zoey1 = '/zoey'
-function SlashCmdList.oUF_Zoey(cmd)
-    cmd = strlower(cmd)
-    if cmd == 'config' or cmd == '' then
-        InterfaceOptionsFrame_OpenToCategory('oUF Zoey')
-        InterfaceOptionsFrame_OpenToCategory('oUF Zoey')
-    end
-    -- TODO add option for layout switching
-end
-
-
 --//----------------------------------------------------------------------
 --// Options panel
 --//----------------------------------------------------------------------
