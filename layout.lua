@@ -412,14 +412,14 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     --//----------------------------
     if unit == 'party' then
         self.Portrait = CreateFrame('PlayerModel', '$parentPortrait', self)
-        self.Portrait:SetHeight(38)
+        self.Portrait:SetHeight(38.5)
         self.Portrait:SetPoint('TOP', 0, -FRAME_HEIGHT)
         self.Portrait:SetPoint('LEFT', 1,0)
         self.Portrait:SetPoint('RIGHT',-2,0)
         self.Portrait:SetAlpha(0.4)
 
         -- Up The FRAME_HEIGHT
-        FRAME_HEIGHT = FRAME_HEIGHT + self.Portrait:GetHeight() + 2
+        FRAME_HEIGHT = FRAME_HEIGHT + self.Portrait:GetHeight() + 1.5
     end
 
     --//----------------------------
