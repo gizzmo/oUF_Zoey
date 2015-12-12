@@ -1,127 +1,119 @@
-local addon, ns = ...
+-- Get the addon namespace
+local addonName, ns = ...
 
-local RealUnitAura = UnitAura
-local function FakeUnitAura(unit, index, rank, filter)
-    -- if a aura really does exist, show that one.
-    local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff = RealUnitAura(unit, index, rank, filter)
-    if name then
-        return name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff
-    end
+local function toggleUnitFrame(obj, show)
+    if show then
+        obj.old_unit = obj.unit
+        obj.unit = 'player'
 
-    return 'Hunter\'s Mark', '', 'Interface\\Icons\\Ability_Hunter_SniperShot', 0, '', 0, 0, 'player'
-end
+        obj.old_onUpdate = obj:GetScript('OnUpdate')
+        obj:SetScript('OnUpdate', nil)
 
-local function toggle_unit(f)
-    if not f.__realunit then
-        -- Set the unit to 'player' and show it
-        f.__realunit = f:GetAttribute('unit') or f.unit
-        f:SetAttribute('unit', 'player')
-        f.unit = 'player'
-        f:Show()
+        UnregisterUnitWatch(obj)
+        RegisterUnitWatch(obj, true)
 
-        -- Refresh auras
-        if (f.Auras) then f.Auras:ForceUpdate() end
-        if (f.Buffs) then f.Buffs:ForceUpdate() end
-        if (f.Defuffs) then f.Defuffs:ForceUpdate() end
+        obj:Show()
+    elseif obj.old_unit then
+        obj.unit = obj.old_unit or obj.unit
+        obj.old_unit = nil
 
-        f.old_OnUpdate = f:GetScript('OnUpdate')
-        f:SetScript('OnUpdate', nil)
+        obj:SetScript('OnUpdate', obj.old_OnUpdate)
+        obj.old_OnUpdate = nil
 
-        UnregisterUnitWatch(f)
-        RegisterUnitWatch(f, true)
+        UnregisterUnitWatch(obj)
+        RegisterUnitWatch(obj)
 
-    else
-        -- Reset all units and cleanup
-        f:SetAttribute('unit', f.__realunit)
-        f.unit = f.__realunit
-        f.__realunit = nil
-        f:Hide()
-
-        f:SetScript('OnUpdate', f.old_OnUpdate)
-        f.old_OnUpdate = nil
-
-        UnregisterUnitWatch(f) -- Reset the fect
-        RegisterUnitWatch(f)
-
-        -- f:UpdateAllElements('OnShow')
+        obj:UpdateAllElements('OnShow')
     end
 end
 
-local function ToggleHeader(f)
-    -- /run SecureStateDriverManager:SetAttribute('setframe', oUF_ZoeyRaid10_g1)  print(SecureStateDriverManager:GetAttribute('setstate'):gsub('state%-visibility%s', ''))
-    if not f.oldstate_driver then
-        -- This is just a 'hack' to get the old visibility attribute
-        SecureStateDriverManager:SetAttribute('setframe', f)
-        f.oldstate_driver = SecureStateDriverManager:GetAttribute('setstate'):gsub('state%-visibility%s', '')
-        RegisterAttributeDriver(f, 'state-visibility', 'show')
+local function toggleHeaderFrame(obj, show)
+    if show then
+        SecureStateDriverManager:SetAttribute('setframe', obj)
+        obj.oldstate_driver = SecureStateDriverManager:GetAttribute('setstate'):gsub('state%-visibility%s', '') -- i suck at string formatting
+        local numMembers = math.max(GetNumSubgroupMembers(LE_PARTY_CATEGORY_HOME) or 0, GetNumSubgroupMembers(LE_PARTY_CATEGORY_INSTANCE) or 0)
+        obj:SetAttribute('startingIndex', (numMembers - 3))
+        RegisterAttributeDriver(obj, 'state-visibility', 'show')
 
-        -- Setting the starting index to -3, so we have three frames: -3, -2, -1, 0
-        f:SetAttribute('startingIndex', 3)
-
-        for i = 1, f:GetNumChildren() do
-            local obj = select(i, f:GetChildren())
-            toggle_unit(obj)
+        for i = 1, obj:GetNumChildren() do
+            local child = select(i, obj:GetChildren())
+            toggleUnitFrame(child, true)
         end
-    else
-        -- Reset the visibility (bug: doesnt really set it)
-        RegisterAttributeDriver(f, 'state-visibility', f.oldstate_driver)
-        f.oldstate_driver = nil
+    elseif not obj.oldstate_driver then
+        obj:SetAttribute('showParty', true)
+        RegisterAttributeDriver(obj, 'state-visibility', obj.oldstate_driver)
+        obj.oldstate_driver = nil
+        obj:SetAttribute('startingIndex', nil)
 
-        -- Setting it to default (1)
-        f:SetAttribute('startingIndex', nil)
-
-        for i = 1, f:GetNumChildren() do
-            local obj = select(i, f:GetChildren())
-            toggle_unit(obj)
+        for i = 1, obj:GetNumChildren() do
+            local child = select(i, obj:GetChildren())
+            toggleUnitFrame(child, false)
         end
-
     end
 end
 
-local function toggle_unitaura()
-    if UnitAura == RealUnitAura then
-        UnitAura = FakeUnitAura
-    else
-        UnitAura = RealUnitAura
-    end
+
+-- Toggle test frames off when entering combat
+function ns:PLAYER_REGEN_DISABLED()
+    ns:ToggleTestFrames(true)
 end
 
-SLASH_OUF_ZOEY1 = '/zoey'
-SlashCmdList.OUF_ZOEY = function(param)
-    local param1, param2 = string.split(' ', param)
+local testActive = false
+function ns:ToggleTestFrames(force)
 
-    if param1 == 'test' then
-        toggle_unitaura()
-        for _,v in next, oUF.objects do
-            toggle_unit(v)
+    if not testActive and (not force) then
+        if InCombatLockdown() then return ns:Printf('Can\'t toggle test frames in combat.')end
+        ns:RegisterEvent('PLAYER_REGEN_DISABLED')
+        ns:Printf('Test frames are active')
+
+        for _, unit in pairs(oUF.objects) do
+            toggleUnitFrame(unit, true)
         end
+        toggleHeaderFrame(oUF_ZoeyParty, true)
+        toggleHeaderFrame(oUF_ZoeyPartyPets, true)
+        toggleHeaderFrame(oUF_ZoeyPartyTargets, true)
 
-        -- Still a bit buggy.
-        -- if not param2 or param == 'party' then
-        --     ToggleHeader(oUF_ZoeyParty)
-        --     ToggleHeader(oUF_ZoeyPartyTargets)
-        --     ToggleHeader(oUF_ZoeyPartyPets)
-        -- elseif param2 == 'raid' or param2 == 'raid10' then
-        --     ToggleHeader(oUF_ZoeyRaid10_g1)
-        --     ToggleHeader(oUF_ZoeyRaid10_g2)
-        -- elseif param2 == 'raid25' then
-        --     ToggleHeader(oUF_ZoeyRaid25_g1)
-        --     ToggleHeader(oUF_ZoeyRaid25_g2)
-        --     ToggleHeader(oUF_ZoeyRaid25_g3)
-        --     ToggleHeader(oUF_ZoeyRaid25_g4)
-        --     ToggleHeader(oUF_ZoeyRaid25_g5)
-        -- elseif param2 == 'raid40' then
-        --     ToggleHeader(oUF_ZoeyRaid40_g1)
-        --     ToggleHeader(oUF_ZoeyRaid40_g2)
-        --     ToggleHeader(oUF_ZoeyRaid40_g3)
-        --     ToggleHeader(oUF_ZoeyRaid40_g4)
-        --     ToggleHeader(oUF_ZoeyRaid40_g5)
-        --     ToggleHeader(oUF_ZoeyRaid40_g6)
-        --     ToggleHeader(oUF_ZoeyRaid40_g7)
-        --     ToggleHeader(oUF_ZoeyRaid40_g8)
-        -- end
-    else
-        print('No param given.')
+    elseif testActive then
+        ns:UnregisterEvent('PLAYER_REGEN_DISABLED')
+        ns:Printf('Test frames are inactive')
+
+        for _, unit in pairs(oUF.objects) do
+            toggleUnitFrame(unit, false)
+        end
+        toggleHeaderFrame(oUF_ZoeyParty, false)
+        toggleHeaderFrame(oUF_ZoeyPartyPets, false)
+        toggleHeaderFrame(oUF_ZoeyPartyTargets, false)
     end
 
+    testActive = not testActive
+
 end
+
+
+
+
+
+
+
+
+
+--
+-- -- This will toggle all uses of UnitAura not just with this addon, unfortunatly.
+-- local RealUnitAura = UnitAura
+-- local function FakeUnitAura(unit, index, rank, filter)
+--     -- if a aura really does exist, show that one.
+--     local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff = RealUnitAura(unit, index, rank, filter)
+--     if name then
+--         return name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff
+--     end
+--
+--     return 'Hunter\'s Mark', '', 'Interface\\Icons\\Ability_Hunter_SniperShot', 0, '', 0, 0, 'player'
+-- end
+--
+-- local function toggleUnitAura(show)
+--     if UnitAura == RealUnitAura then
+--         UnitAura = FakeUnitAura
+--     else
+--         UnitAura = RealUnitAura
+--     end
+-- end

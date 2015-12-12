@@ -324,6 +324,8 @@ function SlashCmdList.oUF_Zoey(message)
     if command == '' or command == 'config' then
         InterfaceOptionsFrame_OpenToCategory('oUF Zoey')
         InterfaceOptionsFrame_OpenToCategory('oUF Zoey')
+    elseif command == 'test' then
+        ns:ToggleTestFrames()
     end
 end
 
