@@ -205,55 +205,6 @@ end)
 
 
 --------------------------------------------------------------------------------
--- Skin the Mirror Timers
---------------------------------------------------------------------------------
-ns:RegisterEvent('MIRROR_TIMER_START', function(event, ...)
-    local Media = LibStub('LibSharedMedia-3.0')
-    local font = Media:Fetch('font', ns.config.font)
-    local texture = Media:Fetch('statusbar', ns.config.statusbar)
-
-    for i = 1, 3 do
-        local barname = 'MirrorTimer'..i
-        local bar = _G[barname]
-
-        -- Hide old border
-        _G[barname..'Border']:Hide()
-
-        -- Place where we want
-        bar:SetParent(UIParent)
-        bar:SetSize(285, 28)
-
-        if i > 1 then
-            local p1, p2, p3, p4, p5 = bar:GetPoint()
-            bar:SetPoint(p1, p2, p3, p4, p5 - 15)
-        end
-
-        -- Add our style
-        bar.bar = _G[ barname..'StatusBar' ]
-        bar.bar:SetPoint('TOPLEFT', bar, 1, -1)
-        bar.bar:SetPoint('BOTTOMRIGHT', bar, -1, 1)
-        bar.bar:SetStatusBarTexture(texture)
-        bar.bar:SetAlpha(0.8)
-
-        bar.bg = bar:GetRegions()
-        bar.bg:ClearAllPoints()
-        bar.bg:SetAllPoints(bar)
-        bar.bg:SetTexture(texture)
-        bar.bg:SetVertexColor(0.2, 0.2, 0.2, 1)
-
-        bar.text = _G[barname..'Text']
-        bar.text:ClearAllPoints()
-        bar.text:SetPoint('LEFT', bar, 6, -1)
-        bar.text:SetFont(font, 16)
-
-        ns.CreateBorder(bar)
-
-        tinsert(ns.statusbars, bar.bar)
-        tinsert(ns.statusbars, bar.bg)
-    end
-end)
-
---------------------------------------------------------------------------------
 -- Setup extra stuff for the UI
 --------------------------------------------------------------------------------
 ns:RegisterEvent('PLAYER_LOGIN', function(event, ...)
@@ -302,6 +253,52 @@ ns:RegisterEvent('PLAYER_LOGIN', function(event, ...)
             end
         end
     end
+
+    -- Skin the Mirror Timers
+    local Media = LibStub('LibSharedMedia-3.0')
+    local font = Media:Fetch('font', ns.config.font)
+    local texture = Media:Fetch('statusbar', ns.config.statusbar)
+
+    for i = 1, 3 do
+        local barname = 'MirrorTimer'..i
+        local bar = _G[barname]
+
+        -- Hide old border
+        _G[barname..'Border']:Hide()
+
+        -- Place where we want
+        bar:SetParent(UIParent)
+        bar:SetSize(285, 28)
+
+        if i > 1 then
+            local p1, p2, p3, p4, p5 = bar:GetPoint()
+            bar:SetPoint(p1, p2, p3, p4, p5 - 15)
+        end
+
+        -- Add our style
+        bar.bar = _G[ barname..'StatusBar' ]
+        bar.bar:SetPoint('TOPLEFT', bar, 1, -1)
+        bar.bar:SetPoint('BOTTOMRIGHT', bar, -1, 1)
+        bar.bar:SetStatusBarTexture(texture)
+        bar.bar:SetAlpha(0.8)
+
+        bar.bg = bar:GetRegions()
+        bar.bg:ClearAllPoints()
+        bar.bg:SetAllPoints(bar)
+        bar.bg:SetTexture(texture)
+        bar.bg:SetVertexColor(0.2, 0.2, 0.2, 1)
+
+        bar.text = _G[barname..'Text']
+        bar.text:ClearAllPoints()
+        bar.text:SetPoint('LEFT', bar, 6, -1)
+        bar.text:SetFont(font, 16)
+
+        ns.CreateBorder(bar)
+
+        tinsert(ns.statusbars, bar.bar)
+        tinsert(ns.statusbars, bar.bg)
+    end
+
 end)
 
 
