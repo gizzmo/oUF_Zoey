@@ -299,7 +299,7 @@ end
 
 ns.statusbars = {}
 local function CreateStatusBar(parent, name, noBG)
-    local texture = LibStub("LibSharedMedia-3.0"):Fetch("statusbar", ns.config.statusbar)
+    local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.config.statusbar)
 
     local sb = CreateFrame('StatusBar', (name and '$parent'..name or nil), parent)
     sb:SetStatusBarTexture(texture)
@@ -316,7 +316,7 @@ local function CreateStatusBar(parent, name, noBG)
 end
 
 function ns.SetAllStatusBarTextures()
-    local texture = LibStub('LibSharedMedia-3.0'):Fetch("statusbar", ns.config.statusbar)
+    local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.config.statusbar)
 
     for i = 1, #ns.statusbars do
         local sb = ns.statusbars[i]

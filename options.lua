@@ -4,17 +4,17 @@ local addon, ns = ...
 --//----------------------------------------------------------------------
 --// Options panel
 --//----------------------------------------------------------------------
-LibStub("PhanxConfig-OptionsPanel"):New('oUF Zoey', nil, function(panel)
+LibStub('PhanxConfig-OptionsPanel'):New('oUF Zoey', nil, function(panel)
     local db = oUF_ZoeyConfig
-    local Media = LibStub("LibSharedMedia-3.0")
+    local Media = LibStub('LibSharedMedia-3.0')
 
     --------------------------------------------------------------------
     local title, notes = panel:CreateHeader(panel.name, 'oUF_Zoey is a layout for Haste\'s oUF framework. Use this panel to configure some basic options for this layout.')
 
     --------------------------------------------------------------------
-    local statusbar = panel:CreateMediaDropdown('Statusbar texture', nil, "statusbar")
-    statusbar:SetPoint("TOPLEFT", notes, "BOTTOMLEFT", 0, -12)
-    statusbar:SetPoint("TOPRIGHT", notes, "BOTTOM", -12, -16)
+    local statusbar = panel:CreateMediaDropdown('Statusbar texture', nil, 'statusbar')
+    statusbar:SetPoint('TOPLEFT', notes, 'BOTTOMLEFT', 0, -12)
+    statusbar:SetPoint('TOPRIGHT', notes, 'BOTTOM', -12, -16)
 
     function statusbar:OnValueChanged(value)
         if value == db.statusbar then return end
@@ -59,7 +59,7 @@ LibStub("PhanxConfig-OptionsPanel"):New('oUF Zoey', nil, function(panel)
     -- Update when the options panel is shown
     function panel.refresh()
         statusbar:SetValue(db.statusbar)
-        statusbar.valueBG:SetTexture(Media:Fetch("statusbar", db.statusbar))
+        statusbar.valueBG:SetTexture(Media:Fetch('statusbar', db.statusbar))
 
         player_target_gap:SetValue(db.ptgap)
 

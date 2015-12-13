@@ -67,7 +67,7 @@ oUF.colors.border = {
 --------------------------------------------------------------------------------
 --  Print/Printf support
 --------------------------------------------------------------------------------
-local printHeader = "|cFF33FF99%s|r: "
+local printHeader = '|cFF33FF99%s|r: '
 
 function ns:Printf(msg, ...)
     msg = printHeader .. msg
@@ -75,7 +75,7 @@ function ns:Printf(msg, ...)
     if success then
         print(txt)
     else
-        error(string.gsub(txt, "'%?'", string.format("'%s'", "Printf")), 3)
+        error(string.gsub(txt, "'%?'", string.format("'%s'", 'Printf')), 3)
     end
 end
 
@@ -98,12 +98,12 @@ function ns:UnregisterEvent(event)
     ns.eventFrame:UnregisterEvent(event)
 end
 
-ns.eventFrame:SetScript("OnEvent", function(frame, event, ...)
+ns.eventFrame:SetScript('OnEvent', function(frame, event, ...)
     local handler = eventMap[event]
     local handler_t = type(handler)
-    if handler_t == "function" then
+    if handler_t == 'function' then
         handler(event, ...)
-    elseif handler_t == "string" and ns[handler] then
+    elseif handler_t == 'string' and ns[handler] then
         ns[handler](ns, event, ...)
     end
 end)
@@ -112,14 +112,14 @@ end)
 --------------------------------------------------------------------------------
 -- Support for deferred execution (when in-combat)
 --------------------------------------------------------------------------------
-local deferframe = CreateFrame("Frame")
+local deferframe = CreateFrame('Frame')
 deferframe.queue = {}
 
 local function runDeferred(thing)
     local thing_t = type(thing)
-    if thing_t == "string" and ns[thing] then
+    if thing_t == 'string' and ns[thing] then
         ns[thing](ns)
-    elseif thing_t == "function" then
+    elseif thing_t == 'function' then
         thing(ns)
     end
 end
@@ -128,23 +128,23 @@ end
 -- player has exited combat. If they are already out of combat, it will
 -- execute the function immediately.
 function ns:Defer(...)
-    for i = 1, select("#", ...) do
+    for i = 1, select('#', ...) do
         local thing = select(i, ...)
         local thing_t = type(thing)
-        if thing_t == "string" or thing_t == "function" then
+        if thing_t == 'string' or thing_t == 'function' then
             if InCombatLockdown() then
                 deferframe.queue[#deferframe.queue + 1] = thing
             else
                 runDeferred(thing)
             end
         else
-            error("Invalid object passed to 'Defer'")
+            error('Invalid object passed to \'Defer\'')
         end
     end
 end
 
-deferframe:RegisterEvent("PLAYER_REGEN_ENABLED")
-deferframe:SetScript("OnEvent", function(self, event, ...)
+deferframe:RegisterEvent('PLAYER_REGEN_ENABLED')
+deferframe:SetScript('OnEvent', function(self, event, ...)
     for idx, thing in ipairs(deferframe.queue) do
         runDeferred(thing)
     end
@@ -208,9 +208,9 @@ end)
 -- Skin the Mirror Timers
 --------------------------------------------------------------------------------
 ns:RegisterEvent('MIRROR_TIMER_START', function(event, ...)
-    local Media = LibStub("LibSharedMedia-3.0")
-    local font = Media:Fetch("font", ns.config.font)
-    local texture = Media:Fetch("statusbar", ns.config.statusbar)
+    local Media = LibStub('LibSharedMedia-3.0')
+    local font = Media:Fetch('font', ns.config.font)
+    local texture = Media:Fetch('statusbar', ns.config.statusbar)
 
     for i = 1, 3 do
         local barname = 'MirrorTimer'..i
