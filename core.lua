@@ -65,22 +65,6 @@ oUF.colors.border = {
 }
 
 --------------------------------------------------------------------------------
---  Print/Printf support
---------------------------------------------------------------------------------
-local printHeader = '|cFF33FF99%s|r: '
-
-function ns:Printf(msg, ...)
-    msg = printHeader .. msg
-    local success, txt = pcall(string.format, msg, addonName, ...)
-    if success then
-        print(txt)
-    else
-        error(string.gsub(txt, "'%?'", string.format("'%s'", 'Printf')), 3)
-    end
-end
-
-
---------------------------------------------------------------------------------
 -- Event registration and dispatch
 --------------------------------------------------------------------------------
 ns.eventFrame = CreateFrame('Frame', addonName .. 'EventFrame', UIParent)
@@ -153,6 +137,55 @@ end)
 
 
 --------------------------------------------------------------------------------
+--  Print/Printf support
+--------------------------------------------------------------------------------
+local printHeader = '|cFF33FF99%s|r: '
+
+function ns:Printf(msg, ...)
+    msg = printHeader .. msg
+    local success, txt = pcall(string.format, msg, addonName, ...)
+    if success then
+        print(txt)
+    else
+        error(string.gsub(txt, "'%?'", string.format("'%s'", 'Printf')), 3)
+    end
+end
+
+--------------------------------------------------------------------------------
+--
+--------------------------------------------------------------------------------
+local function initDB(db, defaults)
+    if type(db) ~= 'table' then db = {} end
+    if type(defaults) ~= 'table' then return db end
+    for k, v in pairs(defaults) do
+        if type(v) == 'table' then
+            db[k] = initDB(db[k], v)
+        elseif type(v) ~= type(db[k]) then
+            db[k] = v
+        end
+    end
+    return db
+end
+
+local function cleanDB(db, defaults)
+    if type(db) ~= 'table' then return {} end
+    if type(defaults) ~= 'table' then return db end
+    for k, v in pairs(db) do
+        if type(v) == 'table' then
+            if not next(cleanDB(v, defaults[k])) then
+                -- Remove empty subtables
+                db[k] = nil
+            end
+        elseif v == defaults[k] then
+            -- Remove default values
+            db[k] = nil
+        end
+    end
+    return db
+end
+
+
+--------------------------------------------------------------------------------
 -- Time to initialize the addon by loading the config
 --------------------------------------------------------------------------------
 ns:RegisterEvent('ADDON_LOADED', function(event, ...)
@@ -160,19 +193,6 @@ ns:RegisterEvent('ADDON_LOADED', function(event, ...)
     ns:UnregisterEvent(event)
 
     -- Merge saved settigns with defaults
-    local function initDB(db, defaults)
-        if type(db) ~= 'table' then db = {} end
-        if type(defaults) ~= 'table' then return db end
-        for k, v in pairs(defaults) do
-            if type(v) == 'table' then
-                db[k] = initDB(db[k], v)
-            elseif type(v) ~= type(db[k]) then
-                db[k] = v
-            end
-        end
-        return db
-    end
-
     oUF_ZoeyConfig = initDB(oUF_ZoeyConfig, configDefault)
     ns.config = oUF_ZoeyConfig
 
@@ -183,23 +203,6 @@ end)
 -- Fires immediately before the player is logged out of the game
 ns:RegisterEvent('PLAYER_LOGOUT', function(event)
     -- Remove defaults from config.
-    local function cleanDB(db, defaults)
-        if type(db) ~= 'table' then return {} end
-        if type(defaults) ~= 'table' then return db end
-        for k, v in pairs(db) do
-            if type(v) == 'table' then
-                if not next(cleanDB(v, defaults[k])) then
-                    -- Remove empty subtables
-                    db[k] = nil
-                end
-            elseif v == defaults[k] then
-                -- Remove default values
-                db[k] = nil
-            end
-        end
-        return db
-    end
-
     oUF_ZoeyConfig = cleanDB(oUF_ZoeyConfig, configDefault)
 end)
 
