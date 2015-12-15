@@ -17,8 +17,7 @@ local function SpawnHeader(name, visibility, ...)
     return object
 end
 
-function ns.SpawnFrames()
-
+oUF:Factory(function(oUF)
     local frames_offset, ptgap, gap = ns.config.frames_offset, ns.config.ptgap, 12
 
     -- The frame that all unitframes are attached to.
@@ -147,4 +146,4 @@ function ns.SpawnFrames()
             Boss[i]:SetPoint('BOTTOM', Boss[i - 1], 'TOP', 0, gap)
         end
     end
-end
+end)

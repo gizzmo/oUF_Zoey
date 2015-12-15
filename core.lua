@@ -195,9 +195,6 @@ ns:RegisterEvent('ADDON_LOADED', function(event, ...)
     -- Merge saved settigns with defaults
     oUF_ZoeyConfig = initDB(oUF_ZoeyConfig, configDefault)
     ns.config = oUF_ZoeyConfig
-
-    -- Register our spawn function with oUF
-    oUF:Factory(ns.SpawnFrames)
 end)
 
 -- Fires immediately before the player is logged out of the game
