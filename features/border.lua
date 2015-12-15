@@ -6,33 +6,32 @@ ns.borderedObjects = {}
 
 local sections = { 'TOPLEFT', 'TOP', 'TOPRIGHT', 'LEFT', 'RIGHT', 'BOTTOMLEFT', 'BOTTOM', 'BOTTOMRIGHT' }
 
-local methods = {
-    SetColor = function(self, r,g,b)
-        if not r or not g or not b then
-            r,g,b = unpack(oUF.colors.border.normal)
-        end
-
-        for _, tex in pairs(self) do
-            tex:SetVertexColor(r,g,b)
-        end
-    end,
-
-    SetSize = function(self, size, offset)
-        local s = size or ns.config.border.size
-        local o = offset or (floor(s / 2 + 0.5) - 2)
-
-        for _, tex in pairs(self) do
-            tex:SetSize(s,s)
-        end
-
-        self.TOPLEFT:SetPoint('TOPLEFT', -o, o)
-        self.TOPRIGHT:SetPoint('TOPRIGHT', o, o)
-        self.BOTTOMLEFT:SetPoint('BOTTOMLEFT', -o, -o)
-        self.BOTTOMRIGHT:SetPoint('BOTTOMRIGHT', o, -o)
+local prototype = {}
+function prototype:SetColor(r,g,b)
+    if not r or not g or not b then
+        r,g,b = unpack(oUF.colors.border.normal)
     end
 
-    -- do we need more methods?
-}
+    for _, tex in pairs(self) do
+        tex:SetVertexColor(r,g,b)
+    end
+end
+
+function prototype:SetSize(size, offset)
+    local s = size or ns.config.border.size
+    local o = offset or (floor(s / 2 + 0.5) - 2)
+
+    for _, tex in pairs(self) do
+        tex:SetSize(s,s)
+    end
+
+    self.TOPLEFT:SetPoint('TOPLEFT', -o, o)
+    self.TOPRIGHT:SetPoint('TOPRIGHT', o, o)
+    self.BOTTOMLEFT:SetPoint('BOTTOMLEFT', -o, -o)
+    self.BOTTOMRIGHT:SetPoint('BOTTOMRIGHT', o, -o)
+end
+-- do we need more methods?
+
 
 function ns.CreateBorder(self)
     if type(self) ~= 'table' or self.border then return end
@@ -41,7 +40,7 @@ function ns.CreateBorder(self)
     table.insert(ns.borderedObjects, self)
 
     -- set the methods
-    local B = setmetatable({}, { __index = methods })
+    local B = setmetatable({}, { __index = prototype })
 
     -- create the border textures
     for i = 1, #sections do
