@@ -67,23 +67,23 @@ oUF.colors.border = {
 --------------------------------------------------------------------------------
 -- Event registration and dispatch
 --------------------------------------------------------------------------------
-ns.eventFrame = CreateFrame('Frame', addonName .. 'EventFrame', UIParent)
-local eventMap = {}
+local eventFrame = CreateFrame('Frame')
+eventFrame.map = {}
 
 function ns:RegisterEvent(event, handler)
-    assert(eventMap[event] == nil, 'Attempt to re-register event: ' .. tostring(event))
-    eventMap[event] = handler and handler or event
-    ns.eventFrame:RegisterEvent(event)
+    assert(eventFrame.map[event] == nil, 'Attempt to re-register event: ' .. tostring(event))
+    eventFrame.map[event] = handler and handler or event
+    eventFrame:RegisterEvent(event)
 end
 
 function ns:UnregisterEvent(event)
     assert(type(event) == 'string', 'Invalid argument to \'UnregisterEvent\'')
-    eventMap[event] = nil
-    ns.eventFrame:UnregisterEvent(event)
+    eventFrame.map[event] = nil
+    eventFrame:UnregisterEvent(event)
 end
 
-ns.eventFrame:SetScript('OnEvent', function(frame, event, ...)
-    local handler = eventMap[event]
+eventFrame:SetScript('OnEvent', function(self, event, ...)
+    local handler = eventFrame.map[event]
     local handler_t = type(handler)
     if handler_t == 'function' then
         handler(event, ...)
