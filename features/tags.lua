@@ -116,8 +116,8 @@ do
 
 end
 
-oUF.Tags.Events['Zoey:Name'] = 'UNIT_NAME_UPDATE'
-oUF.Tags.Methods['Zoey:Name'] = function(unit)
+oUF.Tags.Events['Name'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['Name'] = function(unit)
     local name = UnitName(unit)
     local _, class = UnitClass(unit)
     local classColor = Hex(UnitIsPlayer(unit) and _COLORS.class[class] or {1,1,1})
@@ -128,8 +128,8 @@ oUF.Tags.Methods['Zoey:Name'] = function(unit)
 end
 
 
-oUF.Tags.Events['Zoey:Level'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
-oUF.Tags.Methods['Zoey:Level'] = function(unit)
+oUF.Tags.Events['Level'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
+oUF.Tags.Methods['Level'] = function(unit)
     local level = UnitLevel(unit)
     local levelColor = Hex(GetQuestDifficultyColor(level <= 0 and 99 or level))
 
@@ -152,8 +152,8 @@ oUF.Tags.Methods['Zoey:Level'] = function(unit)
 end
 
 
-oUF.Tags.Events['Zoey:Realm'] = 'UNIT_NAME_UPDATE'
-oUF.Tags.Methods['Zoey:Realm'] = function(unit)
+oUF.Tags.Events['Realm'] = 'UNIT_NAME_UPDATE'
+oUF.Tags.Methods['Realm'] = function(unit)
     local _, realm = UnitName(unit)
 
     if realm ~= nil then
@@ -162,8 +162,8 @@ oUF.Tags.Methods['Zoey:Realm'] = function(unit)
 end
 
 
-oUF.Tags.Events['Zoey:Status'] = 'UNIT_HEALTH UNIT_CONNECTION'
-oUF.Tags.Methods['Zoey:Status'] = function(unit)
+oUF.Tags.Events['Status'] = 'UNIT_HEALTH UNIT_CONNECTION'
+oUF.Tags.Methods['Status'] = function(unit)
     if not UnitIsConnected(unit) then
         return 'Offline'
     elseif UnitIsFeignDeath(unit) then
@@ -176,9 +176,9 @@ oUF.Tags.Methods['Zoey:Status'] = function(unit)
 end
 
 
-oUF.Tags.Events['Zoey:Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
-oUF.Tags.Methods['Zoey:Health'] = function(unit)
-    local status = _TAGS['Zoey:Status'](unit)
+oUF.Tags.Events['Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
+oUF.Tags.Methods['Health'] = function(unit)
+    local status = _TAGS['Status'](unit)
     if status then return status end
 
     local cur = UnitHealth(unit)
@@ -201,9 +201,9 @@ oUF.Tags.Methods['Zoey:Health'] = function(unit)
 end
 
 
-oUF.Tags.Events['Zoey:TargetHealth'] = oUF.Tags.Events['Zoey:Health']
-oUF.Tags.Methods['Zoey:TargetHealth'] = function(unit)
-    local status = _TAGS['Zoey:Status'](unit)
+oUF.Tags.Events['TargetHealth'] = oUF.Tags.Events['Health']
+oUF.Tags.Methods['TargetHealth'] = function(unit)
+    local status = _TAGS['Status'](unit)
     if status then return status end
 
     local cur = UnitHealth(unit)
@@ -228,9 +228,9 @@ oUF.Tags.Methods['Zoey:TargetHealth'] = function(unit)
 end
 
 
-oUF.Tags.Events['Zoey:TargetHealth2'] = oUF.Tags.Events['Zoey:Health']
-oUF.Tags.Methods['Zoey:TargetHealth2'] = function(unit)
-    local status = _TAGS['Zoey:Status'](unit)
+oUF.Tags.Events['TargetHealth2'] = oUF.Tags.Events['Health']
+oUF.Tags.Methods['TargetHealth2'] = function(unit)
+    local status = _TAGS['Status'](unit)
     if status then return end
 
     local cur = UnitHealth(unit)
@@ -244,8 +244,8 @@ oUF.Tags.Methods['Zoey:TargetHealth2'] = function(unit)
 end
 
 
-oUF.Tags.Events['Zoey:Power'] = 'UNIT_POWER UNIT_MAXPOWER'
-oUF.Tags.Methods['Zoey:Power'] = function(unit)
+oUF.Tags.Events['Power'] = 'UNIT_POWER UNIT_MAXPOWER'
+oUF.Tags.Methods['Power'] = function(unit)
     local cur = UnitPower(unit)
     local max = UnitPowerMax(unit)
 
@@ -264,8 +264,8 @@ oUF.Tags.Methods['Zoey:Power'] = function(unit)
 end
 
 
-oUF.Tags.Events['Zoey:Exp'] = 'PLAYER_XP_UPDATE'
-oUF.Tags.Methods['Zoey:Exp'] = function(unit)
+oUF.Tags.Events['Exp'] = 'PLAYER_XP_UPDATE'
+oUF.Tags.Methods['Exp'] = function(unit)
     local cur, max, rest = UnitXP(unit), UnitXPMax(unit), GetXPExhaustion(unit)
 
     if IsMouseOver(unit) then
@@ -277,8 +277,8 @@ oUF.Tags.Methods['Zoey:Exp'] = function(unit)
     end
 end
 
-oUF.Tags.Events['Zoey:Guild'] = 'UNIT_NAME_UPDATE PARTY_MEMBER_ENABLE'
-oUF.Tags.Methods['Zoey:Guild'] = function(unit)
+oUF.Tags.Events['Guild'] = 'UNIT_NAME_UPDATE PARTY_MEMBER_ENABLE'
+oUF.Tags.Methods['Guild'] = function(unit)
     local r,g,b = 255,255,255
 
     local GuildName = UnitIsPlayer(unit) and
