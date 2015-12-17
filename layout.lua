@@ -356,29 +356,24 @@ local function SharedStyle(self)
     self:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', UpdateUnitBorderColor)
     table.insert(self.__elements, UpdateUnitBorderColor)
 
-    -- Highlight: create the highlight
-    self.Highlight = CreateFrame('Frame', '$parentHighlight', self)
+    -- Overlay Frame -- used to attach icons/text to
+    self.Overlay = CreateFrame('Frame', '$parentOverlay', self)
+    self.Overlay:SetAllPoints(self)
+    self.Overlay:SetFrameLevel(10) -- todo: does it have to be that high?
+
+    -- Highlight
+    self.Highlight = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.Highlight:SetAllPoints(self)
-    self.Highlight:SetFrameLevel(15) -- needs to be the very top
+    self.Highlight:SetTexture(ns.config.highlight.texture)
+    self.Highlight:SetBlendMode('ADD')
+    self.Highlight:SetVertexColor(unpack(ns.config.highlight.color))
+    self.Highlight:SetAlpha(ns.config.highlight.alpha)
     self.Highlight:Hide()
 
-    self.Highlight.texture = self.Highlight:CreateTexture(nil, 'OVERLAY')
-    self.Highlight.texture:SetAllPoints(self.Highlight)
-    self.Highlight.texture:SetTexture(ns.config.highlight.texture)
-    self.Highlight.texture:SetBlendMode('ADD')
-    self.Highlight.texture:SetVertexColor(unpack(ns.config.highlight.color))
-    self.Highlight.texture:SetAlpha(ns.config.highlight.alpha)
-
-    -- Highlight: enable Updates
     self:HookScript('OnEnter', HighlightUpdate)
     self:HookScript('OnLeave', HighlightUpdate)
     self:RegisterEvent('PLAYER_TARGET_CHANGED', HighlightUpdate)
     table.insert(self.__elements, HighlightUpdate)
-
-    -- Overlay Frame -- used to attach icons/text to
-    self.Overlay = CreateFrame('Frame', '$parentOverlay', self)
-    self.Overlay:SetAllPoints(self)
-    self.Overlay:SetFrameLevel(10)
 
     -- Spell Range
     local ranger = 'Range'
