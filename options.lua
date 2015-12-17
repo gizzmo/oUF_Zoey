@@ -23,13 +23,24 @@ LibStub('PhanxConfig-OptionsPanel'):New('oUF Zoey', nil, function(panel)
     end
 
     --------------------------------------------------------------------
+    local font = panel:CreateMediaDropdown('Font', nil, 'font')
+    font:SetPoint('TOPLEFT', statusbar, 'BOTTOMLEFT', 0, -10)
+    font:SetPoint('TOPRIGHT', statusbar, 'BOTTOMRIGHT', 0, -10)
+
+    function font:OnValueChanged(value)
+        if value == db.font then return end
+        db.font = value
+        ns.SetAllFonts()
+    end
+
+    --------------------------------------------------------------------
     local player_target_gap = panel:CreateSlider('Player Target gap', 'The gap between the Player and Target frames',
         12, -- minValue
         500, --maxValue
         2 -- valueStep
     )
-    player_target_gap:SetPoint('TOPLEFT', statusbar, 'BOTTOMLEFT', 0, -10)
-    player_target_gap:SetPoint('TOPRIGHT', statusbar, 'BOTTOMRIGHT', 0, -10)
+    player_target_gap:SetPoint('TOPLEFT', font, 'BOTTOMLEFT', 0, -10)
+    player_target_gap:SetPoint('TOPRIGHT', font, 'BOTTOMRIGHT', 0, -10)
 
     function player_target_gap:OnValueChanged(value)
         db.ptgap = value
@@ -60,6 +71,8 @@ LibStub('PhanxConfig-OptionsPanel'):New('oUF Zoey', nil, function(panel)
     function panel.refresh()
         statusbar:SetValue(db.statusbar)
         statusbar.valueBG:SetTexture(Media:Fetch('statusbar', db.statusbar))
+
+        font:SetValue(db.font)
 
         player_target_gap:SetValue(db.ptgap)
 

@@ -297,6 +297,7 @@ ns:RegisterEvent('PLAYER_LOGIN', function(event, ...)
 
         tinsert(ns.statusbars, bar.bar)
         tinsert(ns.statusbars, bar.bg)
+        tinsert(ns.fontstrings, bar.text)
     end
 
 end)

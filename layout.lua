@@ -284,6 +284,7 @@ local function BarOnShow(bar)
     end)
 end
 
+ns.fontstrings = {}
 local function CreateText(parent, size, justify)
     local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.config.font)
 
@@ -293,8 +294,19 @@ local function CreateText(parent, size, justify)
     fs:SetWordWrap(false)
     fs:SetShadowOffset(1, -1)
     fs:SetShadowColor(0,0,0,1)
+    tinsert(ns.fontstrings, fs)
 
     return fs
+end
+
+function ns.SetAllFonts()
+    local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.config.font)
+
+    for i = 1, #ns.fontstrings do
+        local fs = ns.fontstrings[i]
+        local _, size = fs:GetFont()
+        fs:SetFont(font, size or 16)
+    end
 end
 
 ns.statusbars = {}
