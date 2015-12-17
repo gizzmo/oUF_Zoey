@@ -39,7 +39,7 @@ local function toggleHeaderFrame(obj, show)
             local child = select(i, obj:GetChildren())
             toggleUnitFrame(child, true)
         end
-    elseif not obj.oldstate_driver then
+    elseif obj.oldstate_driver then
         obj:SetAttribute('showParty', true)
         RegisterAttributeDriver(obj, 'state-visibility', obj.oldstate_driver)
         obj.oldstate_driver = nil
