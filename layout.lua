@@ -287,7 +287,7 @@ end
 local function CreateText(parent, size, justify)
     local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.config.font)
 
-    local fs = parent:CreateFontString(nil, 'OVERLAY')
+    local fs = parent:CreateFontString(nil, 'ARTWORK')
     fs:SetFont(font, size or 16)
     fs:SetJustifyH(justify or 'LEFT')
     fs:SetWordWrap(false)
