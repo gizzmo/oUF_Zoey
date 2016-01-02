@@ -359,9 +359,9 @@ local function SharedStyle(self)
     self:SetScript('OnLeave', OnLeave)
 
     -- Background
-    local Background = self:CreateTexture(nil, 'BACKGROUND')
-    Background:SetAllPoints(self)
-    Background:SetTexture(0, 0, 0, 1)
+    self.bg = self:CreateTexture(nil, 'BACKGROUND')
+    self.bg:SetAllPoints(self)
+    self.bg:SetTexture(0, 0, 0, 1)
 
     -- Border: changes color depending on the unit's classification (rare,elite)
     ns.CreateBorder(self)
