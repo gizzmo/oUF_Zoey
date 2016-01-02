@@ -718,7 +718,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
     Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
     --TODO: we should reset colors returned from the tags
-    self:Tag(Name, '[Level< ][Name][|r - >Realm]')
+    self:Tag(Name, '[leadericon][Level< ][Name][|r - >Realm]')
 
     -- Health Text
     if unit == 'target' then
@@ -779,11 +779,6 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.QuestIcon:SetSize(32,32)
         self.QuestIcon:SetPoint('CENTER', self.Overlay, 'LEFT', 0, 0)
     end
-
-    -- Leader Icon
-    self.Leader = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.Leader:SetSize(15,15)
-    self.Leader:SetPoint('CENTER', self.Overlay, 'TOPLEFT', 0, 3)
 
     -- LFD Role Icon
     self.LFDRole = self.Overlay:CreateTexture(nil, 'OVERLAY')
@@ -996,7 +991,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
     local Name = CreateText(self.Overlay, 12)
     Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
     Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
-    self:Tag(Name, '[Level< ][Name]')
+    self:Tag(Name, '[leadericon][Level< ][Name]')
 
     -- Status Text
     local StatusText = CreateText(self.Overlay, 16)
@@ -1006,11 +1001,6 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
     --//----------------------------
     --// Icons
     --//----------------------------
-    -- Leader Icon
-    self.Leader = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.Leader:SetSize(13,13)
-    self.Leader:SetPoint('CENTER', self.Overlay, 'TOPLEFT', 0, 0)
-
     -- LFD Role Icon
     self.LFDRole = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.LFDRole:SetSize(13,13)
@@ -1073,7 +1063,7 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     local Name = CreateText(self.Overlay, 10, 'center')
     Name:SetPoint('TOPLEFT', self, 1, -1)
     Name:SetPoint('TOPRIGHT', self, -1, -1)
-    self:Tag(Name, '[Name]')
+    self:Tag(Name, '[leadericon][Name]')
 
     -- Status Text
     local StatusText = CreateText(self.Overlay, 12, 'center')
@@ -1084,11 +1074,6 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     --//----------------------------
     --// Icons
     --//----------------------------
-    -- Leader Icon
-    self.Leader = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.Leader:SetSize(10,10)
-    self.Leader:SetPoint('CENTER', self.Overlay, 'TOPLEFT', 0, 0)
-
     -- LFD Role Icon
     self.LFDRole = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.LFDRole:SetSize(13,13)

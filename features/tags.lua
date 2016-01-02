@@ -293,3 +293,13 @@ oUF.Tags.Methods['Guild'] = function(unit)
         return ('|cff%02x%02x%02x%s'):format(r,g,b, '<'..GuildName..'>')
     end
 end
+
+
+oUF.Tags.Events["leadericon"] = "PARTY_LEADER_CHANGED GROUP_ROSTER_UPDATE"
+oUF.Tags.Methods["leadericon"] = function(unit)
+    if UnitIsGroupLeader(unit) then
+        return [[|TInterface\GroupFrame\UI-Group-LeaderIcon:0|t]]
+    elseif UnitInRaid(unit) and UnitIsGroupAssistant(unit) then
+        return [[|TInterface\GroupFrame\UI-Group-AssistantIcon:0|t]]
+    end
+end
