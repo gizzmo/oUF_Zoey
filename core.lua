@@ -5,7 +5,7 @@ local addonName, ns = ...
 _G[addonName] = ns
 
 --------------------------------------------------------------------------------
---  Default configuration
+-- Default configuration
 --------------------------------------------------------------------------------
 local configDefault = {
     statusbar = 'Armory',
@@ -30,7 +30,6 @@ local configDefault = {
 --------------------------------------------------------------------------------
 -- Colors
 --------------------------------------------------------------------------------
-
 -- Health bar color
 oUF.colors.health = {89/255, 89/255, 89/255} -- dark grey
 
@@ -137,7 +136,7 @@ end)
 
 
 --------------------------------------------------------------------------------
---  Print/Printf support
+-- Print/Printf support
 --------------------------------------------------------------------------------
 local printHeader = '|cFF33FF99%s|r: '
 
@@ -151,8 +150,9 @@ function ns:Printf(msg, ...)
     end
 end
 
+
 --------------------------------------------------------------------------------
---
+-- Database initialization and cleanup
 --------------------------------------------------------------------------------
 local function initDB(db, defaults)
     if type(db) ~= 'table' then db = {} end
@@ -186,8 +186,9 @@ end
 
 
 --------------------------------------------------------------------------------
--- Time to initialize the addon by loading the config
+-- Ignition sequence
 --------------------------------------------------------------------------------
+-- Fires when an addon and its saved variables are loaded.
 ns:RegisterEvent('ADDON_LOADED', function(event, ...)
     if ... ~= addonName then return end
     ns:UnregisterEvent(event)
@@ -203,10 +204,7 @@ ns:RegisterEvent('PLAYER_LOGOUT', function(event)
     oUF_ZoeyConfig = cleanDB(oUF_ZoeyConfig, configDefault)
 end)
 
-
---------------------------------------------------------------------------------
--- Setup extra stuff for the UI
---------------------------------------------------------------------------------
+-- Fires immediately before PLAYER_ENTERING_WORLD on login and UI reload.
 ns:RegisterEvent('PLAYER_LOGIN', function(event, ...)
     -- Hide the Blizzard Buffs
     BuffFrame:Hide()
@@ -302,18 +300,12 @@ ns:RegisterEvent('PLAYER_LOGIN', function(event, ...)
 
 end)
 
-
---------------------------------------------------------------------------------
 -- Register Some stuf with Shared Media
---------------------------------------------------------------------------------
 local Media = LibStub('LibSharedMedia-3.0', true)
 Media:Register('statusbar', 'Armory', [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]])
 Media:Register('font', 'DorisPP', [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]])
 
-
---------------------------------------------------------------------------------
 -- Slash command handler
---------------------------------------------------------------------------------
 SLASH_oUF_Zoey1 = '/zoey'
 function SlashCmdList.oUF_Zoey(message)
     local command, parameters = string.split(' ', message, 2)
