@@ -12,31 +12,20 @@
 ## RequiredDeps: oUF
 ## SavedVariables: oUF_ZoeyConfig
 
-libs\LibStub.lua
-libs\CallbackHandler-1.0.lua
-libs\LibSharedMedia-3.0.lua
-
-libs\PhanxConfig-OptionsPanel.lua
-libs\PhanxConfig-Header.lua
-libs\PhanxConfig-Dropdown.lua
-libs\PhanxConfig-MediaDropdown.lua
-libs\PhanxConfig-Slider.lua
-
-# Disabled untill we need them
-# libs\PhanxConfig-Button.lua
-# libs\PhanxConfig-Checkbox.lua
-# libs\PhanxConfig-ColorPicker.lua
-# libs\PhanxConfig-EditBox.lua
-# libs\PhanxConfig-KeyBinding.lua
-# libs\PhanxConfig-Panel.lua
-
-elements\oUF_Experience.lua
+libs\LibStub\LibStub.lua
+libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+libs\LibSharedMedia-3.0\LibSharedMedia-3.0.xml
+libs\AceAddon-3.0\AceAddon-3.0.xml
+libs\AceConsole-3.0\AceConsole-3.0.xml
+libs\AceDB-3.0\AceDB-3.0.xml
 
 core.lua
 
 features\border.lua
 features\tags.lua
 features\test.lua
+
+elements\oUF_Experience.lua
 
 options.lua
 layout.lua
