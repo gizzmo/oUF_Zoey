@@ -286,7 +286,7 @@ end
 
 ns.fontstrings = {}
 local function CreateText(parent, size, justify)
-    local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.config.font)
+    local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.db.profile.font)
 
     local fs = parent:CreateFontString(nil, 'ARTWORK')
     fs:SetFont(font, size or 16)
@@ -300,7 +300,7 @@ local function CreateText(parent, size, justify)
 end
 
 function ns.SetAllFonts()
-    local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.config.font)
+    local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.db.profile.font)
 
     for i = 1, #ns.fontstrings do
         local fs = ns.fontstrings[i]
@@ -311,7 +311,7 @@ end
 
 ns.statusbars = {}
 local function CreateStatusBar(parent, name, noBG)
-    local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.config.statusbar)
+    local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.db.profile.statusbar)
 
     local sb = CreateFrame('StatusBar', (name and '$parent'..name or nil), parent)
     sb:SetStatusBarTexture(texture)
@@ -328,7 +328,7 @@ local function CreateStatusBar(parent, name, noBG)
 end
 
 function ns.SetAllStatusBarTextures()
-    local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.config.statusbar)
+    local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.db.profile.statusbar)
 
     for i = 1, #ns.statusbars do
         local sb = ns.statusbars[i]
@@ -516,7 +516,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
             for i = 1, 3 do
                 local power = self.ClassIcons:CreateTexture(nil, 'ARTWORK')
-                power:SetTexture(ns.config.statusbar)
+                power:SetTexture(ns.db.profile.statusbar)
                 power:SetSize(width, self.ClassIcons:GetHeight())
 
                 if i == 1 then
@@ -526,7 +526,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
                 end
 
                 power.bg = self.ClassIcons:CreateTexture(nil, 'BACKGROUND')
-                power.bg:SetTexture(ns.config.statusbar)
+                power.bg:SetTexture(ns.db.profile.statusbar)
                 power.bg:SetAllPoints(power)
 
                 -- // Color
@@ -573,7 +573,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
             for i = 1, 3 do
                 local shard = self.ClassIcons:CreateTexture(nil, 'ARTWORK')
-                shard:SetTexture(ns.config.statusbar)
+                shard:SetTexture(ns.db.profile.statusbar)
                 shard:SetSize(width, self.ClassIcons:GetHeight())
 
                 if i == 1 then
@@ -583,7 +583,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
                 end
 
                 shard.bg = self.ClassIcons:CreateTexture(nil, 'BACKGROUND')
-                shard.bg:SetTexture(ns.config.statusbar)
+                shard.bg:SetTexture(ns.db.profile.statusbar)
                 shard.bg:SetAllPoints(shard)
 
                 -- // Color
@@ -632,7 +632,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
             for i = 1, 5 do
                 local point = self.CPoints:CreateTexture(nil, 'ARTWORK')
-                point:SetTexture(ns.config.statusbar)
+                point:SetTexture(ns.db.profile.statusbar)
                 point:SetSize(width, self.CPoints:GetHeight())
 
                 if i == 1 then
@@ -642,7 +642,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
                 end
 
                 point.bg = self.CPoints:CreateTexture(nil, 'BACKGROUND')
-                point.bg:SetTexture(ns.config.statusbar)
+                point.bg:SetTexture(ns.db.profile.statusbar)
                 point.bg:SetAllPoints(point)
 
                 -- // Color

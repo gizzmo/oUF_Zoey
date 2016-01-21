@@ -10,7 +10,7 @@
 ## X-Website: http://github.com/gizzmo/oUF_Zoey
 
 ## RequiredDeps: oUF
-## SavedVariables: oUF_ZoeyConfig
+## SavedVariables: oUF_ZoeyDB
 
 libs\LibStub\LibStub.lua
 libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
@@ -23,10 +23,10 @@ core.lua
 
 features\border.lua
 features\tags.lua
-features\test.lua
+#features\test.lua
 
 elements\oUF_Experience.lua
 
-options.lua
+#options.lua
 layout.lua
 spawn.lua

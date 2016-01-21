@@ -10,12 +10,19 @@ LibStub('AceAddon-3.0'):NewAddon(ns, addonName, 'AceConsole-3.0', 'AceEvent-3.0'
 --------------------------------------------------------------------------------
 -- Default configuration
 --------------------------------------------------------------------------------
-local configDefault = {
-    statusbar = 'Armory',
-    font = 'DorisPP',
+local defaultDB = {
+    profile = {
 
-    ptgap = 180,         -- gap between player and target
-    frames_offset = 300, -- offset from bottom of UIParent
+        statusbar = 'Armory',
+        font = 'DorisPP',
+
+        ptgap = 150,         -- gap between player and target
+        frames_offset = 270, -- offset from bottom of UIParent
+
+    }
+}
+
+ns.config = {
 
     border = {
         texture = [[Interface\AddOns\oUF_Zoey\media\Border.tga]],
@@ -26,7 +33,7 @@ local configDefault = {
         texture = [[Interface\QuestFrame\UI-QuestLogTitleHighlight]],
         color = {1, 1, 1}, -- White
         alpha = 0.3
-    },
+    }
 }
 
 
@@ -115,10 +122,10 @@ end)
 --------------------------------------------------------------------------------
 -- Called when the addon is loaded
 function ns:OnInitialize()
-    self.config = LibStub("AceDB-3.0"):New(addonName..'Config', configDefault)
+    self.db = LibStub("AceDB-3.0"):New(addonName..'DB', defaultDB, true)
     self:RegisterChatCommand('zoey', 'SlashCommandHandler')
 
-    -- Register Some stuf with Shared Media
+    -- Register our media with SharedMedia
     local Media = LibStub('LibSharedMedia-3.0')
     Media:Register('statusbar', 'Armory', [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]])
     Media:Register('font', 'DorisPP', [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]])
@@ -175,8 +182,8 @@ function ns:OnEnable()
 
     -- Skin the Mirror Timers
     local Media = LibStub('LibSharedMedia-3.0')
-    local font = Media:Fetch('font', ns.config.font)
-    local texture = Media:Fetch('statusbar', ns.config.statusbar)
+    local font = Media:Fetch('font', ns.db.profile.font)
+    local texture = Media:Fetch('statusbar', ns.db.profile.statusbar)
 
     for i = 1, 3 do
         local barname = 'MirrorTimer'..i
@@ -225,7 +232,7 @@ function ns:SlashCommandHandler(message)
     local command = self:GetArgs(message, 2)
 
     -- Option the options window
-    if command == '' or command == 'config' then
+    if not command or command == 'config' then
         self:Print('Temoprory disabled.')
     end
 end
