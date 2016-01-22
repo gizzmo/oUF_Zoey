@@ -22,21 +22,6 @@ local defaultDB = {
     }
 }
 
-ns.config = {
-
-    border = {
-        texture = [[Interface\AddOns\oUF_Zoey\media\Border.tga]],
-        size = 12
-    },
-
-    highlight = {
-        texture = [[Interface\QuestFrame\UI-QuestLogTitleHighlight]],
-        color = {1, 1, 1}, -- White
-        alpha = 0.3
-    }
-}
-
-
 --------------------------------------------------------------------------------
 -- Setup oUF Colors
 --------------------------------------------------------------------------------

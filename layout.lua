@@ -376,10 +376,10 @@ local function SharedStyle(self)
     -- Highlight
     self.Highlight = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.Highlight:SetAllPoints(self)
-    self.Highlight:SetTexture(ns.config.highlight.texture)
+    self.Highlight:SetTexture([[Interface\QuestFrame\UI-QuestLogTitleHighlight]])
     self.Highlight:SetBlendMode('ADD')
-    self.Highlight:SetVertexColor(unpack(ns.config.highlight.color))
-    self.Highlight:SetAlpha(ns.config.highlight.alpha)
+    self.Highlight:SetVertexColor(1,1,1)
+    self.Highlight:SetAlpha(0.3)
     self.Highlight:Hide()
 
     self:HookScript('OnEnter', HighlightUpdate)
