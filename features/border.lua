@@ -18,7 +18,7 @@ function prototype:SetColor(r,g,b)
 end
 
 function prototype:SetSize(size, offset)
-    local s = size or ns.config.border.size
+    local s = size or 12
     local o = offset or (floor(s / 2 + 0.5) - 2)
 
     for _, tex in pairs(self) do
@@ -45,7 +45,7 @@ function ns.CreateBorder(self)
     -- create the border textures
     for i = 1, #sections do
         local x = self:CreateTexture(nil, 'BORDER')
-        x:SetTexture(ns.config.border.texture)
+        x:SetTexture([[Interface\AddOns\oUF_Zoey\media\Border.tga]])
         B[sections[i]] = x
     end
 

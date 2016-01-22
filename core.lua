@@ -4,31 +4,26 @@ local addonName, ns = ...
 -- Set global name of addon
 _G[addonName] = ns
 
+-- Initialize Ace3 onto the namespace
+LibStub('AceAddon-3.0'):NewAddon(ns, addonName, 'AceConsole-3.0', 'AceEvent-3.0')
+
 --------------------------------------------------------------------------------
 -- Default configuration
 --------------------------------------------------------------------------------
-local configDefault = {
-    statusbar = 'Armory',
-    font = 'DorisPP',
+local defaultDB = {
+    profile = {
 
-    ptgap = 180,
-    frames_offset = 300,
+        statusbar = 'Armory',
+        font = 'DorisPP',
 
-    border = {
-        texture = [[Interface\AddOns\oUF_Zoey\media\Border.tga]],
-        size = 12
-    },
+        ptgap = 150,         -- gap between player and target
+        frames_offset = 270, -- offset from bottom of UIParent
 
-    highlight = {
-        texture = [[Interface\QuestFrame\UI-QuestLogTitleHighlight]],
-        color = {1, 1, 1}, -- White
-        alpha = 0.3
-    },
-
+    }
 }
 
 --------------------------------------------------------------------------------
--- Colors
+-- Setup oUF Colors
 --------------------------------------------------------------------------------
 -- Health bar color
 oUF.colors.health = {89/255, 89/255, 89/255} -- dark grey
@@ -62,34 +57,6 @@ oUF.colors.border = {
     boss      = {136/255, 41/255, 204/255}   -- Purple
 
 }
-
---------------------------------------------------------------------------------
--- Event registration and dispatch
---------------------------------------------------------------------------------
-local eventFrame = CreateFrame('Frame')
-eventFrame.map = {}
-
-function ns:RegisterEvent(event, handler)
-    assert(eventFrame.map[event] == nil, 'Attempt to re-register event: ' .. tostring(event))
-    eventFrame.map[event] = handler and handler or event
-    eventFrame:RegisterEvent(event)
-end
-
-function ns:UnregisterEvent(event)
-    assert(type(event) == 'string', 'Invalid argument to \'UnregisterEvent\'')
-    eventFrame.map[event] = nil
-    eventFrame:UnregisterEvent(event)
-end
-
-eventFrame:SetScript('OnEvent', function(self, event, ...)
-    local handler = eventFrame.map[event]
-    local handler_t = type(handler)
-    if handler_t == 'function' then
-        handler(event, ...)
-    elseif handler_t == 'string' and ns[handler] then
-        ns[handler](ns, event, ...)
-    end
-end)
 
 
 --------------------------------------------------------------------------------
@@ -136,76 +103,22 @@ end)
 
 
 --------------------------------------------------------------------------------
--- Print/Printf support
---------------------------------------------------------------------------------
-local printHeader = '|cFF33FF99%s|r: '
-
-function ns:Printf(msg, ...)
-    msg = printHeader .. msg
-    local success, txt = pcall(string.format, msg, addonName, ...)
-    if success then
-        print(txt)
-    else
-        error(string.gsub(txt, "'%?'", string.format("'%s'", 'Printf')), 3)
-    end
-end
-
-
---------------------------------------------------------------------------------
--- Database initialization and cleanup
---------------------------------------------------------------------------------
-local function initDB(db, defaults)
-    if type(db) ~= 'table' then db = {} end
-    if type(defaults) ~= 'table' then return db end
-    for k, v in pairs(defaults) do
-        if type(v) == 'table' then
-            db[k] = initDB(db[k], v)
-        elseif type(v) ~= type(db[k]) then
-            db[k] = v
-        end
-    end
-    return db
-end
-
-local function cleanDB(db, defaults)
-    if type(db) ~= 'table' then return {} end
-    if type(defaults) ~= 'table' then return db end
-    for k, v in pairs(db) do
-        if type(v) == 'table' then
-            if not next(cleanDB(v, defaults[k])) then
-                -- Remove empty subtables
-                db[k] = nil
-            end
-        elseif v == defaults[k] then
-            -- Remove default values
-            db[k] = nil
-        end
-    end
-    return db
-end
-
-
---------------------------------------------------------------------------------
 -- Ignition sequence
 --------------------------------------------------------------------------------
--- Fires when an addon and its saved variables are loaded.
-ns:RegisterEvent('ADDON_LOADED', function(event, ...)
-    if ... ~= addonName then return end
-    ns:UnregisterEvent(event)
+-- Called when the addon is loaded
+function ns:OnInitialize()
+    self.db = LibStub("AceDB-3.0"):New(addonName..'DB', defaultDB, true)
+    self:RegisterChatCommand('zoey', 'SlashCommandHandler')
 
-    -- Merge saved settigns with defaults
-    oUF_ZoeyConfig = initDB(oUF_ZoeyConfig, configDefault)
-    ns.config = oUF_ZoeyConfig
-end)
+    -- Register our media with SharedMedia
+    local Media = LibStub('LibSharedMedia-3.0')
+    Media:Register('statusbar', 'Armory', [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]])
+    Media:Register('font', 'DorisPP', [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]])
+end
 
--- Fires immediately before the player is logged out of the game
-ns:RegisterEvent('PLAYER_LOGOUT', function(event)
-    -- Remove defaults from config.
-    oUF_ZoeyConfig = cleanDB(oUF_ZoeyConfig, configDefault)
-end)
+-- Called when the addon is enabled
+function ns:OnEnable()
 
--- Fires immediately before PLAYER_ENTERING_WORLD on login and UI reload.
-ns:RegisterEvent('PLAYER_LOGIN', function(event, ...)
     -- Hide the Blizzard Buffs
     BuffFrame:Hide()
     BuffFrame:UnregisterAllEvents()
@@ -254,8 +167,8 @@ ns:RegisterEvent('PLAYER_LOGIN', function(event, ...)
 
     -- Skin the Mirror Timers
     local Media = LibStub('LibSharedMedia-3.0')
-    local font = Media:Fetch('font', ns.config.font)
-    local texture = Media:Fetch('statusbar', ns.config.statusbar)
+    local font = Media:Fetch('font', ns.db.profile.font)
+    local texture = Media:Fetch('statusbar', ns.db.profile.statusbar)
 
     for i = 1, 3 do
         local barname = 'MirrorTimer'..i
@@ -298,24 +211,14 @@ ns:RegisterEvent('PLAYER_LOGIN', function(event, ...)
         tinsert(ns.fontstrings, bar.text)
     end
 
-end)
+end
 
--- Register Some stuf with Shared Media
-local Media = LibStub('LibSharedMedia-3.0', true)
-Media:Register('statusbar', 'Armory', [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]])
-Media:Register('font', 'DorisPP', [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]])
-
--- Slash command handler
-SLASH_oUF_Zoey1 = '/zoey'
-function SlashCmdList.oUF_Zoey(message)
-    local command, parameters = string.split(' ', message, 2)
+function ns:SlashCommandHandler(message)
+    local command = self:GetArgs(message, 2)
 
     -- Option the options window
-    if command == '' or command == 'config' then
-        InterfaceOptionsFrame_OpenToCategory('oUF Zoey')
-        InterfaceOptionsFrame_OpenToCategory('oUF Zoey')
-    elseif command == 'test' then
-        ns:ToggleTestFrames()
+    if not command or command == 'config' then
+        self:Print('Temoprory disabled.')
     end
 end
 

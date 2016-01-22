@@ -18,7 +18,7 @@ local function SpawnHeader(name, visibility, ...)
 end
 
 oUF:Factory(function(oUF)
-    local frames_offset, ptgap, gap = ns.config.frames_offset, ns.config.ptgap, 12
+    local frames_offset, ptgap, gap = ns.db.profile.frames_offset, ns.db.profile.ptgap, 12
 
     -- The frame that all unitframes are attached to.
     local Anchor = CreateFrame('Frame', 'oUF_ZoeyUnitFrameAnchor', UIParent)
