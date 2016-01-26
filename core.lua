@@ -74,7 +74,11 @@ end
 
 -- Called when the addon is enabled
 function ns:OnEnable()
+    ns:DisableBlizzard()
+    ns:SkinMirrorTimer()
+end
 
+function ns:DisableBlizzard()
     -- Hide the Blizzard Buffs
     BuffFrame:Hide()
     BuffFrame:UnregisterAllEvents()
@@ -120,8 +124,9 @@ function ns:OnEnable()
             end
         end
     end
+end
 
-    -- Skin the Mirror Timers
+function ns:SkinMirrorTimer()
     local Media = LibStub('LibSharedMedia-3.0')
     local font = Media:Fetch('font', ns.db.profile.font)
     local texture = Media:Fetch('statusbar', ns.db.profile.statusbar)
@@ -166,7 +171,6 @@ function ns:OnEnable()
         tinsert(ns.statusbars, bar.bg)
         tinsert(ns.fontstrings, bar.text)
     end
-
 end
 
 function ns:SlashCommandHandler(message)
