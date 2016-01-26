@@ -76,6 +76,7 @@ end
 function ns:OnEnable()
     ns:DisableBlizzard()
     ns:SkinMirrorTimer()
+    ns:SpawnUnitFrames()
 end
 
 function ns:DisableBlizzard()
