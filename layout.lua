@@ -824,10 +824,10 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.Castbar = CreateStatusBar(self, 'Castbar')
 
         if unit == 'player' then
-            self.Castbar:SetSize(300,22)
+            self.Castbar:SetSize(325,22)
             self.Castbar:SetPoint('BOTTOM', oUF_ZoeyUnitFrameAnchor, 0, -100)
         elseif unit == 'target' then
-            self.Castbar:SetSize(590,38)
+            self.Castbar:SetSize(500,30)
             self.Castbar:SetPoint('BOTTOM', oUF_ZoeyUnitFrameAnchor, 0, 125)
         end
 
@@ -892,8 +892,8 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         -- Buffs
         self.Buffs = CreateFrame('Frame', nil, self)
         self.Buffs:SetHeight(1) -- Needs a size to display
-        self.Buffs:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -6)
-        self.Buffs:SetPoint('TOPRIGHT', self, 'BOTTOMRIGHT', 0, -6)
+        self.Buffs:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -8)
+        self.Buffs:SetPoint('TOPRIGHT', self, 'BOTTOMRIGHT', 0, -8)
 
         self.Buffs['growth-y'] = 'DOWN'
         self.Buffs['spacing'] = 3
@@ -915,8 +915,8 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         -- Debuffs
         self.Debuffs = CreateFrame('Frame', nil, self)
         self.Debuffs:SetHeight(1) -- Needs a size to display
-        self.Debuffs:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 6)
-        self.Debuffs:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 6)
+        self.Debuffs:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 8)
+        self.Debuffs:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 8)
 
         self.Debuffs['growth-y'] = 'UP'
         self.Debuffs['spacing'] = 3
