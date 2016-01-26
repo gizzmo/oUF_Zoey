@@ -1063,7 +1063,7 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     local Name = CreateText(self.Overlay, 10, 'center')
     Name:SetPoint('TOPLEFT', self, 1, -1)
     Name:SetPoint('TOPRIGHT', self, -1, -1)
-    self:Tag(Name, '[leadericon][Name]')
+    self:Tag(Name, '[Name]')
 
     -- Status Text
     local StatusText = CreateText(self.Overlay, 12, 'center')
@@ -1074,6 +1074,16 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     --//----------------------------
     --// Icons
     --//----------------------------
+    -- Leader Icon
+    self.Leader = self.Overlay:CreateTexture(nil, 'OVERLAY')
+    self.Leader:SetSize(13,13)
+    self.Leader:SetPoint('CENTER', self.Overlay, 'TOPLEFT', 0, 0)
+
+    -- Assistant Icon
+    self.Assistant = self.Overlay:CreateTexture(nil, 'OVERLAY')
+    self.Assistant:SetSize(13,13)
+    self.Assistant:SetPoint('CENTER', self.Overlay, 'TOPLEFT', 0, 0)
+
     -- LFD Role Icon
     self.LFDRole = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.LFDRole:SetSize(13,13)
