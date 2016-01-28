@@ -70,6 +70,9 @@ function ns:OnInitialize()
     local Media = LibStub('LibSharedMedia-3.0')
     Media:Register('statusbar', 'Armory', [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]])
     Media:Register('font', 'DorisPP', [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]])
+
+    -- Setup the options
+    self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions(addonName)
 end
 
 -- Called when the addon is enabled
@@ -179,7 +182,8 @@ function ns:SlashCommandHandler(message)
 
     -- Option the options window
     if not command or command == 'config' then
-        self:Print('Temoprory disabled.')
+        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
+        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
     end
 end
 
