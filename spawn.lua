@@ -83,44 +83,19 @@ function ns:SpawnUnitFrames()
     ):SetPoint('BOTTOMLEFT', u.party, 0, -28)
 
     --//----------------------------
-    -- Raid Size 1 - 10
-    oUF:SetActiveStyle('ZoeyThin')
-    local Raid = {}
-    for i = 1, 2 do
-        Raid[i] = SpawnHeader('Raid10_g'..i,
-            'custom [@raid11,exists] hide; [@raid1,exists] show; hide',
-
-            'showRaid', true,
-            'yOffset', gap,
-            'groupFilter', tostring(i),
-            'point', 'BOTTOM',
-            'oUF-initialConfigFunction', [[
-                self:SetWidth( 135 )
-                self:SetHeight( 20 )
-            ]]
-        )
-
-        if i == 1 then
-            Raid[i]:SetPoint('BOTTOM', Anchor, 0, 0)
-            Raid[i]:SetPoint('LEFT', UIParent, 'LEFT', gap, 0)
-        else
-            Raid[i]:SetPoint('BOTTOM', Raid[i - 1], 'TOP', 0, gap)
-        end
-    end
-
-    -- Raid Size 11 - 40
+    -- Raid
     oUF:SetActiveStyle('ZoeySquare')
     local Raid = {}
     for i = 1, 8 do
         Raid[i] = SpawnHeader('Raid25_g'..i,
-            'custom [@raid11,exists] show; hide ',
+            'custom [@raid1,exists] show; hide ',
 
             'showRaid', true,
             'xOffset', gap/2,
             'groupFilter', tostring(i),
             'point', 'LEFT',
             'oUF-initialConfigFunction', [[
-                self:SetWidth( 53 )
+                self:SetWidth( 70 )
                 self:SetHeight( 33 )
             ]]
         )
