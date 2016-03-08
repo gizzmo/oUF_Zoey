@@ -386,13 +386,8 @@ local function InitStyle(self, unit, isSingle)
     self:RegisterEvent('PLAYER_TARGET_CHANGED', HighlightUpdate)
     table.insert(self.__elements, HighlightUpdate)
 
-    -- Spell Range
-    local ranger = 'Range'
-    if IsAddOnLoaded('oUF_SpellRange') then
-        ranger = 'SpellRange'
-    end
-
-    self[ranger] = {
+    -- Frame Range Fading
+    self[IsAddOnLoaded('oUF_SpellRange') and 'SpellRange' or 'Range'] = {
         insideAlpha = 1,
         outsideAlpha = 0.5
     }
