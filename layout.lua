@@ -351,8 +351,7 @@ end
 --// STYLE FUNCTION
 --//----------------------------
 -- Things every style will have
-local function SharedStyle(self)
-
+local function InitStyle(self, unit, isSingle)
     -- Make the frame interactiveable
     self:RegisterForClicks('AnyUp')
     self:SetScript('OnEnter', OnEnter)
@@ -398,316 +397,93 @@ local function SharedStyle(self)
         outsideAlpha = 0.5
     }
 
+    -- All frames will have a health status bar
+    self.Health = CreateStatusBar(self, 'HealthBar')
+    self.Health:SetPoint('TOP', self, 'TOP', 0, -1)
+    self.Health:SetPoint('LEFT', self, 'LEFT', 1, 0)
+    self.Health:SetPoint('RIGHT', self, 'RIGHT', -1, 0)
+    self.Health:SetPoint('BOTTOM', self, 'BOTTOM', 0, 1)
+    self.Health.PostUpdate = PostUpdateHealth
+
 end
 
 -- Main Core style
 oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
-    SharedStyle(self)
-
-    -- Frame size is set after creating status bars
-    -- but the info is needed to create and place the bars
-    local FRAME_HEIGHT, FRAME_WIDTH = 1
+    ----------------------------------------------------------------------------
+    -- Size up the frame
+    ----------------------------------------------------------------------------
+    local FRAME_HEIGHT = 40
+    local FRAME_WIDTH = 135
+    local POWER_HEIGHT = 10 -- (FRAME_HEIGHT * 0.2)
 
     if unit == 'player' or unit == 'target' then
         FRAME_WIDTH = 222
-    else
-        FRAME_WIDTH = 135
     end
 
-    --//----------------------------
-    --// Portrait
-    --//----------------------------
-    if unit == 'party' then
-        self.Portrait = CreateFrame('PlayerModel', '$parentPortrait', self)
-        self.Portrait:SetHeight(38.5)
-        self.Portrait:SetPoint('TOP', 0, -FRAME_HEIGHT)
-        self.Portrait:SetPoint('LEFT', 1,0)
-        self.Portrait:SetPoint('RIGHT',-2,0)
-        self.Portrait:SetAlpha(0.4)
-
-        -- Up The FRAME_HEIGHT
-        FRAME_HEIGHT = FRAME_HEIGHT + self.Portrait:GetHeight() + 1.5
+    if isSingle then
+        self:SetSize(FRAME_WIDTH, FRAME_HEIGHT)
     end
 
-    --//----------------------------
-    --// Health Bar
-    --//----------------------------
-    self.Health = CreateStatusBar(self, 'HealthBar')
-    self.Health:SetHeight(27)
-    self.Health:SetPoint('TOP', 0, -FRAME_HEIGHT)
-    self.Health:SetPoint('LEFT', 1,0)
-    self.Health:SetPoint('RIGHT',-1,0)
-    self.Health.PostUpdate = PostUpdateHealth
+    -- Initliaze the style
+    InitStyle(self, unit, isSingle)
 
-    -- Up The FRAME_HEIGHT
-    FRAME_HEIGHT = FRAME_HEIGHT + self.Health:GetHeight() + 1
-
-    --//----------------------------
-    --// Power Bar
-    --//----------------------------
-    self.Power = CreateStatusBar(self,'PowerBar')
-    self.Power:SetHeight(10)
-    self.Power:SetPoint('TOP', 0, -FRAME_HEIGHT)
-    self.Power:SetPoint('LEFT', 1,0)
-    self.Power:SetPoint('RIGHT',-1,0)
+    ----------------------------------------------------------------------------
+    -- Build the other status bars
+    ----------------------------------------------------------------------------
+    self.Power = CreateStatusBar(self, 'PowerBar')
+    self.Power:SetHeight(POWER_HEIGHT)
+    self.Power:SetPoint('LEFT', self, 'LEFT', 1, 0)
+    self.Power:SetPoint('RIGHT', self, 'RIGHT', -1, 0)
+    self.Power:SetPoint('BOTTOM', self, 'BOTTOM', 0, 1)
     self.Power.PostUpdate = PostUpdatePower
 
-    -- Up The FRAME_HEIGHT
-    FRAME_HEIGHT = FRAME_HEIGHT + self.Power:GetHeight() + 1
+    self.Health:SetPoint('BOTTOM', self.Power, 'TOP', 0, 1)
 
-    --//----------------------------
-    --// Class Bars
-    --//----------------------------
-    if unit == 'player' then
+    if unit == 'party' then
+        local PORTRAIT_HEIGHT = FRAME_HEIGHT
+        self.Portrait = CreateFrame('PlayerModel', '$parentPortrait', self)
+        self.Portrait:SetHeight(PORTRAIT_HEIGHT - 0.5)
+        self.Portrait:SetPoint('TOP', self, 'TOP', 0, -1)
+        self.Portrait:SetPoint('LEFT', self, 'LEFT', 1, 0)
+        self.Portrait:SetPoint('RIGHT', self, 'RIGHT', -2, 0)
+        self.Portrait:SetAlpha(0.4)
 
-        --//----------------------------
-        --// Death Knight Runes
-        --//----------------------------
-        if playerClass == 'DEATHKNIGHT' then
+        self.Health:SetPoint('TOP', self.Portrait, 'BOTTOM', 0, -1.5)
 
-            self.Runes = CreateFrame('Frame', '$parentRunebar', self)
-            self.Runes:SetHeight(5)
-            self.Runes:SetPoint('TOP', 0, -FRAME_HEIGHT)
-            self.Runes:SetPoint('LEFT', 1,0)
-            self.Runes:SetPoint('RIGHT', -1,0)
-
-            local width = ((self:GetWidth() - 2) / 6) - ((6 - 1) / 6)
-
-            for i = 1, 6 do
-                local rune = CreateStatusBar(self.Runes, 'Rune'..i)
-                rune:SetSize(width, self.Runes:GetHeight())
-                rune.bg.multiplier = 0.4
-
-                if i == 1 then
-                    rune:SetPoint('LEFT')
-                else
-                    rune:SetPoint('LEFT', self.Runes[i-1], 'RIGHT', 1, 0)
-                end
-
-                self.Runes[i] = rune
-            end
-
-            -- Up The FRAME_HEIGHT
-            FRAME_HEIGHT = FRAME_HEIGHT + self.Runes:GetHeight() + 1
-
-        end
-
-        --//----------------------------
-        --// Druid Eclipse
-        --//----------------------------
-        if playerClass == 'DRUID' then
-
-
-
-        end
-
-        --//----------------------------
-        --// Paladin Holy Power
-        --//----------------------------
-        if playerClass == 'PALADIN' then
-
-            self.ClassIcons = CreateFrame('Frame', '$parentHolyPowerBar', self)
-            self.ClassIcons:SetHeight(5)
-            self.ClassIcons:SetPoint('TOP', 0, -FRAME_HEIGHT)
-            self.ClassIcons:SetPoint('LEFT', 1,0)
-            self.ClassIcons:SetPoint('RIGHT', -1,0)
-
-            local width = ((self:GetWidth() - 2) / 3) - ((3 - 1) / 3)
-
-            for i = 1, 3 do
-                local power = self.ClassIcons:CreateTexture(nil, 'ARTWORK')
-                power:SetTexture(ns.db.profile.statusbar)
-                power:SetSize(width, self.ClassIcons:GetHeight())
-
-                if i == 1 then
-                    power:SetPoint('LEFT', self.ClassIcons, 0, 0)
-                else
-                    power:SetPoint('LEFT', self.ClassIcons[i-1], 'RIGHT', 1, 0)
-                end
-
-                power.bg = self.ClassIcons:CreateTexture(nil, 'BACKGROUND')
-                power.bg:SetTexture(ns.db.profile.statusbar)
-                power.bg:SetAllPoints(power)
-
-                -- // Color
-                local r,g,b = unpack(colors.power.HOLY_POWER)
-
-                power:SetVertexColor(r,g,b)
-                power.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
-
-                self.ClassIcons[i] = power
-            end
-
-            -- There is no 4th and 5th holy power, but ClassIcon requires it.
-            for i= 4, 5 do
-                self.ClassIcons[i] = self.ClassIcons:CreateTexture(nil, 'ARTWORK')
-            end
-
-
-            -- Up The FRAME_HEIGHT
-            FRAME_HEIGHT = FRAME_HEIGHT + self.ClassIcons:GetHeight() + 1
-
-        end
-
-        --//----------------------------
-        --// Shaman Totems
-        --//----------------------------
-        if playerClass == 'SHAMAN' then
-
-
-
-        end
-
-        --//----------------------------
-        --// Warlock Soul Shards
-        --//----------------------------
-        if playerClass == 'WARLOCK' then
-
-            self.ClassIcons = CreateFrame('Frame', '$parentClassIconsBar', self)
-            self.ClassIcons:SetHeight(5)
-            self.ClassIcons:SetPoint('TOP', 0, -FRAME_HEIGHT)
-            self.ClassIcons:SetPoint('LEFT', 1,0)
-            self.ClassIcons:SetPoint('RIGHT', -1,0)
-
-            local width = ((self:GetWidth() - 2) / 3) - ((3 - 1) / 3)
-
-            for i = 1, 3 do
-                local shard = self.ClassIcons:CreateTexture(nil, 'ARTWORK')
-                shard:SetTexture(ns.db.profile.statusbar)
-                shard:SetSize(width, self.ClassIcons:GetHeight())
-
-                if i == 1 then
-                    shard:SetPoint('LEFT', self.ClassIcons, 0, 0)
-                else
-                    shard:SetPoint('LEFT', self.ClassIcons[i-1], 'RIGHT', 1, 0)
-                end
-
-                shard.bg = self.ClassIcons:CreateTexture(nil, 'BACKGROUND')
-                shard.bg:SetTexture(ns.db.profile.statusbar)
-                shard.bg:SetAllPoints(shard)
-
-                -- // Color
-                local r,g,b = unpack(colors.power.SOUL_SHARDS)
-
-                shard:SetVertexColor(r,g,b)
-                shard.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
-
-                self.ClassIcons[i] = shard
-            end
-
-            -- There is no 4th and 5th soul shards, but ClassIcon requires it.
-            for i= 4, 5 do
-                self.ClassIcons[i] = self.ClassIcons:CreateTexture(nil, 'ARTWORK')
-            end
-
-            -- Up The FRAME_HEIGHT
-            FRAME_HEIGHT = FRAME_HEIGHT + self.ClassIcons:GetHeight() + 1
-
-        end
-
-    elseif unit == 'target' then
-
-        --//----------------------------
-        --// Combo Points
-        --//----------------------------
-        if playerClass == 'ROGUE' or playerClass == 'DRUID' then
-
-            -- Combo points float above the healthbar
-            -- so they can be hidden if the druid isnt in cat form
-
-            self.CPoints = CreateFrame('Frame', '$parentCPointsFrame', self)
-            self.CPoints:SetHeight(5)
-            self.CPoints:SetPoint('BOTTOMLEFT', self.Health, 'TOPLEFT', 0, 1)
-            self.CPoints:SetPoint('BOTTOMRIGHT', self.Health, 'TOPRIGHT', 0, 1)
-
-            self.CPoints:SetFrameLevel(3) -- Push it above the portrait
-
-            -- Background
-            local Background = self.CPoints:CreateTexture(nil, 'BACKGROUND')
-            Background:SetPoint('TOPLEFT', -1, 1)
-            Background:SetPoint('BOTTOMRIGHT', 1, -1)
-            Background:SetTexture(0, 0, 0, 1)
-
-            local width = ((self:GetWidth() - 2) / 5) - ((5 - 1) / 5)
-
-            for i = 1, 5 do
-                local point = self.CPoints:CreateTexture(nil, 'ARTWORK')
-                point:SetTexture(ns.db.profile.statusbar)
-                point:SetSize(width, self.CPoints:GetHeight())
-
-                if i == 1 then
-                    point:SetPoint('LEFT', self.CPoints, 0, 0)
-                else
-                    point:SetPoint('LEFT', self.CPoints[i-1], 'RIGHT', 1, 0)
-                end
-
-                point.bg = self.CPoints:CreateTexture(nil, 'BACKGROUND')
-                point.bg:SetTexture(ns.db.profile.statusbar)
-                point.bg:SetAllPoints(point)
-
-                -- // Color
-                local r,g,b = unpack(colors.comboPoints.normal)
-
-                point:SetVertexColor(r,g,b)
-                point.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
-
-                self.CPoints[i] = point
-            end
-
-            -- Last combo point should be red, but not the bg
-            self.CPoints[5]:SetVertexColor(unpack(colors.comboPoints.last))
-
-            -- Toggle the frame when the Druid enters/leaves Cat Form
-            if playerClass == 'DRUID' then
-                local f = CreateFrame('Frame', nil, self)
-                f:RegisterEvent('PLAYER_LOGIN')
-                f:RegisterEvent('UPDATE_SHAPESHIFT_FORM')
-                f:SetScript('OnEvent', function()
-                    if GetShapeshiftFormID() == CAT_FORM then
-                        self.CPoints:Show()
-                    else
-                        self.CPoints:Hide()
-                    end
-                end)
-            end
+        if isSingle then
+            self:SetHeight(self:GetHeight() + PORTRAIT_HEIGHT + 1)
         end
     end
 
-    --//----------------------------
-    --// Experience Bar
-    --//----------------------------
     if unit == 'player' and UnitLevel(unit) ~= MAX_PLAYER_LEVEL then
+        local EXP_HEIGHT = 4
         self.Experience = CreateStatusBar(self, 'Experience', true)
-        self.Experience:SetHeight(5)
-        self.Experience:SetPoint('TOP', 0, -FRAME_HEIGHT)
-        self.Experience:SetPoint('LEFT', 1,0)
-        self.Experience:SetPoint('RIGHT',-1,0)
+        self.Experience:SetHeight(EXP_HEIGHT)
+        self.Experience:SetPoint('BOTTOM', self, 'BOTTOM', 0, 1)
+        self.Experience:SetPoint('LEFT', self, 'LEFT', 1, 0)
+        self.Experience:SetPoint('RIGHT', self, 'RIGHT', -1, 0)
 
         self.Experience.Rested = CreateStatusBar(self.Experience, 'Rested')
         self.Experience.Rested:SetAllPoints(self.Experience)
+
+        -- Colors
+        local r,g,b = unpack(colors.experience.main)
+        self.Experience:SetStatusBarColor(r,g,b)
+        self.Experience.Rested:SetStatusBarColor(unpack(colors.experience.rested))
+        self.Experience.Rested.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
 
         -- Resize the main frame when this frame Hides or Shows
         self.Experience:SetScript('OnShow', BarOnShow)
         self.Experience:SetScript('OnHide', BarOnHide)
 
-        -- Main Color
-        local r,g,b = unpack(colors.experience.main)
+        self.Power:SetPoint('BOTTOM', self.Experience, 'TOP', 0, 1)
 
-        self.Experience:SetStatusBarColor(r,g,b)
-        self.Experience.Rested.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
-
-        -- Rested Color
-        self.Experience.Rested:SetStatusBarColor(unpack(colors.experience.rested))
-
-        -- Up The FRAME_HEIGHT
-        FRAME_HEIGHT = FRAME_HEIGHT + self.Experience:GetHeight() + 1
+        if isSingle then
+            self:SetHeight(self:GetHeight() + EXP_HEIGHT + 1)
+        end
     end
 
-    -- Finely time to set the frame size
-    if isSingle then
-        self:SetWidth(FRAME_WIDTH)
-        self:SetHeight(FRAME_HEIGHT)
-    end
+    -- TODO: Re implemenet class bars.
 
     --//----------------------------
     --// Texts
@@ -960,29 +736,18 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 end)
 
 oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
-    SharedStyle(self)
+    ----------------------------------------------------------------------------
+    -- Size up the frame
+    ----------------------------------------------------------------------------
+    local FRAME_HEIGHT = 20
+    local FRAME_WIDTH  = 135
 
-    -- Frame size is set after creating status bars
-    local FRAME_HEIGHT,FRAME_WIDTH  = 1,135
-
-    --//----------------------------
-    --// Health Bar
-    --//----------------------------
-    self.Health = CreateStatusBar(self, 'HealthBar')
-    self.Health:SetHeight(18)
-    self.Health:SetPoint('TOP', 0, -FRAME_HEIGHT)
-    self.Health:SetPoint('LEFT', 1,0)
-    self.Health:SetPoint('RIGHT',-1,0)
-    self.Health.PostUpdate = PostUpdateHealth
-
-    -- Up The FRAME_HEIGHT
-    FRAME_HEIGHT = FRAME_HEIGHT + self.Health:GetHeight() + 1
-
-    -- Finely time to set the frame size
     if isSingle then
-        self:SetWidth(FRAME_WIDTH)
-        self:SetHeight(FRAME_HEIGHT)
+        self:SetSize(FRAME_WIDTH, FRAME_HEIGHT)
     end
+
+    -- Initliaze the style
+    InitStyle(self, unit, isSingle)
 
     --//----------------------------
     --// Texts
@@ -1019,42 +784,31 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
 end)
 
 oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
-    SharedStyle(self)
+    ----------------------------------------------------------------------------
+    -- Size up the frame
+    ----------------------------------------------------------------------------
+    local FRAME_HEIGHT = 33
+    local FRAME_WIDTH  = 53
+    local POWER_HEIGHT = 5
 
-    -- Frame size is set after creating status bars
-    local FRAME_HEIGHT,FRAME_WIDTH = 1,53
+    if isSingle then
+        self:SetSize(FRAME_WIDTH, FRAME_HEIGHT)
+    end
 
-    --//----------------------------
-    --// Health Bar
-    --//----------------------------
-    self.Health = CreateStatusBar(self, 'HealthBar')
-    self.Health:SetHeight(25)
-    self.Health:SetPoint('TOP', 0, -FRAME_HEIGHT)
-    self.Health:SetPoint('LEFT', 1,0)
-    self.Health:SetPoint('RIGHT',-1,0)
-    self.Health.PostUpdate = PostUpdateHealth
+    -- Initliaze the style
+    InitStyle(self, unit, isSingle)
 
-    -- Up The FRAME_HEIGHT
-    FRAME_HEIGHT = FRAME_HEIGHT + self.Health:GetHeight() + 1
-
-    --//----------------------------
-    --// Power Bar
-    --//----------------------------
+    ----------------------------------------------------------------------------
+    -- Build the other status bars
+    ----------------------------------------------------------------------------
     self.Power = CreateStatusBar(self, 'PowerBar')
-    self.Power:SetHeight(5)
-    self.Power:SetPoint('TOP', 0, -FRAME_HEIGHT)
-    self.Power:SetPoint('LEFT', 1,0)
-    self.Power:SetPoint('RIGHT',-1,0)
+    self.Power:SetHeight(POWER_HEIGHT)
+    self.Power:SetPoint('LEFT', self, 'LEFT', 1, 0)
+    self.Power:SetPoint('RIGHT', self, 'RIGHT', -1, 0)
+    self.Power:SetPoint('BOTTOM', self, 'BOTTOM', 0, 1)
     self.Power.PostUpdate = PostUpdatePower
 
-    -- Up The FRAME_HEIGHT
-    FRAME_HEIGHT = FRAME_HEIGHT + self.Power:GetHeight() + 1
-
-    -- Finely time to set the frame size
-    if isSingle then
-        self:SetWidth(FRAME_WIDTH)
-        self:SetHeight(FRAME_HEIGHT)
-    end
+    self.Health:SetPoint('BOTTOM', self.Power, 'TOP', 0, 1)
 
     --//----------------------------
     --// Texts
