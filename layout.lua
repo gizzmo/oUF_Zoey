@@ -6,10 +6,9 @@ local colors = oUF.colors
 local _, playerClass = UnitClass('player')
 local playerUnits = { player = true, pet = true, vehicle = true }
 
---//----------------------------
---// FUNCTIONS
---//----------------------------
-
+--------------------------------------------------------------------------------
+-- Functions
+--------------------------------------------------------------------------------
 local function UpdateUnitBorderColor(self)
     if not self.Border or not self.unit then return end
 
@@ -347,10 +346,9 @@ function ns.SetAllStatusBarTextures()
     end
 end
 
---//----------------------------
---// STYLE FUNCTION
---//----------------------------
+--------------------------------------------------------------------------------
 -- Things every style will have
+--------------------------------------------------------------------------------
 local function InitStyle(self, unit, isSingle)
     -- Make the frame interactiveable
     self:RegisterForClicks('AnyUp')
@@ -405,7 +403,7 @@ end
 -- Main Core style
 oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
-    -- Size up the frame
+    -- Setup the frame
     ----------------------------------------------------------------------------
     local FRAME_HEIGHT = 40
     local FRAME_WIDTH = 135
@@ -480,18 +478,15 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
     -- TODO: Re implemenet class bars.
 
-    --//----------------------------
-    --// Texts
-    --//----------------------------
-    --TODO: we should save the tags to a table on the frame.
-    -- Name Text
+    ----------------------------------------------------------------------------
+    -- Texts -- TODO: we should save the tags to a table on the frame.
+    ----------------------------------------------------------------------------
     local Name = CreateText(self.Overlay, 14)
     Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
     Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
     --TODO: we should reset colors returned from the tags
     self:Tag(Name, '[leadericon][Level< ][Name][|r - >Realm]')
 
-    -- Health Text
     if unit == 'target' then
         -- Target uses two health texts to make the
         -- final 20% big and red for Execute and Kill Shot
@@ -508,19 +503,16 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self:Tag(HealthText, '[Health]')
     end
 
-    -- Power Text
     local PowerText = CreateText(self.Overlay, 12)
     PowerText:SetPoint('RIGHT', self.Power, -1, -1)
     self:Tag(PowerText, '[Power]')
 
-    -- Experience Text
     if self.Experience then
         local Experience = CreateText(self.Overlay, 10)
         Experience:SetPoint('CENTER', self.Experience, 'BOTTOM', 0, -5)
         self:Tag(Experience, '[Exp]')
     end
 
-    -- Guild Name
     if self.Portrait then
         local Guild = CreateText(self.Overlay, 12)
         Guild:SetPoint('TOP', Name, 'BOTTOM', 0, -1)
@@ -529,51 +521,43 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self:Tag(Guild, '[Guild]')
     end
 
-    --//----------------------------
-    --// Icons
-    --//----------------------------
+    ----------------------------------------------------------------------------
+    -- Icons
+    ----------------------------------------------------------------------------
     if unit == 'player' then
-        -- Resting Icon
         self.Resting = self.Overlay:CreateTexture(nil, 'OVERLAY')
         self.Resting:SetSize(20,20)
         self.Resting:SetPoint('LEFT', self.Overlay, 'BOTTOMLEFT', 0, 2)
 
-        -- Combat Icon
         self.Combat = self.Overlay:CreateTexture(nil, 'OVERLAY')
         self.Combat:SetSize(20,20)
         self.Combat:SetPoint('RIGHT', self.Overlay, 'BOTTOMRIGHT', 0, 2)
     end
 
     if unit == 'target' then
-        -- Quest Mob Icon
         self.QuestIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
         self.QuestIcon:SetSize(32,32)
         self.QuestIcon:SetPoint('CENTER', self.Overlay, 'LEFT', 0, 0)
     end
 
-    -- LFD Role Icon
     self.LFDRole = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.LFDRole:SetSize(15,15)
     self.LFDRole:SetPoint('CENTER', self.Overlay, 'TOPRIGHT', 1, 0)
 
-    -- Ready Check icon
     self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
     self.ReadyCheck:SetPoint('CENTER', self.Overlay, 0, 0)
 
-    -- Raid Icon (Skull, Cross, Square ...)
     self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.RaidIcon:SetSize(23,23)
     self.RaidIcon:SetPoint('LEFT', self.Overlay, 3, 0)
 
-    -- PvP Icon
     self.PvP = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.PvP:SetSize(21,21)
     self.PvP:SetPoint('CENTER', self.Overlay, 'LEFT', 0,0)
     self.PvP.PostUpdate = PvPPostUpdate
 
     if unit == 'party' or unit == 'target' or unit == 'focus' then
-        -- Phase Icon -- is the unit in a different phase then the player
         self.PhaseIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
         self.PhaseIcon:SetPoint('TOP', self)
         self.PhaseIcon:SetPoint('BOTTOM', self)
@@ -586,11 +570,10 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.PhaseIcon:SetVertexColor(0.4, 0.8, 1)
     end
 
-    --//----------------------------
-    --// Cast Bars
-    --//----------------------------
+    ----------------------------------------------------------------------------
+    -- Cast Bars
+    ----------------------------------------------------------------------------
     if unit == 'player' or unit == 'target' then
-
         -- The Castbar its self
         self.Castbar = CreateStatusBar(self, 'Castbar')
 
@@ -655,12 +638,10 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         ns.CreateBorder(self.Castbar.Frame)
     end
 
-    --//----------------------------
-    --// Auras
-    --//----------------------------
+    ----------------------------------------------------------------------------
+    -- Auras
+    ----------------------------------------------------------------------------
     if unit == 'player' or unit == 'target' then
-
-        -- Buffs
         self.Buffs = CreateFrame('Frame', nil, self)
         self.Buffs:SetHeight(1) -- Needs a size to display
         self.Buffs:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -5)
@@ -683,7 +664,6 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.Buffs.PostCreateIcon = PostCreateAuraIcon
         self.Buffs.PostUpdateIcon = PostUpdateAuraIcon
 
-        -- Debuffs
         self.Debuffs = CreateFrame('Frame', nil, self)
         self.Debuffs:SetHeight(1) -- Needs a size to display
         self.Debuffs:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 5)
@@ -706,9 +686,9 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
     end
 
-    --//----------------------------
-    --// Heal Prediction Bar
-    --//----------------------------
+    ----------------------------------------------------------------------------
+    -- Heal Prediction Bar
+    ----------------------------------------------------------------------------
     local mhpb = CreateStatusBar(self.Health, nil, true)
     mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
     mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
@@ -721,7 +701,6 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     ohpb:SetWidth(self:GetWidth())
     ohpb:SetStatusBarColor(0, 1, 0, 0.25) -- TODO: tweek colors
 
-    -- Register it with oUF
     self.HealPrediction = {
         myBar = mhpb,    -- status bar to show my incoming heals
         otherBar = ohpb, -- status bar to show other peoples incoming heals
@@ -732,7 +711,7 @@ end)
 
 oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
-    -- Size up the frame
+    -- Setup the frame
     ----------------------------------------------------------------------------
     local FRAME_HEIGHT = 20
     local FRAME_WIDTH  = 135
@@ -744,34 +723,29 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
     -- Initliaze the style
     InitStyle(self, unit, isSingle)
 
-    --//----------------------------
-    --// Texts
-    --//----------------------------
-    -- Name Text
+    ----------------------------------------------------------------------------
+    -- Texts
+    ----------------------------------------------------------------------------
     local Name = CreateText(self.Overlay, 12)
     Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
     Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
     self:Tag(Name, '[leadericon][Level< ][Name]')
 
-    -- Status Text
     local StatusText = CreateText(self.Overlay, 16)
     StatusText:SetPoint('RIGHT', self.Health, -1, 0)
     self:Tag(StatusText, '[Status]')
 
-    --//----------------------------
-    --// Icons
-    --//----------------------------
-    -- LFD Role Icon
+    ----------------------------------------------------------------------------
+    -- Icons
+    ----------------------------------------------------------------------------
     self.LFDRole = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.LFDRole:SetSize(13,13)
     self.LFDRole:SetPoint('CENTER', self.Overlay, 'TOPRIGHT', 0, 0)
 
-    -- Ready Check icon
     self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
     self.ReadyCheck:SetPoint('CENTER', self.Overlay, 0, 0)
 
-    -- Raid Icon (Skull, Cross, Square ...)
     self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.RaidIcon:SetSize(16,16)
     self.RaidIcon:SetPoint('CENTER', self.Overlay, 'LEFT', 0, 0)
@@ -780,7 +754,7 @@ end)
 
 oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
-    -- Size up the frame
+    -- Setup the frame
     ----------------------------------------------------------------------------
     local FRAME_HEIGHT = 33
     local FRAME_WIDTH  = 53
@@ -805,45 +779,38 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
 
     self.Health:SetPoint('BOTTOM', self.Power, 'TOP', 0, 1)
 
-    --//----------------------------
-    --// Texts
-    --//----------------------------
-    -- Name Text
+    ----------------------------------------------------------------------------
+    -- Texts
+    ----------------------------------------------------------------------------
     local Name = CreateText(self.Overlay, 10, 'center')
     Name:SetPoint('TOPLEFT', self, 1, -1)
     Name:SetPoint('TOPRIGHT', self, -1, -1)
     self:Tag(Name, '[Name]')
 
-    -- Status Text
     local StatusText = CreateText(self.Overlay, 12, 'center')
     StatusText:SetPoint('BOTTOMLEFT',  self.Health, 1, 1)
     StatusText:SetPoint('BOTTOMRIGHT',  self.Health, -1, 1)
     self:Tag(StatusText, '[Status]')
 
-    --//----------------------------
-    --// Icons
-    --//----------------------------
-    -- Leader Icon
+    ----------------------------------------------------------------------------
+    -- Icons
+    ----------------------------------------------------------------------------
     self.Leader = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.Leader:SetSize(13,13)
     self.Leader:SetPoint('CENTER', self.Overlay, 'TOPLEFT', 0, 0)
 
-    -- Assistant Icon
     self.Assistant = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.Assistant:SetSize(13,13)
     self.Assistant:SetPoint('CENTER', self.Overlay, 'TOPLEFT', 0, 0)
 
-    -- LFD Role Icon
     self.LFDRole = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.LFDRole:SetSize(13,13)
     self.LFDRole:SetPoint('CENTER', self.Overlay, 'TOPRIGHT', 0, 0)
 
-    -- Ready Check icon
     self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
     self.ReadyCheck:SetPoint('CENTER', self.Overlay, 0, 0)
 
-    -- Raid Icon (Skull, Cross, Square ...)
     self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.RaidIcon:SetSize(16,16)
     self.RaidIcon:SetPoint('CENTER', self.Overlay, 'LEFT', 0, 0)
