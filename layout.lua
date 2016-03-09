@@ -435,7 +435,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     if unit == 'party' then
         local PORTRAIT_HEIGHT = FRAME_HEIGHT
         self.Portrait = CreateFrame('PlayerModel', '$parentPortrait', self)
-        self.Portrait:SetHeight(PORTRAIT_HEIGHT - 0.5)
+        self.Portrait:SetHeight(PORTRAIT_HEIGHT - 1.5)
         self.Portrait:SetPoint('TOP', self, 'TOP', 0, -1)
         self.Portrait:SetPoint('LEFT', self, 'LEFT', 1, 0)
         self.Portrait:SetPoint('RIGHT', self, 'RIGHT', -2, 0)
@@ -444,14 +444,14 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.Health:SetPoint('TOP', self.Portrait, 'BOTTOM', 0, -1.5)
 
         if isSingle then
-            self:SetHeight(self:GetHeight() + PORTRAIT_HEIGHT + 1)
+            self:SetHeight(FRAME_HEIGHT + PORTRAIT_HEIGHT)
         end
     end
 
     if unit == 'player' and UnitLevel(unit) ~= MAX_PLAYER_LEVEL then
-        local EXP_HEIGHT = 4
+        local EXP_HEIGHT = 5
         self.Experience = CreateStatusBar(self, 'Experience', true)
-        self.Experience:SetHeight(EXP_HEIGHT)
+        self.Experience:SetHeight(EXP_HEIGHT - 1)
         self.Experience:SetPoint('BOTTOM', self, 'BOTTOM', 0, 1)
         self.Experience:SetPoint('LEFT', self, 'LEFT', 1, 0)
         self.Experience:SetPoint('RIGHT', self, 'RIGHT', -1, 0)
@@ -472,7 +472,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.Power:SetPoint('BOTTOM', self.Experience, 'TOP', 0, 1)
 
         if isSingle then
-            self:SetHeight(self:GetHeight() + EXP_HEIGHT + 1)
+            self:SetHeight(self:GetHeight() + EXP_HEIGHT)
         end
     end
 
