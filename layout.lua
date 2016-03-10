@@ -574,15 +574,27 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     -- Cast Bars
     ----------------------------------------------------------------------------
     if unit == 'player' or unit == 'target' then
-        -- The Castbar its self
         self.Castbar = CreateStatusBar(self, 'Castbar')
 
+        -- Build a frame around the Castbar
+        self.Castbar.Frame = CreateFrame('Frame', '$parentFrame', self.Castbar)
+        self.Castbar.Frame:SetFrameLevel(self.Castbar:GetFrameLevel()-1)
+        self.Castbar.Frame.bg = self.Castbar.Frame:CreateTexture(nil, 'BACKGROUND')
+        self.Castbar.Frame.bg:SetAllPoints(self.Castbar.Frame)
+        self.Castbar.Frame.bg:SetTexture(0, 0, 0, 1)
+        ns.CreateBorder(self.Castbar.Frame)
+
+        -- Attach the Castbar to the Frame
+        self.Castbar:SetPoint('TOPLEFT', self.Castbar.Frame, 1, -1)
+        self.Castbar:SetPoint('BOTTOMRIGHT', self.Castbar.Frame, -1, 1)
+
+        -- Size and place the Castbar Frame
         if unit == 'player' then
-            self.Castbar:SetSize(320,20)
-            self.Castbar:SetPoint('BOTTOM', oUF_ZoeyUnitFrameAnchor, 0, -90)
+            self.Castbar.Frame:SetSize(320,20)
+            self.Castbar.Frame:SetPoint('BOTTOM', oUF_ZoeyUnitFrameAnchor, 0, -90)
         elseif unit == 'target' then
-            self.Castbar:SetSize(500,30)
-            self.Castbar:SetPoint('BOTTOM', oUF_ZoeyUnitFrameAnchor, 0, 127)
+            self.Castbar.Frame:SetSize(500,30)
+            self.Castbar.Frame:SetPoint('BOTTOM', oUF_ZoeyUnitFrameAnchor, 0, 127)
         end
 
         -- Add a spark
@@ -624,18 +636,6 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.Castbar.PostCastInterrupted = PostCastFailed
         self.Castbar.PostCastInterruptible = PostCastInterruptible
         self.Castbar.PostCastNotInterruptible = PostCastNotInterruptible
-
-        -- Build a frame around the Castbar
-        self.Castbar.Frame = CreateFrame('Frame', '$parentFrame', self.Castbar)
-        self.Castbar.Frame:SetPoint('TOPLEFT', -1, 1)
-        self.Castbar.Frame:SetPoint('BOTTOMRIGHT', 1, -1)
-        self.Castbar.Frame:SetFrameLevel(self.Castbar:GetFrameLevel()-1)
-
-        self.Castbar.Frame.bg = self.Castbar.Frame:CreateTexture(nil, 'BACKGROUND')
-        self.Castbar.Frame.bg:SetAllPoints(self.Castbar.Frame)
-        self.Castbar.Frame.bg:SetTexture(0, 0, 0, 1)
-
-        ns.CreateBorder(self.Castbar.Frame)
     end
 
     ----------------------------------------------------------------------------
