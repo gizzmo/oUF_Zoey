@@ -597,6 +597,17 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
             self.Castbar.Frame:SetPoint('BOTTOM', oUF_ZoeyUnitFrameAnchor, 0, 127)
         end
 
+        -- Spell Icon
+        if unit == 'target' then
+            self.Castbar.Icon = self.Castbar:CreateTexture(nil, 'BACKDROP')
+            self.Castbar.Icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+            self.Castbar.Icon:SetPoint('TOPLEFT', self.Castbar.Frame, 1, -1)
+            self.Castbar.Icon:SetPoint('BOTTOMLEFT', self.Castbar.Frame, 1, 1)
+            self.Castbar.Icon:SetWidth(self.Castbar.Frame:GetHeight())
+
+            self.Castbar:SetPoint('TOPLEFT', self.Castbar.Icon, 'TOPRIGHT', 1, 0) -- Anchor the castbar to the icon.
+        end
+
         -- Add a spark
         self.Castbar.Spark = self.Castbar:CreateTexture(nil, 'OVERLAY')
         self.Castbar.Spark:SetHeight(self.Castbar:GetHeight()*2.5)
