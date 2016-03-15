@@ -1,67 +1,63 @@
 -- Get the addon namespace
 local addon, ns = ...
 
---//----------------------------
---// SPAWN UNITS
---//----------------------------
 local u = {}
-local function SpawnUnit(unit)
+local function Spawn(unit)
     local object = oUF:Spawn(unit, 'oUF_Zoey'..unit)
     u[unit:lower()] = object
     return object
 end
 
-local function SpawnHeader(name, visibility, ...)
-    local object = oUF:SpawnHeader('oUF_Zoey'..name, nil, visibility, ...)
+local function SpawnHeader(name, ...)
+    local object = oUF:SpawnHeader('oUF_Zoey'..name, nil, ...)
     u[name:lower()] = object
     return object
 end
 
 function ns:SpawnUnitFrames()
-    local frames_offset, ptgap, gap = ns.db.profile.frames_offset, ns.db.profile.ptgap, 12
+    local gap = 12
 
     -- The frame that all unitframes are attached to.
     local Anchor = CreateFrame('Frame', 'oUF_ZoeyUnitFrameAnchor', UIParent)
-    Anchor:SetSize(ptgap, 1)
-    Anchor:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, frames_offset)
+    Anchor:SetSize(ns.db.profile.ptgap, 1)
+    Anchor:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, ns.db.profile.frames_offset)
 
-    --//----------------------------
-    -- Player
-    SpawnUnit('Player'):SetPoint('BOTTOMRIGHT', Anchor, 'BOTTOMLEFT', 0, 0)
+    ----------------------------------------------------------------------------
+    Spawn('Player'):SetPoint('BOTTOMRIGHT', Anchor, 'BOTTOMLEFT', 0, 0)
 
-    -- Player Pet
-    SpawnUnit('Pet'      ):SetPoint('RIGHT', u.player, 'LEFT', -gap, 0)
-    SpawnUnit('PetTarget'):SetPoint('BOTTOM', u.pet, 'TOP', 0, gap)
+    Spawn('Pet'):SetPoint('RIGHT', u.player, 'LEFT', -gap, 0)
+    Spawn('PetTarget'):SetPoint('BOTTOM', u.pet, 'TOP', 0, gap)
 
-    -- Targets
-    SpawnUnit('Target'      ):SetPoint('BOTTOMLEFT', Anchor, 'BOTTOMRIGHT', 0, 0)
-    SpawnUnit('TargetTarget'):SetPoint('LEFT', u.target, 'RIGHT', gap, 0)
+    Spawn('Target'):SetPoint('BOTTOMLEFT', Anchor, 'BOTTOMRIGHT', 0, 0)
+    Spawn('TargetTarget'):SetPoint('LEFT', u.target, 'RIGHT', gap, 0)
 
-    -- Focus
     oUF:SetActiveStyle('ZoeyThin')
-    SpawnUnit('Focus'      ):SetPoint('BOTTOMRIGHT', u.player, 'TOPLEFT', -100, 75)
-    SpawnUnit('FocusTarget'):SetPoint('BOTTOM', u.focus, 'TOP', 0, gap)
+    Spawn('Focus'):SetPoint('BOTTOMRIGHT', u.player, 'TOPLEFT', -100, 75)
+    Spawn('FocusTarget'):SetPoint('BOTTOM', u.focus, 'TOP', 0, gap)
 
-    --//----------------------------
-    -- Party -- note: 130 - height = yoffset
+    ----------------------------------------------------------------------------
+    -- note offset = 130 - frame height
     oUF:SetActiveStyle('Zoey')
-    local party = SpawnHeader('Party', 'party',
+    local Party = SpawnHeader('Party', 'party',
         'showParty', true,
         'yOffset', 50,
         'point', 'BOTTOM',
+        'groupBy', 'ASSIGNEDROLE',
+        'groupingOrder', 'TANK,HEALER,DAMAGER',
         'oUF-initialConfigFunction', [[
             self:SetWidth( 135 )
             self:SetHeight( 80 )
         ]]
     )
-    party:SetPoint('BOTTOM', Anchor, 0, 0)
-    party:SetPoint('LEFT', UIParent, 'LEFT', gap, 0)
+    Party:SetPoint('BOTTOM', Anchor, 0, 0)
+    Party:SetPoint('LEFT', UIParent, 'LEFT', gap, 0)
 
-    -- Party Targets
     SpawnHeader('PartyTargets', 'party',
         'showParty', true,
         'yOffset', 90,
         'point', 'BOTTOM',
+        'groupBy', 'ASSIGNEDROLE',
+        'groupingOrder', 'TANK,HEALER,DAMAGER',
         'oUF-initialConfigFunction', [[
             self:SetAttribute('unitsuffix', 'target')
             self:SetWidth( 135 )
@@ -69,12 +65,13 @@ function ns:SpawnUnitFrames()
         ]]
     ):SetPoint('BOTTOMLEFT', u.party, 'BOTTOMRIGHT', gap, 0)
 
-    -- Party Pets
     oUF:SetActiveStyle('ZoeyThin')
     SpawnHeader('PartyPets', 'party',
         'showParty', true,
         'yOffset', 110,
         'point', 'BOTTOM',
+        'groupBy', 'ASSIGNEDROLE',
+        'groupingOrder', 'TANK,HEALER,DAMAGER',
         'oUF-initialConfigFunction', [[
             self:SetAttribute('unitsuffix', 'pet')
             self:SetWidth( 135 )
@@ -82,18 +79,15 @@ function ns:SpawnUnitFrames()
         ]]
     ):SetPoint('BOTTOMLEFT', u.party, 0, -28)
 
-    --//----------------------------
-    -- Raid
+    ----------------------------------------------------------------------------
     oUF:SetActiveStyle('ZoeySquare')
     local Raid = {}
     for i = 1, 8 do
-        Raid[i] = SpawnHeader('Raid25_g'..i,
-            'custom [@raid1,exists] show; hide ',
-
+        Raid[i] = SpawnHeader('Raid_g'..i, 'raid',
             'showRaid', true,
             'xOffset', gap/2,
-            'groupFilter', tostring(i),
             'point', 'LEFT',
+            'groupFilter', tostring(i),
             'oUF-initialConfigFunction', [[
                 self:SetWidth( 70 )
                 self:SetHeight( 33 )
@@ -108,12 +102,11 @@ function ns:SpawnUnitFrames()
         end
     end
 
-    --//----------------------------
-    -- Boss Frames
+    ----------------------------------------------------------------------------
     oUF:SetActiveStyle('Zoey')
     local Boss = {}
     for i = 1, MAX_BOSS_FRAMES do
-        Boss[i] = SpawnUnit('boss'..i)
+        Boss[i] = Spawn('Boss'..i)
 
         if i == 1 then
             Boss[i]:SetPoint('BOTTOMLEFT', u.target, 'TOPRIGHT', 100, 75)
