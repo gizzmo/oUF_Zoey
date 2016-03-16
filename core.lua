@@ -1,11 +1,8 @@
 -- Get the addon namespace
 local addonName, ns = ...
 
--- Set global name of addon
-_G[addonName] = ns
-
--- Initialize Ace3 onto the namespace
-LibStub('AceAddon-3.0'):NewAddon(ns, addonName, 'AceConsole-3.0', 'AceEvent-3.0')
+-- Initialize Ace3 onto the namespace and set global name
+_G[addonName] = LibStub('AceAddon-3.0'):NewAddon(ns, addonName, 'AceConsole-3.0')
 
 --------------------------------------------------------------------------------
 -- Default configuration
@@ -61,7 +58,6 @@ oUF.colors.border = {
 --------------------------------------------------------------------------------
 -- Ignition sequence
 --------------------------------------------------------------------------------
--- Called when the addon is loaded
 function ns:OnInitialize()
     self.db = LibStub("AceDB-3.0"):New(addonName..'DB', defaultDB, true)
     self:RegisterChatCommand('zoey', 'SlashCommandHandler')
@@ -75,13 +71,23 @@ function ns:OnInitialize()
     self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions(addonName)
 end
 
--- Called when the addon is enabled
 function ns:OnEnable()
     ns:DisableBlizzard()
     ns:SkinMirrorTimer()
     ns:SpawnUnitFrames()
 end
 
+function ns:SlashCommandHandler(message)
+    local command = self:GetArgs(message, 2)
+
+    -- Option the options window
+    if not command or command == 'config' then
+        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
+        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
+    end
+end
+
+--------------------------------------------------------------------------------
 function ns:DisableBlizzard()
     -- Hide the Blizzard Buffs
     BuffFrame:Hide()
@@ -176,17 +182,6 @@ function ns:SkinMirrorTimer()
         tinsert(ns.fontstrings, bar.text)
     end
 end
-
-function ns:SlashCommandHandler(message)
-    local command = self:GetArgs(message, 2)
-
-    -- Option the options window
-    if not command or command == 'config' then
-        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
-        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
-    end
-end
-
 
 --------------------------------------------------------------------------------
 -- Fin
