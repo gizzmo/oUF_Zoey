@@ -248,6 +248,23 @@ local function PvPPostUpdate(icon, status)
     end
 end
 
+-- Experience Bar
+local function ExpOnHide(bar)
+    local parent = bar:GetParent()
+    ns:Defer(function()
+        bar:SetPoint('BOTTOM', 0, -bar:GetHeight())
+        parent:SetHeight(parent:GetHeight() - bar:GetHeight() - 1)
+    end)
+end
+
+local function ExpOnShow(bar)
+    local parent = bar:GetParent()
+    ns:Defer(function()
+        bar:SetPoint('BOTTOM', 0, 1)
+        parent:SetHeight(parent:GetHeight() + bar:GetHeight() + 1)
+    end)
+end
+
 
 -- Other Functions
 ns.Mouse_Focus = nil
@@ -267,20 +284,6 @@ local function OnLeave(self)
     for _, fs in ipairs( self.__tags ) do
         fs:UpdateTag()
     end
-end
-
-local function BarOnHide(bar)
-    local parent = bar:GetParent()
-    ns:Defer(function()
-        parent:SetHeight(parent:GetHeight() - bar:GetHeight() - 1)
-    end)
-end
-
-local function BarOnShow(bar)
-    local parent = bar:GetParent()
-    ns:Defer(function()
-        parent:SetHeight(parent:GetHeight() + bar:GetHeight() + 1)
-    end)
 end
 
 ns.fontstrings = {}
@@ -466,8 +469,8 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.Experience.Rested.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
 
         -- Resize the main frame when this frame Hides or Shows
-        self.Experience:SetScript('OnShow', BarOnShow)
-        self.Experience:SetScript('OnHide', BarOnHide)
+        self.Experience:SetScript('OnShow', ExpOnShow)
+        self.Experience:SetScript('OnHide', ExpOnHide)
 
         self.Power:SetPoint('BOTTOM', self.Experience, 'TOP', 0, 1)
 
