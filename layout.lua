@@ -656,7 +656,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     -- Auras
     ----------------------------------------------------------------------------
     if unit == 'player' or unit == 'target' then
-        self.Buffs = CreateFrame('Frame', nil, self)
+        self.Buffs = CreateFrame('Frame', '$parentBuffs', self)
         self.Buffs:SetHeight(1) -- Needs a size to display
         self.Buffs:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -5)
         self.Buffs:SetPoint('TOPRIGHT', self, 'BOTTOMRIGHT', 0, -5)
@@ -678,7 +678,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.Buffs.PostCreateIcon = PostCreateAuraIcon
         self.Buffs.PostUpdateIcon = PostUpdateAuraIcon
 
-        self.Debuffs = CreateFrame('Frame', nil, self)
+        self.Debuffs = CreateFrame('Frame', '$parentDebuffs', self)
         self.Debuffs:SetHeight(1) -- Needs a size to display
         self.Debuffs:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 5)
         self.Debuffs:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 5)
@@ -703,13 +703,13 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Heal Prediction Bar
     ----------------------------------------------------------------------------
-    local mhpb = CreateStatusBar(self.Health, nil, true)
+    local mhpb = CreateStatusBar(self.Health, '$parentHealPredictionMyHeals', true)
     mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
     mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
     mhpb:SetWidth(self:GetWidth())
     mhpb:SetStatusBarColor(0, 1, 0, 0.25) -- TODO: tweek colors
 
-    local ohpb = CreateStatusBar(self.Health, nil, true)
+    local ohpb = CreateStatusBar(self.Health, '$parentHealPredictionOtherHeals', true)
     ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
     ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
     ohpb:SetWidth(self:GetWidth())
