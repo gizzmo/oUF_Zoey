@@ -133,8 +133,8 @@ end
 
 function ns:SkinMirrorTimer()
     local Media = LibStub('LibSharedMedia-3.0')
-    local font = Media:Fetch('font', ns.db.profile.font)
-    local texture = Media:Fetch('statusbar', ns.db.profile.statusbar)
+    local font = Media:Fetch('font', ns.db.font)
+    local texture = Media:Fetch('statusbar', ns.db.statusbar)
 
     for i = 1, 3 do
         local barname = 'MirrorTimer'..i
