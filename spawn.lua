@@ -19,8 +19,8 @@ function ns:SpawnUnitFrames()
 
     -- The frame that all unitframes are attached to.
     local Anchor = CreateFrame('Frame', 'oUF_ZoeyUnitFrameAnchor', UIParent)
-    Anchor:SetSize(ns.db.profile.ptgap, 1)
-    Anchor:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, ns.db.profile.frames_offset)
+    Anchor:SetSize(ns.db.ptgap, 1)
+    Anchor:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, ns.db.frames_offset)
 
     ----------------------------------------------------------------------------
     Spawn('Player'):SetPoint('BOTTOMRIGHT', Anchor, 'BOTTOMLEFT', 0, 0)

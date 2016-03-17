@@ -288,7 +288,7 @@ end
 
 ns.fontstrings = {}
 local function CreateText(parent, size, justify)
-    local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.db.profile.font)
+    local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.db.font)
 
     local fs = parent:CreateFontString(nil, 'ARTWORK')
     fs:SetFont(font, size or 16)
@@ -302,7 +302,7 @@ local function CreateText(parent, size, justify)
 end
 
 function ns.SetAllFonts()
-    local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.db.profile.font)
+    local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.db.font)
 
     for i = 1, #ns.fontstrings do
         local fs = ns.fontstrings[i]
@@ -313,7 +313,7 @@ end
 
 ns.statusbars = {}
 local function CreateStatusBar(parent, name, noBG)
-    local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.db.profile.statusbar)
+    local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.db.statusbar)
 
     local sb = CreateFrame('StatusBar', (name and '$parent'..name or nil), parent)
     sb:SetStatusBarTexture(texture)
@@ -330,7 +330,7 @@ local function CreateStatusBar(parent, name, noBG)
 end
 
 function ns.SetAllStatusBarTextures()
-    local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.db.profile.statusbar)
+    local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.db.statusbar)
 
     for i = 1, #ns.statusbars do
         local sb = ns.statusbars[i]
