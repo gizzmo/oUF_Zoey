@@ -12,9 +12,9 @@
 ## RequiredDeps: oUF
 ## SavedVariables: oUF_ZoeyDB
 
-libs\LibStub\LibStub.lua
-libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
-libs\LibSharedMedia-3.0\LibSharedMedia-3.0.xml
+libs\LibStub.lua
+libs\CallbackHandler-1.0.lua
+libs\LibSharedMedia-3.0.lua
 
 libs\PhanxConfig\PhanxConfig-Button.lua
 libs\PhanxConfig\PhanxConfig-Checkbox.lua
@@ -28,7 +28,7 @@ libs\PhanxConfig\PhanxConfig-OptionsPanel.lua
 libs\PhanxConfig\PhanxConfig-Panel.lua
 libs\PhanxConfig\PhanxConfig-Slider.lua
 
-libs\PhanxAddonStub\AddonStub.lua
+libs\AddonStub.lua
 
 core.lua
 
