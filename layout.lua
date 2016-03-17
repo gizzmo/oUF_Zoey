@@ -701,24 +701,25 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     end
 
     ----------------------------------------------------------------------------
-    -- Heal Prediction Bar
+    -- Heal Prediction
     ----------------------------------------------------------------------------
     local mhpb = CreateStatusBar(self.Health, '$parentHealPredictionMyHeals', true)
     mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
     mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
     mhpb:SetWidth(self:GetWidth())
-    mhpb:SetStatusBarColor(0, 1, 0, 0.25) -- TODO: tweek colors
+    mhpb:SetStatusBarColor(0.25, 0.8, 1, 0.5)
 
     local ohpb = CreateStatusBar(self.Health, '$parentHealPredictionOtherHeals', true)
     ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
     ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
     ohpb:SetWidth(self:GetWidth())
-    ohpb:SetStatusBarColor(0, 1, 0, 0.25) -- TODO: tweek colors
+    ohpb:SetStatusBarColor(0.25, 1, 0.25, 0.5)
 
     self.HealPrediction = {
         myBar = mhpb,    -- status bar to show my incoming heals
         otherBar = ohpb, -- status bar to show other peoples incoming heals
         maxOverflow = 1, -- amount of overflow past the end of the health bar
+        -- TODO: absorbs?
     }
 
 end)
