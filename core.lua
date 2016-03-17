@@ -66,7 +66,7 @@ function ns:OnLoad()
 
     -- Slash command handler
     _G['SLASH_'..addonName..'1'] = '/zoey'
-    SlashCmdList['SLASH_'..addonName] = function(input)
+    SlashCmdList[addonName] = function(input)
         -- Open the options window
         if input == '' or input == 'config' then
             InterfaceOptionsFrame_OpenToCategory('oUF Zoey')
