@@ -1,22 +1,20 @@
 -- Get the addon namespace
 local addonName, ns = ...
 
--- Initialize Ace3 onto the namespace and set global name
-_G[addonName] = LibStub('AceAddon-3.0'):NewAddon(ns, addonName, 'AceConsole-3.0')
+-- Set global name
+_G[addonName] = ns
 
 --------------------------------------------------------------------------------
 -- Default configuration
 --------------------------------------------------------------------------------
 local defaultDB = {
-    profile = {
 
-        statusbar = 'Armory',
-        font = 'DorisPP',
+    statusbar = 'Armory',
+    font = 'DorisPP',
 
-        ptgap = 150,         -- gap between player and target
-        frames_offset = 270, -- offset from bottom of UIParent
+    ptgap = 150,         -- gap between player and target
+    frames_offset = 270, -- offset from bottom of UIParent
 
-    }
 }
 
 --------------------------------------------------------------------------------
@@ -58,33 +56,30 @@ oUF.colors.border = {
 --------------------------------------------------------------------------------
 -- Ignition sequence
 --------------------------------------------------------------------------------
-function ns:OnInitialize()
-    self.db = LibStub("AceDB-3.0"):New(addonName..'DB', defaultDB, true)
-    self:RegisterChatCommand('zoey', 'SlashCommandHandler')
+function ns:OnLoad()
+    self.db = ns:InitializeDB(addonName..'DB', defaultDB)
 
     -- Register our media with SharedMedia
     local Media = LibStub('LibSharedMedia-3.0')
     Media:Register('statusbar', 'Armory', [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]])
     Media:Register('font', 'DorisPP', [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]])
 
-    -- Setup the options
-    self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions(addonName)
+    -- Slash command handler
+    _G['SLASH_'..addonName..'1'] = '/zoey'
+    SlashCmdList['SLASH_'..addonName] = function(input)
+        -- Open the options window
+        if input == '' or input == 'config' then
+            InterfaceOptionsFrame_OpenToCategory('oUF Zoey')
+            InterfaceOptionsFrame_OpenToCategory('oUF Zoey')
+        end
+    end
+
 end
 
-function ns:OnEnable()
+function ns:OnLogin()
     ns:DisableBlizzard()
     ns:SkinMirrorTimer()
     ns:SpawnUnitFrames()
-end
-
-function ns:SlashCommandHandler(message)
-    local command = self:GetArgs(message, 2)
-
-    -- Option the options window
-    if not command or command == 'config' then
-        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
-        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
-    end
 end
 
 --------------------------------------------------------------------------------

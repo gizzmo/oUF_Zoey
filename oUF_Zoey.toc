@@ -16,6 +16,8 @@ libs\LibStub\LibStub.lua
 libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
 libs\LibSharedMedia-3.0\LibSharedMedia-3.0.xml
 
+libs\PhanxAddonStub\AddonStub.lua
+
 core.lua
 
 features\border.lua
