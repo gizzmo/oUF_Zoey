@@ -69,7 +69,7 @@ function ns:OnLoad()
     SlashCmdList[addonName] = function(input)
         -- Open the options window
         if input == '' or input == 'config' then
-            InterfaceOptionsFrame_OpenToCategory('oUF Zoey')
+            InterfaceOptionsFrame_Show()
             InterfaceOptionsFrame_OpenToCategory('oUF Zoey')
         end
     end
