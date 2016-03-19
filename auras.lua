@@ -985,11 +985,11 @@ end
 ------------------------------------------------------------------------
 
 if playerClass == "HUNTER" or playerClass == "MAGE" or playerClass == "ROGUE" or playerClass == "WARLOCK" then
-    function ns.GetPlayerRole()
+    function GetPlayerRole()
         return "DAMAGER"
     end
 else
-    function ns.GetPlayerRole()
+    function GetPlayerRole()
         local spec = GetSpecialization() or 0
         local _, _, _, _, _, role = GetSpecializationInfo(spec)
         return role or "DAMAGER"
@@ -1006,7 +1006,7 @@ local auraList_targettarget = {}
 
 local function AddAurasToList(auras)
     local PVP = ns.db.PVP
-    local role = ns.GetPlayerRole()
+    local role = GetPlayerRole()
     local filterForRole = roleFilter[role]
     for id, v in pairs(auras) do
         local skip
