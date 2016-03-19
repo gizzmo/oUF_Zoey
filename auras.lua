@@ -338,6 +338,7 @@ if playerClass == "HUNTER" then
     defaultAuras[19615]  = FILTER_BY_PLAYER -- Frenzy
     defaultAuras[19574]  = FILTER_BY_PLAYER -- Bestial Wrath
     defaultAuras[136]    = FILTER_BY_PLAYER -- Mend Pet
+    defaultAuras[118455] = FILTER_BY_PLAYER -- Beast Cleave
     -- Buffs
     defaultAuras[34477]  = FILTER_ON_FRIEND -- Misdirection (30 sec threat)
     defaultAuras[35079]  = FILTER_ON_FRIEND -- Misdirection (4 sec transfer)
