@@ -74,6 +74,13 @@ function ns:OnLoad()
         end
     end
 
+    -- Shift to temporarily show all buffs
+    self:RegisterEvent("PLAYER_REGEN_DISABLED")
+    self:RegisterEvent("PLAYER_REGEN_ENABLED")
+    if not UnitAffectingCombat("player") then
+        self:RegisterEvent("MODIFIER_STATE_CHANGED")
+    end
+
 end
 
 function ns:OnLogin()
@@ -175,6 +182,44 @@ function ns:SkinMirrorTimer()
         tinsert(ns.statusbars, bar.bar)
         tinsert(ns.statusbars, bar.bg)
         tinsert(ns.fontstrings, bar.text)
+    end
+end
+
+--------------------------------------------------------------------------------
+function ns:PLAYER_REGEN_DISABLED(event)
+    self:UnregisterEvent("MODIFIER_STATE_CHANGED")
+    self:MODIFIER_STATE_CHANGED(event, "LSHIFT", 0)
+end
+
+function ns:PLAYER_REGEN_ENABLED(event)
+    self:RegisterEvent("MODIFIER_STATE_CHANGED")
+    self:MODIFIER_STATE_CHANGED(event, "LSHIFT", IsShiftKeyDown() and 1 or 0)
+end
+
+function ns:MODIFIER_STATE_CHANGED(event, key, state)
+    if key ~= "LSHIFT" and key ~= "RSHIFT" then
+        return
+    end
+    local a, b, c
+    if state == 1 then
+        a, b, c = "CustomFilter", "__CustomFilter", ns.CustomAuraFilters.default
+    else
+        a, b = "__CustomFilter", "CustomFilter"
+    end
+    for i = 1, #oUF.objects do
+        local object = oUF.objects[i]
+        local buffs = object.Auras or object.Buffs
+        if buffs and buffs[a] then
+            buffs[b] = buffs[a]
+            buffs[a] = c
+            buffs:ForceUpdate()
+        end
+        local debuffs = object.Debuffs
+        if debuffs and debuffs[a] then
+            debuffs[b] = debuffs[a]
+            debuffs[a] = c
+            debuffs:ForceUpdate()
+        end
     end
 end
 
