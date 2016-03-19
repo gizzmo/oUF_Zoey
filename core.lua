@@ -82,6 +82,7 @@ function ns:OnLoad()
         self:RegisterEvent("MODIFIER_STATE_CHANGED")
     end
 
+    ns.UpdateAuraList()
 end
 
 function ns:OnLogin()

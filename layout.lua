@@ -678,6 +678,9 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.Buffs.PostCreateIcon = PostCreateAuraIcon
         self.Buffs.PostUpdateIcon = PostUpdateAuraIcon
 
+        self.Buffs.CustomFilter   = ns.CustomAuraFilters[unit]
+                                 or ns.CustomAuraFilters.default
+
         self.Debuffs = CreateFrame('Frame', '$parentDebuffs', self)
         self.Debuffs:SetHeight(1) -- Needs a size to display
         self.Debuffs:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 5)
@@ -698,6 +701,9 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
         self.Debuffs.PostCreateIcon = PostCreateAuraIcon
         self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
+
+        self.Debuffs.CustomFilter   = ns.CustomAuraFilters[unit]
+                                   or ns.CustomAuraFilters.default
     end
 
     ----------------------------------------------------------------------------
