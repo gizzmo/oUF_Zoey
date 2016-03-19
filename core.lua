@@ -188,17 +188,18 @@ function ns:SkinMirrorTimer()
 end
 
 --------------------------------------------------------------------------------
-function ns:PLAYER_REGEN_DISABLED(event)
+function ns:PLAYER_REGEN_DISABLED()
     self:UnregisterEvent("MODIFIER_STATE_CHANGED")
-    self:MODIFIER_STATE_CHANGED(event, "LSHIFT", 0)
+    self:MODIFIER_STATE_CHANGED("LSHIFT", 0)
 end
 
-function ns:PLAYER_REGEN_ENABLED(event)
+function ns:PLAYER_REGEN_ENABLED()
     self:RegisterEvent("MODIFIER_STATE_CHANGED")
-    self:MODIFIER_STATE_CHANGED(event, "LSHIFT", IsShiftKeyDown() and 1 or 0)
+    self:MODIFIER_STATE_CHANGED("LSHIFT", IsShiftKeyDown() and 1 or 0)
 end
 
-function ns:MODIFIER_STATE_CHANGED(event, key, state)
+function ns:MODIFIER_STATE_CHANGED(key, state)
+    -- self:Print('MODIFIER_STATE_CHANGED Key: %s; State: %s', key,state)
     if key ~= "LSHIFT" and key ~= "RSHIFT" then
         return
     end
