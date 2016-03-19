@@ -15,6 +15,7 @@ local defaultDB = {
     ptgap = 150,         -- gap between player and target
     frames_offset = 270, -- offset from bottom of UIParent
 
+    PVP = false, -- enable PVP mode, currently only affects aura filtering
 }
 
 --------------------------------------------------------------------------------

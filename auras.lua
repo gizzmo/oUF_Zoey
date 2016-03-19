@@ -984,6 +984,20 @@ end
 
 ------------------------------------------------------------------------
 
+if playerClass == "HUNTER" or playerClass == "MAGE" or playerClass == "ROGUE" or playerClass == "WARLOCK" then
+    function ns.GetPlayerRole()
+        return "DAMAGER"
+    end
+else
+    function ns.GetPlayerRole()
+        local spec = GetSpecialization() or 0
+        local _, _, _, _, _, role = GetSpecializationInfo(spec)
+        return role or "DAMAGER"
+    end
+end
+
+------------------------------------------------------------------------
+
 local auraList = {}
 ns.AuraList = auraList
 
@@ -991,7 +1005,7 @@ local auraList_focus = {}
 local auraList_targettarget = {}
 
 local function AddAurasToList(auras)
-    local PVP = ns.config.PVP
+    local PVP = ns.db.PVP
     local role = ns.GetPlayerRole()
     local filterForRole = roleFilter[role]
     for id, v in pairs(auras) do
@@ -1019,13 +1033,8 @@ ns.UpdateAuraList = function()
     --print("UpdateAuraList")
     wipe(auraList)
     AddAurasToList(ns.defaultAuras)
-    AddAurasToList(oUFPhanxAuraConfig.customFilters)
-    if ns.config.PVP then
+    if ns.db.PVP then
         AddAurasForPVP(auraList)
-    end
-    -- Remove default auras the player deleted
-    for id in pairs(oUFPhanxAuraConfig.deleted) do
-        auraList[id] = nil
     end
     -- Update all the things
     for _, obj in pairs(oUF.objects) do
