@@ -703,13 +703,13 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Heal Prediction
     ----------------------------------------------------------------------------
-    local mhpb = CreateStatusBar(self.Health, '$parentHealPredictionMyHeals', true)
+    local mhpb = CreateStatusBar(self.Health, 'HealPredictionMyHeals', true)
     mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
     mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
     mhpb:SetWidth(self:GetWidth())
     mhpb:SetStatusBarColor(0.25, 0.8, 1, 0.5)
 
-    local ohpb = CreateStatusBar(self.Health, '$parentHealPredictionOtherHeals', true)
+    local ohpb = CreateStatusBar(self.Health, 'HealPredictionOtherHeals', true)
     ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
     ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
     ohpb:SetWidth(self:GetWidth())
