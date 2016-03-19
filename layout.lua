@@ -655,7 +655,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Auras
     ----------------------------------------------------------------------------
-    if unit == 'player' or unit == 'target' then
+    if unit == 'player' or unit == 'pet' or unit == 'target' then
         self.Buffs = CreateFrame('Frame', '$parentBuffs', self)
         self.Buffs:SetHeight(1) -- Needs a size to display
         self.Buffs:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -5)
@@ -666,7 +666,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.Buffs['size'] = 25
         self.Buffs['num'] = 16
 
-        if unit == 'player' then
+        if unit == 'player' or unit == 'pet' then
             self.Buffs['initialAnchor'] = 'TOPLEFT'
             self.Buffs['growth-x'] = 'RIGHT'
 
@@ -680,6 +680,9 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
         self.Buffs.CustomFilter   = ns.CustomAuraFilters[unit]
                                  or ns.CustomAuraFilters.default
+    end
+
+    if unit == 'player' or unit == 'target' then
 
         self.Debuffs = CreateFrame('Frame', '$parentDebuffs', self)
         self.Debuffs:SetHeight(1) -- Needs a size to display
