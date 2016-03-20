@@ -5,7 +5,7 @@
 ----------------------------------------------------------------------]]
 
 local _, ns = ...
-local _, playerClass = UnitClass("player")
+local _, playerClass = UnitClass('player')
 
 local bit_band, bit_bor = bit.band, bit.bor
 
@@ -155,7 +155,7 @@ ns.defaultAuras = defaultAuras
 ------------------------------------------------------------------------
 -- Death Knight
 
-if playerClass == "DEATHKNIGHT" then
+if playerClass == 'DEATHKNIGHT' then
     -- Self Buffs
     defaultAuras[48707]  = FILTER_ON_PLAYER -- Anti-Magic Shell
     defaultAuras[49222]  = FILTER_ON_PLAYER -- Bone Shield
@@ -208,7 +208,7 @@ end
 ------------------------------------------------------------------------
 -- Druid
 
-if playerClass == "DRUID" then
+if playerClass == 'DRUID' then
     -- Self Buffs
     defaultAuras[22812]  = FILTER_ON_PLAYER -- Barkskin
     defaultAuras[106951] = FILTER_ON_PLAYER -- Berserk (cat)
@@ -306,7 +306,7 @@ end
 ------------------------------------------------------------------------
 -- Hunter
 
-if playerClass == "HUNTER" then
+if playerClass == 'HUNTER' then
     -- Self Buffs
     defaultAuras[83559]  = FILTER_ON_PLAYER -- Black Ice
     -- defaultAuras[82921]  = FILTER_ON_PLAYER -- Bombardment
@@ -370,7 +370,7 @@ end
 ------------------------------------------------------------------------
 -- Mage
 
-if playerClass == "MAGE" then
+if playerClass == 'MAGE' then
     -- Self Buffs
     defaultAuras[110909] = FILTER_ON_PLAYER -- Alter Time
     defaultAuras[36032]  = FILTER_ON_PLAYER -- Arcane Charge
@@ -419,7 +419,7 @@ end
 ------------------------------------------------------------------------
 -- Monk
 
-if playerClass == "MONK" then
+if playerClass == 'MONK' then
     -- Self Buffs
     defaultAuras[122278] = FILTER_ON_PLAYER -- Dampen Harm
     defaultAuras[121125] = FILTER_ON_PLAYER -- Death Note
@@ -472,7 +472,7 @@ end
 ------------------------------------------------------------------------
 -- Paladin
 
-if playerClass == "PALADIN" then
+if playerClass == 'PALADIN' then
     -- Self Buffs
     defaultAuras[121467] = FILTER_ON_PLAYER -- Alabaster Shield
     defaultAuras[31850]  = FILTER_ON_PLAYER -- Ardent Defender
@@ -529,7 +529,7 @@ end
 ------------------------------------------------------------------------
 -- Priest
 
-if playerClass == "PRIEST" then
+if playerClass == 'PRIEST' then
     -- Self Buffs
     -- defaultAuras[114214] = FILTER_ON_PLAYER -- Angelic Bulwark
     defaultAuras[81700]  = FILTER_ON_PLAYER -- Archangel
@@ -581,7 +581,7 @@ end
 ------------------------------------------------------------------------
 -- (ro)
 
-if playerClass == "ROGUE" then
+if playerClass == 'ROGUE' then
     -- Self Buffs
     defaultAuras[13750]  = FILTER_ON_PLAYER -- Adrenaline Rush
     defaultAuras[115189] = FILTER_ON_PLAYER -- Anticipation
@@ -638,7 +638,7 @@ end
 ------------------------------------------------------------------------
 -- Shaman
 
-if playerClass == "SHAMAN" then
+if playerClass == 'SHAMAN' then
     -- Self Buffs
     defaultAuras[108281] = FILTER_ON_PLAYER -- Ancestral Guidance
     defaultAuras[16188]  = FILTER_ON_PLAYER -- Ancestral Swiftness
@@ -690,7 +690,7 @@ end
 ------------------------------------------------------------------------
 -- Warlock
 
-if playerClass == "WARLOCK" then
+if playerClass == 'WARLOCK' then
     -- Self Buffs
     defaultAuras[116198] = FILTER_BY_PLAYER -- Aura of Enfeeblement
     defaultAuras[116202] = FILTER_BY_PLAYER -- Aura of the Elements
@@ -746,7 +746,7 @@ end
 ------------------------------------------------------------------------
 -- Warrior
 
-if playerClass == "WARRIOR" then
+if playerClass == 'WARRIOR' then
     -- Self Buffs
     defaultAuras[107574] = FILTER_ON_PLAYER -- Avatar
     defaultAuras[18499]  = FILTER_ON_PLAYER -- Berserker Rage
@@ -804,15 +804,15 @@ end
 ------------------------------------------------------------------------
 -- Racials
 
-local _, playerRace = UnitRace("player")
-if playerRace == "BloodElf" then
+local _, playerRace = UnitRace('player')
+if playerRace == 'BloodElf' then
     defaultAuras[50613]  = FILTER_BY_PLAYER -- Arcane Torrent (DK)
     defaultAuras[80483]  = FILTER_BY_PLAYER -- Arcane Torrent (HU)
     defaultAuras[28730]  = FILTER_BY_PLAYER -- Arcane Torrent (MA, PA, PR, WL)
     defaultAuras[129597] = FILTER_BY_PLAYER -- Arcane Torrent (MO)
     defaultAuras[25046]  = FILTER_BY_PLAYER -- Arcane Torrent (RO)
     defaultAuras[69179]  = FILTER_BY_PLAYER -- Arcane Torrent (WR)
-elseif playerRace == "Draenei" then
+elseif playerRace == 'Draenei' then
     defaultAuras[59545]  = FILTER_BY_PLAYER -- Gift of the Naaru (DK)
     defaultAuras[59543]  = FILTER_BY_PLAYER -- Gift of the Naaru (HU)
     defaultAuras[59548]  = FILTER_BY_PLAYER -- Gift of the Naaru (MA)
@@ -821,30 +821,30 @@ elseif playerRace == "Draenei" then
     defaultAuras[59544]  = FILTER_BY_PLAYER -- Gift of the Naaru (PR)
     defaultAuras[59547]  = FILTER_BY_PLAYER -- Gift of the Naaru (SH)
     defaultAuras[28880]  = FILTER_BY_PLAYER -- Gift of the Naaru (WR)
-elseif playerRace == "Dwarf" then
+elseif playerRace == 'Dwarf' then
     defaultAuras[20594]  = FILTER_ON_PLAYER -- Stoneform
-elseif playerRace == "NightElf" then
+elseif playerRace == 'NightElf' then
     defaultAuras[58984]  = FILTER_ON_PLAYER -- Shadowmeld
-elseif playerRace == "Orc" then
+elseif playerRace == 'Orc' then
     defaultAuras[20572]  = FILTER_ON_PLAYER -- Blood Fury (attack power)
     defaultAuras[33702]  = FILTER_ON_PLAYER -- Blood Fury (spell power)
     defaultAuras[33697]  = FILTER_ON_PLAYER -- Blood Fury (attack power and spell damage)
-elseif playerRace == "Pandaren" then
+elseif playerRace == 'Pandaren' then
     defaultAuras[107079] = FILTER_ON_PLAYER -- Quaking Palm
-elseif playerRace == "Scourge" then
+elseif playerRace == 'Scourge' then
     defaultAuras[7744]   = FILTER_ON_PLAYER -- Will of the Forsaken
-elseif playerRace == "Tauren" then
+elseif playerRace == 'Tauren' then
     defaultAuras[20549]  = FILTER_ALL -- War Stomp
-elseif playerRace == "Troll" then
+elseif playerRace == 'Troll' then
     defaultAuras[26297]  = FILTER_ON_PLAYER -- Berserking
-elseif playerRace == "Worgen" then
+elseif playerRace == 'Worgen' then
     defaultAuras[68992]  = FILTER_ON_PLAYER -- Darkflight
 end
 
 ------------------------------------------------------------------------
 -- Taunts (tanks only)
 
-if playerClass == "DEATHKNIGHT" or playerClass == "DRUID" or playerClass == "MONK" or playerClass == "PALADIN" or playerClass == "WARRIOR" then
+if playerClass == 'DEATHKNIGHT' or playerClass == 'DRUID' or playerClass == 'MONK' or playerClass == 'PALADIN' or playerClass == 'WARRIOR' then
     defaultAuras[56222]  = FILTER_ROLE_TANK -- Dark Command (DK)
     defaultAuras[57604]  = FILTER_ROLE_TANK -- Death Grip (DK) -- NEEDS CHECK 49560 51399 57603
     defaultAuras[6795]   = FILTER_ROLE_TANK -- Growl (DR)
@@ -980,15 +980,15 @@ ns.PVPAuras = PVPAuras
 
 ------------------------------------------------------------------------
 
-if playerClass == "HUNTER" or playerClass == "MAGE" or playerClass == "ROGUE" or playerClass == "WARLOCK" then
+if playerClass == 'HUNTER' or playerClass == 'MAGE' or playerClass == 'ROGUE' or playerClass == 'WARLOCK' then
     local function GetPlayerRole()
-        return "DAMAGER"
+        return 'DAMAGER'
     end
 else
     local function GetPlayerRole()
         local spec = GetSpecialization() or 0
         local _, _, _, _, _, role = GetSpecializationInfo(spec)
-        return role or "DAMAGER"
+        return role or 'DAMAGER'
     end
 end
 
@@ -1017,7 +1017,7 @@ local function AddAurasToList(auras)
 end
 
 ns.UpdateAuraList = function()
-    --print("UpdateAuraList")
+    --print('UpdateAuraList')
     wipe(auraList)
     AddAurasToList(ns.defaultAuras)
     if ns.db.PVP then
@@ -1048,16 +1048,16 @@ local function checkFilter(v, self, unit, caster)
     if bit_band(v, FILTER_BY_PLAYER) > 0 then
         return unitIsPlayer[caster]
     elseif bit_band(v, FILTER_ON_FRIEND) > 0 then
-        return UnitIsFriend(unit, "player") and UnitPlayerControlled(unit)
+        return UnitIsFriend(unit, 'player') and UnitPlayerControlled(unit)
     elseif bit_band(v, FILTER_ON_PLAYER) > 0 then
-        return unit == "player" and not self.__owner.isGroupFrame
+        return unit == 'player' and not self.__owner.isGroupFrame
     else
         return bit_band(v, FILTER_DISABLE) == 0
     end
 end
 
 local function debug(...)
-    ChatFrame3:AddMessage(strjoin(" ", tostringall(...)))
+    ChatFrame3:AddMessage(strjoin(' ', tostringall(...)))
 end
 
 local filterFuncs = {
@@ -1067,41 +1067,41 @@ local filterFuncs = {
     end,
     player = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
         local v = auraList[spellID]
-        --debug("CustomAuraFilter", "[unit]", unit, "[caster]", caster, "[name]", name, "[id]", spellID, "[filter]", v, "[vehicle]", caster == "vehicle")
+        --debug('CustomAuraFilter', '[unit]', unit, '[caster]', caster, '[name]', name, '[id]', spellID, '[filter]', v, '[vehicle]', caster == 'vehicle')
         if v then
             return checkFilter(v, self, unit, caster)
         end
-        return caster and UnitIsUnit(caster, "vehicle") and not UnitIsPlayer("vehicle")
+        return caster and UnitIsUnit(caster, 'vehicle') and not UnitIsPlayer('vehicle')
     end,
     pet = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
         local v = auraList[spellID]
-        --debug("CustomAuraFilter", "[unit]", unit, "[caster]", caster, "[name]", name, "[id]", spellID, "[filter]", v, "[vehicle]", caster == "vehicle")
+        --debug('CustomAuraFilter', '[unit]', unit, '[caster]', caster, '[name]', name, '[id]', spellID, '[filter]', v, '[vehicle]', caster == 'vehicle')
         return caster and unitIsPlayer[caster] and v and bit_band(v, FILTER_BY_PLAYER) > 0
     end,
     target = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
         local v = auraList[spellID]
         if isBossAura then
             local show = not v or bit_band(v, FILTER_DISABLE) == 0
-            -- if show then debug("CustomAuraFilter", spellID, name, "BOSS") end
+            -- if show then debug('CustomAuraFilter', spellID, name, 'BOSS') end
             return show
         elseif v then
             local show = checkFilter(v, self, unit, caster)
-            -- if show then debug("CustomAuraFilter", spellID, name, "FILTER", v, caster) end
+            -- if show then debug('CustomAuraFilter', spellID, name, 'FILTER', v, caster) end
             return show
         elseif not caster and not IsInInstance() then
             -- EXPERIMENTAL: ignore debuffs from players outside the group, eg. on world bosses.
             return
-        elseif UnitCanAttack("player", unit) and not UnitPlayerControlled(unit) then
+        elseif UnitCanAttack('player', unit) and not UnitPlayerControlled(unit) then
             -- Hostile NPC. Show auras cast by the unit, or auras cast by the player's vehicle.
-            -- print("hostile NPC")
-            local show = not caster or caster == unit or (UnitIsUnit(caster, "vehicle") and not UnitIsPlayer("vehicle"))
-            -- if show then debug("CustomAuraFilter", spellID, name, (not caster) and "UNKNOWN" or (caster == unit) and "SELFCAST" or "VEHICLE") end
+            -- print('hostile NPC')
+            local show = not caster or caster == unit or (UnitIsUnit(caster, 'vehicle') and not UnitIsPlayer('vehicle'))
+            -- if show then debug('CustomAuraFilter', spellID, name, (not caster) and 'UNKNOWN' or (caster == unit) and 'SELFCAST' or 'VEHICLE') end
             return show
         else
             -- Friendly target or hostile player. Show auras cast by the player's vehicle.
-            -- print("hostile player / friendly unit")
-            local show = not caster or (UnitIsUnit(caster, "vehicle") and not UnitIsPlayer("vehicle"))
-            -- if show then debug("CustomAuraFilter", spellID, name, (not caster) and "UNKNOWN" or "VEHICLE") end
+            -- print('hostile player / friendly unit')
+            local show = not caster or (UnitIsUnit(caster, 'vehicle') and not UnitIsPlayer('vehicle'))
+            -- if show then debug('CustomAuraFilter', spellID, name, (not caster) and 'UNKNOWN' or 'VEHICLE') end
             return show
         end
     end,
