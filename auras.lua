@@ -979,13 +979,13 @@ ns.PVPAuras = PVPAuras
 -- TODO: Show PVE healing reductions for healers?
 
 ------------------------------------------------------------------------
-
+local GetPlayerRole
 if playerClass == 'HUNTER' or playerClass == 'MAGE' or playerClass == 'ROGUE' or playerClass == 'WARLOCK' then
-    local function GetPlayerRole()
+    function GetPlayerRole()
         return 'DAMAGER'
     end
 else
-    local function GetPlayerRole()
+    function GetPlayerRole()
         local spec = GetSpecialization() or 0
         local _, _, _, _, _, role = GetSpecializationInfo(spec)
         return role or 'DAMAGER'
