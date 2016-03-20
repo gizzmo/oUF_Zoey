@@ -17,9 +17,6 @@ local FILTER_DISABLE        = 0x2000000
 local FILTER_PVP            = 0x4000000 -- only show in PVP
 local FILTER_PVE            = 0x8000000 -- only show in PVE
 
-local FILTER_UNIT_FOCUS     = 0x0100000 -- Additionally show on focus frame
-local FILTER_UNIT_TOT       = 0x0200000 -- Additionally show on tot frame
-
 local FILTER_ROLE_MASK      = 0x00F0000
 local FILTER_ROLE_TANK      = 0x0010000
 local FILTER_ROLE_HEALER    = 0x0020000
@@ -40,9 +37,6 @@ ns.auraFilterValues = {
     FILTER_DISABLE           = FILTER_DISABLE,
     FILTER_PVP               = FILTER_PVP,
     FILTER_PVE               = FILTER_PVE,
-
-    FILTER_UNIT_FOCUS        = FILTER_UNIT_FOCUS,
-    FILTER_UNIT_TOT          = FILTER_UNIT_TOT,
 
     FILTER_ROLE_MASK         = FILTER_ROLE_MASK,
     FILTER_ROLE_TANK         = FILTER_ROLE_TANK,
@@ -1003,9 +997,6 @@ end
 local auraList = {}
 ns.AuraList = auraList
 
-local auraList_focus = {}
-local auraList_targettarget = {}
-
 local function AddAurasToList(auras)
     local PVP = ns.db.PVP
     local role = GetPlayerRole()
@@ -1021,12 +1012,6 @@ local function AddAurasToList(auras)
         end
         if not skip then
             auraList[id] = v
-            if bit_band(v, FILTER_UNIT_FOCUS) > 0 then
-                auraList_focus[id] = v
-            end
-            if bit_band(v, FILTER_UNIT_TOT) > 0 then
-                auraList_targettarget[id] = v
-            end
         end
     end
 end
@@ -1125,17 +1110,5 @@ local filterFuncs = {
         return v and bit_band(v, FILTER_ON_PLAYER) == 0
     end,
 }
-
-filterFuncs.focus = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
-    if auraList_focus[id] then
-        return filterFuncs.target(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
-    end
-end
-
-filterFuncs.targettarget = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
-    if auraList_targettarget[id] then
-        return filterFuncs.target(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
-    end
-end
 
 ns.CustomAuraFilters = filterFuncs
