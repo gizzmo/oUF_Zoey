@@ -981,11 +981,11 @@ ns.PVPAuras = PVPAuras
 ------------------------------------------------------------------------
 
 if playerClass == "HUNTER" or playerClass == "MAGE" or playerClass == "ROGUE" or playerClass == "WARLOCK" then
-    function GetPlayerRole()
+    local function GetPlayerRole()
         return "DAMAGER"
     end
 else
-    function GetPlayerRole()
+    local function GetPlayerRole()
         local spec = GetSpecialization() or 0
         local _, _, _, _, _, role = GetSpecializationInfo(spec)
         return role or "DAMAGER"
