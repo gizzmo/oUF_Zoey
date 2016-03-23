@@ -1067,11 +1067,19 @@ local filterFuncs = {
     end,
     player = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
         local v = auraList[spellID]
-        --debug('CustomAuraFilter', '[unit]', unit, '[caster]', caster, '[name]', name, '[id]', spellID, '[filter]', v, '[vehicle]', caster == 'vehicle')
-        if v then
-            return checkFilter(v, self, unit, caster)
+        if isBossAura then
+            local show = not v or bit_band(v, FILTER_DISABLE) == 0
+            -- if show then debug('CustomAuraFilter', spellID, name, 'BOSS') end
+            return show
+        elseif v then
+            local show = checkFilter(v, self, unit, caster)
+            -- if show then debug('CustomAuraFilter', spellID, name, 'FILTER', v, caster) end
+            return show
+        else
+            local show = caster and UnitIsUnit(caster, 'vehicle') and not UnitIsPlayer('vehicle')
+            -- if show then debug('CustomAuraFilter', spellID, name, (not caster) and 'UNKNOWN' or 'VEHICLE') end
+            return show
         end
-        return caster and UnitIsUnit(caster, 'vehicle') and not UnitIsPlayer('vehicle')
     end,
     pet = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
         local v = auraList[spellID]
