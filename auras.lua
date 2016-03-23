@@ -12,8 +12,8 @@ local bit_band, bit_bor = bit.band, bit.bor
 ------------------------------------------------------------------------
 
 -- Permanent filters, checked on login and respec:
-local FILTER_ALL            = 0x1000000
-local FILTER_DISABLE        = 0x2000000
+local FILTER_ALL            = 0x1000000 -- always show
+local FILTER_DISABLE        = 0x2000000 -- never show
 local FILTER_PVP            = 0x4000000 -- only show in PVP
 local FILTER_PVE            = 0x8000000 -- only show in PVE
 
@@ -24,13 +24,13 @@ local FILTER_ROLE_DAMAGER   = 0x0040000
 
 -- Dynamic filters, checked in realtime:
 local FILTER_BY_MASK        = 0x000FF00
-local FILTER_BY_PLAYER      = 0x0000100
+local FILTER_BY_PLAYER      = 0x0000100 -- show if was cast by me
 
 local FILTER_ON_MASK        = 0x00000FF
-local FILTER_ON_PLAYER      = 0x0000001
-local FILTER_ON_OTHER       = 0x0000002
-local FILTER_ON_FRIEND      = 0x0000004
-local FILTER_ON_ENEMY       = 0x0000008
+local FILTER_ON_PLAYER      = 0x0000001 -- show if its on myself
+local FILTER_ON_OTHER       = 0x0000002 -- show if its on others
+local FILTER_ON_FRIEND      = 0x0000004 -- show it its on a friends
+local FILTER_ON_ENEMY       = 0x0000008 -- show if its on an enemy
 
 ns.auraFilterValues = {
     FILTER_ALL               = FILTER_ALL,
