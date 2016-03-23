@@ -862,7 +862,7 @@ end
 ------------------------------------------------------------------------
 -- PvP
 
-local PVPAuras = {
+local defaultPVPAuras = {
     [2094]   = FILTER_PVP, -- Blind (RO)
     [105421] = FILTER_PVP, -- Blinding Light (PA)
     [33786]  = FILTER_PVP, -- Cyclone (DR)
@@ -974,7 +974,7 @@ local PVPAuras = {
     [8680]   = FILTER_PVP, -- Wound Poison (RO)
 }
 
-ns.PVPAuras = PVPAuras
+ns.defaultPVPAuras = defaultPVPAuras
 
 -- TODO: Show PVE healing reductions for healers?
 
@@ -1021,7 +1021,7 @@ ns.UpdateAuraList = function()
     wipe(auraList)
     AddAurasToList(ns.defaultAuras)
     if ns.db.PVP then
-        AddAurasToList(ns.PVPAuras)
+        AddAurasToList(ns.defaultPVPAuras)
     end
     -- Update all the things
     for _, obj in pairs(oUF.objects) do
