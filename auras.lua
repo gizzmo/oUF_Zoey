@@ -1016,7 +1016,7 @@ local function AddAurasToList(auras)
     end
 end
 
-ns.UpdateAuraList = function()
+function ns.UpdateAuraList()
     --print('UpdateAuraList')
     wipe(auraList)
     AddAurasToList(ns.defaultAuras)
@@ -1060,63 +1060,68 @@ local function debug(...)
     ChatFrame3:AddMessage(strjoin(' ', tostringall(...)))
 end
 
-local filterFuncs = {
-    default = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
-        local v = auraList[spellID]
-        return not v or bit_band(v, FILTER_DISABLE) == 0
-    end,
-    player = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
-        local v = auraList[spellID]
-        if isBossAura then
-            local show = not v or bit_band(v, FILTER_DISABLE) == 0
-            -- if show then debug('CustomAuraFilter', spellID, name, 'BOSS') end
-            return show
-        elseif v then
-            local show = checkFilter(v, self, unit, caster)
-            -- if show then debug('CustomAuraFilter', spellID, name, 'FILTER', v, caster) end
-            return show
-        else
-            local show = caster and UnitIsUnit(caster, 'vehicle') and not UnitIsPlayer('vehicle')
-            -- if show then debug('CustomAuraFilter', spellID, name, (not caster) and 'UNKNOWN' or 'VEHICLE') end
-            return show
-        end
-    end,
-    pet = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
-        local v = auraList[spellID]
-        --debug('CustomAuraFilter', '[unit]', unit, '[caster]', caster, '[name]', name, '[id]', spellID, '[filter]', v, '[vehicle]', caster == 'vehicle')
-        return caster and unitIsPlayer[caster] and v and bit_band(v, FILTER_BY_PLAYER) > 0
-    end,
-    target = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
-        local v = auraList[spellID]
-        if isBossAura then
-            local show = not v or bit_band(v, FILTER_DISABLE) == 0
-            -- if show then debug('CustomAuraFilter', spellID, name, 'BOSS') end
-            return show
-        elseif v then
-            local show = checkFilter(v, self, unit, caster)
-            -- if show then debug('CustomAuraFilter', spellID, name, 'FILTER', v, caster) end
-            return show
-        elseif not caster and not IsInInstance() then
-            -- EXPERIMENTAL: ignore debuffs from players outside the group, eg. on world bosses.
-            return
-        elseif UnitCanAttack('player', unit) and not UnitPlayerControlled(unit) then
-            -- Hostile NPC. Show auras cast by the unit, or auras cast by the player's vehicle.
-            -- print('hostile NPC')
-            local show = not caster or caster == unit or (UnitIsUnit(caster, 'vehicle') and not UnitIsPlayer('vehicle'))
-            -- if show then debug('CustomAuraFilter', spellID, name, (not caster) and 'UNKNOWN' or (caster == unit) and 'SELFCAST' or 'VEHICLE') end
-            return show
-        else
-            -- Friendly target or hostile player. Show auras cast by the player's vehicle.
-            -- print('hostile player / friendly unit')
-            local show = not caster or (UnitIsUnit(caster, 'vehicle') and not UnitIsPlayer('vehicle'))
-            -- if show then debug('CustomAuraFilter', spellID, name, (not caster) and 'UNKNOWN' or 'VEHICLE') end
-            return show
-        end
-    end,
-    party = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
-        local v = auraList[spellID]
-        return v and bit_band(v, FILTER_ON_PLAYER) == 0
-    end,
-}
+------------------------------------------------------------------------
+local filters = {}
 
-ns.CustomAuraFilters = filterFuncs
+function filters.default(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
+    local v = auraList[spellID]
+    return not v or bit_band(v, FILTER_DISABLE) == 0
+end
+
+function filters.player(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
+    local v = auraList[spellID]
+    if isBossAura then
+        local show = not v or bit_band(v, FILTER_DISABLE) == 0
+        -- if show then debug('CustomAuraFilter', spellID, name, 'BOSS') end
+        return show
+    elseif v then
+        local show = checkFilter(v, self, unit, caster)
+        -- if show then debug('CustomAuraFilter', spellID, name, 'FILTER', v, caster) end
+        return show
+    else
+        local show = caster and UnitIsUnit(caster, 'vehicle') and not UnitIsPlayer('vehicle')
+        -- if show then debug('CustomAuraFilter', spellID, name, (not caster) and 'UNKNOWN' or 'VEHICLE') end
+        return show
+    end
+end
+
+function filters.pet(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
+    local v = auraList[spellID]
+    --debug('CustomAuraFilter', '[unit]', unit, '[caster]', caster, '[name]', name, '[id]', spellID, '[filter]', v, '[vehicle]', caster == 'vehicle')
+    return caster and unitIsPlayer[caster] and v and bit_band(v, FILTER_BY_PLAYER) > 0
+end
+
+function filters.target(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
+    local v = auraList[spellID]
+    if isBossAura then
+        local show = not v or bit_band(v, FILTER_DISABLE) == 0
+        -- if show then debug('CustomAuraFilter', spellID, name, 'BOSS') end
+        return show
+    elseif v then
+        local show = checkFilter(v, self, unit, caster)
+        -- if show then debug('CustomAuraFilter', spellID, name, 'FILTER', v, caster) end
+        return show
+    elseif not caster and not IsInInstance() then
+        -- EXPERIMENTAL: ignore debuffs from players outside the group, eg. on world bosses.
+        return
+    elseif UnitCanAttack('player', unit) and not UnitPlayerControlled(unit) then
+        -- Hostile NPC. Show auras cast by the unit, or auras cast by the player's vehicle.
+        -- print('hostile NPC')
+        local show = not caster or caster == unit or (UnitIsUnit(caster, 'vehicle') and not UnitIsPlayer('vehicle'))
+        -- if show then debug('CustomAuraFilter', spellID, name, (not caster) and 'UNKNOWN' or (caster == unit) and 'SELFCAST' or 'VEHICLE') end
+        return show
+    else
+        -- Friendly target or hostile player. Show auras cast by the player's vehicle.
+        -- print('hostile player / friendly unit')
+        local show = not caster or (UnitIsUnit(caster, 'vehicle') and not UnitIsPlayer('vehicle'))
+        -- if show then debug('CustomAuraFilter', spellID, name, (not caster) and 'UNKNOWN' or 'VEHICLE') end
+        return show
+    end
+end
+
+function filters.party(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
+    local v = auraList[spellID]
+    return v and bit_band(v, FILTER_ON_PLAYER) == 0
+end
+
+ns.CustomAuraFilters = filters

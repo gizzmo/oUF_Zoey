@@ -1,0 +1,28 @@
+--[[----------------------------------------------------------------------------
+
+    oUF_Zoey
+
+    Copyright (c) 2011-2015 Gizzmo <addons@justgizzmo.com>. All rights reserved.
+    https://github.com/Gizzmo/oUF_Zoey
+
+------------------------------------------------------------------------------]]
+-- Should I add a copyright header to every file??
+
+
+TODO:
+
+threat percent tag?
+
+extract castbar code into feature file
+
+highlight frame if frame is focus or target?
+
+add helper methods to statusbars
+- set color
+- set texture
+
+set health and power textures seperatly
+
+colored glow
+- glow red when able to execuite/kill Shot
+- only show if player has ability to do so
