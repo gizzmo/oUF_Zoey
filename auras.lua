@@ -336,6 +336,7 @@ if playerClass == 'HUNTER' then
     -- Buffs
     defaultAuras[34477]  = FILTER_ON_FRIEND -- Misdirection (30 sec threat)
     defaultAuras[35079]  = FILTER_ON_FRIEND -- Misdirection (4 sec transfer)
+    defaultAuras[13159]  = FILTER_BY_PLAYER -- Aspect of the pack
     -- Debuffs
     defaultAuras[131894] = FILTER_BY_PLAYER -- defaultAuras Murder of Crows
     defaultAuras[117526] = FILTER_BY_PLAYER -- Binding Shot (stun)
@@ -866,6 +867,7 @@ local defaultPVPAuras = {
     [2094]   = FILTER_PVP, -- Blind (RO)
     [105421] = FILTER_PVP, -- Blinding Light (PA)
     [33786]  = FILTER_PVP, -- Cyclone (DR)
+    [26013]  = FILTER_PVP, -- Deserter
     [118699] = FILTER_PVP, -- Fear (WL)
     [130616] = FILTER_PVP, -- Fear (WL Glyph of Fear)
     [5484]   = FILTER_PVP, -- Howl of Terror (WL)
@@ -874,6 +876,7 @@ local defaultPVPAuras = {
     [8122]   = FILTER_PVP, -- Psychic Scream (PR)
     [6358]   = FILTER_PVP, -- Seduction (WL succubus)
     [10326]  = FILTER_PVP, -- Turn Evil (PA)
+    [160067] = FILTER_PVP, -- Web Spray
     -- Knockback
     [119403] = FILTER_PVP, -- Glyph of Explosive Trap (HU)
     [115770] = FILTER_PVP, -- Fellash (WL Shivarra)
