@@ -797,8 +797,8 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Setup the frame
     ----------------------------------------------------------------------------
-    local FRAME_HEIGHT = 33
-    local FRAME_WIDTH  = 53
+    local FRAME_HEIGHT = 40
+    local FRAME_WIDTH  = 65
     local POWER_HEIGHT = 5
 
     if isSingle then

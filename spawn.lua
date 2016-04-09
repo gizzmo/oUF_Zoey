@@ -89,16 +89,16 @@ function ns:SpawnUnitFrames()
             'point', 'LEFT',
             'groupFilter', tostring(i),
             'oUF-initialConfigFunction', [[
-                self:SetWidth( 70 )
-                self:SetHeight( 33 )
+                self:SetWidth( 65 )
+                self:SetHeight( 40 )
             ]]
         )
 
         if i == 1 then
             Raid[i]:SetPoint('BOTTOM', Anchor, 0, 0)
-            Raid[i]:SetPoint('LEFT', UIParent, 'LEFT', gap, 0)
+            Raid[i]:SetPoint('LEFT', UIParent, 'LEFT', gap/3, 0)
         else
-            Raid[i]:SetPoint('BOTTOMLEFT', Raid[i - 1], 'TOPLEFT', 0, gap)
+            Raid[i]:SetPoint('BOTTOMLEFT', Raid[i - 1], 'TOPLEFT', 0, gap/2)
         end
     end
 
