@@ -655,49 +655,75 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Auras
     ----------------------------------------------------------------------------
-    if unit == 'player' or unit == 'target' then
+    if unit == 'player' or unit == 'pet' or unit == 'target' then
+
         self.Buffs = CreateFrame('Frame', '$parentBuffs', self)
         self.Buffs:SetHeight(1) -- Needs a size to display
-        self.Buffs:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -5)
-        self.Buffs:SetPoint('TOPRIGHT', self, 'BOTTOMRIGHT', 0, -5)
 
-        self.Buffs['growth-y'] = 'DOWN'
+        self.Buffs['growth-y'] = 'UP'
         self.Buffs['spacing'] = 3
         self.Buffs['size'] = 25
-        self.Buffs['num'] = 16
 
         if unit == 'player' then
-            self.Buffs['initialAnchor'] = 'TOPLEFT'
+            self.Buffs:SetWidth(FRAME_WIDTH * 0.63)
+            self.Buffs:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 8)
+            self.Buffs['initialAnchor'] = 'BOTTOMLEFT'
             self.Buffs['growth-x'] = 'RIGHT'
 
         elseif unit == 'target' then
-            self.Buffs['initialAnchor'] = 'TOPRIGHT'
+            self.Buffs:SetWidth(FRAME_WIDTH * 0.26)
+            self.Buffs:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 8)
+            self.Buffs['initialAnchor'] = 'BOTTOMRIGHT'
             self.Buffs['growth-x'] = 'LEFT'
+
+        elseif unit == 'pet' then
+            self.Buffs:SetWidth(FRAME_WIDTH)
+            self.Buffs:SetPoint('TOP', self, 'BOTTOM', 0, -8)
+            self.Buffs['initialAnchor'] = 'TOPLEFT'
+            self.Buffs['growth-x'] = 'RIGHT'
+            self.Buffs['growth-y'] = 'DOWN'
         end
+
+        local size = (self.Buffs['size'] + self.Buffs['spacing'])
+        self.Buffs['num'] = floor(self.Buffs:GetWidth() / size + .5) * 4
+
 
         self.Buffs.PostCreateIcon = PostCreateAuraIcon
         self.Buffs.PostUpdateIcon = PostUpdateAuraIcon
 
+        self.Buffs.CustomFilter   = ns.CustomAuraFilters[unit]
+                                 or ns.CustomAuraFilters.default
+    end
+
+    if unit == 'player' or unit == 'target' then
+
         self.Debuffs = CreateFrame('Frame', '$parentDebuffs', self)
         self.Debuffs:SetHeight(1) -- Needs a size to display
-        self.Debuffs:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 5)
-        self.Debuffs:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 5)
 
         self.Debuffs['growth-y'] = 'UP'
         self.Debuffs['spacing'] = 3
-        self.Debuffs['size'] = 34
-        self.Debuffs['num'] = 12
+        self.Debuffs['size'] = 37
 
         if unit == 'player' then
+            self.Debuffs:SetWidth(FRAME_WIDTH * 0.36) -- 1/3rds
+            self.Debuffs:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 8)
             self.Debuffs['initialAnchor'] = 'BOTTOMRIGHT'
             self.Debuffs['growth-x'] = 'LEFT'
         elseif unit == 'target' then
+            self.Debuffs:SetWidth(FRAME_WIDTH * 0.73) -- 2/3rds
+            self.Debuffs:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 8)
             self.Debuffs['initialAnchor'] = 'BOTTOMLEFT'
             self.Debuffs['growth-x'] = 'RIGHT'
         end
 
+        local size = (self.Debuffs['size'] + self.Debuffs['spacing'])
+        self.Debuffs['num'] = floor(self.Debuffs:GetWidth() / size + .5) * 3
+
         self.Debuffs.PostCreateIcon = PostCreateAuraIcon
         self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
+
+        self.Debuffs.CustomFilter   = ns.CustomAuraFilters[unit]
+                                   or ns.CustomAuraFilters.default
     end
 
     ----------------------------------------------------------------------------
