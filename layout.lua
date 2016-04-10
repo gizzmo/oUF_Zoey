@@ -849,13 +849,13 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     -- Texts
     ----------------------------------------------------------------------------
     local Name = CreateText(self.Overlay, 10, 'center')
-    Name:SetPoint('TOPLEFT', self, 1, -1)
-    Name:SetPoint('TOPRIGHT', self, -1, -1)
+    Name:SetPoint('TOPLEFT', self, 3, -3)
+    Name:SetPoint('TOPRIGHT', self, -3, -3)
     self:Tag(Name, '[Name]')
 
     local StatusText = CreateText(self.Overlay, 12, 'center')
-    StatusText:SetPoint('BOTTOMLEFT',  self.Health, 1, 1)
-    StatusText:SetPoint('BOTTOMRIGHT',  self.Health, -1, 1)
+    StatusText:SetPoint('BOTTOMLEFT',  self.Health, 3, 1)
+    StatusText:SetPoint('BOTTOMRIGHT',  self.Health, -3, 1)
     self:Tag(StatusText, '[Status]')
 
     ----------------------------------------------------------------------------
