@@ -784,7 +784,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
     local Name = CreateText(self.Overlay, 12)
     Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
     Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
-    self:Tag(Name, '[leadericon][Level< ][Name]')
+    self:Tag(Name, '[Level< ][Name]')
 
     local StatusText = CreateText(self.Overlay, 16)
     StatusText:SetPoint('RIGHT', self.Health, -1, 0)
@@ -793,9 +793,20 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Icons
     ----------------------------------------------------------------------------
+    self.Leader = self.Overlay:CreateTexture(nil, 'OVERLAY')
+    self.Leader:SetTexture(0.65, 0.65, 1, 1)
+    self.Leader:SetSize(4,4)
+    self.Leader:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 1, -1)
+
+    self.Assistant = self.Overlay:CreateTexture(nil, 'OVERLAY')
+    self.Assistant:SetTexture(1, 0.75, 0.5, 1)
+    self.Assistant:SetSize(4,4)
+    self.Assistant:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 1, -1)
+
     self.LFDRole = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.LFDRole:SetSize(13,13)
-    self.LFDRole:SetPoint('CENTER', self.Overlay, 'TOPRIGHT', 0, 0)
+    self.LFDRole:SetSize(5,5)
+    self.LFDRole:SetPoint('TOPRIGHT', self.Overlay, 'TOPRIGHT', -1, -1)
+    self.LFDRole.Override = LFDOverride
 
     self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
