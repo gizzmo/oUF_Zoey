@@ -265,6 +265,20 @@ local function ExpOnShow(bar)
     end)
 end
 
+-- Icon Overrides
+local function LFDOverride(self)
+    local LFDRole = self.LFDRole
+    local Role = UnitGroupRolesAssigned(self.unit)
+    if Role == 'TANK' then
+        LFDRole:SetTexture(1, 1, 1, 1)
+        LFDRole:Show()
+    elseif Role == 'HEALER' then
+        LFDRole:SetTexture(0, 1, 0, 1)
+        LFDRole:Show()
+    else
+        LFDRole:Hide()
+    end
+end
 
 -- Other Functions
 ns.Mouse_Focus = nil
@@ -837,16 +851,19 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     -- Icons
     ----------------------------------------------------------------------------
     self.Leader = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.Leader:SetSize(13,13)
-    self.Leader:SetPoint('CENTER', self.Overlay, 'TOPLEFT', 0, 0)
+    self.Leader:SetTexture(0.65, 0.65, 1, 1)
+    self.Leader:SetSize(4,4)
+    self.Leader:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 1, -1)
 
     self.Assistant = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.Assistant:SetSize(13,13)
-    self.Assistant:SetPoint('CENTER', self.Overlay, 'TOPLEFT', 0, 0)
+    self.Assistant:SetTexture(1, 0.75, 0.5, 1)
+    self.Assistant:SetSize(4,4)
+    self.Assistant:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 1, -1)
 
     self.LFDRole = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.LFDRole:SetSize(13,13)
-    self.LFDRole:SetPoint('CENTER', self.Overlay, 'TOPRIGHT', 0, 0)
+    self.LFDRole:SetSize(4,4)
+    self.LFDRole:SetPoint('TOPRIGHT', self.Overlay, 'TOPRIGHT', -1, -1)
+    self.LFDRole.Override = LFDOverride
 
     self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
