@@ -833,6 +833,15 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     -- Initliaze the style
     InitStyle(self, unit, isSingle)
 
+    -- Grow healthbar top to bottom
+    self.Health:SetOrientation('VERTICAL')
+
+    -- Change Range Fading
+    self[IsAddOnLoaded('oUF_SpellRange') and 'SpellRange' or 'Range'] = {
+        insideAlpha = 1,
+        outsideAlpha = 0.25
+    }
+
     ----------------------------------------------------------------------------
     -- Build the other status bars
     ----------------------------------------------------------------------------
