@@ -99,14 +99,9 @@ function ns:DisableBlizzard()
     TemporaryEnchantFrame:Hide()
     ConsolidatedBuffs:Hide()
 
-    -- Hide the Compact Raid Frame Manager and Container
-    CompactRaidFrameManager:UnregisterAllEvents()
-    CompactRaidFrameManager.Show = CompactRaidFrameManager.Hide
-    CompactRaidFrameManager:Hide()
-
-    CompactRaidFrameContainer:UnregisterAllEvents()
-    CompactRaidFrameContainer.Show = CompactRaidFrameContainer.Hide
-    CompactRaidFrameContainer:Hide()
+    -- The raid frames are actaully addons, disable them.
+    DisableAddOn("Blizzard_CompactRaidFrames")
+    DisableAddOn("Blizzard_CUFProfiles")
 
     -- Disable Blizzard options that are rendered useless by having this unit frame addon
     for _, button in pairs({
@@ -115,7 +110,6 @@ function ns:DisableBlizzard()
         'DisplayPanelShowAggroPercentage',
         'FrameCategoriesButton9',  -- Status Text
         'FrameCategoriesButton10', -- Unit Frames
-        'FrameCategoriesButton11', -- Raid Profiles
         'FrameCategoriesButton12', -- Buffs and Debuffs
     }) do
         _G['InterfaceOptions'..button]:SetAlpha(0.35)
