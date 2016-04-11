@@ -623,7 +623,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         -- Size and place the Castbar Frame
         if unit == 'player' then
             self.Castbar.Frame:SetSize(320,20)
-            self.Castbar.Frame:SetPoint('BOTTOM', oUF_ZoeyUnitFrameAnchor, 0, -90)
+            self.Castbar.Frame:SetPoint('BOTTOM', oUF_ZoeyUnitFrameAnchor, 0, -30)
         elseif unit == 'target' then
             self.Castbar.Frame:SetSize(500,30)
             self.Castbar.Frame:SetPoint('BOTTOM', oUF_ZoeyUnitFrameAnchor, 0, 127)
