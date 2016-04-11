@@ -265,15 +265,30 @@ local function ExpOnShow(bar)
     end)
 end
 
+-- Corner Indicators
+local CORNER_BACKDROP = {
+    bgFile = "Interface\\BUTTONS\\WHITE8X8", tile = true, tileSize = 8,
+    edgeFile = "Interface\\BUTTONS\\WHITE8X8", edgeSize = 1,
+    insets = {left = 1, right = 1, top = 1, bottom = 1},
+}
+
+local function CreateCornerIndicator(parent)
+    local square = CreateFrame('Frame', nil, parent)
+    square:SetBackdrop(CORNER_BACKDROP)
+    square:SetBackdropBorderColor(0, 0, 0, 1)
+    square:SetSize(6,6)
+    return square
+end
+
 -- Icon Overrides
 local function LFDOverride(self)
     local LFDRole = self.LFDRole
     local Role = UnitGroupRolesAssigned(self.unit)
     if Role == 'TANK' then
-        LFDRole:SetTexture(1, 1, 1, 1)
+        LFDRole:SetBackdropColor(1, 1, 1, 1)
         LFDRole:Show()
     elseif Role == 'HEALER' then
-        LFDRole:SetTexture(0, 1, 0, 1)
+        LFDRole:SetBackdropColor(0, 1, 0, 1)
         LFDRole:Show()
     else
         LFDRole:Hide()
@@ -793,18 +808,15 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Icons
     ----------------------------------------------------------------------------
-    self.Leader = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.Leader:SetTexture(0.65, 0.65, 1, 1)
-    self.Leader:SetSize(4,4)
+    self.Leader = CreateCornerIndicator(self.Overlay)
+    self.Leader:SetBackdropColor(0.65, 0.65, 1, 1)
     self.Leader:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 1, -1)
 
-    self.Assistant = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.Assistant:SetTexture(1, 0.75, 0.5, 1)
-    self.Assistant:SetSize(4,4)
+    self.Assistant = CreateCornerIndicator(self.Overlay)
+    self.Assistant:SetBackdropColor(1, 0.75, 0.5, 1)
     self.Assistant:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 1, -1)
 
-    self.LFDRole = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.LFDRole:SetSize(5,5)
+    self.LFDRole = CreateCornerIndicator(self.Overlay)
     self.LFDRole:SetPoint('TOPRIGHT', self.Overlay, 'TOPRIGHT', -1, -1)
     self.LFDRole.Override = LFDOverride
 
@@ -870,18 +882,15 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Icons
     ----------------------------------------------------------------------------
-    self.Leader = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.Leader:SetTexture(0.65, 0.65, 1, 1)
-    self.Leader:SetSize(4,4)
+    self.Leader = CreateCornerIndicator(self.Overlay)
+    self.Leader:SetBackdropColor(0.65, 0.65, 1, 1)
     self.Leader:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 1, -1)
 
-    self.Assistant = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.Assistant:SetTexture(1, 0.75, 0.5, 1)
-    self.Assistant:SetSize(4,4)
+    self.Assistant = CreateCornerIndicator(self.Overlay)
+    self.Assistant:SetBackdropColor(1, 0.75, 0.5, 1)
     self.Assistant:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 1, -1)
 
-    self.LFDRole = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.LFDRole:SetSize(4,4)
+    self.LFDRole = CreateCornerIndicator(self.Overlay)
     self.LFDRole:SetPoint('TOPRIGHT', self.Overlay, 'TOPRIGHT', -1, -1)
     self.LFDRole.Override = LFDOverride
 
