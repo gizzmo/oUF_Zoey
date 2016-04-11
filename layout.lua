@@ -810,14 +810,14 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     self.Leader = CreateCornerIndicator(self.Overlay)
     self.Leader:SetBackdropColor(0.65, 0.65, 1, 1)
-    self.Leader:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 1, -1)
+    self.Leader:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 0, 0)
 
     self.Assistant = CreateCornerIndicator(self.Overlay)
     self.Assistant:SetBackdropColor(1, 0.75, 0.5, 1)
-    self.Assistant:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 1, -1)
+    self.Assistant:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 0, 0)
 
     self.LFDRole = CreateCornerIndicator(self.Overlay)
-    self.LFDRole:SetPoint('TOPRIGHT', self.Overlay, 'TOPRIGHT', -1, -1)
+    self.LFDRole:SetPoint('TOPRIGHT', self.Overlay, 'TOPRIGHT', 0, 0)
     self.LFDRole.Override = LFDOverride
 
     self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
@@ -884,14 +884,14 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     self.Leader = CreateCornerIndicator(self.Overlay)
     self.Leader:SetBackdropColor(0.65, 0.65, 1, 1)
-    self.Leader:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 1, -1)
+    self.Leader:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 0, 0)
 
     self.Assistant = CreateCornerIndicator(self.Overlay)
     self.Assistant:SetBackdropColor(1, 0.75, 0.5, 1)
-    self.Assistant:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 1, -1)
+    self.Assistant:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 0, 0)
 
     self.LFDRole = CreateCornerIndicator(self.Overlay)
-    self.LFDRole:SetPoint('TOPRIGHT', self.Overlay, 'TOPRIGHT', -1, -1)
+    self.LFDRole:SetPoint('TOPRIGHT', self.Overlay, 'TOPRIGHT', 0, 0)
     self.LFDRole.Override = LFDOverride
 
     self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
