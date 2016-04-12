@@ -424,10 +424,10 @@ local function InitStyle(self, unit, isSingle)
 
     -- All frames will have a health status bar
     self.Health = CreateStatusBar(self, 'HealthBar')
-    self.Health:SetPoint('TOP', self, 'TOP', 0, -1)
-    self.Health:SetPoint('LEFT', self, 'LEFT', 1, 0)
-    self.Health:SetPoint('RIGHT', self, 'RIGHT', -1, 0)
-    self.Health:SetPoint('BOTTOM', self, 'BOTTOM', 0, 1)
+    self.Health:SetPoint('TOP', 0, -1)
+    self.Health:SetPoint('LEFT', 1, 0)
+    self.Health:SetPoint('RIGHT', -1, 0)
+    self.Health:SetPoint('BOTTOM', 0, 1)
     self.Health.PostUpdate = PostUpdateHealth
 
 end
@@ -457,9 +457,9 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     self.Power = CreateStatusBar(self, 'PowerBar')
     self.Power:SetHeight(POWER_HEIGHT)
-    self.Power:SetPoint('LEFT', self, 'LEFT', 1, 0)
-    self.Power:SetPoint('RIGHT', self, 'RIGHT', -1, 0)
-    self.Power:SetPoint('BOTTOM', self, 'BOTTOM', 0, 1)
+    self.Power:SetPoint('LEFT', 1, 0)
+    self.Power:SetPoint('RIGHT', -1, 0)
+    self.Power:SetPoint('BOTTOM', 0, 1)
     self.Power.PostUpdate = PostUpdatePower
 
     self.Health:SetPoint('BOTTOM', self.Power, 'TOP', 0, 1)
@@ -468,9 +468,9 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         local PORTRAIT_HEIGHT = FRAME_HEIGHT
         self.Portrait = CreateFrame('PlayerModel', '$parentPortrait', self)
         self.Portrait:SetHeight(PORTRAIT_HEIGHT - 1.5)
-        self.Portrait:SetPoint('TOP', self, 'TOP', 0, -1)
-        self.Portrait:SetPoint('LEFT', self, 'LEFT', 1, 0)
-        self.Portrait:SetPoint('RIGHT', self, 'RIGHT', -2, 0)
+        self.Portrait:SetPoint('TOP', 0, -1)
+        self.Portrait:SetPoint('LEFT', 1, 0)
+        self.Portrait:SetPoint('RIGHT', -2, 0)
         self.Portrait:SetAlpha(0.4)
 
         self.Health:SetPoint('TOP', self.Portrait, 'BOTTOM', 0, -1.5)
@@ -484,9 +484,9 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         local EXP_HEIGHT = 5
         self.Experience = CreateStatusBar(self, 'Experience', true)
         self.Experience:SetHeight(EXP_HEIGHT - 1)
-        self.Experience:SetPoint('BOTTOM', self, 'BOTTOM', 0, 1)
-        self.Experience:SetPoint('LEFT', self, 'LEFT', 1, 0)
-        self.Experience:SetPoint('RIGHT', self, 'RIGHT', -1, 0)
+        self.Experience:SetPoint('LEFT', 1, 0)
+        self.Experience:SetPoint('RIGHT', -1, 0)
+        self.Experience:SetPoint('BOTTOM', 0, 1)
 
         self.Experience.Rested = CreateStatusBar(self.Experience, 'Rested')
         self.Experience.Rested:SetAllPoints(self.Experience)
@@ -548,7 +548,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     if self.Portrait then
         local Guild = CreateText(self.Overlay, 12)
         Guild:SetPoint('TOP', Name, 'BOTTOM', 0, -1)
-        Guild:SetPoint('LEFT',  Name)
+        Guild:SetPoint('LEFT', Name)
         Guild:SetPoint('RIGHT', Name)
         self:Tag(Guild, '[Guild]')
     end
@@ -569,7 +569,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     if unit == 'target' then
         self.QuestIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
         self.QuestIcon:SetSize(32,32)
-        self.QuestIcon:SetPoint('CENTER', self.Overlay, 'LEFT', 0, 0)
+        self.QuestIcon:SetPoint('CENTER', self.Overlay, 'LEFT')
     end
 
     self.LFDRole = self.Overlay:CreateTexture(nil, 'OVERLAY')
@@ -578,15 +578,15 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
     self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
-    self.ReadyCheck:SetPoint('CENTER', self.Overlay, 0, 0)
+    self.ReadyCheck:SetPoint('CENTER')
 
     self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.RaidIcon:SetSize(23,23)
-    self.RaidIcon:SetPoint('LEFT', self.Overlay, 3, 0)
+    self.RaidIcon:SetPoint('LEFT', 3, 0)
 
     self.PvP = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.PvP:SetSize(21,21)
-    self.PvP:SetPoint('CENTER', self.Overlay, 'LEFT', 0,0)
+    self.PvP:SetPoint('CENTER', self.Overlay, 'LEFT')
     self.PvP.PostUpdate = PvPPostUpdate
 
     if unit == 'party' or unit == 'target' or unit == 'focus' then
@@ -637,7 +637,8 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
             self.Castbar.Icon:SetPoint('BOTTOMLEFT', self.Castbar.Frame, 1, 1)
             self.Castbar.Icon:SetWidth(self.Castbar.Frame:GetHeight())
 
-            self.Castbar:SetPoint('TOPLEFT', self.Castbar.Icon, 'TOPRIGHT', 1, 0) -- Anchor the castbar to the icon.
+            -- Anchor the castbar to the icon.
+            self.Castbar:SetPoint('TOPLEFT', self.Castbar.Icon, 'TOPRIGHT', 1, 0)
         end
 
         -- Add a spark
@@ -759,14 +760,14 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     -- Heal Prediction
     ----------------------------------------------------------------------------
     local mhpb = CreateStatusBar(self.Health, 'HealPredictionMyHeals', true)
-    mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
-    mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
+    mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT')
+    mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
     mhpb:SetWidth(self:GetWidth())
     mhpb:SetStatusBarColor(0.25, 0.8, 1, 0.5)
 
     local ohpb = CreateStatusBar(self.Health, 'HealPredictionOtherHeals', true)
-    ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
-    ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
+    ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT')
+    ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT')
     ohpb:SetWidth(self:GetWidth())
     ohpb:SetStatusBarColor(0.25, 1, 0.25, 0.5)
 
@@ -810,23 +811,23 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     self.Leader = CreateCornerIndicator(self.Overlay)
     self.Leader:SetBackdropColor(0.65, 0.65, 1, 1)
-    self.Leader:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 0, 0)
+    self.Leader:SetPoint('TOPLEFT')
 
     self.Assistant = CreateCornerIndicator(self.Overlay)
     self.Assistant:SetBackdropColor(1, 0.75, 0.5, 1)
-    self.Assistant:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 0, 0)
+    self.Assistant:SetPoint('TOPLEFT')
 
     self.LFDRole = CreateCornerIndicator(self.Overlay)
-    self.LFDRole:SetPoint('TOPRIGHT', self.Overlay, 'TOPRIGHT', 0, 0)
+    self.LFDRole:SetPoint('TOPRIGHT')
     self.LFDRole.Override = LFDOverride
 
     self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
-    self.ReadyCheck:SetPoint('CENTER', self.Overlay, 0, 0)
+    self.ReadyCheck:SetPoint('CENTER')
 
     self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.RaidIcon:SetSize(16,16)
-    self.RaidIcon:SetPoint('CENTER', self.Overlay, 'LEFT', 0, 0)
+    self.RaidIcon:SetPoint('CENTER', self.Overlay, 'LEFT')
 
 end)
 
@@ -859,9 +860,9 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     self.Power = CreateStatusBar(self, 'PowerBar')
     self.Power:SetHeight(POWER_HEIGHT)
-    self.Power:SetPoint('LEFT', self, 'LEFT', 1, 0)
-    self.Power:SetPoint('RIGHT', self, 'RIGHT', -1, 0)
-    self.Power:SetPoint('BOTTOM', self, 'BOTTOM', 0, 1)
+    self.Power:SetPoint('LEFT', 1, 0)
+    self.Power:SetPoint('RIGHT', -1, 0)
+    self.Power:SetPoint('BOTTOM', 0, 1)
     self.Power.PostUpdate = PostUpdatePower
 
     self.Health:SetPoint('BOTTOM', self.Power, 'TOP', 0, 1)
@@ -870,13 +871,13 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     -- Texts
     ----------------------------------------------------------------------------
     local Name = CreateText(self.Overlay, 10, 'center')
-    Name:SetPoint('TOPLEFT', self, 3, -3)
-    Name:SetPoint('TOPRIGHT', self, -3, -3)
+    Name:SetPoint('TOPLEFT', 3, -3)
+    Name:SetPoint('TOPRIGHT', -3, -3)
     self:Tag(Name, '[Name]')
 
     local StatusText = CreateText(self.Overlay, 12, 'center')
-    StatusText:SetPoint('BOTTOMLEFT',  self.Health, 3, 1)
-    StatusText:SetPoint('BOTTOMRIGHT',  self.Health, -3, 1)
+    StatusText:SetPoint('BOTTOMLEFT', self.Health, 3, 1)
+    StatusText:SetPoint('BOTTOMRIGHT', self.Health, -3, 1)
     self:Tag(StatusText, '[Status]')
 
     ----------------------------------------------------------------------------
@@ -884,22 +885,22 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     self.Leader = CreateCornerIndicator(self.Overlay)
     self.Leader:SetBackdropColor(0.65, 0.65, 1, 1)
-    self.Leader:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 0, 0)
+    self.Leader:SetPoint('TOPLEFT')
 
     self.Assistant = CreateCornerIndicator(self.Overlay)
     self.Assistant:SetBackdropColor(1, 0.75, 0.5, 1)
-    self.Assistant:SetPoint('TOPLEFT', self.Overlay, 'TOPLEFT', 0, 0)
+    self.Assistant:SetPoint('TOPLEFT')
 
     self.LFDRole = CreateCornerIndicator(self.Overlay)
-    self.LFDRole:SetPoint('TOPRIGHT', self.Overlay, 'TOPRIGHT', 0, 0)
+    self.LFDRole:SetPoint('TOPRIGHT')
     self.LFDRole.Override = LFDOverride
 
     self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
-    self.ReadyCheck:SetPoint('CENTER', self.Overlay, 0, 0)
+    self.ReadyCheck:SetPoint('CENTER')
 
     self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.RaidIcon:SetSize(16,16)
-    self.RaidIcon:SetPoint('CENTER', self.Overlay, 'LEFT', 0, 0)
+    self.RaidIcon:SetPoint('CENTER', self.Overlay, 'LEFT')
 
 end)
