@@ -39,10 +39,10 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 ----------------------------------------------------------------------]]
 
-local ADDON, addon = ...
+local addonName, addon = ...
 local frame = CreateFrame("Frame")
 
-function addon:GetName() return ADDON end
+function addon:GetName() return addonName end
 
 ------------------------------------------------------------------------
 -- Localization
@@ -56,7 +56,7 @@ end })
 ------------------------------------------------------------------------
 -- Printing
 
-addon.PRINT_PREFIX = "|cff00ddba" .. (addon.name or GetAddOnMetadata(ADDON, "Title") or ADDON) .. ":|r"
+addon.PRINT_PREFIX = "|cff00ddba" .. (addon.name or GetAddOnMetadata(addonName, "Title") or addonName) .. ":|r"
 
 function addon:Print(str, ...)
 	if select("#", ...) > 0 then
@@ -189,7 +189,7 @@ end
 frame:RegisterEvent("ADDON_LOADED")
 
 function frame:ADDON_LOADED(event, name)
-	if name ~= ADDON then return end
+	if name ~= addonName then return end
 
 	self:UnregisterEvent("ADDON_LOADED")
 	self.ADDON_LOADED = nil
