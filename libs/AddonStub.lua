@@ -143,6 +143,28 @@ function frame:PLAYER_REGEN_ENABLED(event, ...)
     table.wipe(deferframe.queue)
 end
 
+--------------------------------------------------------------------------------
+-- Slash command registering
+function addon:RegisterSlash(...)
+    local name = addonName..'Slash' .. math.floor(GetTime())
+
+    local numArgs = select('#', ...)
+    local func = select(numArgs, ...)
+
+    for index = 1, numArgs - 1 do
+        local command = select(index, ...)
+        _G['SLASH_' .. name .. index] = '/'..command:lower()
+    end
+
+    if type(func) == 'string' then
+        SlashCmdList[name] = function(input, editBox)
+            self[func](self, input, editBox)
+        end
+    else
+        SlashCmdList[name] = func
+    end
+end
+
 ------------------------------------------------------------------------
 -- Event handling
 
