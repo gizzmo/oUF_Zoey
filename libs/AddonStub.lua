@@ -102,6 +102,48 @@ function addon:Print(str, ...)
 end
 
 ------------------------------------------------------------------------
+-- Deferred execution (when in-combat)
+
+local defer_queue = {}
+
+local function runDeferred(thing)
+    local thing_t = type(thing)
+    if thing_t == 'string' and addon[thing] then
+        addon[thing](ns)
+    elseif thing_t == 'function' then
+        thing(ns)
+    end
+end
+
+-- This method will defer the execution of a method or function until the player
+-- has exited combat. If they are already out of combat, it will execute the
+-- function immediately.
+function addon:Defer(...)
+    for i = 1, select('#', ...) do
+        local thing = select(i, ...)
+        local thing_t = type(thing)
+        if thing_t == 'string' or thing_t == 'function' then
+            if InCombatLockdown() then
+                defer_queue[#defer_queue + 1] = thing
+            else
+                runDeferred(thing)
+            end
+        else
+            error('Invalid object: "Defer(function[, function])"')
+        end
+    end
+end
+
+frame:RegisterEvent('PLAYER_REGEN_ENABLED')
+
+function frame:PLAYER_REGEN_ENABLED(event, ...)
+    for idx, thing in ipairs(deferframe.queue) do
+        runDeferred(thing)
+    end
+    table.wipe(deferframe.queue)
+end
+
+------------------------------------------------------------------------
 -- Event handling
 
 local handlers = {}
