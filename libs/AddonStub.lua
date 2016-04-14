@@ -145,6 +145,10 @@ end
 	anonymouseFunc
 	nil
 
+    getEventHandler(self, 'ADDON_LOADED', ns.table)
+    ns.table['ADDON_LOADED']
+    ns.table
+
 if the possible function returned doesnt exist, return nil
 --]]
 local function getEventHandler(self, event, func, handler)
@@ -155,6 +159,9 @@ local function getEventHandler(self, event, func, handler)
 			func = self[func]
 			handler = self
 		end
+	elseif type(func) == 'table' then
+		handler = func
+		func = handler[event]
 	elseif type(func) ~= "function" then
 		func = self[event]
 		handler = self
