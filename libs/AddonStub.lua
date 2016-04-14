@@ -38,7 +38,7 @@ addon.L = setmetatable({}, {
 
 local gameLocale = GetLocale()
 function addon:RegisterLocale(locale, table)
-	if locale ~= gameLocale then
+	if locale ~= 'enUS' and locale ~= gameLocale then
 		return -- nop, we don't need these translations
 	end
 
