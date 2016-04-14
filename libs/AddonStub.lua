@@ -20,6 +20,10 @@ function addon:GetName()
     return (addon.name or GetAddOnMetadata(addonName, "Title") or addonName), addonName
 end
 
+-- helpfull shortcut
+_G['SLASH_rl1'] = '/rl'
+SlashCmdList['rl'] = ReloadUI
+
 
 --------------------------------------------------------------------------------
 -- Localization

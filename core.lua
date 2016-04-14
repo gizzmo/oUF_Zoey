@@ -72,9 +72,6 @@ function ns:OnLoad()
         end
     end
 
-    _G['SLASH_rl1'] = '/rl'
-    SlashCmdList['rl'] = ReloadUI
-
     -- Shift to temporarily show all buffs
     self:RegisterEvent("PLAYER_REGEN_DISABLED")
     self:RegisterEvent("PLAYER_REGEN_ENABLED")
