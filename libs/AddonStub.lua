@@ -110,10 +110,10 @@ end
 frame:RegisterEvent('PLAYER_REGEN_ENABLED')
 
 function frame:PLAYER_REGEN_ENABLED(event, ...)
-    for idx, thing in ipairs(deferframe.queue) do
+    for idx, thing in ipairs(defer_queue) do
         runDeferred(thing)
     end
-    table.wipe(deferframe.queue)
+    table.wipe(defer_queue)
 end
 
 
