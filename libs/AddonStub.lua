@@ -42,7 +42,10 @@ OTHER DEALINGS IN THE SOFTWARE.
 local addonName, addon = ...
 local frame = CreateFrame("Frame")
 
-function addon:GetName() return addonName end
+-- Return designed name and real name
+function addon:GetName()
+    return (addon.name or GetAddOnMetadata(addonName, "Title") or addonName), addonName
+end
 
 ------------------------------------------------------------------------
 -- Localization
@@ -56,7 +59,7 @@ end })
 ------------------------------------------------------------------------
 -- Printing
 
-addon.PRINT_PREFIX = "|cff00ddba" .. (addon.name or GetAddOnMetadata(addonName, "Title") or addonName) .. ":|r"
+addon.PRINT_PREFIX = "|cff00ddba" .. addon:GetName() .. ":|r"
 
 function addon:Print(str, ...)
 	if select("#", ...) > 0 then
