@@ -2,10 +2,10 @@
 AddonStub.lua
 
 This is a amalgamation of several addons
-	PhanxAddonStub  https://github.com/Phanx/PhanxAddonStub
-	Inomena         https://github.com/p3lim-wow/Inomena
-	TomTom          http://wowinterface.com/downloads/info7032-TomTom.html
-	Ace3            http://www.wowace.com/addons/ace3/
+    PhanxAddonStub  https://github.com/Phanx/PhanxAddonStub
+    Inomena         https://github.com/p3lim-wow/Inomena
+    TomTom          http://wowinterface.com/downloads/info7032-TomTom.html
+    Ace3            http://www.wowace.com/addons/ace3/
 
 ------------------------------------------------------------------------------]]
 
@@ -20,58 +20,61 @@ function addon:GetName()
     return (addon.name or GetAddOnMetadata(addonName, "Title") or addonName), addonName
 end
 
-------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
 -- Localization
 
 addon.L = setmetatable({}, {
-	-- When accessing a key that doesn't exist, set the value as the key
-	__index = function(table, key)
-		rawset(table, key, key)
-		return key
-	end,
+    -- When accessing a key that doesn't exist, set the value as the key
+    __index = function(table, key)
+        rawset(table, key, key)
+        return key
+    end,
 
-	-- When setting a key, if the value is `true` use the key
-	__newindex = function(table, key, value)
-		rawset(table, key, value == true and key or value)
-	end,
+    -- When setting a key, if the value is `true` use the key
+    __newindex = function(table, key, value)
+        rawset(table, key, value == true and key or value)
+    end,
 })
 
 local gameLocale = GetLocale()
 function addon:RegisterLocale(locale, table)
-	if locale ~= 'enUS' and locale ~= gameLocale then
-		return -- nop, we don't need these translations
-	end
+    if locale ~= 'enUS' and locale ~= gameLocale then
+        return -- nop, we don't need these translations
+    end
 
-	for key, value in pairs(table) do
-		if type(value) == "string" then
-			self.L[key] = value
-		elseif type(value) == "function" then
-			self.L[key] = value()
-		elseif v == true then
-			self.L[key] = key
-		else
-			self.L[key] = key
-		end
-	end
+    for key, value in pairs(table) do
+        if type(value) == "string" then
+            self.L[key] = value
+        elseif type(value) == "function" then
+            self.L[key] = value()
+        elseif v == true then
+            self.L[key] = key
+        else
+            self.L[key] = key
+        end
+    end
 end
 
-------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
 -- Printing
 
 addon.PRINT_PREFIX = "|cff00ddba" .. addon:GetName() .. ":|r"
 
 function addon:Print(str, ...)
-	if select("#", ...) > 0 then
-		if strmatch(str, "%%[dfqsx%d]") or strmatch(str, "%%%.%d") then
-			str = format(str, ...)
-		else
-			str = strjoin(" ", str, tostringall(...))
-		end
-	end
-	DEFAULT_CHAT_FRAME:AddMessage(self.PRINT_PREFIX .. " " ..str)
+    if select("#", ...) > 0 then
+        if strmatch(str, "%%[dfqsx%d]") or strmatch(str, "%%%.%d") then
+            str = format(str, ...)
+        else
+            str = strjoin(" ", str, tostringall(...))
+        end
+    end
+    DEFAULT_CHAT_FRAME:AddMessage(self.PRINT_PREFIX .. " " ..str)
 end
 
-------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
 -- Deferred execution (when in-combat)
 
 local defer_queue = {}
@@ -113,8 +116,10 @@ function frame:PLAYER_REGEN_ENABLED(event, ...)
     table.wipe(deferframe.queue)
 end
 
+
 --------------------------------------------------------------------------------
 -- Slash command registering
+
 function addon:RegisterSlash(...)
     local name = addonName..'Slash' .. math.floor(GetTime())
 
@@ -135,7 +140,8 @@ function addon:RegisterSlash(...)
     end
 end
 
-------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
 -- Event handling
 
 local handlers = {}
@@ -143,44 +149,44 @@ local unitEvents = {}
 
 -- Call both funcs on the frame and handler funcs
 frame:SetScript("OnEvent", function(self, event, ...)
-	if self[event] then
-		self[event](self, event, ...)
-	end
-	return addon:TriggerEvent(event, ...)
+    if self[event] then
+        self[event](self, event, ...)
+    end
+    return addon:TriggerEvent(event, ...)
 end)
 
 -- Find all the funcs for this event and call them
 -- If the returned value is `UNREGISTER` unregister that func
 function addon:TriggerEvent(event, ...)
-	if not handlers[event] then return end
-	for func, handler in pairs(handlers[event]) do
-		if handler == true then
-			if func(...) == "UNREGISTER" then -- note: change to boolean?
-				self:UnregisterEvent(event, func)
-			end
-		elseif func(handler, ...) == "UNREGISTER" then
-			self:UnregisterEvent(event, func, handler)
-		end
-	end
+    if not handlers[event] then return end
+    for func, handler in pairs(handlers[event]) do
+        if handler == true then
+            if func(...) == "UNREGISTER" then -- note: change to boolean?
+                self:UnregisterEvent(event, func)
+            end
+        elseif func(handler, ...) == "UNREGISTER" then
+            self:UnregisterEvent(event, func, handler)
+        end
+    end
 end
 
 --[[ Possible combinations of parameters followed by whats returned
 
-	getEventHandler(self, 'ADDON_LOADED')
-	self['ADDON_LOADED']
-	self
+    getEventHandler(self, 'ADDON_LOADED')
+    self['ADDON_LOADED']
+    self
 
-	getEventHandler(self, 'ADDON_LOADED', 'onLoad')
-	self['onLoad']
-	self
+    getEventHandler(self, 'ADDON_LOADED', 'onLoad')
+    self['onLoad']
+    self
 
     getEventHandler(self, 'ADDON_LOADED', 'onLoad', ns.table)
     ns.table['onLoad']
     ns.table
 
-	getEventHandler(self, 'ADDON_LOADED', anonymouseFunc)
-	anonymouseFunc
-	nil
+    getEventHandler(self, 'ADDON_LOADED', anonymouseFunc)
+    anonymouseFunc
+    nil
 
     getEventHandler(self, 'ADDON_LOADED', ns.table)
     ns.table['ADDON_LOADED']
@@ -189,188 +195,191 @@ end
 if the possible function returned doesnt exist, return nil
 --]]
 local function getEventHandler(self, event, func, handler)
-	if type(func) == "string" then
-		if type(handler) == "table" then
-			func = handler[func]
-		else
-			func = self[func]
-			handler = self
-		end
-	elseif type(func) == 'table' then
-		handler = func
-		func = handler[event]
-	elseif type(func) ~= "function" then
-		func = self[event]
-		handler = self
-	else
-		handler = nil
-	end
-	return type(func) == "function" and func or nil, handler
+    if type(func) == "string" then
+        if type(handler) == "table" then
+            func = handler[func]
+        else
+            func = self[func]
+            handler = self
+        end
+    elseif type(func) == 'table' then
+        handler = func
+        func = handler[event]
+    elseif type(func) ~= "function" then
+        func = self[event]
+        handler = self
+    else
+        handler = nil
+    end
+    return type(func) == "function" and func or nil, handler
 end
 
 function addon:RegisterEvent(event, func, handler)
-	assert(not unitEvents[event], event .. " already registered as a unit event!")
-	local func, handler = getEventHandler(self, event, func, handler)
-	if func then
-		handlers[event] = handlers[event] or {}
-		handlers[event][func] = handler or true
-		frame:RegisterEvent(event)
-		return true
-	end
+    assert(not unitEvents[event], event .. " already registered as a unit event!")
+    local func, handler = getEventHandler(self, event, func, handler)
+    if func then
+        handlers[event] = handlers[event] or {}
+        handlers[event][func] = handler or true
+        frame:RegisterEvent(event)
+        return true
+    end
 end
 
 function addon:RegisterUnitEvent(event, unit1, unit2, func, handler)
-	assert(unitEvents[event] or not handlers[event], event .. " already registered as a non-unit event!")
-	local func, handler = getEventHandler(self, event, func, handler)
-	if func then
-		unitEvents[event] = true
-		handlers[event] = handlers[event] or {}
-		handlers[event][func] = handler or true
-		frame:RegisterUnitEvent(event, unit1, unit2)
-		return true
-	end
+    assert(unitEvents[event] or not handlers[event], event .. " already registered as a non-unit event!")
+    local func, handler = getEventHandler(self, event, func, handler)
+    if func then
+        unitEvents[event] = true
+        handlers[event] = handlers[event] or {}
+        handlers[event][func] = handler or true
+        frame:RegisterUnitEvent(event, unit1, unit2)
+        return true
+    end
 end
 
 function addon:UnregisterEvent(event, func, handler)
-	if handlers[event] then
-		local func = getEventHandler(self, event, func, handler)
-		if func then
-			handlers[event][func] = nil
-		end
-		if not next(handlers[event]) then
-			unitEvents[event] = nil -- TODO: check that this works as intended
-			handlers[event] = nil
-			frame:UnregisterEvent(event)
-		end
-	end
+    if handlers[event] then
+        local func = getEventHandler(self, event, func, handler)
+        if func then
+            handlers[event][func] = nil
+        end
+        if not next(handlers[event]) then
+            unitEvents[event] = nil -- TODO: check that this works as intended
+            handlers[event] = nil
+            frame:UnregisterEvent(event)
+        end
+    end
 end
 
 function addon:UnregisterAllEvents()
-	wipe(handlers)
-	frame:UnregisterAllEvents()
+    wipe(handlers)
+    frame:UnregisterAllEvents()
 end
 
 function addon:IsEventRegistered(event)
-	return frame:IsEventRegistered(event)
+    return frame:IsEventRegistered(event)
 end
 
-------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
 -- Database initialization
 
 local function initDB(db, defaults)
-	if type(db) ~= "table" then db = {} end
-	if type(defaults) ~= "table" then return db end
-	for k, v in pairs(defaults) do
-		if type(v) == "table" then
-			db[k] = initDB(db[k], v)
-		elseif type(v) ~= type(db[k]) then
-			db[k] = v
-		end
-	end
-	return db
+    if type(db) ~= "table" then db = {} end
+    if type(defaults) ~= "table" then return db end
+    for k, v in pairs(defaults) do
+        if type(v) == "table" then
+            db[k] = initDB(db[k], v)
+        elseif type(v) ~= type(db[k]) then
+            db[k] = v
+        end
+    end
+    return db
 end
 
 function addon:InitializeDB(db, defaults)
-	_G[db] = initDB(_G[db], defaults)
+    _G[db] = initDB(_G[db], defaults)
 
-	frame.db_defaults = frame.db_defaults or {}
-	frame.db_defaults[db] = defaults
+    frame.db_defaults = frame.db_defaults or {}
+    frame.db_defaults[db] = defaults
 
-	return _G[db]
+    return _G[db]
 end
 
-------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
 -- Ignition sequence
 
 frame:RegisterEvent("ADDON_LOADED")
 
 function frame:ADDON_LOADED(event, name)
-	if name ~= addonName then return end
+    if name ~= addonName then return end
 
-	self:UnregisterEvent("ADDON_LOADED")
-	self.ADDON_LOADED = nil
+    self:UnregisterEvent("ADDON_LOADED")
+    self.ADDON_LOADED = nil
 
-	if addon.dbName then
-		addon:InitializeDB(addon.dbName, addon.dbDefaults)
-	end
-	if addon.dbpcName then
-		addon:InitializeDB(addon.dbpcName, addon.dbpcDefaults)
-	end
+    if addon.dbName then
+        addon:InitializeDB(addon.dbName, addon.dbDefaults)
+    end
+    if addon.dbpcName then
+        addon:InitializeDB(addon.dbpcName, addon.dbpcDefaults)
+    end
 
-	if addon.OnLoad then
-		addon:OnLoad()
-		addon.OnLoad = nil
-	end
+    if addon.OnLoad then
+        addon:OnLoad()
+        addon.OnLoad = nil
+    end
 
-	if IsLoggedIn() then
-		self:PLAYER_LOGIN()
-	else
-		self:RegisterEvent("PLAYER_LOGIN")
-	end
+    if IsLoggedIn() then
+        self:PLAYER_LOGIN()
+    else
+        self:RegisterEvent("PLAYER_LOGIN")
+    end
 end
 
 function frame:PLAYER_LOGIN(event)
-	self:UnregisterEvent("PLAYER_LOGIN")
-	self.PLAYER_LOGIN = nil
+    self:UnregisterEvent("PLAYER_LOGIN")
+    self.PLAYER_LOGIN = nil
 
-	if addon.OnLogin then
-		addon:OnLogin()
-		addon.OnLogin = nil
-	end
+    if addon.OnLogin then
+        addon:OnLogin()
+        addon.OnLogin = nil
+    end
 
-	self:RegisterEvent("PLAYER_LOGOUT")
+    self:RegisterEvent("PLAYER_LOGOUT")
 end
 
 function frame:PLAYER_LOGOUT(event)
-	if addon.OnLogout then
-		addon:OnLogout()
-		-- no point in cleaning up here since we're logging out
-	end
+    if addon.OnLogout then
+        addon:OnLogout()
+        -- no point in cleaning up here since we're logging out
+    end
 
-	if self.db_defaults then
-		local function cleanDB(db, defaults)
-			if type(db) ~= "table" then return {} end
-			if type(defaults) ~= "table" then return db end
-			for k, v in pairs(db) do
-				if type(v) == "table" then
-					db[k] = cleanDB(v, defaults[k])
-				elseif v == defaults[k] then
-					db[k] = nil
-				end
-			end
-			if not next(db) then
-				return nil
-			end
-			return db
-		end
+    if self.db_defaults then
+        local function cleanDB(db, defaults)
+            if type(db) ~= "table" then return {} end
+            if type(defaults) ~= "table" then return db end
+            for k, v in pairs(db) do
+                if type(v) == "table" then
+                    db[k] = cleanDB(v, defaults[k])
+                elseif v == defaults[k] then
+                    db[k] = nil
+                end
+            end
+            if not next(db) then
+                return nil
+            end
+            return db
+        end
 
-		for db, defaults in pairs(frame.db_defaults) do
-			_G[db] = cleanDB(_G[db], defaults)
-		end
-	end
+        for db, defaults in pairs(frame.db_defaults) do
+            _G[db] = cleanDB(_G[db], defaults)
+        end
+    end
 end
+
 
 --------------------------------------------------------------------------------
 --  Debug support
 
 if addon.EMERGENCY_DEBUG == true then
-	local private = {}
-	for k,v in pairs(addon) do
-		rawset(private, k, v)
-		rawset(addon, k, nil)
-	end
+    local private = {}
+    for k,v in pairs(addon) do
+        rawset(private, k, v)
+        rawset(addon, k, nil)
+    end
 
-	setmetatable(addon, {
-		__index = function(t, k)
-			local value = rawget(private, k)
-			if type(value) == "function" then
-				print("CALL", addonName .. "." .. tostring(k))
-			end
-			return value
-		end,
-		__newindex = function(t, k, v)
-			print(addonName, "NEWINDEX", k, v)
-			rawset(private, k, v)
-		end,
-	})
+    setmetatable(addon, {
+        __index = function(t, k)
+            local value = rawget(private, k)
+            if type(value) == "function" then
+                print("CALL", addonName .. "." .. tostring(k))
+            end
+            return value
+        end,
+        __newindex = function(t, k, v)
+            print(addonName, "NEWINDEX", k, v)
+            rawset(private, k, v)
+        end,
+    })
 end
