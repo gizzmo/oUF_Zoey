@@ -298,13 +298,6 @@ function frame:ADDON_LOADED(event, name)
     self:UnregisterEvent("ADDON_LOADED")
     self.ADDON_LOADED = nil
 
-    if addon.dbName then
-        addon:InitializeDB(addon.dbName, addon.dbDefaults)
-    end
-    if addon.dbpcName then
-        addon:InitializeDB(addon.dbpcName, addon.dbpcDefaults)
-    end
-
     if addon.OnLoad then
         addon:OnLoad()
         addon.OnLoad = nil
