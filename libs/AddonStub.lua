@@ -104,6 +104,7 @@ end
 local handlers = {}
 local unitEvents = {}
 
+-- Call both funcs on the frame and handler funcs
 frame:SetScript("OnEvent", function(self, event, ...)
 	if self[event] then
 		self[event](self, event, ...)
@@ -111,6 +112,8 @@ frame:SetScript("OnEvent", function(self, event, ...)
 	return addon:TriggerEvent(event, ...)
 end)
 
+-- Find all the funcs for this event and call them
+-- If the returned value is `UNREGISTER` unregister that func
 function addon:TriggerEvent(event, ...)
 	if not handlers[event] then return end
 	for func, handler in pairs(handlers[event]) do
@@ -124,6 +127,26 @@ function addon:TriggerEvent(event, ...)
 	end
 end
 
+--[[ Possible combinations of parameters followed by whats returned
+
+	getEventHandler(self, 'ADDON_LOADED')
+	self['ADDON_LOADED']
+	self
+
+	getEventHandler(self, 'ADDON_LOADED', 'onLoad')
+	self['onLoad']
+	self
+
+    getEventHandler(self, 'ADDON_LOADED', 'onLoad', ns.table)
+    ns.table['onLoad']
+    ns.table
+
+	getEventHandler(self, 'ADDON_LOADED', anonymouseFunc)
+	anonymouseFunc
+	nil
+
+if the possible function returned doesnt exist, return nil
+--]]
 local function getEventHandler(self, event, func, handler)
 	if type(func) == "string" then
 		if type(handler) == "table" then
