@@ -380,5 +380,27 @@ function frame:PLAYER_LOGOUT(event)
 	end
 end
 
-------------------------------------------------------------------------
--- Miscellaneous utilities
+--------------------------------------------------------------------------------
+--  Debug support
+
+if addon.EMERGENCY_DEBUG == true then
+	local private = {}
+	for k,v in pairs(addon) do
+		rawset(private, k, v)
+		rawset(addon, k, nil)
+	end
+
+	setmetatable(addon, {
+		__index = function(t, k)
+			local value = rawget(private, k)
+			if type(value) == "function" then
+				print("CALL", addonName .. "." .. tostring(k))
+			end
+			return value
+		end,
+		__newindex = function(t, k, v)
+			print(addonName, "NEWINDEX", k, v)
+			rawset(private, k, v)
+		end,
+	})
+end
