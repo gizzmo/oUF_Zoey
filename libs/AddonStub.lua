@@ -118,7 +118,7 @@ function addon:TriggerEvent(event, ...)
 	if not handlers[event] then return end
 	for func, handler in pairs(handlers[event]) do
 		if handler == true then
-			if func(...) == "UNREGISTER" then
+			if func(...) == "UNREGISTER" then -- note: change to boolean?
 				self:UnregisterEvent(event, func)
 			end
 		elseif func(handler, ...) == "UNREGISTER" then
