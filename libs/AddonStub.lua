@@ -173,7 +173,7 @@ end
 
 function addon:RegisterEvent(event, func, handler)
 	assert(not unitEvents[event], event .. " already registered as a unit event!")
-	func, handler = getEventHandler(self, event, func, handler)
+	local func, handler = getEventHandler(self, event, func, handler)
 	if func then
 		handlers[event] = handlers[event] or {}
 		handlers[event][func] = handler or true
@@ -184,7 +184,7 @@ end
 
 function addon:RegisterUnitEvent(event, unit1, unit2, func, handler)
 	assert(unitEvents[event] or not handlers[event], event .. " already registered as a non-unit event!")
-	func, handler = getEventHandler(self, event, func, handler)
+	local func, handler = getEventHandler(self, event, func, handler)
 	if func then
 		unitEvents[event] = true
 		handlers[event] = handlers[event] or {}
@@ -196,7 +196,7 @@ end
 
 function addon:UnregisterEvent(event, func, handler)
 	if handlers[event] then
-		func = getEventHandler(self, event, func, handler)
+		local func = getEventHandler(self, event, func, handler)
 		if func then
 			handlers[event][func] = nil
 		end
