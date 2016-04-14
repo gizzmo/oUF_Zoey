@@ -50,11 +50,37 @@ end
 ------------------------------------------------------------------------
 -- Localization
 
-addon.L = setmetatable({}, { __index = function(t, k)
-	local v = tostring(k)
-	t[k] = k
-	return k
-end })
+addon.L = setmetatable({}, {
+	-- When accessing a key that doesn't exist, set the value as the key
+	__index = function(table, key)
+		rawset(table, key, key)
+		return key
+	end,
+
+	-- When setting a key, if the value is `true` use the key
+	__newindex = function(table, key, value)
+		rawset(table, key, value == true and key or value)
+	end,
+})
+
+local gameLocale = GetLocale()
+function addon:RegisterLocale(locale, table)
+	if locale ~= gameLocale then
+		return -- nop, we don't need these translations
+	end
+
+	for key, value in pairs(table) do
+		if type(value) == "string" then
+			self.L[key] = value
+		elseif type(value) == "function" then
+			self.L[key] = value()
+		elseif v == true then
+			self.L[key] = key
+		else
+			self.L[key] = key
+		end
+	end
+end
 
 ------------------------------------------------------------------------
 -- Printing
