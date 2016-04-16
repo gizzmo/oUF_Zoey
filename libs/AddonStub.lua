@@ -15,14 +15,17 @@ local frame = CreateFrame("Frame") -- private frame for AddonStub only events
 -- Set global name of addon
 _G[addonName] = addon
 
--- Return designed name and real name
-function addon:GetName()
-    return (addon.name or GetAddOnMetadata(addonName, "Title") or addonName), addonName
-end
-
 -- helpfull shortcut
 _G['SLASH_rl1'] = '/rl'
 SlashCmdList['rl'] = ReloadUI
+
+
+--------------------------------------------------------------------------------
+-- Basic methods
+
+function addon:GetName()
+    return (addon.name or GetAddOnMetadata(addonName, "Title") or addonName), addonName
+end
 
 
 --------------------------------------------------------------------------------
