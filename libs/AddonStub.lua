@@ -10,7 +10,7 @@ This is a amalgamation of several addons
 ------------------------------------------------------------------------------]]
 
 local addonName, addon = ...
-local frame = CreateFrame("Frame")
+local frame = CreateFrame("Frame") -- private frame for AddonStub only events
 
 -- Set global name of addon
 _G[addonName] = addon
@@ -30,6 +30,8 @@ SlashCmdList['rl'] = ReloadUI
 
 addon.L = setmetatable({}, {
     -- When accessing a key that doesn't exist, set the value as the key
+    -- This allows us not need to create a default locale, because just trying
+    -- to access the string, sets it up the default locale
     __index = function(table, key)
         rawset(table, key, key)
         return key
@@ -62,6 +64,8 @@ end
 
 addon.PRINT_PREFIX = "|cff00ddba" .. addon:GetName() .. ":|r"
 
+-- if the string passed has any format style characters we assume we want to
+-- use the format method
 function addon:Print(str, ...)
     if select("#", ...) > 0 then
         if strmatch(str, "%%[dfqsx%d]") or strmatch(str, "%%%.%d") then
@@ -119,7 +123,12 @@ end
 
 --------------------------------------------------------------------------------
 -- Slash command registering
+--[[
+    addon:RegisterSlash('stub', function(input, editbox) end)
+    OR
+    addon:RegisterSlash('stub', 'slashCmdHandler')
 
+--]]
 function addon:RegisterSlash(...)
     local name = addonName..'Slash' .. math.floor(GetTime())
 
@@ -328,6 +337,7 @@ function frame:PLAYER_LOGOUT(event)
         -- no point in cleaning up here since we're logging out
     end
 
+    -- if a database was initialized, clean it before we logout
     if self.db_defaults then
         local function cleanDB(db, defaults)
             if type(db) ~= "table" then return {} end
