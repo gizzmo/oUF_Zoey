@@ -48,12 +48,8 @@ function addon:RegisterLocale(locale, table)
     end
 
     for key, value in pairs(table) do
-        if type(value) == "string" then
-            self.L[key] = value
-        elseif type(value) == "function" then
+        if type(value) == "function" then
             self.L[key] = value()
-        elseif v == true then
-            self.L[key] = key
         else
             self.L[key] = key
         end
