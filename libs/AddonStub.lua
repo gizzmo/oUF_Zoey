@@ -276,6 +276,7 @@ end
 --------------------------------------------------------------------------------
 -- Database initialization
 
+local db_defaults = {}
 local function initDB(db, defaults)
     if type(db) ~= "table" then db = {} end
     if type(defaults) ~= "table" then return db end
@@ -289,11 +290,19 @@ local function initDB(db, defaults)
     return db
 end
 
+--[[ Example
+
+    local db_defaults = {
+        do_thing = true
+    }
+
+    self.db = addon:InitializeDB(MyAddonDatabase, db_defaults)
+
+--]]
 function addon:InitializeDB(db, defaults)
     _G[db] = initDB(_G[db], defaults)
 
-    frame.db_defaults = frame.db_defaults or {}
-    frame.db_defaults[db] = defaults
+    db_defaults[db] = defaults
 
     return _G[db]
 end
@@ -341,7 +350,7 @@ function frame:PLAYER_LOGOUT(event)
     end
 
     -- if a database was initialized, clean it before we logout
-    if self.db_defaults then
+    if not next(db_defaults) then
         local function cleanDB(db, defaults)
             if type(db) ~= "table" then return {} end
             if type(defaults) ~= "table" then return db end
