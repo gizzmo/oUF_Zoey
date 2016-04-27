@@ -315,7 +315,6 @@ local function OnLeave(self)
     end
 end
 
-ns.fontstrings = {}
 local function CreateText(parent, size, justify)
     local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.db.font)
 
@@ -330,17 +329,6 @@ local function CreateText(parent, size, justify)
     return fs
 end
 
-function ns.SetAllFonts()
-    local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.db.font)
-
-    for i = 1, #ns.fontstrings do
-        local fs = ns.fontstrings[i]
-        local _, size = fs:GetFont()
-        fs:SetFont(font, size or 16)
-    end
-end
-
-ns.statusbars = {}
 local function CreateStatusBar(parent, name, noBG)
     local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.db.statusbar)
 
@@ -356,26 +344,6 @@ local function CreateStatusBar(parent, name, noBG)
     end
 
     return sb
-end
-
-function ns.SetAllStatusBarTextures()
-    local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.db.statusbar)
-
-    for i = 1, #ns.statusbars do
-        local sb = ns.statusbars[i]
-
-        --// Is it a statusbar or a texture
-        if sb.SetStatusBarTexture then
-            local r, g, b, a = sb:GetStatusBarColor()
-            sb:SetStatusBarTexture(texture)
-            sb:SetStatusBarColor(r, g, b, a)
-
-        else
-            local r, g, b, a = sb:GetVertexColor()
-            sb:SetTexture(texture)
-            sb:SetVertexColor(r, g, b, a)
-        end
-    end
 end
 
 --------------------------------------------------------------------------------
