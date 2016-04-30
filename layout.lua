@@ -355,6 +355,9 @@ local function InitStyle(self, unit, isSingle)
     self:SetScript('OnEnter', OnEnter)
     self:SetScript('OnLeave', OnLeave)
 
+    -- Change the Strata layer
+    self:SetFrameStrata('LOW')
+
     -- Background
     self.bg = self:CreateTexture(nil, 'BACKGROUND')
     self.bg:SetAllPoints(self)
