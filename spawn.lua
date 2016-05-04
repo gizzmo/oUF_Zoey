@@ -81,26 +81,26 @@ function ns:SpawnUnitFrames()
 
     ----------------------------------------------------------------------------
     oUF:SetActiveStyle('ZoeySquare')
-    local Raid = {}
-    for i = 1, 8 do
-        Raid[i] = SpawnHeader('Raid_g'..i, 'raid',
-            'showRaid', true,
-            'xOffset', gap/2,
-            'point', 'LEFT',
-            'groupFilter', tostring(i),
-            'oUF-initialConfigFunction', [[
-                self:SetWidth( 65 )
-                self:SetHeight( 40 )
-            ]]
-        )
+    local Raid = SpawnHeader('Raid', 'raid',
+        'showRaid', true,
+        'xOffset', gap/2,
+        'point', 'LEFT',
 
-        if i == 1 then
-            Raid[i]:SetPoint('BOTTOM', Anchor, 0, 0)
-            Raid[i]:SetPoint('LEFT', UIParent, 'LEFT', gap/3, 0)
-        else
-            Raid[i]:SetPoint('BOTTOMLEFT', Raid[i - 1], 'TOPLEFT', 0, gap/2)
-        end
-    end
+        'maxColumns', 8,
+        'unitsPerColumn', 5,
+        'columnSpacing', gap/2,
+        'columnAnchorPoint', 'BOTTOM',
+
+        'groupBy', 'ASSIGNEDROLE',
+        'groupingOrder', 'TANK,HEALER,DAMAGER',
+
+        'oUF-initialConfigFunction', [[
+            self:SetWidth( 65 )
+            self:SetHeight( 40 )
+        ]]
+    )
+    Raid:SetPoint('BOTTOM', Anchor, 0, 0)
+    Raid:SetPoint('LEFT', UIParent, 'LEFT', gap/3, 0)
 
     ----------------------------------------------------------------------------
     oUF:SetActiveStyle('Zoey')
