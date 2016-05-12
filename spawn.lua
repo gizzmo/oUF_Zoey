@@ -85,15 +85,12 @@ function ns:SpawnUnitFrames()
         'showRaid', true,
         'xOffset', gap/2,
         'point', 'LEFT',
-
+        'groupBy', 'ASSIGNEDROLE',
+        'groupingOrder', 'TANK,HEALER,DAMAGER',
         'maxColumns', 8,
         'unitsPerColumn', 5,
         'columnSpacing', gap/2,
         'columnAnchorPoint', 'BOTTOM',
-
-        'groupBy', 'ASSIGNEDROLE',
-        'groupingOrder', 'TANK,HEALER,DAMAGER',
-
         'oUF-initialConfigFunction', [[
             self:SetWidth( 65 )
             self:SetHeight( 40 )
