@@ -798,7 +798,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
 
     self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.RaidIcon:SetSize(16,16)
-    self.RaidIcon:SetPoint('CENTER', self.Overlay, 'LEFT')
+    self.RaidIcon:SetPoint('LEFT', 3, 0)
 
 end)
 
@@ -872,6 +872,6 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
 
     self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.RaidIcon:SetSize(16,16)
-    self.RaidIcon:SetPoint('CENTER', self.Overlay, 'LEFT')
+    self.RaidIcon:SetPoint('LEFT', 3, 0)
 
 end)
