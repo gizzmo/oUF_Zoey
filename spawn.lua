@@ -109,7 +109,7 @@ function ns:SpawnUnitFrames()
         Boss[i] = Spawn('Boss'..i)
 
         if i == 1 then
-            Boss[i]:SetPoint('BOTTOMLEFT', u.target, 'TOPRIGHT', 100, 75)
+            Boss[i]:SetPoint('BOTTOM', u.focustarget, 'TOP', 0, 25)
         else
             Boss[i]:SetPoint('BOTTOM', Boss[i - 1], 'TOP', 0, gap)
         end
