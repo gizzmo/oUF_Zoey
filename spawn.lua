@@ -32,7 +32,7 @@ function ns:SpawnUnitFrames()
     Spawn('TargetTarget'):SetPoint('LEFT', u.target, 'RIGHT', gap, 0)
 
     oUF:SetActiveStyle('ZoeyThin')
-    Spawn('Focus'):SetPoint('BOTTOMRIGHT', u.player, 'TOPLEFT', -100, 75)
+    Spawn('Focus'):SetPoint('BOTTOM', u.pet, 'TOPLEFT', -15, 75)
     Spawn('FocusTarget'):SetPoint('BOTTOM', u.focus, 'TOP', 0, gap)
 
     ----------------------------------------------------------------------------
