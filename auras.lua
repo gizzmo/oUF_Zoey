@@ -1063,66 +1063,59 @@ local function checkFilter(v, unit, caster)
     end
 end
 
-local function debug(...)
-    ChatFrame3:AddMessage(strjoin(' ', tostringall(...)))
-end
-
 ------------------------------------------------------------------------
 local filters = {}
 
 function filters.default(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
     local v = auraList[spellID]
+    -- if the auras not found, or if its not disabled, show it
     return not v or bit_band(v, FILTER_DISABLE) == 0
 end
 
 function filters.player(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
     local v = auraList[spellID]
+
+    -- Boss Aura, show it, if hasnt been disabled
     if isBossAura then
-        local show = not v or bit_band(v, FILTER_DISABLE) == 0
-        -- if show then debug('CustomAuraFilter', spellID, name, 'BOSS') end
-        return show
+        return not v or bit_band(v, FILTER_DISABLE) == 0
+
+    -- This aura has settings, lets check it out.
     elseif v then
-        local show = checkFilter(v, unit, caster)
-        -- if show then debug('CustomAuraFilter', spellID, name, 'FILTER', v, caster) end
-        return show
+        return checkFilter(v, unit, caster)
+
+    -- Friendly target or hostile player. Show auras cast by the player's vehicle.
     else
-        local show = caster and UnitIsUnit(caster, 'vehicle') and not UnitIsPlayer('vehicle')
-        -- if show then debug('CustomAuraFilter', spellID, name, (not caster) and 'UNKNOWN' or 'VEHICLE') end
-        return show
+        return caster and UnitIsUnit(caster, 'vehicle') and not UnitIsPlayer('vehicle')
     end
 end
 
 function filters.pet(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
     local v = auraList[spellID]
-    --debug('CustomAuraFilter', '[unit]', unit, '[caster]', caster, '[name]', name, '[id]', spellID, '[filter]', v, '[vehicle]', caster == 'vehicle')
     return caster and unitIsPlayer[caster] and v and bit_band(v, FILTER_BY_PLAYER) > 0
 end
 
 function filters.target(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
     local v = auraList[spellID]
+
+    -- Boss Aura, show it, if hasnt been disabled
     if isBossAura then
-        local show = not v or bit_band(v, FILTER_DISABLE) == 0
-        -- if show then debug('CustomAuraFilter', spellID, name, 'BOSS') end
-        return show
+        return not v or bit_band(v, FILTER_DISABLE) == 0
+
+    -- This aura has settings, lets check it out.
     elseif v then
-        local show = checkFilter(v, unit, caster)
-        -- if show then debug('CustomAuraFilter', spellID, name, 'FILTER', v, caster) end
-        return show
+        return checkFilter(v, unit, caster)
+
+    -- EXPERIMENTAL: ignore debuffs from players outside the group, eg. on world bosses.
     elseif not caster and not IsInInstance() then
-        -- EXPERIMENTAL: ignore debuffs from players outside the group, eg. on world bosses.
         return
+
+    -- Hostile NPC. Show auras cast by the unit, or auras cast by the player's vehicle.
     elseif UnitCanAttack('player', unit) and not UnitPlayerControlled(unit) then
-        -- Hostile NPC. Show auras cast by the unit, or auras cast by the player's vehicle.
-        -- print('hostile NPC')
-        local show = not caster or caster == unit or (UnitIsUnit(caster, 'vehicle') and not UnitIsPlayer('vehicle'))
-        -- if show then debug('CustomAuraFilter', spellID, name, (not caster) and 'UNKNOWN' or (caster == unit) and 'SELFCAST' or 'VEHICLE') end
-        return show
+        return not caster or caster == unit or (UnitIsUnit(caster, 'vehicle') and not UnitIsPlayer('vehicle'))
+
+    -- Friendly target or hostile player. Show auras cast by the player's vehicle.
     else
-        -- Friendly target or hostile player. Show auras cast by the player's vehicle.
-        -- print('hostile player / friendly unit')
-        local show = not caster or (UnitIsUnit(caster, 'vehicle') and not UnitIsPlayer('vehicle'))
-        -- if show then debug('CustomAuraFilter', spellID, name, (not caster) and 'UNKNOWN' or 'VEHICLE') end
-        return show
+        return caster and UnitIsUnit(caster, 'vehicle') and not UnitIsPlayer('vehicle')
     end
 end
 
