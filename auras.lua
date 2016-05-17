@@ -62,6 +62,8 @@ local roleFilter = {
 ------------------------------------------------------------------------
 
 local defaultAuras = {
+    [176504] = FILTER_ON_PLAYER, -- Mutagen for farming Laughing skull rep
+
     [1022]   = FILTER_ON_PLAYER, -- Hand of Protection
     [29166]  = FILTER_ON_PLAYER, -- Innervate
     [102342] = FILTER_ON_PLAYER, -- Ironbark
@@ -116,6 +118,8 @@ local defaultAuras = {
     [106648] = FILTER_ALL, -- Brew Explosion (Ook Ook in Stormsnout Brewery)
     [106784] = FILTER_ALL, -- Brew Explosion (Ook Ook in Stormsnout Brewery)
     [123059] = FILTER_ALL, -- Destabilize (Amber-Shaper Un'sok)
+    [70337]  = FILTER_ALL, -- Necrotic Plague
+    [70338]  = FILTER_ALL, -- Nectotic Plague
     -- Enchant procs that Blizzard failed to flag with their caster
     [116631] = FILTER_DISABLE, -- Colossus
     [118334] = FILTER_DISABLE, -- Dancing Steel (agi)
