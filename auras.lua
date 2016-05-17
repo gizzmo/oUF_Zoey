@@ -1047,13 +1047,13 @@ local IsInInstance, UnitCanAttack, UnitIsFriend, UnitIsUnit, UnitPlayerControlle
 
 local unitIsPlayer = { player = true, pet = true, vehicle = true }
 
-local function checkFilter(v, self, unit, caster)
+local function checkFilter(v, unit, caster)
     if bit_band(v, FILTER_BY_PLAYER) > 0 then
         return unitIsPlayer[caster]
     elseif bit_band(v, FILTER_ON_FRIEND) > 0 then
         return UnitIsFriend(unit, 'player') and UnitPlayerControlled(unit)
     elseif bit_band(v, FILTER_ON_PLAYER) > 0 then
-        return unit == 'player' and not self.__owner.isGroupFrame
+        return unit == 'player'
     else
         return bit_band(v, FILTER_DISABLE) == 0
     end
@@ -1078,7 +1078,7 @@ function filters.player(self, unit, iconFrame, name, rank, icon, count, debuffTy
         -- if show then debug('CustomAuraFilter', spellID, name, 'BOSS') end
         return show
     elseif v then
-        local show = checkFilter(v, self, unit, caster)
+        local show = checkFilter(v, unit, caster)
         -- if show then debug('CustomAuraFilter', spellID, name, 'FILTER', v, caster) end
         return show
     else
@@ -1101,7 +1101,7 @@ function filters.target(self, unit, iconFrame, name, rank, icon, count, debuffTy
         -- if show then debug('CustomAuraFilter', spellID, name, 'BOSS') end
         return show
     elseif v then
-        local show = checkFilter(v, self, unit, caster)
+        local show = checkFilter(v, unit, caster)
         -- if show then debug('CustomAuraFilter', spellID, name, 'FILTER', v, caster) end
         return show
     elseif not caster and not IsInInstance() then
