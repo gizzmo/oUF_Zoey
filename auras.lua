@@ -1049,12 +1049,12 @@ end
 local IsInInstance, UnitCanAttack, UnitIsFriend, UnitIsUnit, UnitPlayerControlled
     = IsInInstance, UnitCanAttack, UnitIsFriend, UnitIsUnit, UnitPlayerControlled
 
-local unitIsPlayer = { player = true, pet = true, vehicle = true }
+local casterIsPlayer = { player = true, pet = true, vehicle = true }
 
 local function checkFilter(v, unit, caster)
     -- The aura is cast by the player
     if bit_band(v, FILTER_BY_PLAYER) > 0 then
-        return unitIsPlayer[caster]
+        return casterIsPlayer[caster]
 
     -- Aura is on a friend
     elseif bit_band(v, FILTER_ON_FRIEND) > 0 then
@@ -1098,7 +1098,7 @@ end
 
 function filters.pet(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
     local v = auraList[spellID]
-    return caster and unitIsPlayer[caster] and v and bit_band(v, FILTER_BY_PLAYER) > 0
+    return caster and casterIsPlayer[caster] and v and bit_band(v, FILTER_BY_PLAYER) > 0
 end
 
 function filters.target(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
