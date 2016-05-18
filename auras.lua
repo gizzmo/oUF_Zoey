@@ -1052,12 +1052,19 @@ local IsInInstance, UnitCanAttack, UnitIsFriend, UnitIsUnit, UnitPlayerControlle
 local unitIsPlayer = { player = true, pet = true, vehicle = true }
 
 local function checkFilter(v, unit, caster)
+    -- The aura is cast by the player
     if bit_band(v, FILTER_BY_PLAYER) > 0 then
         return unitIsPlayer[caster]
+
+    -- Aura is on a friend
     elseif bit_band(v, FILTER_ON_FRIEND) > 0 then
         return UnitIsFriend(unit, 'player') and UnitPlayerControlled(unit)
+
+    -- Aura is on the player
     elseif bit_band(v, FILTER_ON_PLAYER) > 0 then
         return unit == 'player'
+
+    -- Aura is not disabled
     else
         return bit_band(v, FILTER_DISABLE) == 0
     end
@@ -1117,11 +1124,6 @@ function filters.target(self, unit, iconFrame, name, rank, icon, count, debuffTy
     else
         return caster and UnitIsUnit(caster, 'vehicle') and not UnitIsPlayer('vehicle')
     end
-end
-
-function filters.party(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
-    local v = auraList[spellID]
-    return v and bit_band(v, FILTER_ON_PLAYER) == 0
 end
 
 ns.CustomAuraFilters = filters
