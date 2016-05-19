@@ -63,6 +63,8 @@ local roleFilter = {
 
 local defaultAuras = {
     [176504] = FILTER_ON_PLAYER, -- Mutagen for farming Laughing skull rep
+    [54861]  = FILTER_ON_PLAYER, -- Nitro Boosts
+    [126389] = FILTER_ON_PLAYER, -- Goblin Glider
 
     [1022]   = FILTER_ON_PLAYER, -- Hand of Protection
     [29166]  = FILTER_ON_PLAYER, -- Innervate
@@ -70,6 +72,12 @@ local defaultAuras = {
     [33206]  = FILTER_ON_PLAYER, -- Pain Suppression
     [10060]  = FILTER_ON_PLAYER, -- Power Infusion
     [49016]  = FILTER_ON_PLAYER, -- Unholy Frenzy
+    -- Legendary Ring Bonus
+    [187620] = FILTER_ON_PLAYER, -- Maalus    - agi dps
+    [187616] = FILTER_ON_PLAYER, -- Nithramus - int dps
+    [187619] = FILTER_ON_PLAYER, -- Thorasus  - str dps
+    [187618] = FILTER_ON_PLAYER, -- Etheralus - Healer
+    [187617] = FILTER_ON_PLAYER, -- Sanctus   - Tank
     -- Bloodlust
     [90355]  = FILTER_ON_PLAYER, -- Ancient Hysteria (HU: Core Hound)
     [2825]   = FILTER_ON_PLAYER, -- Bloodlust (SH)
