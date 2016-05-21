@@ -551,9 +551,11 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     self.LFDRole:SetSize(15,15)
     self.LFDRole:SetPoint('CENTER', self.Overlay, 'TOPRIGHT', 1, 0)
 
-    self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
-    self.ReadyCheck:SetPoint('CENTER')
+    if unit == 'party' then
+        self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
+        self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
+        self.ReadyCheck:SetPoint('CENTER')
+    end
 
     self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.RaidIcon:SetSize(23,23)
@@ -795,10 +797,6 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
     self.LFDRole = CreateCornerIndicator(self.Overlay)
     self.LFDRole:SetPoint('TOPRIGHT')
     self.LFDRole.Override = LFDOverride
-
-    self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
-    self.ReadyCheck:SetPoint('CENTER')
 
     self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.RaidIcon:SetSize(16,16)
