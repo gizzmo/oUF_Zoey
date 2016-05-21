@@ -223,7 +223,7 @@ local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
         button.icon:SetDesaturated(true)
     end
 
-    if unit == 'player' or button.debuff then
+    if unit == 'player' then
         button:SetScript('OnMouseUp', function(self, mouseButton)
             if mouseButton ~= 'RightButton'
             or InCombatLockdown()
