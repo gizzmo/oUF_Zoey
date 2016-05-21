@@ -446,9 +446,11 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
         self.Health:SetPoint('TOP', self.Portrait, 'BOTTOM', 0, -1.5)
 
-        if isSingle then
-            self:SetHeight(FRAME_HEIGHT + PORTRAIT_HEIGHT)
-        end
+        -- Keep this var up to date
+        FRAME_HEIGHT = FRAME_HEIGHT + PORTRAIT_HEIGHT
+
+        --
+        if isSingle then self:SetHeight(FRAME_HEIGHT) end
     end
 
     if unit == 'player' and UnitLevel(unit) ~= MAX_PLAYER_LEVEL then
@@ -474,9 +476,11 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
         self.Power:SetPoint('BOTTOM', self.Experience, 'TOP', 0, 1)
 
-        if isSingle then
-            self:SetHeight(self:GetHeight() + EXP_HEIGHT)
-        end
+        -- Keep this var up to date
+        FRAME_HEIGHT = FRAME_HEIGHT + EXP_HEIGHT
+
+        --
+        if isSingle then self:SetHeight(FRAME_HEIGHT) end
     end
 
     -- TODO: Re implemenet class bars.
