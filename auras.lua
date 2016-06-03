@@ -1086,17 +1086,17 @@ end
 ------------------------------------------------------------------------
 local filters = {}
 
-function filters.default(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
+function filters.default(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff)
     local v = auraList[spellID]
     -- if the auras not found, or if its not disabled, show it
     return not v or bit_band(v, FILTER_DISABLE) == 0
 end
 
-function filters.player(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
+function filters.player(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff)
     local v = auraList[spellID]
 
     -- Boss Aura, show it, if hasnt been disabled
-    if isBossAura then
+    if isBossDebuff then
         return not v or bit_band(v, FILTER_DISABLE) == 0
 
     -- This aura has settings, lets check it out.
@@ -1109,16 +1109,16 @@ function filters.player(self, unit, iconFrame, name, rank, icon, count, debuffTy
     end
 end
 
-function filters.pet(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
+function filters.pet(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff)
     local v = auraList[spellID]
     return caster and casterIsPlayer[caster] and v and bit_band(v, FILTER_BY_PLAYER) > 0
 end
 
-function filters.target(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura, isCastByPlayer, value1, value2, value3)
+function filters.target(self, unit, iconFrame, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff)
     local v = auraList[spellID]
 
     -- Boss Aura, show it, if hasnt been disabled
-    if isBossAura then
+    if isBossDebuff then
         return not v or bit_band(v, FILTER_DISABLE) == 0
 
     -- This aura has settings, lets check it out.
