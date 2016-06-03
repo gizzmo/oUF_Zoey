@@ -160,6 +160,127 @@ local defaultAuras = {
     [63435] = FILTER_DISABLE, -- Thunder Bluff Valiant's Pennant
     [63430] = FILTER_DISABLE, -- Undercity Champion's Pennant
     [63429] = FILTER_DISABLE, -- Undercity Valiant's Pennant
+
+
+    ------------------------------------------------------------------------
+    -- PvP auras will be filtered out in UpdateAuraList
+    [2094]   = FILTER_PVP, -- Blind (RO)
+    [105421] = FILTER_PVP, -- Blinding Light (PA)
+    [33786]  = FILTER_PVP, -- Cyclone (DR)
+    [26013]  = FILTER_PVP, -- Deserter
+    [118699] = FILTER_PVP, -- Fear (WL)
+    [130616] = FILTER_PVP, -- Fear (WL Glyph of Fear)
+    [5484]   = FILTER_PVP, -- Howl of Terror (WL)
+    [5246]   = FILTER_PVP, -- Intimidating Shout (WR)
+    [115268] = FILTER_PVP, -- Mesmerize (WL shivarra)
+    [8122]   = FILTER_PVP, -- Psychic Scream (PR)
+    [6358]   = FILTER_PVP, -- Seduction (WL succubus)
+    [10326]  = FILTER_PVP, -- Turn Evil (PA)
+    [160067] = FILTER_PVP, -- Web Spray
+
+    -- Knockback
+    [119403] = FILTER_PVP, -- Glyph of Explosive Trap (HU)
+    [115770] = FILTER_PVP, -- Fellash (WL Shivarra)
+    [108199] = FILTER_PVP, -- Gorefiend's Grasp (DK)
+    [51490]  = FILTER_PVP, -- Thunderstorm (SH)
+    [132469] = FILTER_PVP, -- Typhoon (DR)
+    [102793] = FILTER_PVP, -- Ursol's Vortex (DR)
+    [6360]   = FILTER_PVP, -- Whiplash (WL Succubus)
+
+    -- Incapacitate
+    [710]    = FILTER_PVP, -- Banish (WL)
+    [137143] = FILTER_PVP, -- Blood Horror (WL) -- NEEDS CHECK
+    [111397] = FILTER_PVP, -- Blood Horror (WL) -- NEEDS CHECK
+    [123393] = FILTER_PVP, -- Breath of Fire (MO with glyph)
+    [605]    = FILTER_PVP, -- Dominate Mind (PR)
+    [31661]  = FILTER_PVP, -- Dragon's Breath (MA)
+    [1776]   = FILTER_PVP, -- Gouge (RO)
+    [51514]  = FILTER_PVP, -- Hex (SH)
+    [88625]  = FILTER_PVP, -- Holy Word: Chastise (PR)
+    [99]     = FILTER_PVP, -- Incapacitating Roar (DR)
+    [6789]   = FILTER_PVP, -- Mortal Coil (WL)
+    [115078] = FILTER_PVP, -- Paralysis (MO)
+    [64044]  = FILTER_PVP, -- Psychic Horror (PR)
+    [107179] = FILTER_PVP, -- Quaking Palm (Pandaren)
+    [20066]  = FILTER_PVP, -- Repentence (PA)
+    [82691]  = FILTER_PVP, -- Ring of Frost (MA)
+    [116844] = FILTER_PVP, -- Ring of Peace (MO) -- NEEDS CHECK
+    [137460] = FILTER_PVP, -- Ring of Peace (MO) -- NEEDS CHECK
+    [6770]   = FILTER_PVP, -- Sap (RO)
+    [8484]   = FILTER_PVP, -- Shackle Undead (PR)
+
+    -- Root
+    [96294]  = FILTER_PVP, -- Chains of Ice (DK Chilblains)
+    [53148]  = FILTER_PVP, -- Charge (HU tenacity pet)
+    [116706] = FILTER_PVP, -- Disable (MO)
+    [64695]  = FILTER_PVP, -- Earthgrab Totem (SH)
+    [339]    = FILTER_PVP, -- Entangling Roots (DR)
+    [113770] = FILTER_PVP, -- Entangling Roots (DR treants)
+    [33395]  = FILTER_PVP, -- Freeze (MA Water Elemental)
+    [63685]  = FILTER_PVP, -- Freeze (SH talent Frozen Power)
+    [122]    = FILTER_PVP, -- Frost Nova (MA)
+    [135373] = FILTER_PVP, -- Entrapment (HU passive)
+    [87194]  = FILTER_PVP, -- Glyph of Mind Blast (PR)
+    [111340] = FILTER_PVP, -- Ice Ward (MA)
+    [102359] = FILTER_PVP, -- Mass Entanglement (DR talent)
+    [136634] = FILTER_PVP, -- Narrow Escape (HU passive talent)
+    [114404] = FILTER_PVP, -- Void Tendrils (PR)
+
+    -- Silence
+    [25046]  = FILTER_PVP, -- Arcane Torrent (Blood Elf - Rogue)
+    [28730]  = FILTER_PVP, -- Arcane Torrent (Blood Elf - Mage, Paladin, Priest, Warlock)
+    [50613]  = FILTER_PVP, -- Arcane Torrent (Blood Elf - Death Knight)
+    [69179]  = FILTER_PVP, -- Arcane Torrent (Blood Elf - Warrior)
+    [80483]  = FILTER_PVP, -- Arcane Torrent (Blood Elf - Hunter)
+    [129597] = FILTER_PVP, -- Arcane Torrent (Blood Elf - Monk)
+    [108194] = FILTER_PVP, -- Asphyxiate (DK, functions as silence if target immune to stun)
+    [31935]  = FILTER_PVP, -- Avenger's Shield (PA)
+    [102051] = FILTER_PVP, -- Frostjaw (MA)
+    [1330]   = FILTER_PVP, -- Garrote - Silence (RO)
+    [114237] = FILTER_PVP, -- Glyph of Fae Silence (DR) -- NEEDS CHECK
+    [50479]  = FILTER_PVP, -- Nether Shock (HU Nether Ray)
+    [15487]  = FILTER_PVP, -- Silence (PR)
+    [18498]  = FILTER_PVP, -- Silenced - Gag Order (WR)
+    [34490]  = FILTER_PVP, -- Silencing Shot (HU)
+    [78675]  = FILTER_PVP, -- Solar Beam (DR)
+    [97547]  = FILTER_PVP, -- Solar Beam (DR)
+    [116709] = FILTER_PVP, -- Spear Hand Strike (MO)
+    [24259]  = FILTER_PVP, -- Spell Lock (WL Felhunter)
+    [47476]  = FILTER_PVP, -- Strangulate (DK)
+
+    -- Stun
+    [108194] = FILTER_PVP, -- Asphyxiate (DK)
+    [89766]  = FILTER_PVP, -- Axe Toss (WL Felguard)
+    [117526] = FILTER_PVP, -- Binding Shot (HU)
+    [119392] = FILTER_PVP, -- Charging Ox Wave (MO)
+    [1833]   = FILTER_PVP, -- Cheap Shot (RO)
+    [44572]  = FILTER_PVP, -- Deep Freeze (MA)
+    [105593] = FILTER_PVP, -- Fist of Justice (PA)
+    [120086] = FILTER_PVP, -- Fists of Fury (MO)
+    [91800]  = FILTER_PVP, -- Gnaw (DK Ghoul)
+    [853]    = FILTER_PVP, -- Hammer of Justice (PA)
+    [119072] = FILTER_PVP, -- Holy Wrath (PA)
+    [24394]  = FILTER_PVP, -- Intimidation (HU pet)
+    [408]    = FILTER_PVP, -- Kidney Shot (RO)
+    [22570]  = FILTER_PVP, -- Maim (DR)
+    [119381] = FILTER_PVP, -- Leg Sweep (MO)
+    [5211]   = FILTER_PVP, -- Mighty Bash (DR)
+    [91797]  = FILTER_PVP, -- Monstrous Blow (DK Ghoul with Transformation)
+    [118345] = FILTER_PVP, -- Pulverize (SH Primal Earth Elemental)
+    [163505] = FILTER_PVP, -- Rake (DR with Prowl)
+    [115001] = FILTER_PVP, -- Remorseless Winter (DK)
+    [30283]  = FILTER_PVP, -- Shadowfury (WL)
+    [132168] = FILTER_PVP, -- Shockwave (WR)
+    [118905] = FILTER_PVP, -- Static Charge (SH Capacitor Totem)
+    [132169] = FILTER_PVP, -- Storm Bolt (WR)
+    [22703]  = FILTER_PVP, -- Summon Infernal (WL)
+    [20549]  = FILTER_PVP, -- War Stomp (Tauren)
+
+    -- Healing Reduction
+    [115804] = FILTER_PVP, -- Mortal Wounds (WR, MO, HU Carrion Bird, Crocolisk, Riverbeast, Scorpid)
+    [54680]  = FILTER_PVP, -- Monstrous Bite (HU Devilsaur)
+    [82654]  = FILTER_PVP, -- Widow Venom (HU)
+    [8680]   = FILTER_PVP, -- Wound Poison (RO)
 }
 
 ns.defaultAuras = defaultAuras
@@ -872,120 +993,7 @@ if playerClass == 'DEATHKNIGHT' or playerClass == 'DRUID' or playerClass == 'MON
     defaultAuras[355]    = FILTER_ROLE_TANK -- Taunt (WR)
 end
 
-------------------------------------------------------------------------
--- PvP auras will be filtered out in UpdateAuraList
 
-defaultAuras[2094]   = FILTER_PVP -- Blind (RO)
-defaultAuras[105421] = FILTER_PVP -- Blinding Light (PA)
-defaultAuras[33786]  = FILTER_PVP -- Cyclone (DR)
-defaultAuras[26013]  = FILTER_PVP -- Deserter
-defaultAuras[118699] = FILTER_PVP -- Fear (WL)
-defaultAuras[130616] = FILTER_PVP -- Fear (WL Glyph of Fear)
-defaultAuras[5484]   = FILTER_PVP -- Howl of Terror (WL)
-defaultAuras[5246]   = FILTER_PVP -- Intimidating Shout (WR)
-defaultAuras[115268] = FILTER_PVP -- Mesmerize (WL shivarra)
-defaultAuras[8122]   = FILTER_PVP -- Psychic Scream (PR)
-defaultAuras[6358]   = FILTER_PVP -- Seduction (WL succubus)
-defaultAuras[10326]  = FILTER_PVP -- Turn Evil (PA)
-defaultAuras[160067] = FILTER_PVP -- Web Spray
--- Knockback
-defaultAuras[119403] = FILTER_PVP -- Glyph of Explosive Trap (HU)
-defaultAuras[115770] = FILTER_PVP -- Fellash (WL Shivarra)
-defaultAuras[108199] = FILTER_PVP -- Gorefiend's Grasp (DK)
-defaultAuras[51490]  = FILTER_PVP -- Thunderstorm (SH)
-defaultAuras[132469] = FILTER_PVP -- Typhoon (DR)
-defaultAuras[102793] = FILTER_PVP -- Ursol's Vortex (DR)
-defaultAuras[6360]   = FILTER_PVP -- Whiplash (WL Succubus)
--- Incapacitate
-defaultAuras[710]    = FILTER_PVP -- Banish (WL)
-defaultAuras[137143] = FILTER_PVP -- Blood Horror (WL) -- NEEDS CHECK
-defaultAuras[111397] = FILTER_PVP -- Blood Horror (WL) -- NEEDS CHECK
-defaultAuras[123393] = FILTER_PVP -- Breath of Fire (MO with glyph)
-defaultAuras[605]    = FILTER_PVP -- Dominate Mind (PR)
-defaultAuras[31661]  = FILTER_PVP -- Dragon's Breath (MA)
-defaultAuras[1776]   = FILTER_PVP -- Gouge (RO)
-defaultAuras[51514]  = FILTER_PVP -- Hex (SH)
-defaultAuras[88625]  = FILTER_PVP -- Holy Word: Chastise (PR)
-defaultAuras[99]     = FILTER_PVP -- Incapacitating Roar (DR)
-defaultAuras[6789]   = FILTER_PVP -- Mortal Coil (WL)
-defaultAuras[115078] = FILTER_PVP -- Paralysis (MO)
-defaultAuras[64044]  = FILTER_PVP -- Psychic Horror (PR)
-defaultAuras[107179] = FILTER_PVP -- Quaking Palm (Pandaren)
-defaultAuras[20066]  = FILTER_PVP -- Repentence (PA)
-defaultAuras[82691]  = FILTER_PVP -- Ring of Frost (MA)
-defaultAuras[116844] = FILTER_PVP -- Ring of Peace (MO) -- NEEDS CHECK
-defaultAuras[137460] = FILTER_PVP -- Ring of Peace (MO) -- NEEDS CHECK
-defaultAuras[6770]   = FILTER_PVP -- Sap (RO)
-defaultAuras[8484]   = FILTER_PVP -- Shackle Undead (PR)
--- Root
-defaultAuras[96294]  = FILTER_PVP -- Chains of Ice (DK Chilblains)
-defaultAuras[53148]  = FILTER_PVP -- Charge (HU tenacity pet)
-defaultAuras[116706] = FILTER_PVP -- Disable (MO)
-defaultAuras[64695]  = FILTER_PVP -- Earthgrab Totem (SH)
-defaultAuras[339]    = FILTER_PVP -- Entangling Roots (DR)
-defaultAuras[113770] = FILTER_PVP -- Entangling Roots (DR treants)
-defaultAuras[33395]  = FILTER_PVP -- Freeze (MA Water Elemental)
-defaultAuras[63685]  = FILTER_PVP -- Freeze (SH talent Frozen Power)
-defaultAuras[122]    = FILTER_PVP -- Frost Nova (MA)
-defaultAuras[135373] = FILTER_PVP -- Entrapment (HU passive)
-defaultAuras[87194]  = FILTER_PVP -- Glyph of Mind Blast (PR)
-defaultAuras[111340] = FILTER_PVP -- Ice Ward (MA)
-defaultAuras[102359] = FILTER_PVP -- Mass Entanglement (DR talent)
-defaultAuras[136634] = FILTER_PVP -- Narrow Escape (HU passive talent)
-defaultAuras[114404] = FILTER_PVP -- Void Tendrils (PR)
--- Silence
-defaultAuras[25046]  = FILTER_PVP -- Arcane Torrent (Blood Elf - Rogue)
-defaultAuras[28730]  = FILTER_PVP -- Arcane Torrent (Blood Elf - Mage, Paladin, Priest, Warlock)
-defaultAuras[50613]  = FILTER_PVP -- Arcane Torrent (Blood Elf - Death Knight)
-defaultAuras[69179]  = FILTER_PVP -- Arcane Torrent (Blood Elf - Warrior)
-defaultAuras[80483]  = FILTER_PVP -- Arcane Torrent (Blood Elf - Hunter)
-defaultAuras[129597] = FILTER_PVP -- Arcane Torrent (Blood Elf - Monk)
-defaultAuras[108194] = FILTER_PVP -- Asphyxiate (DK, functions as silence if target immune to stun)
-defaultAuras[31935]  = FILTER_PVP -- Avenger's Shield (PA)
-defaultAuras[102051] = FILTER_PVP -- Frostjaw (MA)
-defaultAuras[1330]   = FILTER_PVP -- Garrote - Silence (RO)
-defaultAuras[114237] = FILTER_PVP -- Glyph of Fae Silence (DR) -- NEEDS CHECK
-defaultAuras[50479]  = FILTER_PVP -- Nether Shock (HU Nether Ray)
-defaultAuras[15487]  = FILTER_PVP -- Silence (PR)
-defaultAuras[18498]  = FILTER_PVP -- Silenced - Gag Order (WR)
-defaultAuras[34490]  = FILTER_PVP -- Silencing Shot (HU)
-defaultAuras[78675]  = FILTER_PVP -- Solar Beam (DR)
-defaultAuras[97547]  = FILTER_PVP -- Solar Beam (DR)
-defaultAuras[116709] = FILTER_PVP -- Spear Hand Strike (MO)
-defaultAuras[24259]  = FILTER_PVP -- Spell Lock (WL Felhunter)
-defaultAuras[47476]  = FILTER_PVP -- Strangulate (DK)
--- Stun
-defaultAuras[108194] = FILTER_PVP -- Asphyxiate (DK)
-defaultAuras[89766]  = FILTER_PVP -- Axe Toss (WL Felguard)
-defaultAuras[117526] = FILTER_PVP -- Binding Shot (HU)
-defaultAuras[119392] = FILTER_PVP -- Charging Ox Wave (MO)
-defaultAuras[1833]   = FILTER_PVP -- Cheap Shot (RO)
-defaultAuras[44572]  = FILTER_PVP -- Deep Freeze (MA)
-defaultAuras[105593] = FILTER_PVP -- Fist of Justice (PA)
-defaultAuras[120086] = FILTER_PVP -- Fists of Fury (MO)
-defaultAuras[91800]  = FILTER_PVP -- Gnaw (DK Ghoul)
-defaultAuras[853]    = FILTER_PVP -- Hammer of Justice (PA)
-defaultAuras[119072] = FILTER_PVP -- Holy Wrath (PA)
-defaultAuras[24394]  = FILTER_PVP -- Intimidation (HU pet)
-defaultAuras[408]    = FILTER_PVP -- Kidney Shot (RO)
-defaultAuras[22570]  = FILTER_PVP -- Maim (DR)
-defaultAuras[119381] = FILTER_PVP -- Leg Sweep (MO)
-defaultAuras[5211]   = FILTER_PVP -- Mighty Bash (DR)
-defaultAuras[91797]  = FILTER_PVP -- Monstrous Blow (DK Ghoul with Transformation)
-defaultAuras[118345] = FILTER_PVP -- Pulverize (SH Primal Earth Elemental)
-defaultAuras[163505] = FILTER_PVP -- Rake (DR with Prowl)
-defaultAuras[115001] = FILTER_PVP -- Remorseless Winter (DK)
-defaultAuras[30283]  = FILTER_PVP -- Shadowfury (WL)
-defaultAuras[132168] = FILTER_PVP -- Shockwave (WR)
-defaultAuras[118905] = FILTER_PVP -- Static Charge (SH Capacitor Totem)
-defaultAuras[132169] = FILTER_PVP -- Storm Bolt (WR)
-defaultAuras[22703]  = FILTER_PVP -- Summon Infernal (WL)
-defaultAuras[20549]  = FILTER_PVP -- War Stomp (Tauren)
--- Healing Reduction
-defaultAuras[115804] = FILTER_PVP -- Mortal Wounds (WR, MO, HU Carrion Bird, Crocolisk, Riverbeast, Scorpid)
-defaultAuras[54680]  = FILTER_PVP -- Monstrous Bite (HU Devilsaur)
-defaultAuras[82654]  = FILTER_PVP -- Widow Venom (HU)
-defaultAuras[8680]   = FILTER_PVP -- Wound Poison (RO)
 
 ------------------------------------------------------------------------
 local GetPlayerRole
