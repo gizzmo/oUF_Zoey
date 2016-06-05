@@ -72,12 +72,14 @@ local defaultAuras = {
     [33206]  = FILTER_ON_PLAYER, -- Pain Suppression
     [10060]  = FILTER_ON_PLAYER, -- Power Infusion
     [49016]  = FILTER_ON_PLAYER, -- Unholy Frenzy
+
     -- Legendary Ring Bonus
     [187620] = FILTER_ON_PLAYER, -- Maalus    - agi dps
     [187616] = FILTER_ON_PLAYER, -- Nithramus - int dps
     [187619] = FILTER_ON_PLAYER, -- Thorasus  - str dps
     [187618] = FILTER_ON_PLAYER, -- Etheralus - Healer
     [187617] = FILTER_ON_PLAYER, -- Sanctus   - Tank
+
     -- Bloodlust
     [90355]  = FILTER_ON_PLAYER, -- Ancient Hysteria (HU: Core Hound)
     [2825]   = FILTER_ON_PLAYER, -- Bloodlust (SH)
@@ -85,6 +87,7 @@ local defaultAuras = {
     [32182]  = FILTER_ON_PLAYER, -- Heroism (SH)
     [160452] = FILTER_ON_PLAYER, -- Netherwinds (HU: Nether Ray)
     [80353]  = FILTER_ON_PLAYER, -- Time Warp (MA)
+
     -- Consumables - Warlords of Draenor
     [156423] = FILTER_ON_PLAYER, -- Draenic Agility Potion
     [156430] = FILTER_ON_PLAYER, -- Draenic Armor Potion
@@ -95,6 +98,7 @@ local defaultAuras = {
     [156428] = FILTER_ON_PLAYER, -- Draenic Strength Potion
     [175790] = FILTER_ON_PLAYER, -- Draenic Swiftness Potion
     [173260] = FILTER_ON_PLAYER, -- Shieldtronic Shield
+
     -- Crowd Control
     [710]    = FILTER_ALL, -- Banish
     [33786]  = FILTER_ALL, -- Cyclone
@@ -120,14 +124,17 @@ local defaultAuras = {
     [10326]  = FILTER_ALL, -- Turn Evil
     [114404] = FILTER_ALL, -- Void Tendrils
     [19386]  = FILTER_ALL, -- Wyvern Sting
+
     -- Random quest related auras
     [127372] = FILTER_BY_PLAYER, -- Unstable Serum (Klaxxi Enhancement: Raining Blood)
+
     -- Boss debuffs that Blizzard failed to flag
     [106648] = FILTER_ALL, -- Brew Explosion (Ook Ook in Stormsnout Brewery)
     [106784] = FILTER_ALL, -- Brew Explosion (Ook Ook in Stormsnout Brewery)
     [123059] = FILTER_ALL, -- Destabilize (Amber-Shaper Un'sok)
     [70337]  = FILTER_ALL, -- Necrotic Plague
     [70338]  = FILTER_ALL, -- Nectotic Plague
+
     -- Enchant procs that Blizzard failed to flag with their caster
     [116631] = FILTER_DISABLE, -- Colossus
     [118334] = FILTER_DISABLE, -- Dancing Steel (agi)
@@ -137,6 +144,7 @@ local defaultAuras = {
     [104509] = FILTER_DISABLE, -- Windsong (crit)
     [104423] = FILTER_DISABLE, -- Windsong (haste)
     [104510] = FILTER_DISABLE, -- Windsong (mastery)
+
     -- NPC buffs that are completely useless
     [63501] = FILTER_DISABLE, -- Argent Crusade Champion's Pennant
     [60023] = FILTER_DISABLE, -- Scourge Banner Aura (Boneguard Commander in Icecrown)
@@ -461,15 +469,18 @@ if playerClass == 'HUNTER' then
     defaultAuras[53220]  = FILTER_ON_PLAYER -- Steady Focus
     defaultAuras[34471]  = FILTER_ON_PLAYER -- The Beast Within
     defaultAuras[34720]  = FILTER_ON_PLAYER -- Thrill of the Hunt
+
     -- Pet Buffs
     defaultAuras[19615]  = FILTER_BY_PLAYER -- Frenzy
     defaultAuras[19574]  = FILTER_BY_PLAYER -- Bestial Wrath
     defaultAuras[136]    = FILTER_BY_PLAYER -- Mend Pet
     defaultAuras[118455] = FILTER_BY_PLAYER -- Beast Cleave
+
     -- Buffs
     defaultAuras[34477]  = FILTER_ON_FRIEND -- Misdirection (30 sec threat)
     defaultAuras[35079]  = FILTER_ON_FRIEND -- Misdirection (4 sec transfer)
     defaultAuras[13159]  = FILTER_BY_PLAYER -- Aspect of the pack
+
     -- Debuffs
     defaultAuras[131894] = FILTER_BY_PLAYER -- defaultAuras Murder of Crows
     defaultAuras[117526] = FILTER_BY_PLAYER -- Binding Shot (stun)
@@ -527,6 +538,7 @@ if playerClass == 'MAGE' then
     defaultAuras[48108]  = FILTER_ON_PLAYER -- Pyroblast!
     defaultAuras[115610] = FILTER_ON_PLAYER -- Temporal Shield (shield)
     defaultAuras[115611] = FILTER_ON_PLAYER -- Temporal Shield (heal)
+
     -- Debuffs
     defaultAuras[34356]  = FILTER_BY_PLAYER -- Blizzard (slow) -- NEEDS CHECK
     defaultAuras[83853]  = FILTER_BY_PLAYER -- Combustion
@@ -575,12 +587,14 @@ if playerClass == 'MONK' then
     defaultAuras[116740] = FILTER_ON_PLAYER -- Tigereye Brew (consume)
     defaultAuras[122470] = FILTER_ON_PLAYER -- Touch of Karma
     defaultAuras[118674] = FILTER_ON_PLAYER -- Vital Mists
+
     -- Buffs
     defaultAuras[132120] = FILTER_BY_PLAYER -- Enveloping Mist
     defaultAuras[116849] = FILTER_ON_FRIEND -- Life Cocoon
     defaultAuras[119607] = FILTER_BY_PLAYER -- Renewing Mist (jump)
     defaultAuras[119611] = FILTER_BY_PLAYER -- Renewing Mist (hot)
     defaultAuras[124081] = FILTER_BY_PLAYER -- Zen Sphere
+
     -- Debuffs
     defaultAuras[123393] = FILTER_BY_PLAYER -- Breath of Fire (disorient)
     defaultAuras[123725] = FILTER_BY_PLAYER -- Breath of Fire (dot)
@@ -630,6 +644,7 @@ if playerClass == 'PALADIN' then
     -- defaultAuras[132403] = FILTER_ON_PLAYER -- Shield of the Righteous
     defaultAuras[85499]  = FILTER_ON_PLAYER -- Speed of Light
     defaultAuras[94686]  = FILTER_ON_PLAYER -- Supplication
+
     -- Buffs
     defaultAuras[53563]  = FILTER_ON_FRIEND -- Beacon of Light
     defaultAuras[31821]  = FILTER_ON_FRIEND -- Devotion Aura
@@ -643,8 +658,10 @@ if playerClass == 'PALADIN' then
     defaultAuras[20925]  = FILTER_ON_FRIEND -- Sacred Shield
     defaultAuras[20170]  = FILTER_ON_FRIEND -- Seal of Justice
     defaultAuras[114917] = FILTER_ON_FRIEND -- Stay of Execution
+
     -- Buff Debuffs
     defaultAuras[25771]  = FILTER_ON_FRIEND -- Forbearace
+
     -- Debuffs
     defaultAuras[31935]  = FILTER_BY_PLAYER -- Avenger's Shield
     -- defaultAuras[110300] = FILTER_BY_PLAYER -- Burden of Guilt
@@ -684,6 +701,7 @@ if playerClass == 'PRIEST' then
     defaultAuras[114255] = FILTER_ON_PLAYER -- Surge of Light
     defaultAuras[123254] = FILTER_ON_PLAYER -- Twist of Fate
     defaultAuras[15286]  = FILTER_ON_PLAYER -- Vampiric Embrace
+
     -- Buffs
     defaultAuras[47753]  = FILTER_ON_FRIEND -- Divine Aegis
     defaultAuras[77613]  = FILTER_BY_PLAYER -- Grace
@@ -695,8 +713,10 @@ if playerClass == 'PRIEST' then
     defaultAuras[41635]  = FILTER_ON_FRIEND -- Prayer of Mending
     defaultAuras[139]    = FILTER_ON_FRIEND -- Renew
     defaultAuras[114908] = FILTER_ON_FRIEND -- Spirit Shell (shield)
+
     -- Buff Debuffs
     defaultAuras[6788]   = FILTER_ON_FRIEND -- Weakened Soul
+
     -- Debuffs
     defaultAuras[2944]   = FILTER_BY_PLAYER -- Devouring Plague
     defaultAuras[14914]  = FILTER_BY_PLAYER -- Holy Fire
@@ -744,6 +764,7 @@ if playerClass == 'ROGUE' then
     defaultAuras[2983]   = FILTER_ON_PLAYER -- Sprint
     defaultAuras[57934]  = FILTER_ON_PLAYER -- Tricks of the Trade
     defaultAuras[1856]   = FILTER_ON_PLAYER -- Vanish
+
     -- Debuffs
     defaultAuras[2094]   = FILTER_ON_ENEMY -- Blind
     defaultAuras[1833]   = FILTER_ON_ENEMY -- Cheap Shot
@@ -788,6 +809,7 @@ if playerClass == 'SHAMAN' then
     defaultAuras[58876]  = FILTER_ON_PLAYER -- Spirit Walk
     defaultAuras[79206]  = FILTER_ON_PLAYER -- Spiritwalker's Grace
     defaultAuras[53390]  = FILTER_ON_PLAYER -- Tidal Waves
+
     -- Buffs
     -- defaultAuras[2825]   = FILTER_ON_FRIEND -- Bloodlust (SH) -- show all
     -- defaultAuras[32182]  = FILTER_ON_FRIEND -- Heroism (SH) -- show all
@@ -803,6 +825,7 @@ if playerClass == 'SHAMAN' then
     defaultAuras[73685]  = FILTER_ON_PLAYER -- Unleash Life
     defaultAuras[118473] = FILTER_BY_PLAYER -- Unleashed Fury
     defaultAuras[114896] = FILTER_ON_FRIEND -- Windwalk Totem
+
     -- Debuffs
     defaultAuras[61882]  = FILTER_BY_PLAYER -- Earthquake
     defaultAuras[8050]   = FILTER_BY_PLAYER -- Flame Shock
@@ -811,6 +834,7 @@ if playerClass == 'SHAMAN' then
     -- defaultAuras[73684]  = FILTER_BY_PLAYER -- Unleash Earth
     defaultAuras[73682]  = FILTER_BY_PLAYER -- Unleash Frost
     defaultAuras[118470] = FILTER_BY_PLAYER -- Unleashed Fury
+
     -- Debuffs - Root/Slow
     defaultAuras[3600]   = FILTER_ON_ENEMY  -- Earthbind <-- Earthbind Totem
     defaultAuras[64695]  = FILTER_ON_ENEMY  -- Earthgrab <-- Earthgrab Totem
@@ -848,8 +872,10 @@ if playerClass == 'WARLOCK' then
     defaultAuras[108416] = FILTER_ON_PLAYER -- Sacrificial Pact
     defaultAuras[86211]  = FILTER_ON_PLAYER -- Soul Swap
     defaultAuras[104773] = FILTER_ON_PLAYER -- Unending Resolve
+
     -- Buffs
     defaultAuras[20707]  = FILTER_ON_FRIEND -- Soulstone -- TODO: hide on self?
+
     -- Debuffs
     defaultAuras[980]    = FILTER_BY_PLAYER -- Agony
     defaultAuras[124915] = FILTER_BY_PLAYER -- Chaos Wave
@@ -870,6 +896,7 @@ if playerClass == 'WARLOCK' then
     defaultAuras[47960]  = FILTER_BY_PLAYER -- Shadowflame
     defaultAuras[30283]  = FILTER_BY_PLAYER -- Shadowfury
     defaultAuras[27243]  = FILTER_BY_PLAYER -- Unstable Affliction
+
     -- Debuffs - Crowd Control
     defaultAuras[111397] = FILTER_BY_PLAYER   -- Blood Fear
     defaultAuras[137143] = FILTER_BY_PLAYER   -- Blood Horror
@@ -909,10 +936,12 @@ if playerClass == 'WARRIOR' then
     defaultAuras[50227]  = FILTER_ON_PLAYER -- Sword and Board
     defaultAuras[125831] = FILTER_ON_PLAYER -- Taste for Blood
     defaultAuras[122510] = FILTER_ON_PLAYER -- Ultimatum
+
     -- Buffs
     defaultAuras[46947]  = FILTER_ON_FRIEND -- Safeguard (damage reduction)
     defaultAuras[114029] = FILTER_ON_FRIEND -- Safeguard (intercept)
     defaultAuras[114030] = FILTER_ON_FRIEND -- Vigilance
+
     -- Debuffs
     defaultAuras[86346]  = FILTER_BY_PLAYER -- Colossus Smash -- DEPRECATED?
     defaultAuras[167105] = FILTER_BY_PLAYER -- Colossus Smash
