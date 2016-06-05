@@ -32,6 +32,9 @@ local FILTER_ON_OTHER       = 0x0000002 -- show if its on others
 local FILTER_ON_FRIEND      = 0x0000004 -- show it its on a friends
 local FILTER_ON_ENEMY       = 0x0000008 -- show if its on an enemy
 
+-- It's possible to create percise filters by using multiple bits
+-- 0x8010001 : Only show: in pve, for tanks and on the player
+
 ns.auraFilterValues = {
     FILTER_ALL               = FILTER_ALL,
     FILTER_DISABLE           = FILTER_DISABLE,
