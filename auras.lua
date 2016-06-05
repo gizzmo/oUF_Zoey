@@ -132,8 +132,15 @@ local defaultAuras = {
     [106648] = FILTER_ALL, -- Brew Explosion (Ook Ook in Stormsnout Brewery)
     [106784] = FILTER_ALL, -- Brew Explosion (Ook Ook in Stormsnout Brewery)
     [123059] = FILTER_ALL, -- Destabilize (Amber-Shaper Un'sok)
-    [70337]  = FILTER_ALL, -- Necrotic Plague
-    [70338]  = FILTER_ALL, -- Nectotic Plague
+    [70337]  = FILTER_ALL, -- Necrotic Plague - Lich King
+    [70338]  = FILTER_ALL, -- Nectotic Plague - Lich King
+    [68786]  = FILTER_ALL, -- Permafrost - Forgemaster Garfrost
+    [69172]  = FILTER_ALL, -- Overlords Brand - Scourgelord Tyrannus
+    [69189]  = FILTER_ALL, -- Overlords Brand - Scourgelord Tyrannus
+    [69190]  = FILTER_ALL, -- Overlords Brand - Scourgelord Tyrannus
+    [184450] = FILTER_ALL, -- Mark of the Necromancer - High Council
+    [185065] = FILTER_ALL, -- Mark of the Necromancer - High Council
+    [185066] = FILTER_ALL, -- Mark of the Necromancer - High Council
 
     -- Enchant procs that Blizzard failed to flag with their caster
     [116631] = FILTER_DISABLE, -- Colossus
@@ -475,6 +482,7 @@ if playerClass == 'HUNTER' then
     defaultAuras[19574]  = FILTER_BY_PLAYER -- Bestial Wrath
     defaultAuras[136]    = FILTER_BY_PLAYER -- Mend Pet
     defaultAuras[118455] = FILTER_BY_PLAYER -- Beast Cleave
+    defaultAuras[90361]  = FILTER_BY_PLAYER -- Spirit Mend
 
     -- Buffs
     defaultAuras[34477]  = FILTER_ON_FRIEND -- Misdirection (30 sec threat)
