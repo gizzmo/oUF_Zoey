@@ -692,7 +692,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         end
 
         local size = (self.Buffs['size'] + self.Buffs['spacing'])
-        self.Buffs['num'] = floor(self.Buffs:GetWidth() / size + .5) * 4
+        self.Buffs['num'] = floor(self.Buffs:GetWidth() / size + .5) * 5
 
 
         self.Buffs.PostCreateIcon = PostCreateAuraIcon
@@ -724,7 +724,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         end
 
         local size = (self.Debuffs['size'] + self.Debuffs['spacing'])
-        self.Debuffs['num'] = floor(self.Debuffs:GetWidth() / size + .5) * 3
+        self.Debuffs['num'] = floor(self.Debuffs:GetWidth() / size + .5) * 4
 
         self.Debuffs.PostCreateIcon = PostCreateAuraIcon
         self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
