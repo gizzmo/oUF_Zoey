@@ -144,6 +144,8 @@ local defaultAuras = {
     [184450] = FILTER_ALL, -- Mark of the Necromancer - High Council
     [185065] = FILTER_ALL, -- Mark of the Necromancer - High Council
     [185066] = FILTER_ALL, -- Mark of the Necromancer - High Council
+    [180718] = FILTER_ALL, -- Undying Resolve -- dps
+    [185563] = FILTER_ALL, -- Undying Salvation -- heals
 
     -- Enchant procs that Blizzard failed to flag with their caster
     [116631] = FILTER_DISABLE, -- Colossus
