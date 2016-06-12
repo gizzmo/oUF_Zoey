@@ -1101,9 +1101,6 @@ end
 
 ------------------------------------------------------------------------
 
-local IsInInstance, UnitCanAttack, UnitIsFriend, UnitIsUnit, UnitPlayerControlled
-    = IsInInstance, UnitCanAttack, UnitIsFriend, UnitIsUnit, UnitPlayerControlled
-
 local casterIsPlayer = { player = true, pet = true, vehicle = true }
 
 local function checkFilter(v, unit, caster)
