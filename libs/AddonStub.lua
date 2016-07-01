@@ -89,9 +89,9 @@ local defer_queue = {}
 local function runDeferred(thing)
     local thing_t = type(thing)
     if thing_t == 'string' and addon[thing] then
-        addon[thing](ns)
+        addon[thing](addon)
     elseif thing_t == 'function' then
-        thing(ns)
+        thing(addon)
     end
 end
 
