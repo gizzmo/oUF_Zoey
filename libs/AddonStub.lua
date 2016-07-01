@@ -159,11 +159,14 @@ end
 local handlers = {}
 local unitEvents = {}
 
--- Call both funcs on the frame and handler funcs
+-- Our private event handler
 frame:SetScript("OnEvent", function(self, event, ...)
+    -- call our private events
     if self[event] then
         self[event](self, event, ...)
     end
+
+    -- call registered events
     return addon:TriggerEvent(event, ...)
 end)
 
