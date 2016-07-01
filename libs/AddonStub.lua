@@ -10,7 +10,7 @@ This is a amalgamation of several addons
 ------------------------------------------------------------------------------]]
 
 local addonName, addon = ...
-local frame = CreateFrame("Frame") -- private frame for AddonStub only events
+local private = CreateFrame("Frame") -- private frame for AddonStub only events
 
 -- Set global name of addon
 _G[addonName] = addon
@@ -114,9 +114,9 @@ function addon:Defer(...)
     end
 end
 
-frame:RegisterEvent('PLAYER_REGEN_ENABLED')
+private:RegisterEvent('PLAYER_REGEN_ENABLED')
 
-function frame:PLAYER_REGEN_ENABLED(event, ...)
+function private:PLAYER_REGEN_ENABLED(event, ...)
     for idx, thing in ipairs(defer_queue) do
         runDeferred(thing)
     end
@@ -160,7 +160,7 @@ local handlers = {}
 local unitEvents = {}
 
 -- Our private event handler
-frame:SetScript("OnEvent", function(self, event, ...)
+private:SetScript("OnEvent", function(self, event, ...)
     -- call our private events
     if self[event] then
         self[event](self, event, ...)
@@ -235,7 +235,7 @@ function addon:RegisterEvent(event, func, handler)
     if func then
         handlers[event] = handlers[event] or {}
         handlers[event][func] = handler or true
-        frame:RegisterEvent(event)
+        private:RegisterEvent(event)
         return true
     end
 end
@@ -247,7 +247,7 @@ function addon:RegisterUnitEvent(event, unit1, unit2, func, handler)
         unitEvents[event] = true
         handlers[event] = handlers[event] or {}
         handlers[event][func] = handler or true
-        frame:RegisterUnitEvent(event, unit1, unit2)
+        private:RegisterUnitEvent(event, unit1, unit2)
         return true
     end
 end
@@ -261,18 +261,18 @@ function addon:UnregisterEvent(event, func, handler)
         if not next(handlers[event]) then
             unitEvents[event] = nil -- TODO: check that this works as intended
             handlers[event] = nil
-            frame:UnregisterEvent(event)
+            private:UnregisterEvent(event)
         end
     end
 end
 
 function addon:UnregisterAllEvents()
     wipe(handlers)
-    frame:UnregisterAllEvents()
+    private:UnregisterAllEvents()
 end
 
 function addon:IsEventRegistered(event)
-    return frame:IsEventRegistered(event)
+    return private:IsEventRegistered(event)
 end
 
 
@@ -314,9 +314,9 @@ end
 --------------------------------------------------------------------------------
 -- Ignition sequence
 
-frame:RegisterEvent("ADDON_LOADED")
+private:RegisterEvent("ADDON_LOADED")
 
-function frame:ADDON_LOADED(event, name)
+function private:ADDON_LOADED(event, name)
     if name ~= addonName then return end
 
     self:UnregisterEvent("ADDON_LOADED")
@@ -334,7 +334,7 @@ function frame:ADDON_LOADED(event, name)
     end
 end
 
-function frame:PLAYER_LOGIN(event)
+function private:PLAYER_LOGIN(event)
     self:UnregisterEvent("PLAYER_LOGIN")
     self.PLAYER_LOGIN = nil
 
@@ -346,7 +346,7 @@ function frame:PLAYER_LOGIN(event)
     self:RegisterEvent("PLAYER_LOGOUT")
 end
 
-function frame:PLAYER_LOGOUT(event)
+function private:PLAYER_LOGOUT(event)
     if addon.OnLogout then
         addon:OnLogout()
         -- no point in cleaning up here since we're logging out
@@ -370,7 +370,7 @@ function frame:PLAYER_LOGOUT(event)
             return db
         end
 
-        for db, defaults in pairs(frame.db_defaults) do
+        for db, defaults in pairs(private.db_defaults) do
             _G[db] = cleanDB(_G[db], defaults)
         end
     end
