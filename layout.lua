@@ -486,46 +486,46 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     -- TODO: Re implemenet class bars.
 
     ----------------------------------------------------------------------------
-    -- Texts -- TODO: we should save the tags to a table on the frame.
+    -- Tags
     ----------------------------------------------------------------------------
-    local Name = CreateText(self.Overlay, 14)
-    Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
-    Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
+    self.NameTag = CreateText(self.Overlay, 14)
+    self.NameTag:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
+    self.NameTag:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
     --TODO: we should reset colors returned from the tags
-    self:Tag(Name, '[leadericon][Level< ][Name][|r - >Realm]')
+    self:Tag(self.NameTag, '[leadericon][Level< ][Name][|r - >Realm]')
 
     if unit == 'target' then
         -- Target uses two health texts to make the
         -- final 20% big and red for Execute and Kill Shot
-        local HealthText = CreateText(self.Overlay, 19)
-        HealthText:SetPoint('RIGHT', self.Health, -1, -1)
-        self:Tag(HealthText, '[TargetHealth]')
+        self.HealthTag = CreateText(self.Overlay, 19)
+        self.HealthTag:SetPoint('RIGHT', self.Health, -1, -1)
+        self:Tag(self.HealthTag, '[TargetHealth]')
 
-        local HealthText2 = CreateText(self.Overlay, 27)
-        HealthText2:SetPoint('RIGHT', self.Health, -1, -1)
-        self:Tag(HealthText2, '[TargetHealth2]')
+        self.HealthTag2 = CreateText(self.Overlay, 27)
+        self.HealthTag2:SetPoint('RIGHT', self.Health, -1, -1)
+        self:Tag(self.HealthTag2, '[TargetHealth2]')
     else
-        local HealthText = CreateText(self.Overlay, 19)
-        HealthText:SetPoint('RIGHT', self.Health, -1, -1)
-        self:Tag(HealthText, '[Health]')
+        self.HealthTag = CreateText(self.Overlay, 19)
+        self.HealthTag:SetPoint('RIGHT', self.Health, -1, -1)
+        self:Tag(self.HealthTag, '[Health]')
     end
 
-    local PowerText = CreateText(self.Overlay, 12)
-    PowerText:SetPoint('RIGHT', self.Power, -1, -1)
-    self:Tag(PowerText, '[Power]')
+    self.PowerTextTag = CreateText(self.Overlay, 12)
+    self.PowerTextTag:SetPoint('RIGHT', self.Power, -1, -1)
+    self:Tag(self.PowerTextTag, '[Power]')
 
     if self.Experience then
-        local Experience = CreateText(self.Overlay, 10)
-        Experience:SetPoint('CENTER', self.Experience, 'BOTTOM', 0, -5)
-        self:Tag(Experience, '[Exp]')
+        self.ExperienceTag = CreateText(self.Overlay, 10)
+        self.ExperienceTag:SetPoint('CENTER', self.Experience, 'BOTTOM', 0, -5)
+        self:Tag(self.ExperienceTag, '[Exp]')
     end
 
     if self.Portrait then
-        local Guild = CreateText(self.Overlay, 12)
-        Guild:SetPoint('TOP', Name, 'BOTTOM', 0, -1)
-        Guild:SetPoint('LEFT', Name)
-        Guild:SetPoint('RIGHT', Name)
-        self:Tag(Guild, '[Guild]')
+        self.GuildTag = CreateText(self.Overlay, 12)
+        self.GuildTag:SetPoint('TOP', self.NameTag, 'BOTTOM', 0, -1)
+        self.GuildTag:SetPoint('LEFT', self.NameTag)
+        self.GuildTag:SetPoint('RIGHT', self.NameTag)
+        self:Tag(self.GuildTag, '[Guild]')
     end
 
     ----------------------------------------------------------------------------
@@ -772,16 +772,16 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
     InitStyle(self, unit, isSingle)
 
     ----------------------------------------------------------------------------
-    -- Texts
+    -- Tags
     ----------------------------------------------------------------------------
-    local Name = CreateText(self.Overlay, 12)
-    Name:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
-    Name:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
-    self:Tag(Name, '[Level< ][Name]')
+    self.NameTag = CreateText(self.Overlay, 12)
+    self.NameTag:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
+    self.NameTag:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
+    self:Tag(self.NameTag, '[Level< ][Name]')
 
-    local StatusText = CreateText(self.Overlay, 16)
-    StatusText:SetPoint('RIGHT', self.Health, -1, 0)
-    self:Tag(StatusText, '[Status]')
+    self.StatusTextTag = CreateText(self.Overlay, 16)
+    self.StatusTextTag:SetPoint('RIGHT', self.Health, -1, 0)
+    self:Tag(self.StatusTextTag, '[Status]')
 
     ----------------------------------------------------------------------------
     -- Icons
@@ -841,17 +841,17 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     self.Health:SetPoint('BOTTOM', self.Power, 'TOP', 0, 1)
 
     ----------------------------------------------------------------------------
-    -- Texts
+    -- Tags
     ----------------------------------------------------------------------------
-    local Name = CreateText(self.Overlay, 10, 'center')
-    Name:SetPoint('TOPLEFT', 3, -3)
-    Name:SetPoint('TOPRIGHT', -3, -3)
-    self:Tag(Name, '[Name]')
+    self.NameTag = CreateText(self.Overlay, 10, 'center')
+    self.NameTag:SetPoint('TOPLEFT', 3, -3)
+    self.NameTag:SetPoint('TOPRIGHT', -3, -3)
+    self:Tag(self.NameTag, '[Name]')
 
-    local StatusText = CreateText(self.Overlay, 12, 'center')
-    StatusText:SetPoint('BOTTOMLEFT', self.Health, 3, 1)
-    StatusText:SetPoint('BOTTOMRIGHT', self.Health, -3, 1)
-    self:Tag(StatusText, '[Status]')
+    self.StatusTextTag = CreateText(self.Overlay, 12, 'center')
+    self.StatusTextTag:SetPoint('BOTTOMLEFT', self.Health, 3, 1)
+    self.StatusTextTag:SetPoint('BOTTOMRIGHT', self.Health, -3, 1)
+    self:Tag(self.StatusTextTag, '[Status]')
 
     ----------------------------------------------------------------------------
     -- Icons
