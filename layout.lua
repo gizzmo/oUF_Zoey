@@ -315,7 +315,7 @@ local function OnLeave(self)
     end
 end
 
-local function CreateText(parent, size, justify)
+local function CreateFontString(parent, size, justify)
     local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.db.font)
 
     local fs = parent:CreateFontString(nil, 'ARTWORK')
@@ -488,7 +488,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Tags
     ----------------------------------------------------------------------------
-    self.NameTag = CreateText(self.Overlay, 14)
+    self.NameTag = CreateFontString(self.Overlay, 14)
     self.NameTag:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
     self.NameTag:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
     --TODO: we should reset colors returned from the tags
@@ -497,31 +497,31 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     if unit == 'target' then
         -- Target uses two health texts to make the
         -- final 20% big and red for Execute and Kill Shot
-        self.HealthTag = CreateText(self.Overlay, 19)
+        self.HealthTag = CreateFontString(self.Overlay, 19)
         self.HealthTag:SetPoint('RIGHT', self.Health, -1, -1)
         self:Tag(self.HealthTag, '[TargetHealth]')
 
-        self.HealthTag2 = CreateText(self.Overlay, 27)
+        self.HealthTag2 = CreateFontString(self.Overlay, 27)
         self.HealthTag2:SetPoint('RIGHT', self.Health, -1, -1)
         self:Tag(self.HealthTag2, '[TargetHealth2]')
     else
-        self.HealthTag = CreateText(self.Overlay, 19)
+        self.HealthTag = CreateFontString(self.Overlay, 19)
         self.HealthTag:SetPoint('RIGHT', self.Health, -1, -1)
         self:Tag(self.HealthTag, '[Health]')
     end
 
-    self.PowerTextTag = CreateText(self.Overlay, 12)
+    self.PowerTextTag = CreateFontString(self.Overlay, 12)
     self.PowerTextTag:SetPoint('RIGHT', self.Power, -1, -1)
     self:Tag(self.PowerTextTag, '[Power]')
 
     if self.Experience then
-        self.ExperienceTag = CreateText(self.Overlay, 10)
+        self.ExperienceTag = CreateFontString(self.Overlay, 10)
         self.ExperienceTag:SetPoint('CENTER', self.Experience, 'BOTTOM', 0, -5)
         self:Tag(self.ExperienceTag, '[Exp]')
     end
 
     if self.Portrait then
-        self.GuildTag = CreateText(self.Overlay, 12)
+        self.GuildTag = CreateFontString(self.Overlay, 12)
         self.GuildTag:SetPoint('TOP', self.NameTag, 'BOTTOM', 0, -1)
         self.GuildTag:SetPoint('LEFT', self.NameTag)
         self.GuildTag:SetPoint('RIGHT', self.NameTag)
@@ -631,18 +631,18 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
             self.Castbar.SafeZone:SetVertexColor(unpack(colors.cast.safezone))
             tinsert(ns.statusbars, self.Castbar.SafeZone)
 
-            self.Castbar.Lag = CreateText(self.Castbar, 10)
+            self.Castbar.Lag = CreateFontString(self.Castbar, 10)
             self.Castbar.Lag:SetPoint('TOPRIGHT', self.Castbar, 'BOTTOMRIGHT', 0, -7)
         end
 
         -- Castbar Texts
         if unit == 'player' then
-            self.Castbar.Text = CreateText(self.Castbar, 14)
-            self.Castbar.Time = CreateText(self.Castbar, 10)
+            self.Castbar.Text = CreateFontString(self.Castbar, 14)
+            self.Castbar.Time = CreateFontString(self.Castbar, 10)
 
         elseif unit == 'target' then
-            self.Castbar.Text = CreateText(self.Castbar, 20)
-            self.Castbar.Time = CreateText(self.Castbar, 16)
+            self.Castbar.Text = CreateFontString(self.Castbar, 20)
+            self.Castbar.Time = CreateFontString(self.Castbar, 16)
         end
         self.Castbar.Text:SetPoint('LEFT', 10, 0)
         self.Castbar.Time:SetPoint('RIGHT', -10, 0)
@@ -774,12 +774,12 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Tags
     ----------------------------------------------------------------------------
-    self.NameTag = CreateText(self.Overlay, 12)
+    self.NameTag = CreateFontString(self.Overlay, 12)
     self.NameTag:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
     self.NameTag:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
     self:Tag(self.NameTag, '[Level< ][Name]')
 
-    self.StatusTextTag = CreateText(self.Overlay, 16)
+    self.StatusTextTag = CreateFontString(self.Overlay, 16)
     self.StatusTextTag:SetPoint('RIGHT', self.Health, -1, 0)
     self:Tag(self.StatusTextTag, '[Status]')
 
@@ -843,12 +843,12 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Tags
     ----------------------------------------------------------------------------
-    self.NameTag = CreateText(self.Overlay, 10, 'center')
+    self.NameTag = CreateFontString(self.Overlay, 10, 'center')
     self.NameTag:SetPoint('TOPLEFT', 3, -3)
     self.NameTag:SetPoint('TOPRIGHT', -3, -3)
     self:Tag(self.NameTag, '[Name]')
 
-    self.StatusTextTag = CreateText(self.Overlay, 12, 'center')
+    self.StatusTextTag = CreateFontString(self.Overlay, 12, 'center')
     self.StatusTextTag:SetPoint('BOTTOMLEFT', self.Health, 3, 1)
     self.StatusTextTag:SetPoint('BOTTOMRIGHT', self.Health, -3, 1)
     self:Tag(self.StatusTextTag, '[Status]')
