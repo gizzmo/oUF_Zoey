@@ -937,6 +937,7 @@ if playerClass == 'WARRIOR' then
     defaultAuras[114028] = FILTER_ON_PLAYER -- Mass Spell Reflection
     defaultAuras[85739]  = FILTER_ON_PLAYER -- Meat Cleaver
     defaultAuras[114192] = FILTER_ON_PLAYER -- Mocking Banner
+    defaultAuras[115317] = FILTER_ON_PLAYER -- Raging Wind
     defaultAuras[97463]  = FILTER_ON_PLAYER -- Rallying Cry
     defaultAuras[1719]   = FILTER_ON_PLAYER -- Recklessness
     defaultAuras[112048] = FILTER_ON_PLAYER -- Shield Barrier
