@@ -942,6 +942,7 @@ if playerClass == 'WARRIOR' then
     defaultAuras[1719]   = FILTER_ON_PLAYER -- Recklessness
     defaultAuras[112048] = FILTER_ON_PLAYER -- Shield Barrier
     defaultAuras[2565]   = FILTER_ON_PLAYER -- Shield Block
+    defaultAuras[132404] = FILTER_ON_PLAYER -- Shield Block
     defaultAuras[871]    = FILTER_ON_PLAYER -- Shield Wall
     defaultAuras[114206] = FILTER_ON_PLAYER -- Skull Banner
     defaultAuras[23920]  = FILTER_ON_PLAYER -- Spell Banner
