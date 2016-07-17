@@ -5,6 +5,12 @@ local colors = oUF.colors
 
 local _, playerClass = UnitClass('player')
 local playerUnits = { player = true, pet = true, vehicle = true }
+local classPowerType = {
+    MONK    = 'CHI',
+    PALADIN = 'HOLY_POWER',
+    PRIEST  = 'SHADOW_ORBS',
+    WARLOCK = 'SOUL_SHARDS',
+}
 
 --------------------------------------------------------------------------------
 -- Functions
@@ -295,6 +301,34 @@ local function LFDOverride(self)
     end
 end
 
+-- ClassIcons Functions
+local function ClassIconsUpdateTexture(element)
+    local color = oUF.colors.power[classPowerType[playerClass]]
+    for i = 1, #element do
+        local icon = element[i]
+
+        icon:SetVertexColor(color[1], color[2], color[3])
+        icon.bg:SetVertexColor(color[1]*0.4, color[2]*0.4, color[3]*0.4)
+    end
+end
+
+local function ClassIconsPostUpdate(self, cur, max, hasMaxChanged, event)
+    if not hasMaxChanged then return end -- dont need to udpate
+
+    -- Figure out the width
+    local width = ((self:GetWidth() - (max-1)) / max)
+
+    for i = 1, max do
+        self[i]:SetWidth(width) -- TODO: do we need to defer this?
+        self[i].bg:Show()
+    end
+
+    -- hide unused bgs
+    for i = max + 1, 6 do
+        self[i].bg:Hide()
+    end
+end
+
 -- Other Functions
 ns.Mouse_Focus = nil
 local function OnEnter(self)
@@ -483,7 +517,51 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         if isSingle then self:SetHeight(FRAME_HEIGHT) end
     end
 
-    -- TODO: Re implemenet class bars.
+    ----------------------------------------------------------------------------
+    -- Class Specific -- NOTE: Should it be between health and power?
+    ----------------------------------------------------------------------------
+    if unit == 'player' and (playerClass == 'MONK') then -- NOTE: only monk is tested
+        local CI_HEIGHT = 5
+        self.ClassIcons = CreateFrame('Frame', '$parentClassIcons', self)
+        self.ClassIcons:SetHeight(CI_HEIGHT)
+
+        self.ClassIcons:SetPoint('LEFT', 1, 0)
+        self.ClassIcons:SetPoint('RIGHT', -1, 0)
+        self.ClassIcons:SetPoint('BOTTOM', (self.Experience or self), 'TOP', 0, 1)
+
+        self.Power:SetPoint('BOTTOM', self.ClassIcons, 'TOP', 0, 1)
+
+        self.ClassIcons:SetFrameLevel(4)
+        self.ClassIcons.PostUpdate = ClassIconsPostUpdate
+        self.ClassIcons.UpdateTexture = ClassIconsUpdateTexture
+
+        local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.db.statusbar)
+
+        for i = 1, 6 do
+            local icon = self.ClassIcons:CreateTexture(nil, 'ARTWORK')
+            icon:SetTexture(texture)
+
+            icon:SetPoint('TOP')
+            icon:SetPoint('BOTTOM')
+            icon:SetPoint('LEFT')
+
+            if i ~= 1 then
+                icon:SetPoint('LEFT', self.ClassIcons[i-1], 'RIGHT', 1, 0)
+            end
+
+            icon.bg = self.ClassIcons:CreateTexture(nil, 'BACKGROUND')
+            icon.bg:SetTexture(texture)
+            icon.bg:SetAllPoints(icon)
+
+            self.ClassIcons[i] = icon
+        end
+
+        -- Keep this var up to date
+        FRAME_HEIGHT = FRAME_HEIGHT + CI_HEIGHT
+
+        --
+        if isSingle then self:SetHeight(FRAME_HEIGHT) end
+    end
 
     ----------------------------------------------------------------------------
     -- Tags
