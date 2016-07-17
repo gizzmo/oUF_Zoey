@@ -657,6 +657,10 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.PhaseIcon:SetVertexColor(0.4, 0.8, 1)
     end
 
+    self.ResurrectIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
+    self.ResurrectIcon:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
+    self.ResurrectIcon:SetPoint('CENTER')
+
     ----------------------------------------------------------------------------
     -- Cast Bars
     ----------------------------------------------------------------------------
@@ -953,5 +957,9 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
     self.RaidIcon:SetSize(16,16)
     self.RaidIcon:SetPoint('LEFT', 3, 0)
+
+    self.ResurrectIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
+    self.ResurrectIcon:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
+    self.ResurrectIcon:SetPoint('CENTER')
 
 end)
