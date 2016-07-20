@@ -217,7 +217,7 @@ local function PostCreateAuraIcon(iconframe, button)
     button.bg = button:CreateTexture(nil, 'BACKGROUND')
     button.bg:SetPoint('TOPLEFT', -1, 1)
     button.bg:SetPoint('BOTTOMRIGHT', 1, -1)
-    button.bg:SetTexture(0, 0, 0, 1)
+    button.bg:SetColorTexture(0, 0, 0, 1)
 end
 
 local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
@@ -395,7 +395,7 @@ local function InitStyle(self, unit, isSingle)
     -- Background
     self.bg = self:CreateTexture(nil, 'BACKGROUND')
     self.bg:SetAllPoints(self)
-    self.bg:SetTexture(0, 0, 0, 1)
+    self.bg:SetColorTexture(0, 0, 0, 1)
 
     -- Border: changes color depending on the unit's classification (rare,elite)
     ns.CreateBorder(self)
@@ -672,7 +672,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.Castbar.Frame:SetFrameLevel(self.Castbar:GetFrameLevel()-1)
         self.Castbar.Frame.bg = self.Castbar.Frame:CreateTexture(nil, 'BACKGROUND')
         self.Castbar.Frame.bg:SetAllPoints(self.Castbar.Frame)
-        self.Castbar.Frame.bg:SetTexture(0, 0, 0, 1)
+        self.Castbar.Frame.bg:SetColorTexture(0, 0, 0, 1)
         ns.CreateBorder(self.Castbar.Frame)
 
         -- Attach the Castbar to the Frame

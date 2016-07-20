@@ -100,25 +100,10 @@ function ns:DisableBlizzard()
     BuffFrame:Hide()
     BuffFrame:UnregisterAllEvents()
     TemporaryEnchantFrame:Hide()
-    ConsolidatedBuffs:Hide()
 
     -- The raid frames are actaully addons, disable them.
     DisableAddOn("Blizzard_CompactRaidFrames")
     DisableAddOn("Blizzard_CUFProfiles")
-
-    -- Disable Blizzard options that are rendered useless by having this unit frame addon
-    for _, button in pairs({
-        'CombatPanelTargetOfTarget',
-        'CombatPanelEnemyCastBarsOnPortrait',
-        'DisplayPanelShowAggroPercentage',
-        'FrameCategoriesButton9',  -- Status Text
-        'FrameCategoriesButton10', -- Unit Frames
-        'FrameCategoriesButton12', -- Buffs and Debuffs
-    }) do
-        _G['InterfaceOptions'..button]:SetAlpha(0.35)
-        _G['InterfaceOptions'..button]:Disable()
-        _G['InterfaceOptions'..button]:EnableMouse(false)
-    end
 
     -- Remove Items from the Rightclick Menu
     for _, menu in pairs( UnitPopupMenus ) do
