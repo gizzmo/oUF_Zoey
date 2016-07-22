@@ -73,7 +73,7 @@ local function PostUpdatePower(Power, unit, min, max)
 
         t = colors.power[ptoken]
         if(not t) then
-            if(power.GetAlternativeColor) then
+            if(Power.GetAlternativeColor) then
                 r, g, b = power:GetAlternativeColor(unit, ptype, ptoken, altR, altG, altB)
             elseif(altR) then
                 r, g, b = altR, altG, altB
