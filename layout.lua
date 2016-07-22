@@ -61,16 +61,26 @@ local function HighlightUpdate(self)
 end
 
 
+-- Power coloring: Perfer class color, fall-back to power
 local function PostUpdatePower(Power, unit, min, max)
     local r,g,b,t
 
-    -- Determin the color we want to use
     if UnitIsPlayer(unit) then
         local class = select(2, UnitClass(unit))
         t = colors.class[class]
     else
-        local power = select(2, UnitPowerType(unit))
-        t = colors.power[power]
+        local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
+
+        t = colors.power[ptoken]
+        if(not t) then
+            if(power.GetAlternativeColor) then
+                r, g, b = power:GetAlternativeColor(unit, ptype, ptoken, altR, altG, altB)
+            elseif(altR) then
+                r, g, b = altR, altG, altB
+            else
+                t = colors.power[ptype]
+            end
+        end
     end
 
     if t then
