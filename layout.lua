@@ -61,29 +61,6 @@ local function HighlightUpdate(self)
 end
 
 
--- Health and Power, mostly for setting color
-local function PostUpdateHealth(Health, unit, min, max)
-    local r,g,b,t
-
-    -- Determin the color we want to use
-    if UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit) then
-        t = colors.tapped
-    elseif not UnitIsConnected(unit) then
-        t = colors.disconnected
-    else
-        t = colors.health
-    end
-
-    if t then
-        r, g, b = t[1], t[2], t[3]
-    end
-
-    if b then
-        Health:SetStatusBarColor(r, g, b)
-        Health.bg:SetVertexColor(r*0.4, g *0.4, b*0.4)
-    end
-end
-
 local function PostUpdatePower(Power, unit, min, max)
     local r,g,b,t
 
@@ -433,7 +410,10 @@ local function InitStyle(self, unit, isSingle)
     self.Health:SetPoint('LEFT', 1, 0)
     self.Health:SetPoint('RIGHT', -1, 0)
     self.Health:SetPoint('BOTTOM', 0, 1)
-    self.Health.PostUpdate = PostUpdateHealth
+    self.Health.colorTapping = true
+    self.Health.colorDisconnected = true
+    self.Health.colorHealth = true
+    self.Health.bg.multiplier = 0.4
 
 end
 
