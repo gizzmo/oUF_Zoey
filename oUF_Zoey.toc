@@ -36,10 +36,10 @@ features\border.lua
 features\tags.lua
 #features\test.lua
 features\defer.lua
+features\auras.lua
 
 elements\oUF_Experience.lua
 
-auras.lua
 options.lua
 layout.lua
 spawn.lua
