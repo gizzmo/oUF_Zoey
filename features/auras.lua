@@ -481,6 +481,9 @@ if playerClass == 'HUNTER' then
     defaultAuras[53220]  = FILTER_ON_PLAYER -- Steady Focus
     defaultAuras[34471]  = FILTER_ON_PLAYER -- The Beast Within
     defaultAuras[34720]  = FILTER_ON_PLAYER -- Thrill of the Hunt
+    defaultAuras[190931] = FILTER_ON_PLAYER -- Mongoose Fury
+    defaultAuras[186289] = FILTER_ON_PLAYER -- Aspect of the Eagle
+    defaultAuras[186265] = FILTER_ON_PLAYER -- Aspect of the Turtle
 
     -- Pet Buffs
     defaultAuras[19615]  = FILTER_BY_PLAYER -- Frenzy
@@ -523,6 +526,14 @@ if playerClass == 'HUNTER' then
     defaultAuras[34490]  = FILTER_BY_PLAYER -- Silencing Shot
     defaultAuras[82654]  = FILTER_BY_PLAYER -- Widow Venom
     defaultAuras[19386]  = FILTER_BY_PLAYER -- Wyvern Sting
+
+    defaultAuras[185855] = FILTER_BY_PLAYER -- Lacerate
+    defaultAuras[194858] = FILTER_BY_PLAYER -- Dragonsfire Grenade
+    defaultAuras[190927] = FILTER_BY_PLAYER -- Harpoon
+    defaultAuras[195645] = FILTER_ON_ENEMY  -- Wing Clip
+    defaultAuras[200108] = FILTER_ON_ENEMY  -- Ranger's Net
+    defaultAuras[206755] = FILTER_ON_ENEMY  -- Ranger's Net
+    -- defaultAuras[]
 end
 
 ------------------------------------------------------------------------
