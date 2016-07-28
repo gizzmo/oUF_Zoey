@@ -465,8 +465,6 @@ if playerClass == 'HUNTER' then
     -- defaultAuras[82921]  = FILTER_ON_PLAYER -- Bombardment
     -- defaultAuras[53257]  = FILTER_ON_PLAYER -- Cobra Strikes
     defaultAuras[51755]  = FILTER_ON_PLAYER -- Camouflage
-    defaultAuras[19263]  = FILTER_ON_PLAYER -- Deterrence
-    defaultAuras[15571]  = FILTER_ON_PLAYER -- Dazed <-- Aspect of the Cheetah
     defaultAuras[6197]   = FILTER_ON_PLAYER -- Eagle Eye
     defaultAuras[5384]   = FILTER_ON_PLAYER -- Feign Death
     defaultAuras[82726]  = FILTER_ON_PLAYER -- Fervor
@@ -484,6 +482,8 @@ if playerClass == 'HUNTER' then
     defaultAuras[190931] = FILTER_ON_PLAYER -- Mongoose Fury
     defaultAuras[186289] = FILTER_ON_PLAYER -- Aspect of the Eagle
     defaultAuras[186265] = FILTER_ON_PLAYER -- Aspect of the Turtle
+    defaultAuras[186257] = FILTER_ON_PLAYER -- Aspect of the Cheetah
+    defaultAuras[186258] = FILTER_ON_PLAYER -- Aspect of the Cheetah
 
     -- Pet Buffs
     defaultAuras[19615]  = FILTER_BY_PLAYER -- Frenzy
