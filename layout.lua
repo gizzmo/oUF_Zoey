@@ -10,6 +10,9 @@ local classPowerType = {
     PALADIN = 'HOLY_POWER',
     PRIEST  = 'SHADOW_ORBS',
     WARLOCK = 'SOUL_SHARDS',
+    ROGUE   = 'COMBO_POINTS',
+    DRUID   = 'COMBO_POINTS',
+    MAGE    = 'ARCANE_CHARGES'
 }
 
 --------------------------------------------------------------------------------
