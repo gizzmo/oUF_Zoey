@@ -481,36 +481,6 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         if isSingle then self:SetHeight(FRAME_HEIGHT) end
     end
 
-    if unit == 'player' and UnitLevel(unit) ~= MAX_PLAYER_LEVEL then
-        local EXP_HEIGHT = 5
-        self.Experience = CreateStatusBar(self, 'Experience', true)
-        self.Experience:SetHeight(EXP_HEIGHT - 1)
-        self.Experience:SetPoint('LEFT', 1, 0)
-        self.Experience:SetPoint('RIGHT', -1, 0)
-        self.Experience:SetPoint('BOTTOM', 0, 1)
-
-        self.Experience.Rested = CreateStatusBar(self.Experience, 'Rested')
-        self.Experience.Rested:SetAllPoints(self.Experience)
-
-        -- Colors
-        local r,g,b = unpack(colors.experience.main)
-        self.Experience:SetStatusBarColor(r,g,b)
-        self.Experience.Rested:SetStatusBarColor(unpack(colors.experience.rested))
-        self.Experience.Rested.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
-
-        -- Resize the main frame when this frame Hides or Shows
-        self.Experience:SetScript('OnShow', ExpOnShow)
-        self.Experience:SetScript('OnHide', ExpOnHide)
-
-        self.Power:SetPoint('BOTTOM', self.Experience, 'TOP', 0, 1)
-
-        -- Keep this var up to date
-        FRAME_HEIGHT = FRAME_HEIGHT + EXP_HEIGHT
-
-        --
-        if isSingle then self:SetHeight(FRAME_HEIGHT) end
-    end
-
     ----------------------------------------------------------------------------
     -- Class Specific -- NOTE: Should it be between health and power?
     ----------------------------------------------------------------------------
@@ -521,7 +491,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
         self.ClassIcons:SetPoint('LEFT', 1, 0)
         self.ClassIcons:SetPoint('RIGHT', -1, 0)
-        self.ClassIcons:SetPoint('BOTTOM', (self.Experience or self), 'TOP', 0, 1)
+        self.ClassIcons:SetPoint('BOTTOM', self, 'TOP', 0, 1)
 
         self.Power:SetPoint('BOTTOM', self.ClassIcons, 'TOP', 0, 1)
 
@@ -585,12 +555,6 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     self.PowerTextTag = CreateFontString(self.Overlay, 12)
     self.PowerTextTag:SetPoint('RIGHT', self.Power, -1, -1)
     self:Tag(self.PowerTextTag, '[Power]')
-
-    if self.Experience then
-        self.ExperienceTag = CreateFontString(self.Overlay, 10)
-        self.ExperienceTag:SetPoint('CENTER', self.Experience, 'BOTTOM', 0, -5)
-        self:Tag(self.ExperienceTag, '[Exp]')
-    end
 
     if self.Portrait then
         self.GuildTag = CreateFontString(self.Overlay, 12)

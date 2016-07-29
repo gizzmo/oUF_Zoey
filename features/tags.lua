@@ -264,19 +264,6 @@ oUF.Tags.Methods['Power'] = function(unit)
 end
 
 
-oUF.Tags.Events['Exp'] = 'PLAYER_XP_UPDATE'
-oUF.Tags.Methods['Exp'] = function(unit)
-    local cur, max, rest = UnitXP(unit), UnitXPMax(unit), GetXPExhaustion(unit)
-
-    if IsMouseOver(unit) then
-        if rest then
-            return ('%s/%s (%s%%) R: %s%%'):format(Short(cur), Short(max), Percent(cur,max), Percent(rest,max))
-        else
-            return ('%s/%s (%s%%)'):format(Short(cur), Short(max), Percent(cur,max))
-        end
-    end
-end
-
 oUF.Tags.Events['Guild'] = 'UNIT_NAME_UPDATE PARTY_MEMBER_ENABLE'
 oUF.Tags.Methods['Guild'] = function(unit)
     local r,g,b = 255,255,255
