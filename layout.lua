@@ -5,15 +5,6 @@ local colors = oUF.colors
 
 local _, playerClass = UnitClass('player')
 local playerUnits = { player = true, pet = true, vehicle = true }
-local classPowerType = {
-    MONK    = 'CHI',
-    PALADIN = 'HOLY_POWER',
-    PRIEST  = 'SHADOW_ORBS',
-    WARLOCK = 'SOUL_SHARDS',
-    ROGUE   = 'COMBO_POINTS',
-    DRUID   = 'COMBO_POINTS',
-    MAGE    = 'ARCANE_CHARGES'
-}
 
 --------------------------------------------------------------------------------
 -- Functions
@@ -313,18 +304,21 @@ local function ExpOnShow(bar)
 end
 
 -- Corner Indicators
-local CORNER_BACKDROP = {
-    bgFile = "Interface\\BUTTONS\\WHITE8X8", tile = true, tileSize = 8,
-    edgeFile = "Interface\\BUTTONS\\WHITE8X8", edgeSize = 1,
-    insets = {left = 1, right = 1, top = 1, bottom = 1},
-}
+local CreateCornerIndicator
+do
+    local CORNER_BACKDROP = {
+        bgFile = "Interface\\BUTTONS\\WHITE8X8", tile = true, tileSize = 8,
+        edgeFile = "Interface\\BUTTONS\\WHITE8X8", edgeSize = 1,
+        insets = {left = 1, right = 1, top = 1, bottom = 1},
+    }
 
-local function CreateCornerIndicator(parent)
-    local square = CreateFrame('Frame', nil, parent)
-    square:SetBackdrop(CORNER_BACKDROP)
-    square:SetBackdropBorderColor(0, 0, 0, 1)
-    square:SetSize(6,6)
-    return square
+    function CreateCornerIndicator(parent)
+        local square = CreateFrame('Frame', nil, parent)
+        square:SetBackdrop(CORNER_BACKDROP)
+        square:SetBackdropBorderColor(0, 0, 0, 1)
+        square:SetSize(6,6)
+        return square
+    end
 end
 
 -- Icon Overrides
@@ -343,13 +337,26 @@ local function LFDOverride(self)
 end
 
 -- ClassIcons Functions
-local function ClassIconsUpdateTexture(element)
-    local color = oUF.colors.power[classPowerType[playerClass]]
-    for i = 1, #element do
-        local icon = element[i]
+local ClassIconsUpdateTexture
+do
+    local classPowerType = {
+        MONK    = 'CHI',
+        PALADIN = 'HOLY_POWER',
+        PRIEST  = 'SHADOW_ORBS',
+        WARLOCK = 'SOUL_SHARDS',
+        ROGUE   = 'COMBO_POINTS',
+        DRUID   = 'COMBO_POINTS',
+        MAGE    = 'ARCANE_CHARGES'
+    }
 
-        icon:SetVertexColor(color[1], color[2], color[3])
-        icon.bg:SetVertexColor(color[1]*0.4, color[2]*0.4, color[3]*0.4)
+    function ClassIconsUpdateTexture(element)
+        local color = oUF.colors.power[classPowerType[playerClass]]
+        for i = 1, #element do
+            local icon = element[i]
+
+            icon:SetVertexColor(color[1], color[2], color[3])
+            icon.bg:SetVertexColor(color[1]*0.4, color[2]*0.4, color[3]*0.4)
+        end
     end
 end
 
