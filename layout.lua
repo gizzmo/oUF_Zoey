@@ -18,6 +18,56 @@ local classPowerType = {
 --------------------------------------------------------------------------------
 -- Functions
 --------------------------------------------------------------------------------
+ns.Mouse_Focus = nil
+local function OnEnter(self)
+    UnitFrame_OnEnter(self)
+
+    ns.Mouse_Focus = self
+    for _, fs in ipairs( self.__tags ) do
+        fs:UpdateTag()
+    end
+end
+
+local function OnLeave(self)
+    UnitFrame_OnLeave(self)
+
+    ns.Mouse_Focus = nil
+    for _, fs in ipairs( self.__tags ) do
+        fs:UpdateTag()
+    end
+end
+
+local function CreateFontString(parent, size, justify)
+    local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.db.font)
+
+    local fs = parent:CreateFontString(nil, 'ARTWORK')
+    fs:SetFont(font, size or 16)
+    fs:SetJustifyH(justify or 'LEFT')
+    fs:SetWordWrap(false)
+    fs:SetShadowOffset(1, -1)
+    fs:SetShadowColor(0,0,0,1)
+    tinsert(ns.fontstrings, fs)
+
+    return fs
+end
+
+local function CreateStatusBar(parent, name, noBG)
+    local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.db.statusbar)
+
+    local sb = CreateFrame('StatusBar', (name and '$parent'..name or nil), parent)
+    sb:SetStatusBarTexture(texture)
+    tinsert(ns.statusbars, sb)
+
+    if not noBG then
+        sb.bg = sb:CreateTexture(nil, 'BACKGROUND')
+        sb.bg:SetTexture(texture)
+        sb.bg:SetAllPoints(true)
+        tinsert(ns.statusbars, sb.bg)
+    end
+
+    return sb
+end
+
 local function UpdateUnitBorderColor(self)
     if not self.Border or not self.unit then return end
 
@@ -320,56 +370,6 @@ local function ClassIconsPostUpdate(self, cur, max, hasMaxChanged, event)
     end
 end
 
--- Other Functions
-ns.Mouse_Focus = nil
-local function OnEnter(self)
-    UnitFrame_OnEnter(self)
-
-    ns.Mouse_Focus = self
-    for _, fs in ipairs( self.__tags ) do
-        fs:UpdateTag()
-    end
-end
-
-local function OnLeave(self)
-    UnitFrame_OnLeave(self)
-
-    ns.Mouse_Focus = nil
-    for _, fs in ipairs( self.__tags ) do
-        fs:UpdateTag()
-    end
-end
-
-local function CreateFontString(parent, size, justify)
-    local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.db.font)
-
-    local fs = parent:CreateFontString(nil, 'ARTWORK')
-    fs:SetFont(font, size or 16)
-    fs:SetJustifyH(justify or 'LEFT')
-    fs:SetWordWrap(false)
-    fs:SetShadowOffset(1, -1)
-    fs:SetShadowColor(0,0,0,1)
-    tinsert(ns.fontstrings, fs)
-
-    return fs
-end
-
-local function CreateStatusBar(parent, name, noBG)
-    local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.db.statusbar)
-
-    local sb = CreateFrame('StatusBar', (name and '$parent'..name or nil), parent)
-    sb:SetStatusBarTexture(texture)
-    tinsert(ns.statusbars, sb)
-
-    if not noBG then
-        sb.bg = sb:CreateTexture(nil, 'BACKGROUND')
-        sb.bg:SetTexture(texture)
-        sb.bg:SetAllPoints(true)
-        tinsert(ns.statusbars, sb.bg)
-    end
-
-    return sb
-end
 
 --------------------------------------------------------------------------------
 -- Things every style will have
