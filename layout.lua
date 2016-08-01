@@ -286,22 +286,6 @@ local function PvPPostUpdate(icon, status)
     end
 end
 
--- Experience Bar
-local function ExpOnHide(bar)
-    local parent = bar:GetParent()
-    ns:Defer(function()
-        bar:SetPoint('BOTTOM', 0, -bar:GetHeight())
-        parent:SetHeight(parent:GetHeight() - bar:GetHeight() - 1)
-    end)
-end
-
-local function ExpOnShow(bar)
-    local parent = bar:GetParent()
-    ns:Defer(function()
-        bar:SetPoint('BOTTOM', 0, 1)
-        parent:SetHeight(parent:GetHeight() + bar:GetHeight() + 1)
-    end)
-end
 
 -- Corner Indicators
 local CreateCornerIndicator
