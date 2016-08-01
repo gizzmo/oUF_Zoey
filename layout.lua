@@ -238,7 +238,7 @@ end
 
 
 -- Aura Function
-local function PostCreateAuraIcon(iconframe, button)
+local function PostCreateAuraIcon(iconFrame, button)
     button.cd:SetReverse(true)
     button.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
 
@@ -252,7 +252,7 @@ local function PostCreateAuraIcon(iconframe, button)
     button.bg:SetColorTexture(0, 0, 0, 1)
 end
 
-local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
+local function PostUpdateAuraIcon(iconFrame, unit, button, index, offset)
     local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, button.filter)
 
     if playerUnits[caster] then
@@ -272,17 +272,18 @@ local function PostUpdateAuraIcon(iconframe, unit, button, index, offset)
     end
 end
 
--- PvP Icon
-local function PvPPostUpdate(icon, status)
+
+-- PvP Icon: Fix texture
+local function PvPPostUpdate(PVP, status)
     if not status then return end
 
     -- Fix the texture
     if status == 'Horde' then
-        icon:SetTexCoord(0.08, 0.58, 0.045, 0.545)
+        PVP:SetTexCoord(0.08, 0.58, 0.045, 0.545)
     elseif status == 'Alliance' then
-        icon:SetTexCoord(0.07, 0.58, 0.06, 0.57)
+        PVP:SetTexCoord(0.07, 0.58, 0.06, 0.57)
     elseif status == 'ffa' then
-        icon:SetTexCoord(0.05, 0.605, 0.015, 0.57)
+        PVP:SetTexCoord(0.05, 0.605, 0.015, 0.57)
     end
 end
 
@@ -305,7 +306,6 @@ do
     end
 end
 
--- Icon Overrides
 local function LFDOverride(self)
     local LFDRole = self.LFDRole
     local Role = UnitGroupRolesAssigned(self.unit)
@@ -319,6 +319,7 @@ local function LFDOverride(self)
         LFDRole:Hide()
     end
 end
+
 
 -- ClassIcons Functions
 local ClassIconsUpdateTexture
