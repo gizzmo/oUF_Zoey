@@ -524,8 +524,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     self.NameTag = CreateFontString(self.Overlay, 14)
     self.NameTag:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
     self.NameTag:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
-    --TODO: we should reset colors returned from the tags
-    self:Tag(self.NameTag, '[leadericon][Level< ][Name][|r - >Realm]')
+    self:Tag(self.NameTag, '[leadericon][Level< ][Name][ - >Realm]')
 
     if unit == 'target' then
         -- Target uses two health texts to make the

@@ -123,7 +123,7 @@ oUF.Tags.Methods['Name'] = function(unit)
     local classColor = Hex(UnitIsPlayer(unit) and _COLORS.class[class] or {1,1,1})
 
     if name and ShouldShow(unit) then
-        return classColor..name
+        return classColor..name..'|r'
     end
 end
 
@@ -147,7 +147,7 @@ oUF.Tags.Methods['Level'] = function(unit)
     end
 
     if level and ShouldShow(unit) then
-        return levelColor..level
+        return levelColor..level..'|r'
     end
 end
 
@@ -191,12 +191,12 @@ oUF.Tags.Methods['Health'] = function(unit)
 
     if IsMouseOver(unit) then
         if cur < max then
-            return ('|cffff7f7f-%s'):format(SepSh(max - cur))
+            return ('|cffff7f7f-%s|r'):format(SepSh(max - cur))
         else
-            return ('%s'):format(SepSh(max))
+            return SepSh(max)
         end
     elseif cur < max then
-        return ('%s%%'):format(Percent(cur,max))
+        return Percent(cur,max)..'%'
     end
 end
 
@@ -216,13 +216,13 @@ oUF.Tags.Methods['TargetHealth'] = function(unit)
 
     if IsMouseOver(unit) then
         if cur < max then
-            return ('|cffff7f7f-%s'):format(SepSh(max - cur))
+            return ('|cffff7f7f-%s|r'):format(SepSh(max - cur))
         else
-            return ('%s'):format(SepSh(max))
+            return SepSh(max)
         end
     elseif cur < max then
         if Percent(cur,max) > 20 then
-            return ('%s%%'):format(Percent(cur,max))
+            return Percent(cur,max)..'%'
         end
     end
 end
@@ -238,7 +238,7 @@ oUF.Tags.Methods['TargetHealth2'] = function(unit)
 
     if not IsMouseOver(unit) then
         if Percent(cur,max) < 20 then
-            return ('|cffe80000%s%%'):format(Percent(cur,max))
+            return ('|cffe80000%s%%|r'):format(Percent(cur,max))
         end
     end
 end
@@ -256,9 +256,9 @@ oUF.Tags.Methods['Power'] = function(unit)
 
     if not UnitIsDead(unit) and UnitPowerType(unit) == 0 and IsMouseOver(unit) then
         if cur ~= max then
-            return ('|cffff7f7f-%s'):format(SepSh(max - cur))
+            return ('|cffff7f7f-%s|r'):format(SepSh(max - cur))
         else
-            return ('%s'):format(SepSh(max))
+            return SepSh(max)
         end
     end
 end
@@ -277,7 +277,7 @@ oUF.Tags.Methods['Guild'] = function(unit)
             r,g,b = 195,27,255
         end
 
-        return ('|cff%02x%02x%02x%s'):format(r,g,b, '<'..GuildName..'>')
+        return ('|cff%02x%02x%02x%s|r'):format(r,g,b, '<'..GuildName..'>')
     end
 end
 
