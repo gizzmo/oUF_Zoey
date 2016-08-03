@@ -527,21 +527,9 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     self.NameTag:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
     self:Tag(self.NameTag, '[leadericon][Level< ][Name][ - >Realm]')
 
-    if unit == 'target' then
-        -- Target uses two health texts to make the
-        -- final 20% big and red for Execute and Kill Shot
-        self.HealthTag = CreateFontString(self.Overlay, 19)
-        self.HealthTag:SetPoint('RIGHT', self.Health, -1, -1)
-        self:Tag(self.HealthTag, '[TargetHealth]')
-
-        self.HealthTag2 = CreateFontString(self.Overlay, 27)
-        self.HealthTag2:SetPoint('RIGHT', self.Health, -1, -1)
-        self:Tag(self.HealthTag2, '[TargetHealth2]')
-    else
-        self.HealthTag = CreateFontString(self.Overlay, 19)
-        self.HealthTag:SetPoint('RIGHT', self.Health, -1, -1)
-        self:Tag(self.HealthTag, '[Health]')
-    end
+    self.HealthTag = CreateFontString(self.Overlay, 19)
+    self.HealthTag:SetPoint('RIGHT', self.Health, -1, -1)
+    self:Tag(self.HealthTag, '[Health]')
 
     self.PowerTextTag = CreateFontString(self.Overlay, 12)
     self.PowerTextTag:SetPoint('RIGHT', self.Power, -1, -1)

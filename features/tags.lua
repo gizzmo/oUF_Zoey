@@ -18,18 +18,32 @@ local function ShouldShow(unit)
     return true
 end
 
-local function Short(value)
-    if value >= 1e7 then
-        return ('%.1fm'):format(value / 1e6):gsub('%.?0+([km])$', '%1')
-    elseif value >= 1e6 then
-        return ('%.2fm'):format(value / 1e6):gsub('%.?0+([km])$', '%1')
-    elseif value >= 1e5 then
-        return ('%.0fk'):format(value / 1e3)
-    elseif value >= 1e3 then
-        return ('%.1fk'):format(value / 1e3):gsub('%.?0+([km])$', '%1')
-    else
-        return value
-    end
+local function Short(value, raw)
+	if not value then return "" end
+	local absvalue = abs(value)
+	local str, val
+
+	if absvalue >= 1e10 then
+		str, val = "%.0fb", value / 1e9
+	elseif absvalue >= 1e9 then
+		str, val = "%.1fb", value / 1e9
+	elseif absvalue >= 1e7 then
+		str, val = "%.1fm", value / 1e6
+	elseif absvalue >= 1e6 then
+		str, val = "%.2fm", value / 1e6
+	elseif absvalue >= 1e5 then
+		str, val = "%.0fk", value / 1e3
+	elseif absvalue >= 1e3 then
+		str, val = "%.1fk", value / 1e3
+	else
+		str, val = "%d", value
+	end
+
+	if raw then
+		return str, val
+	else
+		return format(str, val)
+	end
 end
 
 local function SeparateDigits(number, thousands, decimal)
@@ -116,6 +130,7 @@ do
 
 end
 
+
 oUF.Tags.Events['Name'] = 'UNIT_NAME_UPDATE'
 oUF.Tags.Methods['Name'] = function(unit)
     local name = UnitName(unit)
@@ -164,23 +179,15 @@ end
 
 oUF.Tags.Events['Status'] = 'UNIT_HEALTH UNIT_CONNECTION'
 oUF.Tags.Methods['Status'] = function(unit)
-    if not UnitIsConnected(unit) then
-        return 'Offline'
-    elseif UnitIsFeignDeath(unit) then
-        return 'Feign Death'
-    elseif UnitIsDead(unit) then
-        return 'Dead'
-    elseif UnitIsGhost(unit) then
-        return 'Ghost'
-    end
+    return not UnitIsConnected(unit) and 'Offline'
+            or UnitIsFeignDeath(unit) and 'Feign Death'
+            or UnitIsDead(unit) and 'Dead'
+            or UnitIsGhost(unit) and 'Ghost'
 end
 
 
 oUF.Tags.Events['Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
 oUF.Tags.Methods['Health'] = function(unit)
-    local status = _TAGS['Status'](unit)
-    if status then return status end
-
     local cur = UnitHealth(unit)
     local max = UnitHealthMax(unit)
 
@@ -189,57 +196,23 @@ oUF.Tags.Methods['Health'] = function(unit)
         SepSh = SeparateDigits
     end
 
+    local status = _TAGS['Status'](unit)
+    if status then
+        if IsMouseOver(unit) and max > 0 then -- max is 0 for offline units
+            return SepSh(max)
+        else
+            return status
+        end
+    end
+
     if IsMouseOver(unit) then
         if cur < max then
-            return ('|cffff7f7f-%s|r'):format(SepSh(max - cur))
+            return SepSh(cur)
         else
             return SepSh(max)
         end
     elseif cur < max then
         return Percent(cur,max)..'%'
-    end
-end
-
-
-oUF.Tags.Events['TargetHealth'] = oUF.Tags.Events['Health']
-oUF.Tags.Methods['TargetHealth'] = function(unit)
-    local status = _TAGS['Status'](unit)
-    if status then return status end
-
-    local cur = UnitHealth(unit)
-    local max = UnitHealthMax(unit)
-
-    local SepSh = Short
-    if unit == 'target' or unit == 'player' then
-        SepSh = SeparateDigits
-    end
-
-    if IsMouseOver(unit) then
-        if cur < max then
-            return ('|cffff7f7f-%s|r'):format(SepSh(max - cur))
-        else
-            return SepSh(max)
-        end
-    elseif cur < max then
-        if Percent(cur,max) > 20 then
-            return Percent(cur,max)..'%'
-        end
-    end
-end
-
-
-oUF.Tags.Events['TargetHealth2'] = oUF.Tags.Events['Health']
-oUF.Tags.Methods['TargetHealth2'] = function(unit)
-    local status = _TAGS['Status'](unit)
-    if status then return end
-
-    local cur = UnitHealth(unit)
-    local max = UnitHealthMax(unit)
-
-    if not IsMouseOver(unit) then
-        if Percent(cur,max) < 20 then
-            return ('|cffe80000%s%%|r'):format(Percent(cur,max))
-        end
     end
 end
 
@@ -254,9 +227,10 @@ oUF.Tags.Methods['Power'] = function(unit)
         SepSh = SeparateDigits
     end
 
-    if not UnitIsDead(unit) and UnitPowerType(unit) == 0 and IsMouseOver(unit) then
-        if cur ~= max then
-            return ('|cffff7f7f-%s|r'):format(SepSh(max - cur))
+    local status = _TAGS['Status'](unit)
+    if not status and IsMouseOver(unit) then
+        if cur < max then
+            return SepSh(cur)
         else
             return SepSh(max)
         end
@@ -266,18 +240,13 @@ end
 
 oUF.Tags.Events['Guild'] = 'UNIT_NAME_UPDATE PARTY_MEMBER_ENABLE'
 oUF.Tags.Methods['Guild'] = function(unit)
-    local r,g,b = 255,255,255
-
     local GuildName = UnitIsPlayer(unit) and
         GetGuildInfo(unit) or
         FigureNPCGuild(unit)
 
     if GuildName then
-        if UnitIsInMyGuild(unit) then
-            r,g,b = 195,27,255
-        end
-
-        return ('|cff%02x%02x%02x%s|r'):format(r,g,b, '<'..GuildName..'>')
+        local guildColor = Hex(UnitIsInMyGuild(unit) and {0.7,0.1,1} or {1,1,1})
+        return guildColor..'<'..GuildName..'>|r'
     end
 end
 
