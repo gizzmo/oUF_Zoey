@@ -100,8 +100,6 @@ local function HighlightUpdate(self)
     else
         self.Highlight:Hide()
     end
-
-    return false
 end
 
 
