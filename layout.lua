@@ -416,6 +416,7 @@ local function InitStyle(self, unit, isSingle)
     self.Health:SetPoint('LEFT', 1, 0)
     self.Health:SetPoint('RIGHT', -1, 0)
     self.Health:SetPoint('BOTTOM', 0, 1)
+    self.Health.frequentUpdates = true
     self.Health.colorTapping = true
     self.Health.colorDisconnected = true
     self.Health.colorHealth = true
@@ -451,6 +452,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     self.Power:SetPoint('LEFT', 1, 0)
     self.Power:SetPoint('RIGHT', -1, 0)
     self.Power:SetPoint('BOTTOM', 0, 1)
+    self.Power.frequentUpdates = true
     self.Power.PostUpdate = PostUpdatePower
 
     self.Health:SetPoint('BOTTOM', self.Power, 'TOP', 0, 1)
@@ -529,10 +531,12 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
     self.HealthTag = CreateFontString(self.Overlay, 19)
     self.HealthTag:SetPoint('RIGHT', self.Health, -1, -1)
+    self.HealthTag.frequentUpdates = true
     self:Tag(self.HealthTag, '[Health]')
 
     self.PowerTextTag = CreateFontString(self.Overlay, 12)
     self.PowerTextTag:SetPoint('RIGHT', self.Power, -1, -1)
+    self.PowerTextTag.frequentUpdates = true
     self:Tag(self.PowerTextTag, '[Power]')
 
     if self.Portrait then
