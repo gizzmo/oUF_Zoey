@@ -21,19 +21,15 @@ local defaultDB = {
 --------------------------------------------------------------------------------
 -- Setup oUF Colors
 --------------------------------------------------------------------------------
--- Health bar color
-oUF.colors.health = {89/255, 89/255, 89/255} -- dark grey
-
--- Cast bar colors
-oUF.colors.cast =  {
+local colors = oUF.colors
+colors['health'] = {89/255, 89/255, 89/255} -- dark grey
+colors['cast'] =  {
     normal   = {89/255, 89/255, 89/255},      -- dark gray
     success  = {20/255, 208/255, 0/255},      -- green
     failed   = {255/255, 12/255, 0/255},      -- dark red
     safezone = {255/255, 25/255, 0/255, 0.5}, -- transparent red
 }
-
--- Border colors
-oUF.colors.border = {
+colors['border'] = {
     normal    = {113/255, 113/255, 113/255}, -- Dark Grey
     rare      = {1, 1, 1},                   -- White
     elite     = {204/255, 177/255, 41/255},  -- Yellow
