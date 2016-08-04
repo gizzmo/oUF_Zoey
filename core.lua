@@ -24,18 +24,6 @@ local defaultDB = {
 -- Health bar color
 oUF.colors.health = {89/255, 89/255, 89/255} -- dark grey
 
--- Combo points colors
-oUF.colors.comboPoints = {
-    normal = {232/255, 214/255, 12/255}, -- yellow
-    last   = {240/255, 60/255, 60/255}   -- red
-}
-
--- Experience bar colors
-oUF.colors.experience = {
-    main   = {176/255, 72/255, 176/255}, -- purple
-    rested = {80/255, 80/255, 222/255}   -- blue
-}
-
 -- Cast bar colors
 oUF.colors.cast =  {
     normal   = {89/255, 89/255, 89/255},      -- dark gray
