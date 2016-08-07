@@ -38,8 +38,6 @@ features\tags.lua
 features\defer.lua
 features\auras.lua
 
-elements\oUF_Experience.lua
-
 options.lua
 layout.lua
 spawn.lua
