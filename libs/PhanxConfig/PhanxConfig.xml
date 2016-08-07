@@ -1,0 +1,15 @@
+<Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+
+    <Script file="PhanxConfig-Button.lua"/>
+    <Script file="PhanxConfig-Checkbox.lua"/>
+    <Script file="PhanxConfig-ColorPicker.lua"/>
+    <Script file="PhanxConfig-Dropdown.lua"/>
+    <Script file="PhanxConfig-EditBox.lua"/>
+    <Script file="PhanxConfig-Header.lua"/>
+    <Script file="PhanxConfig-KeyBinding.lua"/>
+    <Script file="PhanxConfig-MediaDropdown.lua"/>
+    <Script file="PhanxConfig-OptionsPanel.lua"/>
+    <Script file="PhanxConfig-Panel.lua"/>
+    <Script file="PhanxConfig-Slider.lua"/>
+
+</Ui>
