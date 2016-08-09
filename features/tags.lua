@@ -2,7 +2,7 @@
 local addon, ns = ...
 
 local function IsMouseOver(unit)
-    if ns.Mouse_Focus and ns.Mouse_Focus['unit'] == unit then
+    if ns.mousefocus and ns.mousefocus['unit'] == unit then
         return true
     end
 

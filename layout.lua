@@ -9,11 +9,11 @@ local playerUnits = { player = true, pet = true, vehicle = true }
 --------------------------------------------------------------------------------
 -- Functions
 --------------------------------------------------------------------------------
-ns.Mouse_Focus = nil
+ns.mousefocus = nil
 local function OnEnter(self)
     UnitFrame_OnEnter(self)
 
-    ns.Mouse_Focus = self
+    ns.mousefocus = self
     for _, fs in ipairs( self.__tags ) do
         fs:UpdateTag()
     end
@@ -22,7 +22,7 @@ end
 local function OnLeave(self)
     UnitFrame_OnLeave(self)
 
-    ns.Mouse_Focus = nil
+    ns.mousefocus = nil
     for _, fs in ipairs( self.__tags ) do
         fs:UpdateTag()
     end
@@ -79,7 +79,7 @@ end
 -- Mouseover and Target Highlighting
 local function HighlightShouldShow(self)
     -- Frame is curently mouse focused
-    if ns.Mouse_Focus == self then
+    if ns.mousefocus == self then
         return true
     end
 
