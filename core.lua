@@ -4,9 +4,7 @@ local addonName, ns = ...
 -- Set global name
 _G[addonName] = ns
 
---------------------------------------------------------------------------------
 -- Default configuration
---------------------------------------------------------------------------------
 local defaultDB = {
 
     statusbar = 'Armory',
@@ -18,9 +16,7 @@ local defaultDB = {
     PVP = false, -- enable PVP mode, currently only affects aura filtering
 }
 
---------------------------------------------------------------------------------
 -- Setup oUF Colors
---------------------------------------------------------------------------------
 local colors = oUF.colors
 colors['health'] = {89/255, 89/255, 89/255} -- dark grey
 colors['cast'] =  {
@@ -37,30 +33,30 @@ colors['border'] = {
     boss      = {136/255, 41/255, 204/255}   -- Purple
 
 }
+-- Register our media with SharedMedia
+local Media = LibStub('LibSharedMedia-3.0')
+Media:Register('statusbar', 'Armory', [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]])
+Media:Register('font', 'DorisPP', [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]])
+
+-- Slash command handler
+_G['SLASH_'..addonName..'1'] = '/zoey'
+SlashCmdList[addonName] = function(input)
+    -- Open the options window
+    if input == '' or input == 'config' then
+        InterfaceOptionsFrame_Show()
+        InterfaceOptionsFrame_OpenToCategory('oUF Zoey')
+    end
+end
+
+-- Easier reloadui
+_G['SLASH_rl1'] = '/rl'
+SlashCmdList['rl'] = ReloadUI
 
 --------------------------------------------------------------------------------
 -- Ignition sequence
 --------------------------------------------------------------------------------
 function ns:OnLoad()
     self.db = ns:InitializeDB(addonName..'DB', defaultDB)
-
-    -- Register our media with SharedMedia
-    local Media = LibStub('LibSharedMedia-3.0')
-    Media:Register('statusbar', 'Armory', [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]])
-    Media:Register('font', 'DorisPP', [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]])
-
-    -- Slash command handler
-    _G['SLASH_'..addonName..'1'] = '/zoey'
-    SlashCmdList[addonName] = function(input)
-        -- Open the options window
-        if input == '' or input == 'config' then
-            InterfaceOptionsFrame_Show()
-            InterfaceOptionsFrame_OpenToCategory('oUF Zoey')
-        end
-    end
-
-    _G['SLASH_rl1'] = '/rl'
-    SlashCmdList['rl'] = ReloadUI
 
     -- Shift to temporarily show all buffs
     self:RegisterEvent("PLAYER_REGEN_DISABLED")
