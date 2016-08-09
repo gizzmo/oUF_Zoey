@@ -25,14 +25,7 @@ colors['cast'] =  {
     failed   = {255/255, 12/255, 0/255},      -- dark red
     safezone = {255/255, 25/255, 0/255, 0.5}, -- transparent red
 }
-colors['border'] = {
-    normal    = {113/255, 113/255, 113/255}, -- Dark Grey
-    rare      = {1, 1, 1},                   -- White
-    elite     = {204/255, 177/255, 41/255},  -- Yellow
-    rareelite = {41/255,  128/255, 204/255}, -- Blue
-    boss      = {136/255, 41/255, 204/255}   -- Purple
 
-}
 -- Register our media with SharedMedia
 local Media = LibStub('LibSharedMedia-3.0')
 Media:Register('statusbar', 'Armory', [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]])
