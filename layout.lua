@@ -28,6 +28,7 @@ local function OnLeave(self)
     end
 end
 
+ns.fontstrings = {}
 local function CreateFontString(parent, size, justify)
     local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.db.font)
 
@@ -42,6 +43,7 @@ local function CreateFontString(parent, size, justify)
     return fs
 end
 
+ns.statusbars = {}
 local function CreateStatusBar(parent, name, noBG)
     local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.db.statusbar)
 

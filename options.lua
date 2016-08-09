@@ -1,6 +1,38 @@
 -- Get the addon namespace
 local addon, ns = ...
 
+
+--------------------------------------------------------------------------------
+local function SetAllFonts()
+    local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.db.font)
+
+    for i = 1, #ns.fontstrings do
+        local fs = ns.fontstrings[i]
+        local _, size = fs:GetFont()
+        fs:SetFont(font, size or 16)
+    end
+end
+
+local function SetAllStatusBarTextures()
+    local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.db.statusbar)
+
+    for i = 1, #ns.statusbars do
+        local sb = ns.statusbars[i]
+
+        --// Is it a statusbar or a texture
+        if sb.SetStatusBarTexture then
+            local r, g, b, a = sb:GetStatusBarColor()
+            sb:SetStatusBarTexture(texture)
+            sb:SetStatusBarColor(r, g, b, a)
+
+        else
+            local r, g, b, a = sb:GetVertexColor()
+            sb:SetTexture(texture)
+            sb:SetVertexColor(r, g, b, a)
+        end
+    end
+end
+
 ------------------------------------------------------------------------
 -- Options panel
 ------------------------------------------------------------------------
@@ -19,7 +51,7 @@ LibStub('PhanxConfig-OptionsPanel'):New('oUF Zoey', nil, function(panel)
     function statusbar:OnValueChanged(value)
         if value == db.statusbar then return end
         db.statusbar = value
-        ns.SetAllStatusBarTextures()
+        SetAllStatusBarTextures()
     end
 
     --------------------------------------------------------------------
@@ -30,7 +62,7 @@ LibStub('PhanxConfig-OptionsPanel'):New('oUF Zoey', nil, function(panel)
     function font:OnValueChanged(value)
         if value == db.font then return end
         db.font = value
-        ns.SetAllFonts()
+        SetAllFonts()
     end
 
     --------------------------------------------------------------------
