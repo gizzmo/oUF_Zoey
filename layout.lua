@@ -352,7 +352,7 @@ local function ClassIconsPostUpdate(self, cur, max, hasMaxChanged, event)
     local width = ((self:GetWidth() - (max-1)) / max)
 
     for i = 1, max do
-        self[i]:SetWidth(width) -- TODO: do we need to defer this?
+        self[i]:SetWidth(width)
         self[i].bg:Show()
     end
 
@@ -479,24 +479,24 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     -- Class Specific -- NOTE: Should it be between health and power?
     ----------------------------------------------------------------------------
     if unit == 'player' and (playerClass == 'MONK') then -- NOTE: only monk is tested
-        local CI_HEIGHT = 5
         self.ClassIcons = CreateFrame('Frame', '$parentClassIcons', self)
-        self.ClassIcons:SetHeight(CI_HEIGHT)
+        self.ClassIcons:SetHeight(10)
+        self.ClassIcons:SetWidth(FRAME_WIDTH * 0.95)
+        self.ClassIcons:SetPoint('TOP', self, 'BOTTOM', 0, 0)
+        self.ClassIcons:SetFrameLevel(self:GetFrameLevel() -1)
+        ns.CreateBorder(self.ClassIcons)
 
-        self.ClassIcons:SetPoint('LEFT', 1, 0)
-        self.ClassIcons:SetPoint('RIGHT', -1, 0)
-        self.ClassIcons:SetPoint('BOTTOM', self, 'TOP', 0, 1)
+        self.ClassIcons.bg = self.ClassIcons:CreateTexture(nil,'BACKGROUND')
+        self.ClassIcons.bg:SetAllPoints(self.ClassIcons)
+        self.ClassIcons.bg:SetColorTexture(0,0,0,1)
 
-        self.Power:SetPoint('BOTTOM', self.ClassIcons, 'TOP', 0, 1)
-
-        self.ClassIcons:SetFrameLevel(4)
         self.ClassIcons.PostUpdate = ClassIconsPostUpdate
         self.ClassIcons.UpdateTexture = ClassIconsUpdateTexture
 
         local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.db.statusbar)
 
         for i = 1, 6 do
-            local icon = self.ClassIcons:CreateTexture(nil, 'ARTWORK')
+            local icon = self.ClassIcons:CreateTexture(nil, 'ARTWORK', nil, 2)
             icon:SetTexture(texture)
 
             icon:SetPoint('TOP')
@@ -507,18 +507,12 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
                 icon:SetPoint('LEFT', self.ClassIcons[i-1], 'RIGHT', 1, 0)
             end
 
-            icon.bg = self.ClassIcons:CreateTexture(nil, 'BACKGROUND')
+            icon.bg = self.ClassIcons:CreateTexture(nil, 'BACKGROUND', nil, 1)
             icon.bg:SetTexture(texture)
             icon.bg:SetAllPoints(icon)
 
             self.ClassIcons[i] = icon
         end
-
-        -- Keep this var up to date
-        FRAME_HEIGHT = FRAME_HEIGHT + CI_HEIGHT
-
-        --
-        if isSingle then self:SetHeight(FRAME_HEIGHT) end
     end
 
     ----------------------------------------------------------------------------
