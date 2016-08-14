@@ -49,8 +49,7 @@ function ns:SpawnUnitFrames()
             self:SetHeight( 80 )
         ]]
     )
-    Party:SetPoint('BOTTOM', Anchor, 0, 0)
-    Party:SetPoint('LEFT', UIParent, 'LEFT', gap, 0)
+    Party:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 240)
 
     SpawnHeader('PartyTargets', 'party',
         'showParty', true,
@@ -96,8 +95,7 @@ function ns:SpawnUnitFrames()
             self:SetHeight( 40 )
         ]]
     )
-    Raid:SetPoint('BOTTOM', Anchor, 0, 0)
-    Raid:SetPoint('LEFT', UIParent, 'LEFT', gap/3, 0)
+    Raid:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', 5, 240)
 
     ----------------------------------------------------------------------------
     oUF:SetActiveStyle('Zoey')
