@@ -521,7 +521,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     end
 
     ----------------------------------------------------------------------------
-    -- Class Specific -- NOTE: Should it be between health and power?
+    -- Class Specific
     ----------------------------------------------------------------------------
     if unit == 'player' and (playerClass == 'MONK') then -- NOTE: only monk is tested
         self.ClassIcons = CreateFrame('Frame', '$parentClassIcons', self)
