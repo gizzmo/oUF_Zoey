@@ -709,14 +709,10 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         end
 
         local size = (self.Buffs['size'] + self.Buffs['spacing'])
-        self.Buffs['num'] = floor(self.Buffs:GetWidth() / size + .5) * 5
-
+        self.Buffs['num'] = floor(self.Buffs:GetWidth() / size + .5) * 2
 
         self.Buffs.PostCreateIcon = PostCreateAuraIcon
         self.Buffs.PostUpdateIcon = PostUpdateAuraIcon
-
-        self.Buffs.CustomFilter   = ns.CustomAuraFilters[unit]
-                                 or ns.CustomAuraFilters.default
     end
 
     if unit == 'player' or unit == 'target' then
@@ -741,13 +737,10 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         end
 
         local size = (self.Debuffs['size'] + self.Debuffs['spacing'])
-        self.Debuffs['num'] = floor(self.Debuffs:GetWidth() / size + .5) * 4
+        self.Debuffs['num'] = floor(self.Debuffs:GetWidth() / size + .5) * 2
 
         self.Debuffs.PostCreateIcon = PostCreateAuraIcon
         self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
-
-        self.Debuffs.CustomFilter   = ns.CustomAuraFilters[unit]
-                                   or ns.CustomAuraFilters.default
     end
 
     ----------------------------------------------------------------------------
