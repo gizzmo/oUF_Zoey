@@ -363,6 +363,50 @@ local function ClassIconsPostUpdate(self, cur, max, hasMaxChanged, event)
 end
 
 
+-- HealPrediction
+local function CreateHealPrediction(self, vertical)
+    local myBar = CreateStatusBar(self.Health, nil, true)
+    myBar:SetStatusBarColor(64/255, 204/255, 255/255, .7)
+
+    local otherBar = CreateStatusBar(self.Health, nil, true)
+    otherBar:SetStatusBarColor(64/255, 255/255, 64/255, .7)
+
+    local absorbBar = CreateStatusBar(self.Health, nil, true)
+    absorbBar:SetStatusBarColor(220/255, 255/255, 230/255, .7)
+
+    local healAbsorbBar = CreateStatusBar(self.Health, nil, true)
+    healAbsorbBar:SetStatusBarColor(220/255, 228/255, 255/255, .7)
+
+    -- Loop over the bars and set the points
+    local bars = {myBar,otherBar,absorbBar,healAbsorbBar}
+    for i=1, #bars do
+
+        if vertical then
+            bars[i]:SetHeight(self:GetHeight())
+            bars[i]:SetOrientation('VERTICAL')
+            bars[i]:SetPoint('LEFT')
+            bars[i]:SetPoint('RIGHT')
+            bars[i]:SetPoint('BOTTOM', self.Health:GetStatusBarTexture(), 'TOP')
+        else
+            bars[i]:SetWidth(self:GetWidth())
+            bars[i]:SetPoint('TOP')
+            bars[i]:SetPoint('BOTTOM')
+            bars[i]:SetPoint('LEFT', self.Health:GetStatusBarTexture(), 'RIGHT')
+        end
+    end
+
+    -- Register with oUF
+    self.HealPrediction = {
+        myBar = myBar,
+        otherBar = otherBar,
+        absorbBar = absorbBar,
+        healAbsorbBar = healAbsorbBar,
+        maxOverflow = 1.00,
+        frequentUpdates = true,
+    }
+end
+
+
 --------------------------------------------------------------------------------
 -- Things every style will have
 --------------------------------------------------------------------------------
@@ -443,6 +487,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
     -- Initliaze the style
     InitStyle(self, unit, isSingle)
+    CreateHealPrediction(self)
 
     ----------------------------------------------------------------------------
     -- Build the other status bars
@@ -743,28 +788,6 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
     end
 
-    ----------------------------------------------------------------------------
-    -- Heal Prediction
-    ----------------------------------------------------------------------------
-    local mhpb = CreateStatusBar(self.Health, 'HealPredictionMyHeals', true)
-    mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT')
-    mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
-    mhpb:SetWidth(self:GetWidth())
-    mhpb:SetStatusBarColor(0.25, 0.8, 1, 0.5)
-
-    local ohpb = CreateStatusBar(self.Health, 'HealPredictionOtherHeals', true)
-    ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT')
-    ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT')
-    ohpb:SetWidth(self:GetWidth())
-    ohpb:SetStatusBarColor(0.25, 1, 0.25, 0.5)
-
-    self.HealPrediction = {
-        myBar = mhpb,    -- status bar to show my incoming heals
-        otherBar = ohpb, -- status bar to show other peoples incoming heals
-        maxOverflow = 1, -- amount of overflow past the end of the health bar
-        -- TODO: absorbs?
-    }
-
 end)
 
 oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
@@ -780,6 +803,7 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
 
     -- Initliaze the style
     InitStyle(self, unit, isSingle)
+    CreateHealPrediction(self)
 
     ----------------------------------------------------------------------------
     -- Tags
@@ -828,6 +852,7 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
 
     -- Initliaze the style
     InitStyle(self, unit, isSingle)
+    CreateHealPrediction(self,true)
 
     -- Grow healthbar top to bottom
     self.Health:SetOrientation('VERTICAL')
