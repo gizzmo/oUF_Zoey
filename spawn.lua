@@ -38,7 +38,7 @@ function ns:SpawnUnitFrames()
     ----------------------------------------------------------------------------
     -- note offset = 130 - frame height
     oUF:SetActiveStyle('Zoey')
-    local Party = SpawnHeader('Party', 'party',
+    SpawnHeader('Party', 'party',
         'showParty', true,
         'yOffset', 50,
         'point', 'BOTTOM',
@@ -48,8 +48,7 @@ function ns:SpawnUnitFrames()
             self:SetWidth( 135 )
             self:SetHeight( 80 )
         ]]
-    )
-    Party:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 240)
+    ):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 240)
 
     SpawnHeader('PartyTargets', 'party',
         'showParty', true,
@@ -80,7 +79,7 @@ function ns:SpawnUnitFrames()
 
     ----------------------------------------------------------------------------
     oUF:SetActiveStyle('ZoeySquare')
-    local Raid = SpawnHeader('Raid', 'raid',
+    SpawnHeader('Raid', 'raid',
         'showRaid', true,
         'xOffset', gap/2,
         'point', 'LEFT',
@@ -94,8 +93,7 @@ function ns:SpawnUnitFrames()
             self:SetWidth( 65 )
             self:SetHeight( 40 )
         ]]
-    )
-    Raid:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', 5, 240)
+    ):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', 5, 240)
 
     ----------------------------------------------------------------------------
     oUF:SetActiveStyle('Zoey')
