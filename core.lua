@@ -4,16 +4,13 @@ local addonName, ns = ...
 -- Set global name
 _G[addonName] = ns
 
--- Default configuration
-local defaultDB = {
-
+-- Configuration
+ns.db = {
     statusbar = 'Armory',
     font = 'DorisPP',
 
-    ptgap = 150,         -- gap between player and target
-    frames_offset = 270, -- offset from bottom of UIParent
-
-    PVP = false, -- enable PVP mode, currently only affects aura filtering
+    ptgap = 234,         -- gap between player and target
+    frames_offset = 300, -- offset from bottom of UIParent
 }
 
 -- Setup oUF Colors
@@ -31,27 +28,18 @@ local Media = LibStub('LibSharedMedia-3.0')
 Media:Register('statusbar', 'Armory', [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]])
 Media:Register('font', 'DorisPP', [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]])
 
--- Slash command handler
-_G['SLASH_'..addonName..'1'] = '/zoey'
-SlashCmdList[addonName] = function(input)
-    -- Open the options window
-    if input == '' or input == 'config' then
-        InterfaceOptionsFrame_Show()
-        InterfaceOptionsFrame_OpenToCategory('oUF Zoey')
-    end
-end
-
 -- Easier reloadui
 _G['SLASH_rl1'] = '/rl'
 SlashCmdList['rl'] = ReloadUI
 
 --------------------------------------------------------------------------------
-function ns:OnLoad()
-    self.db = ns:InitializeDB(addonName..'DB', defaultDB)
+local Loader = CreateFrame("Frame")
+Loader:RegisterEvent("PLAYER_LOGIN")
+Loader:SetScript("OnEvent", function(self, event, ...)
+    return self[event] and self[event](self, event, ...)
+end)
 
-end
-
-function ns:OnLogin()
+function Loader:PLAYER_LOGIN()
     ns:DisableBlizzard()
     ns:SkinMirrorTimer()
     ns:SpawnUnitFrames()
@@ -125,10 +113,6 @@ function ns:SkinMirrorTimer()
         bar.text:SetFont(font, 16)
 
         ns.CreateBorder(bar)
-
-        tinsert(ns.statusbars, bar.bar)
-        tinsert(ns.statusbars, bar.bg)
-        tinsert(ns.fontstrings, bar.text)
     end
 end
 

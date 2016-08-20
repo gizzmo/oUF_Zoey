@@ -10,7 +10,6 @@
 ## X-Website: http://github.com/gizzmo/oUF_Zoey
 
 ## RequiredDeps: oUF
-## SavedVariables: oUF_ZoeyDB
 
 embeds.xml
 
@@ -21,6 +20,5 @@ features\tags.lua
 #features\test.lua
 features\defer.lua
 
-options.lua
 layout.lua
 spawn.lua

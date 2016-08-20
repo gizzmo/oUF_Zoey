@@ -28,7 +28,6 @@ local function OnLeave(self)
     end
 end
 
-ns.fontstrings = {}
 local function CreateFontString(parent, size, justify)
     local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.db.font)
 
@@ -38,24 +37,20 @@ local function CreateFontString(parent, size, justify)
     fs:SetWordWrap(false)
     fs:SetShadowOffset(1, -1)
     fs:SetShadowColor(0,0,0,1)
-    tinsert(ns.fontstrings, fs)
 
     return fs
 end
 
-ns.statusbars = {}
 local function CreateStatusBar(parent, name, noBG)
     local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.db.statusbar)
 
     local sb = CreateFrame('StatusBar', (name and '$parent'..name or nil), parent)
     sb:SetStatusBarTexture(texture)
-    tinsert(ns.statusbars, sb)
 
     if not noBG then
         sb.bg = sb:CreateTexture(nil, 'BACKGROUND')
         sb.bg:SetTexture(texture)
         sb.bg:SetAllPoints(true)
-        tinsert(ns.statusbars, sb.bg)
     end
 
     return sb
@@ -688,7 +683,6 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
             self.Castbar.SafeZone = self.Castbar:CreateTexture(nil,'OVERLAY')
             self.Castbar.SafeZone:SetTexture(self.Castbar:GetStatusBarTexture():GetTexture())
             self.Castbar.SafeZone:SetVertexColor(unpack(colors.cast.safezone))
-            tinsert(ns.statusbars, self.Castbar.SafeZone)
 
             self.Castbar.Lag = CreateFontString(self.Castbar, 10)
             self.Castbar.Lag:SetPoint('TOPRIGHT', self.Castbar, 'BOTTOMRIGHT', 0, -7)

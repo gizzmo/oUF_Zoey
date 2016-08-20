@@ -2,8 +2,4 @@
     <Script file="libs\LibStub.lua"/>
     <Script file="libs\CallbackHandler-1.0.lua"/>
     <Script file="libs\LibSharedMedia-3.0.lua"/>
-
-    <Include file="libs\PhanxConfig\PhanxConfig.xml"/>
-
-    <Script file="libs\AddonStub.lua"/>
 </Ui>
