@@ -5,7 +5,7 @@ local addonName, ns = ...
 _G[addonName] = ns
 
 -- Configuration
-ns.db = {
+ns.config = {
     statusbar = 'Armory',
     font = 'DorisPP',
 }
@@ -59,8 +59,8 @@ end
 
 local function SkinMirrorTimer()
     local Media = LibStub('LibSharedMedia-3.0')
-    local font = Media:Fetch('font', ns.db.font)
-    local texture = Media:Fetch('statusbar', ns.db.statusbar)
+    local font = Media:Fetch('font', ns.config.font)
+    local texture = Media:Fetch('statusbar', ns.config.statusbar)
 
     for i = 1, 3 do
         local barname = 'MirrorTimer'..i

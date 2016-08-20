@@ -29,7 +29,7 @@ local function OnLeave(self)
 end
 
 local function CreateFontString(parent, size, justify)
-    local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.db.font)
+    local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.config.font)
 
     local fs = parent:CreateFontString(nil, 'ARTWORK')
     fs:SetFont(font, size or 16)
@@ -42,7 +42,7 @@ local function CreateFontString(parent, size, justify)
 end
 
 local function CreateStatusBar(parent, name, noBG)
-    local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.db.statusbar)
+    local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.config.statusbar)
 
     local sb = CreateFrame('StatusBar', (name and '$parent'..name or nil), parent)
     sb:SetStatusBarTexture(texture)
@@ -530,7 +530,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.ClassIcons.PostUpdate = ClassIconsPostUpdate
         self.ClassIcons.UpdateTexture = ClassIconsUpdateTexture
 
-        local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.db.statusbar)
+        local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.config.statusbar)
 
         for i = 1, 6 do
             local icon = self.ClassIcons:CreateTexture(nil, 'ARTWORK', nil, 2)
