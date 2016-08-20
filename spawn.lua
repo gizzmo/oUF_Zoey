@@ -97,14 +97,17 @@ function ns:SpawnUnitFrames()
 
     ----------------------------------------------------------------------------
     oUF:SetActiveStyle('Zoey')
-    local Boss = {}
-    for i = 1, MAX_BOSS_FRAMES do
+    local Boss, Arena = {},{}
+    for i = 1, 5 do
         Boss[i] = Spawn('Boss'..i)
+        Arena[i] = Spawn('Arena'..i)
 
         if i == 1 then
             Boss[i]:SetPoint('BOTTOM', u.focustarget, 'TOP', 0, 25)
+            Arena[i]:SetPoint('BOTTOM', u.focustarget, 'TOP', 0, 25)
         else
             Boss[i]:SetPoint('BOTTOM', Boss[i - 1], 'TOP', 0, gap)
+            Arena[i]:SetPoint('BOTTOM', Arena[i - 1], 'TOP', 0, gap)
         end
     end
 end
