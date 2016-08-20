@@ -8,9 +8,6 @@ _G[addonName] = ns
 ns.db = {
     statusbar = 'Armory',
     font = 'DorisPP',
-
-    ptgap = 234,         -- gap between player and target
-    frames_offset = 300, -- offset from bottom of UIParent
 }
 
 -- Setup oUF Colors

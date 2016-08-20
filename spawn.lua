@@ -1,6 +1,17 @@
 -- Get the addon namespace
 local addon, ns = ...
 
+local gap = 12              -- gap between units
+local ptgap = 234           -- gap between player and target
+local frames_offset = 300   -- offset from bottom of UIParent
+
+-- The frame that all unitframes are attached to.
+local Anchor = CreateFrame('Frame', 'oUF_ZoeyUnitFrameAnchor', UIParent)
+Anchor:SetSize(ptgap, 1)
+Anchor:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, frames_offset)
+
+--------------------------------------------------------------------------------
+
 local u = {}
 local function Spawn(unit)
     local object = oUF:Spawn(unit, 'oUF_Zoey'..unit)
@@ -14,15 +25,9 @@ local function SpawnHeader(name, ...)
     return object
 end
 
+--------------------------------------------------------------------------------
 function ns:SpawnUnitFrames()
-    local gap = 12
 
-    -- The frame that all unitframes are attached to.
-    local Anchor = CreateFrame('Frame', 'oUF_ZoeyUnitFrameAnchor', UIParent)
-    Anchor:SetSize(ns.db.ptgap, 1)
-    Anchor:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, ns.db.frames_offset)
-
-    ----------------------------------------------------------------------------
     Spawn('Player'):SetPoint('BOTTOMRIGHT', Anchor, 'BOTTOMLEFT', 0, 0)
 
     Spawn('Pet'):SetPoint('RIGHT', u.player, 'LEFT', -gap, 0)
