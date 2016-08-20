@@ -30,20 +30,7 @@ _G['SLASH_rl1'] = '/rl'
 SlashCmdList['rl'] = ReloadUI
 
 --------------------------------------------------------------------------------
-local Loader = CreateFrame("Frame")
-Loader:RegisterEvent("PLAYER_LOGIN")
-Loader:SetScript("OnEvent", function(self, event, ...)
-    return self[event] and self[event](self, event, ...)
-end)
-
-function Loader:PLAYER_LOGIN()
-    ns:DisableBlizzard()
-    ns:SkinMirrorTimer()
-    ns:SpawnUnitFrames()
-end
-
---------------------------------------------------------------------------------
-function ns:DisableBlizzard()
+local function DisableBlizzard()
     -- Hide the Blizzard Buffs
     BuffFrame:Hide()
     BuffFrame:UnregisterAllEvents()
@@ -70,7 +57,7 @@ function ns:DisableBlizzard()
     end
 end
 
-function ns:SkinMirrorTimer()
+local function SkinMirrorTimer()
     local Media = LibStub('LibSharedMedia-3.0')
     local font = Media:Fetch('font', ns.db.font)
     local texture = Media:Fetch('statusbar', ns.db.statusbar)
@@ -111,6 +98,20 @@ function ns:SkinMirrorTimer()
 
         ns.CreateBorder(bar)
     end
+end
+
+--------------------------------------------------------------------------------
+
+local Loader = CreateFrame("Frame")
+Loader:RegisterEvent("PLAYER_LOGIN")
+Loader:SetScript("OnEvent", function(self, event, ...)
+    return self[event] and self[event](self, event, ...)
+end)
+
+function Loader:PLAYER_LOGIN()
+    DisableBlizzard()
+    SkinMirrorTimer()
+    ns:SpawnUnitFrames()
 end
 
 --------------------------------------------------------------------------------
