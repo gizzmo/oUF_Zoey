@@ -186,7 +186,7 @@ oUF.Tags.Methods['Status'] = function(unit)
 end
 
 
-oUF.Tags.Events['Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
+oUF.Tags.Events['Health'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
 oUF.Tags.Methods['Health'] = function(unit)
     local cur = UnitHealth(unit)
     local max = UnitHealthMax(unit)
@@ -217,7 +217,7 @@ oUF.Tags.Methods['Health'] = function(unit)
 end
 
 
-oUF.Tags.Events['Power'] = 'UNIT_POWER UNIT_MAXPOWER'
+oUF.Tags.Events['Power'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 oUF.Tags.Methods['Power'] = function(unit)
     local cur = UnitPower(unit)
     local max = UnitPowerMax(unit)
