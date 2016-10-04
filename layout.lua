@@ -340,8 +340,10 @@ do
     end
 end
 
-local function ClassIconsPostUpdate(self, cur, max, hasMaxChanged, event)
-    if not hasMaxChanged then return end -- dont need to udpate
+local function ClassIconsPostUpdate(self, cur, max, hasMaxChanged, powerType, event)
+    -- Show or hide the entire frame on enable/disable
+    if event == 'ClassPowerDisable' then return self:Hide()
+    elseif event == 'ClassPowerEnable' then self:Show() end
 
     -- Figure out the width
     local width = ((self:GetWidth() - (max-1)) / max)
