@@ -41,11 +41,11 @@ function ns:SpawnUnitFrames()
     Spawn('FocusTarget'):SetPoint('BOTTOM', u.focus, 'TOP', 0, gap)
 
     ----------------------------------------------------------------------------
-    -- note offset = 130 - frame height
+    local hgap = 130
     oUF:SetActiveStyle('Zoey')
     SpawnHeader('Party', 'party',
         'showParty', true,
-        'yOffset', 50,
+        'yOffset', (hgap - 80),
         'point', 'BOTTOM',
         'groupBy', 'ASSIGNEDROLE',
         'groupingOrder', 'TANK,HEALER,DAMAGER',
@@ -57,7 +57,7 @@ function ns:SpawnUnitFrames()
 
     SpawnHeader('PartyTargets', 'party',
         'showParty', true,
-        'yOffset', 90,
+        'yOffset', (hgap - 40),
         'point', 'BOTTOM',
         'groupBy', 'ASSIGNEDROLE',
         'groupingOrder', 'TANK,HEALER,DAMAGER',
@@ -71,7 +71,7 @@ function ns:SpawnUnitFrames()
     oUF:SetActiveStyle('ZoeyThin')
     SpawnHeader('PartyPets', 'party',
         'showParty', true,
-        'yOffset', 110,
+        'yOffset', (hgap - 20),
         'point', 'BOTTOM',
         'groupBy', 'ASSIGNEDROLE',
         'groupingOrder', 'TANK,HEALER,DAMAGER',
