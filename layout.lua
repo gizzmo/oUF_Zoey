@@ -557,17 +557,17 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Tags
     ----------------------------------------------------------------------------
-    self.NameTag = CreateFontString(self.Overlay, 14)
+    self.NameTag = CreateFontString(self.Overlay, 13)
     self.NameTag:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
     self.NameTag:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
     self:Tag(self.NameTag, '[leadericon][Level< ][Name][ - >Realm]')
 
-    self.HealthTag = CreateFontString(self.Overlay, 19)
+    self.HealthTag = CreateFontString(self.Overlay, 17)
     self.HealthTag:SetPoint('RIGHT', self.Health, -1, -1)
     self.HealthTag.frequentUpdates = true
     self:Tag(self.HealthTag, '[Health]')
 
-    self.PowerTextTag = CreateFontString(self.Overlay, 12)
+    self.PowerTextTag = CreateFontString(self.Overlay, 10)
     self.PowerTextTag:SetPoint('RIGHT', self.Power, -1, -1)
     self.PowerTextTag.frequentUpdates = true
     self:Tag(self.PowerTextTag, '[Power]')
@@ -801,12 +801,12 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Tags
     ----------------------------------------------------------------------------
-    self.NameTag = CreateFontString(self.Overlay, 12)
+    self.NameTag = CreateFontString(self.Overlay, 11)
     self.NameTag:SetPoint('LEFT', self, 'TOPLEFT', 3, 1)
     self.NameTag:SetPoint('RIGHT', self, 'TOPRIGHT', -3, 1)
     self:Tag(self.NameTag, '[Level< ][Name]')
 
-    self.StatusTextTag = CreateFontString(self.Overlay, 16)
+    self.StatusTextTag = CreateFontString(self.Overlay, 15)
     self.StatusTextTag:SetPoint('RIGHT', self.Health, -1, 0)
     self:Tag(self.StatusTextTag, '[Status]')
 
@@ -871,12 +871,12 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Tags
     ----------------------------------------------------------------------------
-    self.NameTag = CreateFontString(self.Overlay, 10, 'center')
+    self.NameTag = CreateFontString(self.Overlay, 9, 'center')
     self.NameTag:SetPoint('TOPLEFT', 3, -3)
     self.NameTag:SetPoint('TOPRIGHT', -3, -3)
     self:Tag(self.NameTag, '[Name]')
 
-    self.StatusTextTag = CreateFontString(self.Overlay, 12, 'center')
+    self.StatusTextTag = CreateFontString(self.Overlay, 11, 'center')
     self.StatusTextTag:SetPoint('BOTTOMLEFT', self.Health, 3, 1)
     self.StatusTextTag:SetPoint('BOTTOMRIGHT', self.Health, -3, 1)
     self:Tag(self.StatusTextTag, '[Status]')
