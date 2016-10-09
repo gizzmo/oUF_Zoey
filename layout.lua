@@ -554,6 +554,29 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         end
     end
 
+    -- Monk Stagger Bar
+    if unit == 'player' and playerClass == 'MONK' then
+        self.Stagger = CreateStatusBar(self, 'StaggerBar')
+        self.Stagger:SetFrameLevel(self:GetFrameLevel()-1)
+
+        -- Build a frame around the stagger bar
+        self.Stagger.Frame = CreateFrame('Frame', '$parentStaggerFrame', self.Stagger)
+        self.Stagger.Frame:SetFrameLevel(self.Stagger:GetFrameLevel()-1)
+        self.Stagger.Frame.bg = self.Stagger:CreateTexture(nil, 'BACKGROUND')
+        self.Stagger.Frame.bg:SetAllPoints(self.Stagger.Frame)
+        self.Stagger.Frame.bg:SetColorTexture(0, 0, 0, 1)
+        ns.CreateBorder(self.Stagger.Frame)
+
+        -- Size and place the Stagger Frame
+        self.Stagger.Frame:SetHeight(8)
+        self.Stagger.Frame:SetWidth(FRAME_WIDTH * 0.95)
+        self.Stagger.Frame:SetPoint('TOP', self, 'BOTTOM', 0, -3)
+
+        -- Attach the Stagger bar to the Frame
+        self.Stagger:SetPoint('TOPLEFT', self.Stagger.Frame)
+        self.Stagger:SetPoint('BOTTOMRIGHT', self.Stagger.Frame, 0, 1)
+    end
+
     ----------------------------------------------------------------------------
     -- Tags
     ----------------------------------------------------------------------------
