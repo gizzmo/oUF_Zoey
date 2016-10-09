@@ -51,6 +51,7 @@ local function CreateStatusBar(parent, name, noBG)
         sb.bg = sb:CreateTexture(nil, 'BACKGROUND')
         sb.bg:SetTexture(texture)
         sb.bg:SetAllPoints(true)
+        sb.bg.multiplier = 0.4
     end
 
     return sb
@@ -458,7 +459,6 @@ local function InitStyle(self, unit, isSingle)
     self.Health.colorTapping = true
     self.Health.colorDisconnected = true
     self.Health.colorHealth = true
-    self.Health.bg.multiplier = 0.4
 
 end
 
