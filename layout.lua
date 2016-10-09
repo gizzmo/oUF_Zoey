@@ -517,11 +517,12 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Class Specific
     ----------------------------------------------------------------------------
-    if unit == 'player' and (playerClass == 'MONK') then -- NOTE: only monk is tested
+    -- Class Icons -- NOTE: only monk is tested, tho all others should work
+    if unit == 'player' and (playerClass == 'MONK') then
         self.ClassIcons = CreateFrame('Frame', '$parentClassIcons', self)
-        self.ClassIcons:SetHeight(10)
+        self.ClassIcons:SetHeight(8)
         self.ClassIcons:SetWidth(FRAME_WIDTH * 0.95)
-        self.ClassIcons:SetPoint('TOP', self, 'BOTTOM', 0, 0)
+        self.ClassIcons:SetPoint('TOP', self, 'BOTTOM', 0, -3)
         self.ClassIcons:SetFrameLevel(self:GetFrameLevel() -1)
         ns.CreateBorder(self.ClassIcons)
 
