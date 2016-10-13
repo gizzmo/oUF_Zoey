@@ -144,7 +144,7 @@ local function PostCastStart(Castbar, unit, name, castid)
     Castbar:SetStatusBarColor(r,g,b)
     Castbar.bg:SetVertexColor(r*0.4, g *0.4, b*0.4)
 
-    if Castbar.interrupt then
+    if Castbar.notInterruptible then
         Castbar:PostCastNotInterruptible(unit)
     else
         Castbar:PostCastInterruptible(unit)
