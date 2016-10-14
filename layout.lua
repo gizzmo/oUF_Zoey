@@ -744,20 +744,19 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     if unit == 'player' or unit == 'pet' or unit == 'target' then
 
         self.Buffs = CreateFrame('Frame', '$parentBuffs', self)
-        self.Buffs:SetHeight(1) -- Needs a size to display
 
         self.Buffs['growth-y'] = 'UP'
         self.Buffs['spacing'] = 3
         self.Buffs['size'] = 25
 
         if unit == 'player' then
-            self.Buffs:SetWidth(FRAME_WIDTH * 0.63)
+            self.Buffs:SetSize(FRAME_WIDTH * 0.63, 1)
             self.Buffs:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 8)
             self.Buffs['initialAnchor'] = 'BOTTOMLEFT'
             self.Buffs['growth-x'] = 'RIGHT'
 
         elseif unit == 'target' then
-            self.Buffs:SetWidth(FRAME_WIDTH * 0.26)
+            self.Buffs:SetSize(FRAME_WIDTH * 0.26, 1)
             self.Buffs:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 8)
             self.Buffs['initialAnchor'] = 'BOTTOMRIGHT'
             self.Buffs['growth-x'] = 'LEFT'
@@ -773,19 +772,18 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     if unit == 'player' or unit == 'target' then
 
         self.Debuffs = CreateFrame('Frame', '$parentDebuffs', self)
-        self.Debuffs:SetHeight(1) -- Needs a size to display
 
         self.Debuffs['growth-y'] = 'UP'
         self.Debuffs['spacing'] = 3
         self.Debuffs['size'] = 37
 
         if unit == 'player' then
-            self.Debuffs:SetWidth(FRAME_WIDTH * 0.36) -- 1/3rds
+            self.Debuffs:SetSize(FRAME_WIDTH * 0.36, 1)
             self.Debuffs:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 8)
             self.Debuffs['initialAnchor'] = 'BOTTOMRIGHT'
             self.Debuffs['growth-x'] = 'LEFT'
         elseif unit == 'target' then
-            self.Debuffs:SetWidth(FRAME_WIDTH * 0.73) -- 2/3rds
+            self.Debuffs:SetSize(FRAME_WIDTH * 0.73, 1)
             self.Debuffs:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 8)
             self.Debuffs['initialAnchor'] = 'BOTTOMLEFT'
             self.Debuffs['growth-x'] = 'RIGHT'
