@@ -761,13 +761,6 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
             self.Buffs:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 8)
             self.Buffs['initialAnchor'] = 'BOTTOMRIGHT'
             self.Buffs['growth-x'] = 'LEFT'
-
-        elseif unit == 'pet' then
-            self.Buffs:SetWidth(FRAME_WIDTH)
-            self.Buffs:SetPoint('TOP', self, 'BOTTOM', 0, -8)
-            self.Buffs['initialAnchor'] = 'TOPLEFT'
-            self.Buffs['growth-x'] = 'RIGHT'
-            self.Buffs['growth-y'] = 'DOWN'
         end
 
         local size = (self.Buffs['size'] + self.Buffs['spacing'])
