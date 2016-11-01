@@ -269,21 +269,6 @@ local function PostUpdateAuraIcon(iconFrame, unit, button, index, offset)
 end
 
 
--- PvP Icon: Fix texture
-local function PvPPostUpdate(PVP, status)
-    if not status then return end
-
-    -- Fix the texture
-    if status == 'Horde' then
-        PVP:SetTexCoord(0.08, 0.58, 0.045, 0.545)
-    elseif status == 'Alliance' then
-        PVP:SetTexCoord(0.07, 0.58, 0.06, 0.57)
-    elseif status == 'ffa' then
-        PVP:SetTexCoord(0.05, 0.605, 0.015, 0.57)
-    end
-end
-
-
 -- Corner Indicators
 local CreateCornerIndicator
 do
@@ -637,10 +622,13 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     self.RaidIcon:SetSize(23,23)
     self.RaidIcon:SetPoint('LEFT', 3, 0)
 
-    self.PvP = self.Overlay:CreateTexture(nil, 'OVERLAY')
+    self.PvP = self.Overlay:CreateTexture(nil, 'OVERLAY', nil, 1)
     self.PvP:SetSize(21,21)
     self.PvP:SetPoint('CENTER', self.Overlay, 'LEFT')
-    self.PvP.PostUpdate = PvPPostUpdate
+
+    self.PvP.Prestige = self.Overlay:CreateTexture(nil, 'OVERLAY')
+    self.PvP.Prestige:SetSize(41,43)
+    self.PvP.Prestige:SetPoint('CENTER', self.PvP)
 
     if unit == 'party' or unit == 'target' or unit == 'focus' then
         self.PhaseIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
