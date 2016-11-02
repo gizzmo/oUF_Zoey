@@ -457,7 +457,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     local POWER_HEIGHT = 10 -- (FRAME_HEIGHT * 0.2)
 
     if unit == 'player' or unit == 'target' then
-        FRAME_WIDTH = 222
+        FRAME_WIDTH = 227
     end
 
     if isSingle then
@@ -735,23 +735,23 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
         self.Buffs['growth-y'] = 'UP'
         self.Buffs['spacing'] = 3
-        self.Buffs['size'] = 25
+        self.Buffs['size'] = 20
+
+        local size = (self.Buffs['size'] + self.Buffs['spacing'])
 
         if unit == 'player' then
-            self.Buffs:SetSize(FRAME_WIDTH * 0.63, 1)
+            self.Buffs:SetSize(size * 6, 1)
             self.Buffs:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 8)
             self.Buffs['initialAnchor'] = 'BOTTOMLEFT'
             self.Buffs['growth-x'] = 'RIGHT'
 
         elseif unit == 'target' then
-            self.Buffs:SetSize(FRAME_WIDTH * 0.26, 1)
+            self.Buffs:SetSize(size * 2, 1)
             self.Buffs:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 8)
             self.Buffs['initialAnchor'] = 'BOTTOMRIGHT'
             self.Buffs['growth-x'] = 'LEFT'
         end
-
-        local size = (self.Buffs['size'] + self.Buffs['spacing'])
-        self.Buffs['num'] = floor(self.Buffs:GetWidth() / size + .5) * 2
+        self.Buffs['num'] = floor(self.Buffs:GetWidth() / size + .5) * 4
 
         self.Buffs.PostCreateIcon = PostCreateAuraIcon
         self.Buffs.PostUpdateIcon = PostUpdateAuraIcon
@@ -763,21 +763,22 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
         self.Debuffs['growth-y'] = 'UP'
         self.Debuffs['spacing'] = 3
-        self.Debuffs['size'] = 37
+        self.Debuffs['size'] = 43
+
+        local size = (self.Debuffs['size'] + self.Debuffs['spacing'])
 
         if unit == 'player' then
-            self.Debuffs:SetSize(FRAME_WIDTH * 0.36, 1)
+            self.Debuffs:SetSize(size * 2, 1)
             self.Debuffs:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 8)
             self.Debuffs['initialAnchor'] = 'BOTTOMRIGHT'
             self.Debuffs['growth-x'] = 'LEFT'
         elseif unit == 'target' then
-            self.Debuffs:SetSize(FRAME_WIDTH * 0.73, 1)
+            self.Debuffs:SetSize(size * 4, 1)
             self.Debuffs:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 8)
             self.Debuffs['initialAnchor'] = 'BOTTOMLEFT'
             self.Debuffs['growth-x'] = 'RIGHT'
         end
 
-        local size = (self.Debuffs['size'] + self.Debuffs['spacing'])
         self.Debuffs['num'] = floor(self.Debuffs:GetWidth() / size + .5) * 2
 
         self.Debuffs.PostCreateIcon = PostCreateAuraIcon
