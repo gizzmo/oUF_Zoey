@@ -783,6 +783,22 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
         self.Debuffs.PostCreateIcon = PostCreateAuraIcon
         self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
+    elseif unit == 'party' then
+
+        self.Debuffs = CreateFrame('Frame', '$parentDebuffs', self)
+        self.Debuffs:SetSize(FRAME_WIDTH, 1)
+        self.Debuffs:SetPoint('TOPLEFT', self, 'TOPRIGHT', 12, -15)
+
+        self.Debuffs['initialAnchor'] = 'LEFT'
+        self.Debuffs['growth-x'] = 'RIGHT'
+        self.Debuffs['spacing'] = 3
+        self.Debuffs['size'] = 30
+
+        local size = (self.Debuffs['size'] + self.Debuffs['spacing'])
+        self.Debuffs['num'] = floor(self.Debuffs:GetWidth() / size + .5)
+
+        self.Debuffs.PostCreateIcon = PostCreateAuraIcon
+        self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
     end
 
 end)
