@@ -2,4 +2,5 @@
     <Script file="libs\LibStub.lua"/>
     <Script file="libs\CallbackHandler-1.0.lua"/>
     <Script file="libs\LibSharedMedia-3.0.lua"/>
+    <Script file="libs\LibDispellable-1.0.lua"/>
 </Ui>

@@ -445,6 +445,13 @@ local function InitStyle(self, unit, isSingle)
     self.Health.colorDisconnected = true
     self.Health.colorHealth = true
 
+    -- DispelHighlight
+    self.DispelHighlight = self.Overlay:CreateTexture(nil, 'Overlay')
+    self.DispelHighlight:SetAllPoints(self.Health)
+    self.DispelHighlight:SetTexture([[Interface\AddOns\oUF_Zoey\media\Dispel.tga]])
+    self.DispelHighlight:SetBlendMode('ADD')
+    self.DispelHighlight:SetAlpha(0.7)
+
 end
 
 -- Main Core style
