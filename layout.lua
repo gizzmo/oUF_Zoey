@@ -240,7 +240,7 @@ local function PostCreateAuraIcon(iconFrame, button)
 
     button.count:ClearAllPoints()
     button.count:SetPoint('CENTER', button, 'BOTTOMRIGHT', -1, 0)
-    button.count:SetParent(button.cd)
+    button.count:SetDrawLayer('OVERLAY', 2)
 
     button.bg = button:CreateTexture(nil, 'BACKGROUND')
     button.bg:SetPoint('TOPLEFT', -1, 1)
