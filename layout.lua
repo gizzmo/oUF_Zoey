@@ -138,11 +138,19 @@ end
 local function PostCastStart(Castbar, unit, name, castid)
     local r,g,b = unpack(colors.cast.normal)
 
+    if not Castbar.Frame then
+        r,g,b = 1,1,1
+    end
+
     Castbar:SetAlpha(1.0)
     Castbar.Spark:Show()
 
     Castbar:SetStatusBarColor(r,g,b)
-    Castbar.bg:SetVertexColor(r*0.4, g *0.4, b*0.4)
+
+    if Castbar.bg then
+        local mu = Castbar.bg.multiplier
+        Castbar.bg:SetVertexColor(r*mu, g*mu, b*mu)
+    end
 
     if Castbar.notInterruptible then
         Castbar:PostCastNotInterruptible(unit)
@@ -168,7 +176,11 @@ local function PostCastFailed(Castbar, unit, name, castid)
     Castbar:Show()
 
     Castbar:SetStatusBarColor(r,g,b)
-    Castbar.bg:SetVertexColor(r*0.4, g *0.4, b*0.4)
+
+    if Castbar.bg then
+        local mu = Castbar.bg.multiplier
+        Castbar.bg:SetVertexColor(r*mu, g*mu, b*mu)
+    end
 end
 
 local function PostCastInterruptible(Castbar, unit)
@@ -665,7 +677,6 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     if unit == 'player' or unit == 'target' then
         self.Castbar = CreateStatusBar(self, 'Castbar')
 
-        -- Build a frame around the Castbar
         self.Castbar.Frame = CreateFrame('Frame', '$parentFrame', self.Castbar)
         self.Castbar.Frame:SetFrameLevel(self.Castbar:GetFrameLevel()-1)
         self.Castbar.Frame.bg = self.Castbar.Frame:CreateTexture(nil, 'BACKGROUND')
@@ -673,17 +684,16 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.Castbar.Frame.bg:SetColorTexture(0, 0, 0, 1)
         ns.CreateBorder(self.Castbar.Frame)
 
-        -- Attach the Castbar to the Frame
         self.Castbar:SetPoint('TOPLEFT', self.Castbar.Frame, 1, -1)
         self.Castbar:SetPoint('BOTTOMRIGHT', self.Castbar.Frame, -1, 1)
 
         -- Size and place the Castbar Frame
         if unit == 'player' then
-            self.Castbar.Frame:SetSize(320,20)
+            self.Castbar.Frame:SetSize(300,18)
             self.Castbar.Frame:SetPoint('BOTTOM', oUF_ZoeyUnitFrameAnchor, 0, -30)
         elseif unit == 'target' then
-            self.Castbar.Frame:SetSize(500,30)
-            self.Castbar.Frame:SetPoint('BOTTOM', oUF_ZoeyUnitFrameAnchor, 0, 127)
+            self.Castbar.Frame:SetSize(400,25)
+            self.Castbar.Frame:SetPoint('BOTTOM', oUF_ZoeyUnitFrameAnchor, 0, 142)
         end
 
         -- Spell Icon
@@ -698,12 +708,6 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
             self.Castbar:SetPoint('TOPLEFT', self.Castbar.Icon, 'TOPRIGHT', 1, 0)
         end
 
-        -- Add a spark
-        self.Castbar.Spark = self.Castbar:CreateTexture(nil, 'OVERLAY')
-        self.Castbar.Spark:SetHeight(self.Castbar:GetHeight()*2.5)
-        self.Castbar.Spark:SetBlendMode('ADD')
-        self.Castbar.Spark:SetAlpha(0.5)
-
         -- Player only Latency
         if unit == 'player' then
             self.Castbar.SafeZone = self.Castbar:CreateTexture(nil,'OVERLAY')
@@ -716,27 +720,43 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
         -- Castbar Texts
         if unit == 'player' then
-            self.Castbar.Text = CreateFontString(self.Castbar, 14)
-            self.Castbar.Time = CreateFontString(self.Castbar, 10)
+            self.Castbar.Text = CreateFontString(self.Castbar, 13)
+            self.Castbar.Time = CreateFontString(self.Castbar, 9)
 
         elseif unit == 'target' then
-            self.Castbar.Text = CreateFontString(self.Castbar, 20)
-            self.Castbar.Time = CreateFontString(self.Castbar, 16)
+            self.Castbar.Text = CreateFontString(self.Castbar, 18)
+            self.Castbar.Time = CreateFontString(self.Castbar, 12)
         end
-        self.Castbar.Text:SetPoint('LEFT', 10, 0)
-        self.Castbar.Time:SetPoint('RIGHT', -10, 0)
+        self.Castbar.Text:SetPoint('LEFT', 5, 0)
+        self.Castbar.Time:SetPoint('RIGHT', -5, 0)
+    else
+        self.Castbar = CreateStatusBar(self, 'Castbar', true)
 
-        -- Castbar Function Hooks
-        self.Castbar.OnUpdate = CastbarOnUpdate
-        self.Castbar.PostCastStart = PostCastStart
-        self.Castbar.PostChannelStart = PostCastStart
-        self.Castbar.PostCastStop = PostCastStop
-        self.Castbar.PostChannelStop = PostChannelStop
-        self.Castbar.PostCastFailed = PostCastFailed
-        self.Castbar.PostCastInterrupted = PostCastFailed
-        self.Castbar.PostCastInterruptible = PostCastInterruptible
-        self.Castbar.PostCastNotInterruptible = PostCastNotInterruptible
+        self.Castbar:SetFrameLevel(self.Health:GetFrameLevel()+1)
+        self.Castbar:SetPoint('BOTTOMRIGHT', self.Health, 'BOTTOMRIGHT')
+        self.Castbar:SetPoint('BOTTOMLEFT', self.Health, 'BOTTOMLEFT')
+        self.Castbar:SetHeight(2)
+
+        self.Castbar.Text = CreateFontString(self.Castbar, 9)
+        self.Castbar.Text:SetPoint('BOTTOMLEFT', self.Castbar, 'TOPLEFT', 2, 0)
     end
+
+    -- Add a spark
+    self.Castbar.Spark = self.Castbar:CreateTexture(nil, 'OVERLAY')
+    self.Castbar.Spark:SetHeight(self.Castbar:GetHeight()*2.5)
+    self.Castbar.Spark:SetBlendMode('ADD')
+    self.Castbar.Spark:SetAlpha(0.5)
+
+    -- Castbar Function Hooks
+    self.Castbar.OnUpdate = CastbarOnUpdate
+    self.Castbar.PostCastStart = PostCastStart
+    self.Castbar.PostChannelStart = PostCastStart
+    self.Castbar.PostCastStop = PostCastStop
+    self.Castbar.PostChannelStop = PostChannelStop
+    self.Castbar.PostCastFailed = PostCastFailed
+    self.Castbar.PostCastInterrupted = PostCastFailed
+    self.Castbar.PostCastInterruptible = PostCastInterruptible
+    self.Castbar.PostCastNotInterruptible = PostCastNotInterruptible
 
     ----------------------------------------------------------------------------
     -- Auras
