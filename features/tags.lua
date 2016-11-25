@@ -11,7 +11,7 @@ end
 
 local function ShouldShow(unit)
     -- Show Player and pet on mouseover, all others just show
-    if (unit == 'player' or unit == 'pet') and not IsMouseOver(unit) then
+    if unit == 'player' and not IsMouseOver(unit) then
         return false
     end
 
