@@ -881,6 +881,10 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
     self.RaidIcon:SetSize(16,16)
     self.RaidIcon:SetPoint('LEFT', 3, 0)
 
+    self.PvP = self.Overlay:CreateTexture(nil, 'OVERLAY', nil, 1)
+    self.PvP:SetSize(16,16)
+    self.PvP:SetPoint('CENTER', self.Overlay, 'LEFT')
+
 end)
 
 oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
