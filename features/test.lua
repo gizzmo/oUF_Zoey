@@ -59,30 +59,38 @@ function ns:PLAYER_REGEN_DISABLED()
 end
 
 local testActive = false
-function ns:ToggleTestFrames(force)
+function ns:ToggleTestFrames(type)
 
-    if not testActive and (not force) then
-        if InCombatLockdown() then return ns:Printf('Can\'t toggle test frames in combat.')end
-        ns:RegisterEvent('PLAYER_REGEN_DISABLED')
-        ns:Printf('Test frames are active')
+    if not testActive then
+        if InCombatLockdown() then return print('oUF_Zoey: Can\'t toggle test frames in combat.')end
+        -- ns:RegisterEvent('PLAYER_REGEN_DISABLED')
+        print('oUF_Zoey: Test frames are active')
 
         for _, unit in pairs(oUF.objects) do
             toggleUnitFrame(unit, true)
         end
-        toggleHeaderFrame(oUF_ZoeyParty, true)
-        toggleHeaderFrame(oUF_ZoeyPartyPets, true)
-        toggleHeaderFrame(oUF_ZoeyPartyTargets, true)
+
+        if type==nil or type == 'group' then
+            toggleHeaderFrame(oUF_ZoeyParty, true)
+            toggleHeaderFrame(oUF_ZoeyPartyPets, true)
+            toggleHeaderFrame(oUF_ZoeyPartyTargets, true)
+        elseif type == 'raid' then
+            toggleHeaderFrame(oUF_ZoeyRaid, true)
+        end
 
     elseif testActive then
-        ns:UnregisterEvent('PLAYER_REGEN_DISABLED')
-        ns:Printf('Test frames are inactive')
+        -- ns:UnregisterEvent('PLAYER_REGEN_DISABLED')
+        print('oUF_Zoey: Test frames are inactive')
 
         for _, unit in pairs(oUF.objects) do
             toggleUnitFrame(unit, false)
         end
+
         toggleHeaderFrame(oUF_ZoeyParty, false)
         toggleHeaderFrame(oUF_ZoeyPartyPets, false)
         toggleHeaderFrame(oUF_ZoeyPartyTargets, false)
+
+        toggleHeaderFrame(oUF_ZoeyRaid, false)
     end
 
     testActive = not testActive
