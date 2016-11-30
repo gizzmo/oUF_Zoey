@@ -2,8 +2,8 @@
 local addon, ns = ...
 
 local gap = 12              -- gap between units
-local ptgap = 234           -- gap between player and target
-local frames_offset = 215   -- offset from bottom of UIParent
+local ptgap = 320           -- gap between player and target
+local frames_offset = 245   -- offset from bottom of UIParent
 
 -- The frame that all unitframes are attached to.
 local Anchor = CreateFrame('Frame', 'oUF_ZoeyUnitFrameAnchor', UIParent)
@@ -28,17 +28,17 @@ end
 --------------------------------------------------------------------------------
 function ns:SpawnUnitFrames()
 
+    oUF:SetActiveStyle('Zoey')
     Spawn('Player'):SetPoint('BOTTOMRIGHT', Anchor, 'BOTTOMLEFT', 0, 0)
-
-    Spawn('Pet'):SetPoint('RIGHT', u.player, 'LEFT', -gap, 0)
-    Spawn('PetTarget'):SetPoint('BOTTOM', u.pet, 'TOP', 0, gap)
-
     Spawn('Target'):SetPoint('BOTTOMLEFT', Anchor, 'BOTTOMRIGHT', 0, 0)
-    Spawn('TargetTarget'):SetPoint('LEFT', u.target, 'RIGHT', gap, 0)
+    Spawn('Focus'):SetPoint('RIGHT', u.player, 'LEFT', -gap*2, 0)
+    Spawn('FocusTarget'):SetPoint('BOTTOM', u.focus, 'TOP', 0, gap)
 
     oUF:SetActiveStyle('ZoeyThin')
-    Spawn('Focus'):SetPoint('BOTTOM', u.pet, 'TOPLEFT', -15, 75)
-    Spawn('FocusTarget'):SetPoint('BOTTOM', u.focus, 'TOP', 0, gap)
+    Spawn('Pet'):SetPoint('TOPLEFT', u.player, 'BOTTOMLEFT', 0, -gap)
+    Spawn('PetTarget'):SetPoint('TOP', u.pet, 'BOTTOM', 0, -gap)
+    Spawn('TargetTarget'):SetPoint('TOPRIGHT', u.target, 'BOTTOMRIGHT', 0, -gap)
+    Spawn('TargetTargetTarget'):SetPoint('TOPRIGHT', u.targettarget, 'BOTTOMRIGHT', 0, -gap)
 
     ----------------------------------------------------------------------------
     local hgap = 130
@@ -108,8 +108,8 @@ function ns:SpawnUnitFrames()
         Arena[i] = Spawn('Arena'..i)
 
         if i == 1 then
-            Boss[i]:SetPoint('BOTTOM', u.focustarget, 'TOP', 0, 25)
-            Arena[i]:SetPoint('BOTTOM', u.focustarget, 'TOP', 0, 25)
+            Boss[i]:SetPoint('BOTTOM', u.focustarget, 'TOP', 0, gap*3)
+            Arena[i]:SetPoint('BOTTOM', u.focustarget, 'TOP', 0, gap*3)
         else
             Boss[i]:SetPoint('BOTTOM', Boss[i - 1], 'TOP', 0, gap)
             Arena[i]:SetPoint('BOTTOM', Arena[i - 1], 'TOP', 0, gap)
