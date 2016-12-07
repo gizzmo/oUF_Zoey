@@ -572,7 +572,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         -- Build a frame around the stagger bar
         self.Stagger.Frame = CreateFrame('Frame', '$parentStaggerFrame', self.Stagger)
         self.Stagger.Frame:SetFrameLevel(self.Stagger:GetFrameLevel()-1)
-        self.Stagger.Frame.bg = self.Stagger:CreateTexture(nil, 'BACKGROUND')
+        self.Stagger.Frame.bg = self.Stagger.Frame:CreateTexture(nil, 'BACKGROUND')
         self.Stagger.Frame.bg:SetAllPoints(self.Stagger.Frame)
         self.Stagger.Frame.bg:SetColorTexture(0, 0, 0, 1)
         ns.CreateBorder(self.Stagger.Frame)
