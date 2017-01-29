@@ -1,16 +1,6 @@
 -- Get the addon namespace
 local addon, ns = ...
 
--- Colors
-oUF.colors['border'] = {
-    normal    = {113/255, 113/255, 113/255}, -- Dark Grey
-    rare      = {1, 1, 1},                   -- White
-    elite     = {204/255, 177/255, 41/255},  -- Yellow
-    rareelite = {41/255,  128/255, 204/255}, -- Blue
-    boss      = {136/255, 41/255, 204/255}   -- Purple
-
-}
-
 -- keep track of what objects we've put borders on?
 ns.borderedObjects = {}
 
@@ -19,7 +9,7 @@ local sections = { 'TOPLEFT', 'TOP', 'TOPRIGHT', 'LEFT', 'RIGHT', 'BOTTOMLEFT', 
 local prototype = {}
 function prototype:SetColor(r,g,b)
     if not r or not g or not b then
-        r,g,b = unpack(oUF.colors.border.normal)
+        r,g,b = 113/255, 113/255, 113/255 -- Dark Grey
     end
 
     for _, tex in pairs(self) do
@@ -44,7 +34,7 @@ end
 
 
 function ns.CreateBorder(self)
-    if type(self) ~= 'table' or self.border then return end
+    if type(self) ~= 'table' or self.Border then return end
 
     -- keep track of what objects we've put borders on?
     table.insert(ns.borderedObjects, self)
@@ -86,5 +76,4 @@ function ns.CreateBorder(self)
 
     -- save the border and return it
     self.Border = B
-    return B
 end
