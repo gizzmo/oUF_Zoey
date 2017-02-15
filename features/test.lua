@@ -52,18 +52,11 @@ local function toggleHeaderFrame(obj, show)
     end
 end
 
-
--- Toggle test frames off when entering combat
-function ns:PLAYER_REGEN_DISABLED()
-    ns:ToggleTestFrames(true)
-end
-
 local testActive = false
 function ns:ToggleTestFrames(type)
 
     if not testActive then
         if InCombatLockdown() then return print('oUF_Zoey: Can\'t toggle test frames in combat.')end
-        -- ns:RegisterEvent('PLAYER_REGEN_DISABLED')
         print('oUF_Zoey: Test frames are active')
 
         for _, unit in pairs(oUF.objects) do
@@ -79,7 +72,6 @@ function ns:ToggleTestFrames(type)
         end
 
     elseif testActive then
-        -- ns:UnregisterEvent('PLAYER_REGEN_DISABLED')
         print('oUF_Zoey: Test frames are inactive')
 
         for _, unit in pairs(oUF.objects) do
