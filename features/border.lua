@@ -1,9 +1,6 @@
 -- Get the addon namespace
 local addon, ns = ...
 
--- keep track of what objects we've put borders on?
-ns.borderedObjects = {}
-
 local sections = { 'TOPLEFT', 'TOP', 'TOPRIGHT', 'LEFT', 'RIGHT', 'BOTTOMLEFT', 'BOTTOM', 'BOTTOMRIGHT' }
 
 local prototype = {}
@@ -35,9 +32,6 @@ end
 
 function ns.CreateBorder(self)
     if type(self) ~= 'table' or self.Border then return end
-
-    -- keep track of what objects we've put borders on?
-    table.insert(ns.borderedObjects, self)
 
     -- set the methods
     local B = setmetatable({}, { __index = prototype })
