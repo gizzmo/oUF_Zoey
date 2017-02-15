@@ -14,14 +14,18 @@ Anchor:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, frames_offset)
 
 local u = {}
 local function Spawn(unit)
-    local object = oUF:Spawn(unit, 'oUF_Zoey'..unit)
-    u[unit:lower()] = object
+    local unit = unit:lower()
+    local frameName = unit:gsub('^%l', string.upper):gsub('t(arget)', 'T%1')
+    local object = oUF:Spawn(unit, 'oUF_Zoey'..frameName)
+    u[unit] = object
     return object
 end
 
-local function SpawnHeader(name, ...)
-    local object = oUF:SpawnHeader('oUF_Zoey'..name, nil, ...)
-    u[name:lower()] = object
+local function SpawnHeader(unit, ...)
+    local unit = unit:lower()
+    local frameName = unit:gsub('^%l', string.upper):gsub('t(arget)', 'T%1')
+    local object = oUF:SpawnHeader('oUF_Zoey'..frameName, nil, ...)
+    u[unit] = object
     return object
 end
 
