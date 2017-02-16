@@ -67,29 +67,23 @@ local function UpdateUnitBorderColor(self)
     self.Border:SetColor(unpack(t))
 end
 
+local function HighlightUpdate(self)
+    local show
 
--- Mouseover and Target Highlighting
-local function HighlightShouldShow(self)
     -- Frame is curently mouse focused
     if ns.mousefocus == self then
-        return true
+       show = true
     end
 
-    -- Frame is not the current target
-    if not UnitIsUnit(self.unit, 'target') then
-        return false
+    -- Dont show highlighting on player or target frames
+    if self.unit ~= 'player' and strsub(self.unit, 1, 6) ~= 'target' then
+       -- Frame is not the current target
+       if UnitIsUnit(self.unit, 'target') then
+          show = true
+       end
     end
 
-    -- We dont want to show target highlighting for these frames
-    if self.unit == 'player' or strsub(self.unit, 1, 6) == 'target' then
-        return false
-    end
-
-    return true
-end
-
-local function HighlightUpdate(self)
-    if HighlightShouldShow(self) then
+    if show then
         self.Highlight:Show()
     else
         self.Highlight:Hide()
