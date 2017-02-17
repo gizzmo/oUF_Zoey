@@ -5,9 +5,12 @@ local addonName, ns = ...
 _G[addonName] = ns
 
 -- Configuration
-ns.config = {
-    statusbar = 'Armory',
-    font = 'DorisPP',
+ns.config = {}
+
+-- Media
+ns.media = {
+    statusbar = [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]],
+    font = [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]],
 }
 
 -- Setup oUF Colors
@@ -25,13 +28,7 @@ colors['border'] = {
     elite     = {204/255, 177/255, 41/255},  -- Yellow
     rareelite = {41/255,  128/255, 204/255}, -- Blue
     boss      = {136/255, 41/255, 204/255}   -- Purple
-
 }
-
--- Register our media with SharedMedia
-local Media = LibStub('LibSharedMedia-3.0')
-Media:Register('statusbar', 'Armory', [[Interface\AddOns\oUF_Zoey\media\Statusbar.tga]])
-Media:Register('font', 'DorisPP', [[Interface\AddOns\oUF_Zoey\media\DORISPP.TTF]])
 
 -- Easier reloadui
 _G['SLASH_rl1'] = '/rl'
@@ -66,10 +63,6 @@ local function DisableBlizzard()
 end
 
 local function SkinMirrorTimer()
-    local Media = LibStub('LibSharedMedia-3.0')
-    local font = Media:Fetch('font', ns.config.font)
-    local texture = Media:Fetch('statusbar', ns.config.statusbar)
-
     for i = 1, 3 do
         local barname = 'MirrorTimer'..i
         local bar = _G[barname]
@@ -90,19 +83,19 @@ local function SkinMirrorTimer()
         bar.bar = _G[ barname..'StatusBar' ]
         bar.bar:SetPoint('TOPLEFT', bar, 1, -1)
         bar.bar:SetPoint('BOTTOMRIGHT', bar, -1, 1)
-        bar.bar:SetStatusBarTexture(texture)
+        bar.bar:SetStatusBarTexture(ns.media.statusbar)
         bar.bar:SetAlpha(0.8)
 
         bar.bg = bar:GetRegions()
         bar.bg:ClearAllPoints()
         bar.bg:SetAllPoints(bar)
-        bar.bg:SetTexture(texture)
+        bar.bg:SetTexture(ns.media.statusbar)
         bar.bg:SetVertexColor(0.2, 0.2, 0.2, 1)
 
         bar.text = _G[barname..'Text']
         bar.text:ClearAllPoints()
         bar.text:SetPoint('LEFT', bar, 6, -1)
-        bar.text:SetFont(font, 16)
+        bar.text:SetFont(ns.media.font, 16)
 
         ns.CreateBorder(bar)
     end

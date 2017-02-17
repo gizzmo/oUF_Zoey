@@ -29,10 +29,8 @@ local function OnLeave(self)
 end
 
 local function CreateFontString(parent, size, justify)
-    local font = LibStub('LibSharedMedia-3.0'):Fetch('font', ns.config.font)
-
     local fs = parent:CreateFontString(nil, 'ARTWORK')
-    fs:SetFont(font, size or 16)
+    fs:SetFont(ns.media.font, size or 16)
     fs:SetJustifyH(justify or 'LEFT')
     fs:SetWordWrap(false)
     fs:SetShadowOffset(1, -1)
@@ -42,14 +40,12 @@ local function CreateFontString(parent, size, justify)
 end
 
 local function CreateStatusBar(parent, name, noBG)
-    local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.config.statusbar)
-
     local sb = CreateFrame('StatusBar', (name and '$parent'..name or nil), parent)
-    sb:SetStatusBarTexture(texture)
+    sb:SetStatusBarTexture(ns.media.statusbar)
 
     if not noBG then
         sb.bg = sb:CreateTexture(nil, 'BACKGROUND')
-        sb.bg:SetTexture(texture)
+        sb.bg:SetTexture(ns.media.statusbar)
         sb.bg:SetAllPoints(true)
         sb.bg.multiplier = 0.4
     end
@@ -532,11 +528,9 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.ClassIcons.PostUpdate = ClassIconsPostUpdate
         self.ClassIcons.UpdateTexture = ClassIconsUpdateTexture
 
-        local texture = LibStub('LibSharedMedia-3.0'):Fetch('statusbar', ns.config.statusbar)
-
         for i = 1, 6 do
             local icon = self.ClassIcons:CreateTexture(nil, 'ARTWORK', nil, 2)
-            icon:SetTexture(texture)
+            icon:SetTexture(ns.media.statusbar)
 
             icon:SetPoint('TOP')
             icon:SetPoint('BOTTOM')
@@ -547,7 +541,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
             end
 
             icon.bg = self.ClassIcons:CreateTexture(nil, 'BACKGROUND', nil, 1)
-            icon.bg:SetTexture(texture)
+            icon.bg:SetTexture(ns.media.statusbar)
             icon.bg:SetAllPoints(icon)
 
             self.ClassIcons[i] = icon
