@@ -11,7 +11,8 @@
 
 ## RequiredDeps: oUF
 
-embeds.xml
+libs\LibStub.lua
+libs\LibDispellable-1.0.lua
 
 core.lua
 
