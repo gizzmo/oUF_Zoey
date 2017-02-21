@@ -39,8 +39,8 @@ local function CreateFontString(parent, size, justify)
     return fs
 end
 
-local function CreateStatusBar(parent, name, noBG)
-    local sb = CreateFrame('StatusBar', (name and '$parent'..name or nil), parent)
+local function CreateStatusBar(parent, noBG)
+    local sb = CreateFrame('StatusBar', nil, parent)
     sb:SetStatusBarTexture(ns.media.statusbar)
 
     if not noBG then
@@ -351,16 +351,16 @@ end
 
 -- HealPrediction
 local function CreateHealPrediction(self, vertical)
-    local myBar = CreateStatusBar(self.Health, nil, true)
+    local myBar = CreateStatusBar(self.Health, true)
     myBar:SetStatusBarColor(64/255, 204/255, 255/255, .7)
 
-    local otherBar = CreateStatusBar(self.Health, nil, true)
+    local otherBar = CreateStatusBar(self.Health, true)
     otherBar:SetStatusBarColor(64/255, 255/255, 64/255, .7)
 
-    local absorbBar = CreateStatusBar(self.Health, nil, true)
+    local absorbBar = CreateStatusBar(self.Health, true)
     absorbBar:SetStatusBarColor(220/255, 255/255, 230/255, .7)
 
-    local healAbsorbBar = CreateStatusBar(self.Health, nil, true)
+    local healAbsorbBar = CreateStatusBar(self.Health, true)
     healAbsorbBar:SetStatusBarColor(220/255, 228/255, 255/255, .7)
 
     -- Loop over the bars and set the points
@@ -413,7 +413,7 @@ local function InitStyle(self, unit, isSingle)
     table.insert(self.__elements, UpdateUnitBorderColor)
 
     -- Overlay Frame -- used to attach icons/text to
-    self.Overlay = CreateFrame('Frame', '$parentOverlay', self)
+    self.Overlay = CreateFrame('Frame', nil, self)
     self.Overlay:SetAllPoints(self)
     self.Overlay:SetFrameLevel(10) -- todo: does it have to be that high?
 
@@ -438,7 +438,7 @@ local function InitStyle(self, unit, isSingle)
     }
 
     -- All frames will have a health status bar
-    self.Health = CreateStatusBar(self, 'HealthBar')
+    self.Health = CreateStatusBar(self)
     self.Health:SetPoint('TOP', 0, -1)
     self.Health:SetPoint('LEFT', 1, 0)
     self.Health:SetPoint('RIGHT', -1, 0)
@@ -481,7 +481,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Build the other status bars
     ----------------------------------------------------------------------------
-    self.Power = CreateStatusBar(self, 'PowerBar')
+    self.Power = CreateStatusBar(self)
     self.Power:SetHeight(POWER_HEIGHT)
     self.Power:SetPoint('LEFT', 1, 0)
     self.Power:SetPoint('RIGHT', -1, 0)
@@ -493,7 +493,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
     if unit == 'party' then
         local PORTRAIT_HEIGHT = FRAME_HEIGHT
-        self.Portrait = CreateFrame('PlayerModel', '$parentPortrait', self)
+        self.Portrait = CreateFrame('PlayerModel', nil, self)
         self.Portrait:SetHeight(PORTRAIT_HEIGHT - 1.5)
         self.Portrait:SetPoint('TOP', 0, -1)
         self.Portrait:SetPoint('LEFT', 1, 0)
@@ -514,7 +514,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Class Icons -- NOTE: only monk is tested, tho all others should work
     if unit == 'player' and (playerClass == 'MONK') then
-        self.ClassIcons = CreateFrame('Frame', '$parentClassIcons', self)
+        self.ClassIcons = CreateFrame('Frame', nil, self)
         self.ClassIcons:SetHeight(8)
         self.ClassIcons:SetWidth(FRAME_WIDTH * 0.95)
         self.ClassIcons:SetPoint('TOP', self, 'BOTTOM', 0, -3)
@@ -550,11 +550,11 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
     -- Monk Stagger Bar
     if unit == 'player' and playerClass == 'MONK' then
-        self.Stagger = CreateStatusBar(self, 'StaggerBar')
+        self.Stagger = CreateStatusBar(self)
         self.Stagger:SetFrameLevel(self:GetFrameLevel()-1)
 
         -- Build a frame around the stagger bar
-        self.Stagger.Frame = CreateFrame('Frame', '$parentStaggerFrame', self.Stagger)
+        self.Stagger.Frame = CreateFrame('Frame', nil, self.Stagger)
         self.Stagger.Frame:SetFrameLevel(self.Stagger:GetFrameLevel()-1)
         self.Stagger.Frame.bg = self.Stagger.Frame:CreateTexture(nil, 'BACKGROUND')
         self.Stagger.Frame.bg:SetAllPoints(self.Stagger.Frame)
@@ -659,9 +659,9 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     -- Cast Bars
     ----------------------------------------------------------------------------
     if unit == 'player' or unit == 'target' then
-        self.Castbar = CreateStatusBar(self, 'Castbar')
+        self.Castbar = CreateStatusBar(self)
 
-        self.Castbar.Frame = CreateFrame('Frame', '$parentFrame', self.Castbar)
+        self.Castbar.Frame = CreateFrame('Frame', nil, self.Castbar)
         self.Castbar.Frame:SetFrameLevel(self.Castbar:GetFrameLevel()-1)
         self.Castbar.Frame.bg = self.Castbar.Frame:CreateTexture(nil, 'BACKGROUND')
         self.Castbar.Frame.bg:SetAllPoints(self.Castbar.Frame)
@@ -714,7 +714,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.Castbar.Text:SetPoint('LEFT', 5, 0)
         self.Castbar.Time:SetPoint('RIGHT', -5, 0)
     else
-        self.Castbar = CreateStatusBar(self, 'Castbar', true)
+        self.Castbar = CreateStatusBar(self, true)
 
         self.Castbar:SetFrameLevel(self.Health:GetFrameLevel()+1)
         self.Castbar:SetPoint('BOTTOMRIGHT', self.Health, 'BOTTOMRIGHT')
@@ -747,7 +747,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     if unit == 'player' or unit == 'pet' or unit == 'target' then
 
-        self.Buffs = CreateFrame('Frame', '$parentBuffs', self)
+        self.Buffs = CreateFrame('Frame', nil, self)
 
         self.Buffs['growth-y'] = 'UP'
         self.Buffs['spacing'] = 3
@@ -775,7 +775,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
     if unit == 'player' or unit == 'target' then
 
-        self.Debuffs = CreateFrame('Frame', '$parentDebuffs', self)
+        self.Debuffs = CreateFrame('Frame', nil, self)
 
         self.Debuffs['growth-y'] = 'UP'
         self.Debuffs['spacing'] = 3
@@ -801,7 +801,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
     elseif unit == 'party' then
 
-        self.Debuffs = CreateFrame('Frame', '$parentDebuffs', self)
+        self.Debuffs = CreateFrame('Frame', nil, self)
         self.Debuffs:SetSize(FRAME_WIDTH, 1)
         self.Debuffs:SetPoint('TOPLEFT', self, 'TOPRIGHT', 12, -15)
 
@@ -899,7 +899,7 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Build the other status bars
     ----------------------------------------------------------------------------
-    self.Power = CreateStatusBar(self, 'PowerBar')
+    self.Power = CreateStatusBar(self)
     self.Power:SetHeight(POWER_HEIGHT)
     self.Power:SetPoint('LEFT', 1, 0)
     self.Power:SetPoint('RIGHT', -1, 0)
