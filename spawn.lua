@@ -12,19 +12,26 @@ Anchor:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, frames_offset)
 
 --------------------------------------------------------------------------------
 
+local function generateName(string)
+    return 'oUF_Zoey'..string:lower()
+        :gsub('^%l', string.upper)
+        :gsub('p(ets)', 'P%1') -- for PartyPets
+        :gsub('t(arget)', 'T%1')
+end
+
 local u = {}
 local function Spawn(unit)
     local unit = unit:lower()
-    local frameName = unit:gsub('^%l', string.upper):gsub('t(arget)', 'T%1')
-    local object = oUF:Spawn(unit, 'oUF_Zoey'..frameName)
+    local object = oUF:Spawn(unit, generateName(unit))
+
     u[unit] = object
     return object
 end
 
 local function SpawnHeader(unit, ...)
     local unit = unit:lower()
-    local frameName = unit:gsub('^%l', string.upper):gsub('t(arget)', 'T%1')
-    local object = oUF:SpawnHeader('oUF_Zoey'..frameName, nil, ...)
+    local object = oUF:SpawnHeader(generateName(unit), nil, ...)
+
     u[unit] = object
     return object
 end
