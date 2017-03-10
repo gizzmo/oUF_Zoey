@@ -2,7 +2,6 @@
 local addon, ns = ...
 
 local colors = oUF.colors
-
 local _, playerClass = UnitClass('player')
 local playerUnits = { player = true, pet = true, vehicle = true }
 
@@ -232,7 +231,7 @@ end
 
 
 -- Aura Function
-local function PostCreateAuraIcon(iconFrame, button)
+local function PostCreateAuraIcon(Auras, button)
     button.cd:SetReverse(true)
     button.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
 
@@ -251,7 +250,7 @@ local function PostCreateAuraIcon(iconFrame, button)
     button.bg:SetColorTexture(0, 0, 0, 1)
 end
 
-local function PostUpdateAuraIcon(iconFrame, unit, button, index, offset)
+local function PostUpdateAuraIcon(Auras, unit, button, index, offset)
     local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, button.filter)
 
     if playerUnits[caster] then
@@ -290,23 +289,23 @@ do
     end
 end
 
-local function LFDOverride(self)
-    local LFDRole = self.LFDRole
-    local Role = UnitGroupRolesAssigned(self.unit)
-    if Role == 'TANK' then
-        LFDRole:SetBackdropColor(1, 1, 1, 1)
-        LFDRole:Show()
+local function GroupRoleIndicatorOverride(self)
+    local element = self.GroupRoleIndicator
+    local role = UnitGroupRolesAssigned(self.unit)
+    if role == 'TANK' then
+        element:SetBackdropColor(1, 1, 1, 1)
+        element:Show()
     elseif Role == 'HEALER' then
-        LFDRole:SetBackdropColor(0, 1, 0, 1)
-        LFDRole:Show()
+        element:SetBackdropColor(0, 1, 0, 1)
+        element:Show()
     else
-        LFDRole:Hide()
+        element:Hide()
     end
 end
 
 
 -- ClassIcons Functions
-local ClassIconsUpdateTexture
+local ClassPowerUpdateTexture
 do
     local classPowerType = {
         MONK    = 'CHI',
@@ -318,7 +317,7 @@ do
         MAGE    = 'ARCANE_CHARGES'
     }
 
-    function ClassIconsUpdateTexture(element)
+    function ClassPowerUpdateTexture(element)
         local color = oUF.colors.power[classPowerType[playerClass]]
         for i = 1, #element do
             local icon = element[i]
@@ -329,22 +328,22 @@ do
     end
 end
 
-local function ClassIconsPostUpdate(self, cur, max, hasMaxChanged, powerType, event)
+local function ClassPowerPostUpdate(ClassPower, cur, max, hasMaxChanged, powerType, event)
     -- Show or hide the entire frame on enable/disable
-    if event == 'ClassPowerDisable' then return self:Hide()
-    elseif event == 'ClassPowerEnable' then self:Show() end
+    if event == 'ClassPowerDisable' then return ClassPower:Hide()
+    elseif event == 'ClassPowerEnable' then ClassPower:Show() end
 
     -- Figure out the width
-    local width = ((self:GetWidth() - (max-1)) / max)
+    local width = ((ClassPower:GetWidth() - (max-1)) / max)
 
     for i = 1, max do
-        self[i]:SetWidth(width)
-        self[i].bg:Show()
+        ClassPower[i]:SetWidth(width)
+        ClassPower[i].bg:Show()
     end
 
     -- hide unused bgs
     for i = max + 1, 6 do
-        self[i].bg:Hide()
+        ClassPower[i].bg:Hide()
     end
 end
 
@@ -382,7 +381,7 @@ local function CreateHealPrediction(self, vertical)
     end
 
     -- Register with oUF
-    self.HealPrediction = {
+    self.HealthPrediction = {
         myBar = myBar,
         otherBar = otherBar,
         absorbBar = absorbBar,
@@ -454,7 +453,6 @@ local function InitStyle(self, unit, isSingle)
     self.DispelHighlight:SetTexture([[Interface\AddOns\oUF_Zoey\media\Dispel.tga]])
     self.DispelHighlight:SetBlendMode('ADD')
     self.DispelHighlight:SetAlpha(0.7)
-
 end
 
 -- Main Core style
@@ -512,24 +510,24 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Class Specific
     ----------------------------------------------------------------------------
-    -- Class Icons -- NOTE: only monk is tested, tho all others should work
+    -- Class Power -- NOTE: only monk Chi is tested, tho all others should work
     if unit == 'player' and (playerClass == 'MONK') then
-        self.ClassIcons = CreateFrame('Frame', nil, self)
-        self.ClassIcons:SetHeight(8)
-        self.ClassIcons:SetWidth(FRAME_WIDTH * 0.95)
-        self.ClassIcons:SetPoint('TOP', self, 'BOTTOM', 0, -3)
-        self.ClassIcons:SetFrameLevel(self:GetFrameLevel() -1)
-        ns.CreateBorder(self.ClassIcons)
+        self.ClassPower = CreateFrame('Frame', nil, self)
+        self.ClassPower:SetHeight(8)
+        self.ClassPower:SetWidth(FRAME_WIDTH * 0.95)
+        self.ClassPower:SetPoint('TOP', self, 'BOTTOM', 0, -3)
+        self.ClassPower:SetFrameLevel(self:GetFrameLevel() -1)
+        ns.CreateBorder(self.ClassPower)
 
-        self.ClassIcons.bg = self.ClassIcons:CreateTexture(nil,'BACKGROUND')
-        self.ClassIcons.bg:SetAllPoints(self.ClassIcons)
-        self.ClassIcons.bg:SetColorTexture(0,0,0,1)
+        self.ClassPower.bg = self.ClassPower:CreateTexture(nil,'BACKGROUND')
+        self.ClassPower.bg:SetAllPoints(self.ClassPower)
+        self.ClassPower.bg:SetColorTexture(0,0,0,1)
 
-        self.ClassIcons.PostUpdate = ClassIconsPostUpdate
-        self.ClassIcons.UpdateTexture = ClassIconsUpdateTexture
+        self.ClassPower.PostUpdate = ClassPowerPostUpdate
+        self.ClassPower.UpdateTexture = ClassPowerUpdateTexture
 
         for i = 1, 6 do
-            local icon = self.ClassIcons:CreateTexture(nil, 'ARTWORK', nil, 2)
+            local icon = self.ClassPower:CreateTexture(nil, 'ARTWORK', nil, 2)
             icon:SetTexture(ns.media.statusbar)
 
             icon:SetPoint('TOP')
@@ -537,14 +535,14 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
             icon:SetPoint('LEFT')
 
             if i ~= 1 then
-                icon:SetPoint('LEFT', self.ClassIcons[i-1], 'RIGHT', 1, 0)
+                icon:SetPoint('LEFT', self.ClassPower[i-1], 'RIGHT', 1, 0)
             end
 
-            icon.bg = self.ClassIcons:CreateTexture(nil, 'BACKGROUND', nil, 1)
+            icon.bg = self.ClassPower:CreateTexture(nil, 'BACKGROUND', nil, 1)
             icon.bg:SetTexture(ns.media.statusbar)
             icon.bg:SetAllPoints(icon)
 
-            self.ClassIcons[i] = icon
+            self.ClassPower[i] = icon
         end
     end
 
@@ -598,62 +596,62 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     end
 
     ----------------------------------------------------------------------------
-    -- Icons
+    -- Indicators
     ----------------------------------------------------------------------------
     if unit == 'player' then
-        self.Resting = self.Overlay:CreateTexture(nil, 'OVERLAY')
-        self.Resting:SetSize(20,20)
-        self.Resting:SetPoint('LEFT', self.Overlay, 'BOTTOMLEFT', 0, 2)
+        self.RestingIndicator = self.Overlay:CreateTexture(nil, 'OVERLAY')
+        self.RestingIndicator:SetSize(20,20)
+        self.RestingIndicator:SetPoint('LEFT', self.Overlay, 'BOTTOMLEFT', 0, 2)
 
-        self.Combat = self.Overlay:CreateTexture(nil, 'OVERLAY')
-        self.Combat:SetSize(20,20)
-        self.Combat:SetPoint('RIGHT', self.Overlay, 'BOTTOMRIGHT', 0, 2)
+        self.CombatIndicator = self.Overlay:CreateTexture(nil, 'OVERLAY')
+        self.CombatIndicator:SetSize(20,20)
+        self.CombatIndicator:SetPoint('RIGHT', self.Overlay, 'BOTTOMRIGHT', 0, 2)
     end
 
     if unit == 'target' then
-        self.QuestIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
-        self.QuestIcon:SetSize(32,32)
-        self.QuestIcon:SetPoint('CENTER', self.Overlay, 'LEFT')
+        self.QuestIndicator = self.Overlay:CreateTexture(nil, 'OVERLAY')
+        self.QuestIndicator:SetSize(32,32)
+        self.QuestIndicator:SetPoint('CENTER', self.Overlay, 'LEFT')
     end
 
-    self.LFDRole = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.LFDRole:SetSize(15,15)
-    self.LFDRole:SetPoint('CENTER', self.Overlay, 'TOPRIGHT', 1, 0)
+    self.GroupRoleIndicator = self.Overlay:CreateTexture(nil, 'OVERLAY')
+    self.GroupRoleIndicator:SetSize(15,15)
+    self.GroupRoleIndicator:SetPoint('CENTER', self.Overlay, 'TOPRIGHT', 1, 0)
 
     if unit == 'party' then
-        self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
-        self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
-        self.ReadyCheck:SetPoint('CENTER')
+        self.ReadyCheckIndicator = self.Overlay:CreateTexture(nil, 'OVERLAY')
+        self.ReadyCheckIndicator:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
+        self.ReadyCheckIndicator:SetPoint('CENTER')
     end
 
-    self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.RaidIcon:SetSize(23,23)
-    self.RaidIcon:SetPoint('LEFT', 3, 0)
+    self.RaidTargetIndicator = self.Overlay:CreateTexture(nil, 'OVERLAY')
+    self.RaidTargetIndicator:SetSize(23,23)
+    self.RaidTargetIndicator:SetPoint('LEFT', 3, 0)
 
-    self.PvP = self.Overlay:CreateTexture(nil, 'OVERLAY', nil, 1)
-    self.PvP:SetSize(21,21)
-    self.PvP:SetPoint('CENTER', self.Overlay, 'LEFT')
+    self.PvPIndicator = self.Overlay:CreateTexture(nil, 'OVERLAY', nil, 1)
+    self.PvPIndicator:SetSize(21,21)
+    self.PvPIndicator:SetPoint('CENTER', self.Overlay, 'LEFT')
 
-    self.PvP.Prestige = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.PvP.Prestige:SetSize(41,43)
-    self.PvP.Prestige:SetPoint('CENTER', self.PvP)
+    self.PvPIndicator.Prestige = self.Overlay:CreateTexture(nil, 'OVERLAY')
+    self.PvPIndicator.Prestige:SetSize(41,43)
+    self.PvPIndicator.Prestige:SetPoint('CENTER', self.PvPIndicator)
 
     if unit == 'party' or unit == 'target' or unit == 'focus' then
-        self.PhaseIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
-        self.PhaseIcon:SetPoint('TOP', self)
-        self.PhaseIcon:SetPoint('BOTTOM', self)
-        self.PhaseIcon:SetWidth(FRAME_HEIGHT * 2)
-        self.PhaseIcon:SetTexture([[Interface\Icons\Spell_Frost_Stun]])
-        self.PhaseIcon:SetTexCoord(0.05, 0.95, 0.25, 0.75)
-        self.PhaseIcon:SetAlpha(0.5)
-        self.PhaseIcon:SetBlendMode('ADD')
-        self.PhaseIcon:SetDesaturated(true)
-        self.PhaseIcon:SetVertexColor(0.4, 0.8, 1)
+        self.PhaseIndicator = self.Overlay:CreateTexture(nil, 'OVERLAY')
+        self.PhaseIndicator:SetPoint('TOP', self)
+        self.PhaseIndicator:SetPoint('BOTTOM', self)
+        self.PhaseIndicator:SetWidth(FRAME_HEIGHT * 2)
+        self.PhaseIndicator:SetTexture([[Interface\Icons\Spell_Frost_Stun]])
+        self.PhaseIndicator:SetTexCoord(0.05, 0.95, 0.25, 0.75)
+        self.PhaseIndicator:SetAlpha(0.5)
+        self.PhaseIndicator:SetBlendMode('ADD')
+        self.PhaseIndicator:SetDesaturated(true)
+        self.PhaseIndicator:SetVertexColor(0.4, 0.8, 1)
     end
 
-    self.ResurrectIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.ResurrectIcon:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
-    self.ResurrectIcon:SetPoint('CENTER')
+    self.ResurrectIndicator = self.Overlay:CreateTexture(nil, 'OVERLAY')
+    self.ResurrectIndicator:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
+    self.ResurrectIndicator:SetPoint('CENTER')
 
     ----------------------------------------------------------------------------
     -- Cast Bars
@@ -816,7 +814,6 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.Debuffs.PostCreateIcon = PostCreateAuraIcon
         self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
     end
-
 end)
 
 oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
@@ -847,28 +844,27 @@ oUF:RegisterStyle('ZoeyThin', function(self, unit, isSingle)
     self:Tag(self.StatusTextTag, '[Status]')
 
     ----------------------------------------------------------------------------
-    -- Icons
+    -- Indicators
     ----------------------------------------------------------------------------
-    self.Leader = CreateCornerIndicator(self.Overlay)
-    self.Leader:SetBackdropColor(0.65, 0.65, 1, 1)
-    self.Leader:SetPoint('TOPLEFT')
+    self.LeaderIndicator = CreateCornerIndicator(self.Overlay)
+    self.LeaderIndicator:SetBackdropColor(0.65, 0.65, 1, 1)
+    self.LeaderIndicator:SetPoint('TOPLEFT')
 
-    self.Assistant = CreateCornerIndicator(self.Overlay)
-    self.Assistant:SetBackdropColor(1, 0.75, 0.5, 1)
-    self.Assistant:SetPoint('TOPLEFT')
+    self.AssistantIndicator = CreateCornerIndicator(self.Overlay)
+    self.AssistantIndicator:SetBackdropColor(1, 0.75, 0.5, 1)
+    self.AssistantIndicator:SetPoint('TOPLEFT')
 
-    self.LFDRole = CreateCornerIndicator(self.Overlay)
-    self.LFDRole:SetPoint('TOPRIGHT')
-    self.LFDRole.Override = LFDOverride
+    self.GroupRoleIndicator = CreateCornerIndicator(self.Overlay)
+    self.GroupRoleIndicator:SetPoint('TOPRIGHT')
+    self.GroupRoleIndicator.Override = GroupRoleIndicatorOverride
 
-    self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.RaidIcon:SetSize(16,16)
-    self.RaidIcon:SetPoint('LEFT', 3, 0)
+    self.RaidTargetIndicator = self.Overlay:CreateTexture(nil, 'OVERLAY')
+    self.RaidTargetIndicator:SetSize(16,16)
+    self.RaidTargetIndicator:SetPoint('LEFT', 3, 0)
 
-    self.PvP = self.Overlay:CreateTexture(nil, 'OVERLAY', nil, 1)
-    self.PvP:SetSize(16,16)
-    self.PvP:SetPoint('CENTER', self.Overlay, 'LEFT')
-
+    self.PvPIndicator = self.Overlay:CreateTexture(nil, 'OVERLAY', nil, 1)
+    self.PvPIndicator:SetSize(16,16)
+    self.PvPIndicator:SetPoint('CENTER', self.Overlay, 'LEFT')
 end)
 
 oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
@@ -922,30 +918,29 @@ oUF:RegisterStyle('ZoeySquare', function(self, unit, isSingle)
     self:Tag(self.StatusTextTag, '[Status]')
 
     ----------------------------------------------------------------------------
-    -- Icons
+    -- Indicators
     ----------------------------------------------------------------------------
-    self.Leader = CreateCornerIndicator(self.Overlay)
-    self.Leader:SetBackdropColor(0.65, 0.65, 1, 1)
-    self.Leader:SetPoint('TOPLEFT')
+    self.LeaderIndicator = CreateCornerIndicator(self.Overlay)
+    self.LeaderIndicator:SetBackdropColor(0.65, 0.65, 1, 1)
+    self.LeaderIndicator:SetPoint('TOPLEFT')
 
-    self.Assistant = CreateCornerIndicator(self.Overlay)
-    self.Assistant:SetBackdropColor(1, 0.75, 0.5, 1)
-    self.Assistant:SetPoint('TOPLEFT')
+    self.AssistantIndicator = CreateCornerIndicator(self.Overlay)
+    self.AssistantIndicator:SetBackdropColor(1, 0.75, 0.5, 1)
+    self.AssistantIndicator:SetPoint('TOPLEFT')
 
-    self.LFDRole = CreateCornerIndicator(self.Overlay)
-    self.LFDRole:SetPoint('TOPRIGHT')
-    self.LFDRole.Override = LFDOverride
+    self.GroupRoleIndicator = CreateCornerIndicator(self.Overlay)
+    self.GroupRoleIndicator:SetPoint('TOPRIGHT')
+    self.GroupRoleIndicator.Override = GroupRoleIndicatorOverride
 
-    self.ReadyCheck = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.ReadyCheck:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
-    self.ReadyCheck:SetPoint('CENTER')
+    self.ReadyCheckIndicator = self.Overlay:CreateTexture(nil, 'OVERLAY')
+    self.ReadyCheckIndicator:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
+    self.ReadyCheckIndicator:SetPoint('CENTER')
 
-    self.RaidIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.RaidIcon:SetSize(16,16)
-    self.RaidIcon:SetPoint('LEFT', 3, 0)
+    self.RaidTargetIndicator = self.Overlay:CreateTexture(nil, 'OVERLAY')
+    self.RaidTargetIndicator:SetSize(16,16)
+    self.RaidTargetIndicator:SetPoint('LEFT', 3, 0)
 
-    self.ResurrectIcon = self.Overlay:CreateTexture(nil, 'OVERLAY')
-    self.ResurrectIcon:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
-    self.ResurrectIcon:SetPoint('CENTER')
-
+    self.ResurrectIndicator = self.Overlay:CreateTexture(nil, 'OVERLAY')
+    self.ResurrectIndicator:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
+    self.ResurrectIndicator:SetPoint('CENTER')
 end)

@@ -102,7 +102,6 @@ local function SkinMirrorTimer()
 end
 
 --------------------------------------------------------------------------------
-
 local Loader = CreateFrame("Frame")
 Loader:RegisterEvent("PLAYER_LOGIN")
 Loader:SetScript("OnEvent", function(self, event, ...)

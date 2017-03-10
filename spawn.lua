@@ -11,7 +11,6 @@ Anchor:SetSize(ptgap, 1)
 Anchor:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, frames_offset)
 
 --------------------------------------------------------------------------------
-
 local function generateName(string)
     return 'oUF_Zoey'..string:lower()
         :gsub('^%l', string.upper)

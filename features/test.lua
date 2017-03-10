@@ -29,8 +29,6 @@ end
 
 local function toggleHeaderFrame(obj, show)
     if show then
-        SecureStateDriverManager:SetAttribute('setframe', obj)
-        obj.oldstate_driver = SecureStateDriverManager:GetAttribute('setstate'):gsub('state%-visibility%s', '') -- i suck at string formatting
         local numMembers = math.max(GetNumSubgroupMembers(LE_PARTY_CATEGORY_HOME) or 0, GetNumSubgroupMembers(LE_PARTY_CATEGORY_INSTANCE) or 0)
         obj:SetAttribute('startingIndex', (numMembers - 3))
         RegisterAttributeDriver(obj, 'state-visibility', 'show')
@@ -39,11 +37,9 @@ local function toggleHeaderFrame(obj, show)
             local child = select(i, obj:GetChildren())
             toggleUnitFrame(child, true)
         end
-    elseif obj.oldstate_driver then
-        obj:SetAttribute('showParty', true)
-        RegisterAttributeDriver(obj, 'state-visibility', obj.oldstate_driver)
-        obj.oldstate_driver = nil
+    else
         obj:SetAttribute('startingIndex', nil)
+        RegisterAttributeDriver(obj, 'state-visibility', obj.visibility)
 
         for i = 1, obj:GetNumChildren() do
             local child = select(i, obj:GetChildren())
