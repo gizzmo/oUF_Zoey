@@ -87,7 +87,7 @@ end
 
 
 -- Power coloring: Perfer class color, fall-back to power
-local function PostUpdatePower(Power, unit, min, max)
+local function PostUpdatePower(Power, unit)
     local r,g,b,t
 
     if UnitIsPlayer(unit) then
