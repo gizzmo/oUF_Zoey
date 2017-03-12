@@ -41,10 +41,6 @@ local function DisableBlizzard()
     BuffFrame:UnregisterAllEvents()
     TemporaryEnchantFrame:Hide()
 
-    -- The raid frames are actaully addons, disable them.
-    DisableAddOn("Blizzard_CompactRaidFrames")
-    DisableAddOn("Blizzard_CUFProfiles")
-
     -- Remove Items from the Rightclick Menu
     for _, menu in pairs( UnitPopupMenus ) do
         for i = #menu, 1, -1 do
