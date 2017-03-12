@@ -743,7 +743,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Auras
     ----------------------------------------------------------------------------
-    if unit == 'player' or unit == 'pet' or unit == 'target' then
+    if unit == 'player' or unit == 'target' then
 
         self.Buffs = CreateFrame('Frame', nil, self)
 
