@@ -769,9 +769,8 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
         self.Buffs.PostCreateIcon = PostCreateAuraIcon
         self.Buffs.PostUpdateIcon = PostUpdateAuraIcon
-    end
 
-    if unit == 'player' or unit == 'target' then
+        ------------------------------------------------------------------------
 
         self.Debuffs = CreateFrame('Frame', nil, self)
 
