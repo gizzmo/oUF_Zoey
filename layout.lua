@@ -295,7 +295,7 @@ local function GroupRoleIndicatorOverride(self)
     if role == 'TANK' then
         element:SetBackdropColor(1, 1, 1, 1)
         element:Show()
-    elseif Role == 'HEALER' then
+    elseif role == 'HEALER' then
         element:SetBackdropColor(0, 1, 0, 1)
         element:Show()
     else
