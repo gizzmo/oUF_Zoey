@@ -270,6 +270,35 @@ local function PostUpdateAuraIcon(Auras, unit, button, index, offset)
     end
 end
 
+local function PostUpdateAuras(Auras)
+    -- Auras could be either Buffs or Debuffs.
+    local self = Auras.__owner
+    local Debuffs = self.Debuffs
+    local Buffs = self.Buffs
+
+    -- Sometimes these values can be nil
+    local visibleBuffs = Buffs.visibleBuffs or 0
+    local visibleDebuffs = Debuffs.visibleDebuffs or 0
+
+    -- Figure out some things
+    local trueSize = Buffs.size + Buffs.spacing
+    local buffsPerRow = floor((self:GetWidth() + self.Buffs.spacing) / trueSize)
+    local fullRows = floor(visibleBuffs / buffsPerRow)
+    local excessBuffs = (visibleBuffs - (fullRows * buffsPerRow))
+
+    -- First start with how many full rows are set
+    local offset = trueSize*fullRows
+
+    -- Then figure out if Buffs and Debuffs will overlap
+    if excessBuffs > 0 and excessBuffs + (visibleDebuffs*2) > buffsPerRow then
+        offset = offset + trueSize
+    end
+
+    Debuffs:SetPoint('BOTTOM', self, 'TOP', 0, offset + 8)
+
+    -- NOTE: There is a very small edge case where if the width is a odd
+    -- number of icons the debuffs will be bumped up when it could fit
+end
 
 -- Corner Indicators
 local CreateCornerIndicator
@@ -746,72 +775,77 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     if unit == 'player' or unit == 'target' then
 
         self.Buffs = CreateFrame('Frame', nil, self)
-
-        self.Buffs['growth-y'] = 'UP'
-        self.Buffs['spacing'] = 3
-        self.Buffs['size'] = 20
-
-        local size = (self.Buffs['size'] + self.Buffs['spacing'])
+        self.Buffs:SetPoint('BOTTOM', self, 'TOP', 0, 8)
 
         if unit == 'player' then
-            self.Buffs:SetSize(size * 6, 1)
-            self.Buffs:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 8)
-            self.Buffs['initialAnchor'] = 'BOTTOMLEFT'
+            self.Buffs.initialAnchor = 'BOTTOMLEFT'
             self.Buffs['growth-x'] = 'RIGHT'
-
         elseif unit == 'target' then
-            self.Buffs:SetSize(size * 2, 1)
-            self.Buffs:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 8)
-            self.Buffs['initialAnchor'] = 'BOTTOMRIGHT'
+            self.Buffs.initialAnchor = 'BOTTOMRIGHT'
             self.Buffs['growth-x'] = 'LEFT'
         end
-        self.Buffs['num'] = floor(self.Buffs:GetWidth() / size + .5) * 4
+
+        self.Buffs['growth-y'] = 'UP'
+        self.Buffs.spacing = 3
+        self.Buffs.size = 20
+
+        local trueSize = self.Buffs.size + self.Buffs.spacing
+        local buffsPerRow = floor((self:GetWidth() + self.Buffs.spacing) / trueSize)
+        self.Buffs.num = buffsPerRow * 4
+
+        self.Buffs:SetSize((trueSize * buffsPerRow) - self.Buffs.spacing, 1)
 
         self.Buffs.PostCreateIcon = PostCreateAuraIcon
         self.Buffs.PostUpdateIcon = PostUpdateAuraIcon
+        self.Buffs.PostUpdate = PostUpdateAuras
 
         ------------------------------------------------------------------------
 
         self.Debuffs = CreateFrame('Frame', nil, self)
-
-        self.Debuffs['growth-y'] = 'UP'
-        self.Debuffs['spacing'] = 3
-        self.Debuffs['size'] = 43
-
-        local size = (self.Debuffs['size'] + self.Debuffs['spacing'])
+        self.Debuffs:SetPoint('BOTTOM', self, 'TOP', 0, 8)
 
         if unit == 'player' then
-            self.Debuffs:SetSize(size * 2, 1)
-            self.Debuffs:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, 8)
-            self.Debuffs['initialAnchor'] = 'BOTTOMRIGHT'
+            self.Debuffs.initialAnchor = 'BOTTOMRIGHT'
             self.Debuffs['growth-x'] = 'LEFT'
         elseif unit == 'target' then
-            self.Debuffs:SetSize(size * 4, 1)
-            self.Debuffs:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, 8)
-            self.Debuffs['initialAnchor'] = 'BOTTOMLEFT'
+            self.Debuffs.initialAnchor = 'BOTTOMLEFT'
             self.Debuffs['growth-x'] = 'RIGHT'
         end
 
-        self.Debuffs['num'] = floor(self.Debuffs:GetWidth() / size + .5) * 2
+        self.Debuffs['growth-y'] = 'UP'
+        self.Debuffs.spacing = 3
+        self.Debuffs.size = 43
+
+        local trueSize = self.Debuffs.size + self.Debuffs.spacing
+        local debuffsPerRow = floor((self:GetWidth() + self.Debuffs.spacing) / trueSize)
+        self.Debuffs.num = debuffsPerRow * 2
+
+        -- Match the Buff Frame so the icons stay aligned
+        self.Debuffs:SetSize(self.Buffs:GetWidth(), 1)
 
         self.Debuffs.PostCreateIcon = PostCreateAuraIcon
         self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
+        self.Debuffs.PostUpdate = PostUpdateAuras
+
     elseif unit == 'party' then
 
         self.Debuffs = CreateFrame('Frame', nil, self)
         self.Debuffs:SetSize(FRAME_WIDTH, 1)
         self.Debuffs:SetPoint('TOPLEFT', self, 'TOPRIGHT', 12, -15)
 
-        self.Debuffs['initialAnchor'] = 'LEFT'
+        self.Debuffs.initialAnchor = 'LEFT'
         self.Debuffs['growth-x'] = 'RIGHT'
-        self.Debuffs['spacing'] = 3
-        self.Debuffs['size'] = 30
+        self.Debuffs.spacing = 3
+        self.Debuffs.size = 30
 
-        local size = (self.Debuffs['size'] + self.Debuffs['spacing'])
-        self.Debuffs['num'] = floor(self.Debuffs:GetWidth() / size + .5)
+        local trueSize = self.Debuffs.size + self.Debuffs.spacing
+        self.Debuffs.num = floor(self.Debuffs:GetWidth() / trueSize)
 
         self.Debuffs.PostCreateIcon = PostCreateAuraIcon
         self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
+
+    elseif unit == 'focus' then
+        -- NOTE: Add focus de/buffs?
     end
 end)
 
