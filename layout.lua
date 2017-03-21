@@ -827,9 +827,9 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
 
         self.Debuffs = CreateFrame('Frame', nil, self)
         self.Debuffs:SetSize(FRAME_WIDTH, 1)
-        self.Debuffs:SetPoint('TOPLEFT', self, 'TOPRIGHT', 12, -15)
+        self.Debuffs:SetPoint('TOPLEFT', self, 'TOPRIGHT', 12, 0)
 
-        self.Debuffs.initialAnchor = 'LEFT'
+        self.Debuffs.initialAnchor = 'TOPLEFT'
         self.Debuffs['growth-x'] = 'RIGHT'
         self.Debuffs.spacing = 3
         self.Debuffs.size = 30
