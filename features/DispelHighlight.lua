@@ -22,7 +22,7 @@ local function Update(self, event, unit)
     local dispellable, debufftype
 
     if LibDispellable:HasDispel() and UnitCanAssist('player', unit) then
-        for index, dispelSpell, _, _, _, _, type in LibDispellable:IterateDispellableAuras(unit, true) do
+        for index, dispelSpell, _, _, _, _, type in LibDispellable:IterateDispellableAuras(unit) do
             dispellable = true
             debuffType = type
         end
@@ -37,12 +37,12 @@ local function Update(self, event, unit)
 end
 
 local function ForceUpdate(element)
-    return Path(element.__owner, "ForceUpdate")
+    return Update(element.__owner, "ForceUpdate", element.__owner.unit)
 end
 
 local function Enable(self)
     local element = self.DispelHighlight
-    if(element) then
+    if element then
         element.__owner = self
         element.ForceUpdate = ForceUpdate
 
@@ -58,7 +58,7 @@ end
 
 local function Disable(self)
     local element = self.DispelHighlight
-    if(element) then
+    if element then
         element:Hide()
 
         self:UnregisterEvent("UNIT_AURA", Update)
@@ -66,5 +66,3 @@ local function Disable(self)
 end
 
 oUF:AddElement("DispelHighlight", Update, Enable, Disable)
-
-------------------------------------------------------------------------
