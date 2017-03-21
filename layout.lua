@@ -701,8 +701,8 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
             self.Castbar.Frame:SetSize(300,18)
             self.Castbar.Frame:SetPoint('BOTTOM', oUF_ZoeyUnitFrameAnchor, 0, -30)
         elseif unit == 'target' then
-            self.Castbar.Frame:SetSize(400,25)
-            self.Castbar.Frame:SetPoint('BOTTOM', oUF_ZoeyUnitFrameAnchor, 0, 142)
+            self.Castbar.Frame:SetSize(300,30)
+            self.Castbar.Frame:SetPoint('BOTTOM', oUF_ZoeyUnitFrameAnchor, 0, 100)
         end
 
         -- Spell Icon
