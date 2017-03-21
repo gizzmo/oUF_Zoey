@@ -420,8 +420,6 @@ end
 
 
 --------------------------------------------------------------------------------
--- Things every style will have
---------------------------------------------------------------------------------
 local function InitStyle(self, unit, isSingle)
     -- Make the frame interactiveable
     self:RegisterForClicks('AnyUp')
@@ -482,7 +480,6 @@ local function InitStyle(self, unit, isSingle)
     self.DispelHighlight:SetAlpha(0.7)
 end
 
--- Main Core style
 oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Setup the frame
