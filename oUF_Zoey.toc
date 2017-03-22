@@ -19,7 +19,6 @@ core.lua
 features\border.lua
 features\tags.lua
 features\test.lua
-features\defer.lua
 features\DispelHighlight.lua
 
 layout.lua
