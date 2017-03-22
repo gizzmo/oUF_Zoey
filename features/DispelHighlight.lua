@@ -1,6 +1,3 @@
--- Get the addon namespace
-local addon, ns = ...
-
 local colors = { -- these are nicer than DebuffTypeColor
     Curse        = { 0.8, 0,   1   },
     Disease      = { 0.8, 0.6, 0   },
