@@ -345,7 +345,7 @@ do
     }
 
     function ClassPowerUpdateTexture(element)
-        local color = oUF.colors.power[classPowerType[playerClass]]
+        local color = colors.power[classPowerType[playerClass]]
         for i = 1, #element do
             local icon = element[i]
 
