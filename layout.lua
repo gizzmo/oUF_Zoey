@@ -452,7 +452,7 @@ local function InitStyle(self, unit, isSingle)
 
     self:HookScript('OnEnter', HighlightUpdate)
     self:HookScript('OnLeave', HighlightUpdate)
-    self:RegisterEvent('PLAYER_TARGET_CHANGED', HighlightUpdate)
+    self:RegisterEvent('PLAYER_TARGET_CHANGED', HighlightUpdate, true)
     table.insert(self.__elements, HighlightUpdate)
 
     -- Frame Range Fading
