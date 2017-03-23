@@ -1,5 +1,4 @@
--- Get the addon namespace
-local addon, ns = ...
+local ADDON_NAME, ns = ...
 
 local sections = { 'TOPLEFT', 'TOP', 'TOPRIGHT', 'LEFT', 'RIGHT', 'BOTTOMLEFT', 'BOTTOM', 'BOTTOMRIGHT' }
 

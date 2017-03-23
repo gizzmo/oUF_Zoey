@@ -1,5 +1,4 @@
--- Get the addon namespace
-local addon, ns = ...
+local ADDON_NAME, ns = ...
 
 local colors = oUF.colors
 local _, playerClass = UnitClass('player')

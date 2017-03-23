@@ -1,8 +1,5 @@
--- Get the addon namespace
-local addonName, ns = ...
-
--- Set global name
-_G[addonName] = ns
+local ADDON_NAME, ns = ...
+_G[ADDON_NAME] = ns
 
 -- Configuration
 ns.config = {}

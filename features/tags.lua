@@ -1,5 +1,4 @@
--- Get the addon namespace
-local addon, ns = ...
+local ADDON_NAME, ns = ...
 
 local function IsMouseOver(unit)
     if ns.mousefocus and ns.mousefocus['unit'] == unit then

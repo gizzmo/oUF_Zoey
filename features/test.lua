@@ -1,5 +1,4 @@
--- Get the addon namespace
-local addonName, ns = ...
+local ADDON_NAME, ns = ...
 
 local function toggleUnitFrame(obj, show)
     if show then

@@ -1,5 +1,4 @@
--- Get the addon namespace
-local addon, ns = ...
+local ADDON_NAME, ns = ...
 
 local gap = 12              -- gap between units
 local ptgap = 320           -- gap between player and target
