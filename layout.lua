@@ -354,22 +354,25 @@ do
     end
 end
 
-local function ClassPowerPostUpdate(ClassPower, cur, max, hasMaxChanged, powerType, event)
+local function ClassPowerPostUpdate(ClassPower, cur, max, maxChanged, powerType, event)
     -- Show or hide the entire frame on enable/disable
     if event == 'ClassPowerDisable' then return ClassPower:Hide()
     elseif event == 'ClassPowerEnable' then ClassPower:Show() end
 
-    -- Figure out the width
-    local width = ((ClassPower:GetWidth() - (max-1)) / max)
+    -- Only need to update when the max hax changed
+    if maxChanged then
+        -- Figure out the new width
+        local width = ((ClassPower:GetWidth() - (max-1)) / max)
 
-    for i = 1, max do
-        ClassPower[i]:SetWidth(width)
-        ClassPower[i].bg:Show()
-    end
+        for i = 1, max do
+            ClassPower[i]:SetWidth(width)
+            ClassPower[i].bg:Show()
+        end
 
-    -- hide unused bgs
-    for i = max + 1, 6 do
-        ClassPower[i].bg:Hide()
+        -- hide unused bgs
+        for i = max + 1, 6 do
+            ClassPower[i].bg:Hide()
+        end
     end
 end
 
@@ -533,11 +536,11 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Class Specific
     ----------------------------------------------------------------------------
-    -- Class Power -- NOTE: only monk Chi is tested, tho all others should work
-    if unit == 'player' and (playerClass == 'MONK') then
+    -- Class Power
+    if unit == 'player' then
         self.ClassPower = CreateFrame('Frame', nil, self)
-        self.ClassPower:SetHeight(8)
-        self.ClassPower:SetWidth(FRAME_WIDTH * 0.95)
+        self.ClassPower:SetHeight(10)
+        self.ClassPower:SetWidth(FRAME_WIDTH * 0.97)
         self.ClassPower:SetPoint('TOP', self, 'BOTTOM', 0, -3)
         self.ClassPower:SetFrameLevel(self:GetFrameLevel() -1)
         ns.CreateBorder(self.ClassPower)
