@@ -344,7 +344,7 @@ do
     }
 
     function ClassPowerUpdateTexture(element)
-        local color = colors.power[classPowerType[playerClass]]
+        local color = colors.power[classPowerType[playerClass] or 'COMBO_POINTS']
         for i = 1, #element do
             local icon = element[i]
 
