@@ -822,14 +822,21 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
         self.Debuffs.PostUpdate = PostUpdateAuras
 
-    elseif unit == 'party' then
+    elseif unit == 'party' or unit == 'focus' then
 
         self.Debuffs = CreateFrame('Frame', nil, self)
-        self.Debuffs:SetSize(FRAME_WIDTH, 1)
-        self.Debuffs:SetPoint('TOPLEFT', self, 'TOPRIGHT', 12, 0)
+
+        if unit == 'focus' then
+            self.Debuffs:SetSize(self:GetWidth(), 1)
+            self.Debuffs:SetPoint('TOP', self, 'BOTTOM', 0, -8)
+        else
+            self.Debuffs:SetSize(FRAME_WIDTH, 1)
+            self.Debuffs:SetPoint('TOPLEFT', self, 'TOPRIGHT', 12, 0)
+        end
 
         self.Debuffs.initialAnchor = 'TOPLEFT'
         self.Debuffs['growth-x'] = 'RIGHT'
+        self.Debuffs['growth-y'] = 'DOWN'
         self.Debuffs.spacing = 3
         self.Debuffs.size = 30
 
@@ -839,8 +846,6 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         self.Debuffs.PostCreateIcon = PostCreateAuraIcon
         self.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
 
-    elseif unit == 'focus' then
-        -- NOTE: Add focus de/buffs?
     end
 end)
 
