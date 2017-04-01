@@ -361,8 +361,8 @@ local function ClassPowerPostUpdate(ClassPower, cur, max, maxChanged, powerType,
 
     -- Only need to update when the max hax changed
     if maxChanged then
-        -- Figure out the new width
-        local width = ((ClassPower:GetWidth() - (max-1)) / max)
+        -- Figure out the new width -- (Inside width - number of gaps / max)
+        local width = (((ClassPower:GetWidth()-2) - (max-1)) / max)
 
         for i = 1, max do
             ClassPower[i]:SetWidth(width)
@@ -540,7 +540,7 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
     if unit == 'player' then
         self.ClassPower = CreateFrame('Frame', nil, self)
         self.ClassPower:SetHeight(10)
-        self.ClassPower:SetWidth(FRAME_WIDTH * 0.97)
+        self.ClassPower:SetWidth(FRAME_WIDTH - 10)
         self.ClassPower:SetPoint('TOP', self, 'BOTTOM', 0, -3)
         self.ClassPower:SetFrameLevel(self:GetFrameLevel() -1)
         ns.CreateBorder(self.ClassPower)
@@ -556,9 +556,9 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
             local icon = self.ClassPower:CreateTexture(nil, 'ARTWORK', nil, 2)
             icon:SetTexture(ns.media.statusbar)
 
-            icon:SetPoint('TOP')
-            icon:SetPoint('BOTTOM')
-            icon:SetPoint('LEFT')
+            icon:SetPoint('TOP', 0, -1)
+            icon:SetPoint('LEFT', 1, 0)
+            icon:SetPoint('BOTTOM', 0, 1)
 
             if i ~= 1 then
                 icon:SetPoint('LEFT', self.ClassPower[i-1], 'RIGHT', 1, 0)
@@ -586,8 +586,8 @@ oUF:RegisterStyle('Zoey', function(self, unit, isSingle)
         ns.CreateBorder(self.Stagger.Frame)
 
         -- Size and place the Stagger Frame
-        self.Stagger.Frame:SetHeight(8)
-        self.Stagger.Frame:SetWidth(FRAME_WIDTH * 0.95)
+        self.Stagger.Frame:SetHeight(10)
+        self.Stagger.Frame:SetWidth(FRAME_WIDTH - 10)
         self.Stagger.Frame:SetPoint('TOP', self, 'BOTTOM', 0, -3)
 
         -- Attach the Stagger bar to the Frame
