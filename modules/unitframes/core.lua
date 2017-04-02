@@ -4,6 +4,8 @@ local L = Addon.L
 local MODULE_NAME = "Unitframes"
 local Module = Addon:NewModule(MODULE_NAME)
 
+Module.units, Module.headers = {},{}
+
 ------------------------------------------------------------------ oUF Colors --
 oUF.colors.health = {89/255, 89/255, 89/255} -- dark grey
 oUF.colors['cast'] =  {
@@ -65,7 +67,7 @@ function Module:CreateHeader(unit, ...)
     local unit = unit:lower()
 
     if not self.headers[unit] then
-        local object = oUF:SpawnHeader(unit, self:CreateFrameName(unit))
+        local object = oUF:SpawnHeader(self:CreateFrameName(unit), nil, ...)
 
         self.headers[unit] = object
     end
@@ -142,7 +144,7 @@ function Module:OnEnable()
 
     local hgap = 130
     oUF:SetActiveStyle('Zoey')
-    self:CreateHeader('Party', nil, 'party',
+    self:CreateHeader('Party', 'party',
         'showParty', true,
         'yOffset', (hgap - 80),
         'point', 'BOTTOM',
@@ -159,7 +161,7 @@ function Module:OnEnable()
         ]]
     ):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 240)
 
-    self:CreateHeader('PartyTargets', nil, 'party',
+    self:CreateHeader('PartyTargets', 'party',
         'showParty', true,
         'yOffset', (hgap - 40),
         'point', 'BOTTOM',
@@ -175,10 +177,10 @@ function Module:OnEnable()
             self:SetWidth(header:GetAttribute("initial-width"))
             self:SetHeight(header:GetAttribute("initial-height"))
         ]]
-    ):SetPoint('BOTTOMLEFT', u.party, 'BOTTOMRIGHT', gap, 0)
+    ):SetPoint('BOTTOMLEFT', self.headers.party, 'BOTTOMRIGHT', gap, 0)
 
     oUF:SetActiveStyle('ZoeyThin')
-    self:CreateHeader('PartyPets', nil, 'party',
+    self:CreateHeader('PartyPets', 'party',
         'showParty', true,
         'yOffset', (hgap - 20),
         'point', 'BOTTOM',
@@ -194,10 +196,10 @@ function Module:OnEnable()
             self:SetWidth(header:GetAttribute("initial-width"))
             self:SetHeight(header:GetAttribute("initial-height"))
         ]]
-    ):SetPoint('BOTTOMLEFT', u.party, 0, -28)
+    ):SetPoint('BOTTOMLEFT', self.headers.party, 0, -28)
 
     oUF:SetActiveStyle('ZoeySquare')
-    self:CreateHeader('Raid', nil, 'party',
+    self:CreateHeader('Raid', 'party',
         'showRaid', true,
         'xOffset', gap/2,
         'point', 'LEFT',

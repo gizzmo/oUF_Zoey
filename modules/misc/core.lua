@@ -31,20 +31,20 @@ function Module:SkinMirrorTimers()
         bar.bar = _G[ barname..'StatusBar' ]
         bar.bar:SetPoint('TOPLEFT', bar, 1, -1)
         bar.bar:SetPoint('BOTTOMRIGHT', bar, -1, 1)
-        bar.bar:SetStatusBarTexture(ns.media.statusbar)
+        bar.bar:SetStatusBarTexture(Addon.media.statusbar)
         bar.bar:SetAlpha(0.8)
 
         bar.bg = bar:GetRegions()
         bar.bg:ClearAllPoints()
         bar.bg:SetAllPoints(bar)
-        bar.bg:SetTexture(ns.media.statusbar)
+        bar.bg:SetTexture(Addon.media.statusbar)
         bar.bg:SetVertexColor(0.2, 0.2, 0.2, 1)
 
         bar.text = _G[barname..'Text']
         bar.text:ClearAllPoints()
         bar.text:SetPoint('LEFT', bar, 6, -1)
-        bar.text:SetFont(ns.media.font, 16)
+        bar.text:SetFont(Addon.media.font, 16)
 
-        Addon.CreateBorder(bar)
+        Addon:CreateBorder(bar)
     end
 end

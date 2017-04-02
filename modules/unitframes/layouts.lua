@@ -1,5 +1,5 @@
 local ADDON_NAME, Addon = ...
-local Module = Addon:GetModule('UnitFrames')
+local Module = Addon:GetModule('Unitframes')
 
 local colors = oUF.colors
 local _, playerClass = UnitClass('player')
@@ -396,7 +396,7 @@ end
 
 
 ------------------------------------------------------------------ The Styles --
-function Module:ConstructStyle(object, unit)
+function Module:ConstructStyle(object, unit, isSingle)
     -- Make the frame interactiveable
     object:RegisterForClicks('AnyUp')
     object:SetScript('OnEnter', OnEnter)
@@ -408,7 +408,7 @@ function Module:ConstructStyle(object, unit)
     object.bg:SetColorTexture(0, 0, 0, 1)
 
     -- Border: changes color depending on the unit's classification (rare,elite)
-    Addon.CreateBorder(object)
+    Addon:CreateBorder(object)
     object:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', UpdateUnitBorderColor)
     table.insert(object.__elements, UpdateUnitBorderColor)
 
@@ -456,7 +456,7 @@ function Module:ConstructStyle(object, unit)
     object.DispelHighlight:SetAlpha(0.7)
 
     -- Build the rest of the object depending on the style
-    Module['Construct_'..object.style](self, object, unit)
+    Module['Construct_'..object.style](self, object, unit, isSingle)
 end
 
 function Module:Construct_Zoey(object, unit, isSingle)
@@ -518,7 +518,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
         object.ClassPower:SetWidth(FRAME_WIDTH - 10)
         object.ClassPower:SetPoint('TOP', object, 'BOTTOM', 0, -3)
         object.ClassPower:SetFrameLevel(object:GetFrameLevel() -1)
-        ns.CreateBorder(object.ClassPower)
+        Addon:CreateBorder(object.ClassPower)
 
         object.ClassPower.bg = object.ClassPower:CreateTexture(nil,'BACKGROUND')
         object.ClassPower.bg:SetAllPoints(object.ClassPower)
@@ -529,7 +529,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
 
         for i = 1, 6 do
             local icon = object.ClassPower:CreateTexture(nil, 'ARTWORK', nil, 2)
-            icon:SetTexture(ns.media.statusbar)
+            icon:SetTexture(Addon.media.statusbar)
 
             icon:SetPoint('TOP', 0, -1)
             icon:SetPoint('LEFT', 1, 0)
@@ -540,7 +540,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
             end
 
             icon.bg = object.ClassPower:CreateTexture(nil, 'BACKGROUND', nil, 1)
-            icon.bg:SetTexture(ns.media.statusbar)
+            icon.bg:SetTexture(Addon.media.statusbar)
             icon.bg:SetAllPoints(icon)
 
             object.ClassPower[i] = icon
@@ -558,7 +558,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
         object.Stagger.Frame.bg = object.Stagger.Frame:CreateTexture(nil, 'BACKGROUND')
         object.Stagger.Frame.bg:SetAllPoints(object.Stagger.Frame)
         object.Stagger.Frame.bg:SetColorTexture(0, 0, 0, 1)
-        ns.CreateBorder(object.Stagger.Frame)
+        Addon:CreateBorder(object.Stagger.Frame)
 
         -- Size and place the Stagger Frame
         object.Stagger.Frame:SetHeight(10)
@@ -665,7 +665,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
         object.Castbar.Frame.bg = object.Castbar.Frame:CreateTexture(nil, 'BACKGROUND')
         object.Castbar.Frame.bg:SetAllPoints(object.Castbar.Frame)
         object.Castbar.Frame.bg:SetColorTexture(0, 0, 0, 1)
-        ns.CreateBorder(object.Castbar.Frame)
+        Addon:CreateBorder(object.Castbar.Frame)
 
         object.Castbar:SetPoint('TOPLEFT', object.Castbar.Frame, 1, -1)
         object.Castbar:SetPoint('BOTTOMRIGHT', object.Castbar.Frame, -1, 1)

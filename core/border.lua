@@ -38,7 +38,7 @@ function Addon:CreateBorder(object)
     -- create the border textures
     for i = 1, #sections do
         local x = object:CreateTexture(nil, 'BORDER')
-        x:SetTexture([[Interface\AddOns\oUF_Zoey\media\Border.tga]])
+        x:SetTexture("Interface\\AddOns\\"..ADDON_NAME.."\\media\\Border.tga")
         B[sections[i]] = x
     end
 

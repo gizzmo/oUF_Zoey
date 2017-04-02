@@ -2,7 +2,7 @@ local ADDON_NAME, Addon = ...
 
 ------------------------------------------------------------------ Core Addon --
 LibStub('AceAddon-3.0'):NewAddon(Addon, ADDON_NAME, 'AceConsole-3.0', 'AceEvent-3.0')
-Addon.version = GetAddonMetadata(ADDON_NAME, 'Version')
+Addon.version = GetAddOnMetadata(ADDON_NAME, 'Version')
 
 ---------------------------------------------------------------------- Locale --
 -- If needed this can be extracted into its own file.
@@ -14,6 +14,7 @@ Addon.L = L
 -- Addon.Media = LibStub('LibSharedMedia') -- TODO
 -- Addon.Media:Register('statusbar', 'Armory', "Interface\\AddOns\\"..ADDON_NAME.."\\media\\Statusbar.tga")
 -- Addon.Media:Register('font', 'Dorpis', "Interface\\AddOns\\"..ADDON_NAME.."\\media\\DORISPP.TTF")
+Addon.media = {}
 Addon.media.statusbar = "Interface\\AddOns\\"..ADDON_NAME.."\\media\\Statusbar.tga"
 Addon.media.font = "Interface\\AddOns\\"..ADDON_NAME.."\\media\\DORISPP.TTF"
 
