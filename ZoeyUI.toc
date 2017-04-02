@@ -6,6 +6,7 @@
 ## Notes: The persional UI build for me
 ## SavedVariables: ZoeyUIDB
 ## OptionalDeps: Ace3
+## RequiredDeps: oUF
 
 #--------------------------------------------------------------------- Author --
 ## Author: Gizzmo
