@@ -1,0 +1,48 @@
+## Interface: 70200
+
+#---------------------------------------------------------------------- Addon --
+## Title: ZoeyUI
+## Version: 0.0.1
+## Notes: The persional UI build for me
+## SavedVariables: ZoeyUIDB
+## OptionalDeps: Ace3
+
+#--------------------------------------------------------------------- Author --
+## Author: Gizzmo
+## X-eMail: addons@justgizzmo.com
+## X-Copyright: Copyright (c) 2011-2017 Gizzmo. All rights reserved
+## X-Website: http://justgizzmo.com
+
+#------------------------------------------------------------------ Libraries --
+libs\LibStub\LibStub.lua
+libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+libs\LibSharedMedia-3.0\LibSharedMedia-3.0.lua
+libs\LibDispellable-1.0\LibDispellable-1.0.lua
+
+libs\AceAddon-3.0\AceAddon-3.0.xml
+#libs\AceEvent-3.0\AceEvent-3.0.xml
+#libs\AceTimer-3.0\AceTimer-3.0.xml
+#libs\AceBucket-3.0\AceBucket-3.0.xml
+#libs\AceHook-3.0\AceHook-3.0.xml
+libs\AceDB-3.0\AceDB-3.0.xml
+libs\AceDBOptions-3.0\AceDBOptions-3.0.xml
+libs\AceLocale-3.0\AceLocale-3.0.xml
+libs\AceConsole-3.0\AceConsole-3.0.xml
+libs\AceGUI-3.0\AceGUI-3.0.xml
+libs\AceConfig-3.0\AceConfig-3.0.xml
+#libs\AceComm-3.0\AceComm-3.0.xml
+#libs\AceTab-3.0\AceTab-3.0.xml
+#libs\AceSerializer-3.0\AceSerializer-3.0.xml
+
+#---------------------------------------------------------------------- Files --
+libs\oUF_Elements\DispelHighlight.lua
+
+core\core.lua
+core\border.lua
+core\functions.lua
+
+modules\unitframes\core.lua
+modules\unitframes\layouts.lua
+modules\unitframes\tags.lua
+
+modules\misc\core.lua
