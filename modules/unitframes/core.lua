@@ -199,11 +199,12 @@ function Module:OnEnable()
     ):SetPoint('BOTTOMLEFT', self.headers.party, 0, -28)
 
     oUF:SetActiveStyle('ZoeySquare')
-    self:CreateHeader('Raid', 'party',
+    self:CreateHeader('Raid', 'raid',
         'showRaid', true,
         'xOffset', gap/2,
         'point', 'LEFT',
 
+        'maxColumns', 8,
         'unitsPerColumn', 5, -- columns are really hoizontal rows
         'columnSpacing', gap/2,
         'columnAnchorPoint', 'BOTTOM',

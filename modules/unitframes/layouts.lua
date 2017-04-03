@@ -86,6 +86,39 @@ local function HighlightUpdate(object)
 end
 
 --------------------------------------------------------------------------------
+-- Power coloring: Perfer class color, fall-back to power
+local function PostUpdatePower(Power, unit)
+    local r,g,b,t
+
+    if UnitIsPlayer(unit) then
+        local class = select(2, UnitClass(unit))
+        t = colors.class[class]
+    else
+        local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
+
+        t = colors.power[ptoken]
+        if(not t) then
+            if(Power.GetAlternativeColor) then
+                r, g, b = Power:GetAlternativeColor(unit, ptype, ptoken, altR, altG, altB)
+            elseif(altR) then
+                r, g, b = altR, altG, altB
+            else
+                t = colors.power[ptype]
+            end
+        end
+    end
+
+    if t then
+        r, g, b = t[1], t[2], t[3]
+    end
+
+    if b then
+        Power:SetStatusBarColor(r, g, b)
+        Power.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
+    end
+end
+
+--------------------------------------------------------------------------------
 -- Castbar Functions
 local function PostCastStart(Castbar, unit, name, castid)
     local r,g,b = unpack(colors.cast.normal)
@@ -673,10 +706,10 @@ function Module:Construct_Zoey(object, unit, isSingle)
         -- Size and place the Castbar Frame
         if unit == 'player' then
             object.Castbar.Frame:SetSize(300,18)
-            object.Castbar.Frame:SetPoint('BOTTOM', oUF_ZoeyUnitFrameAnchor, 0, -30)
+            object.Castbar.Frame:SetPoint('BOTTOM', self.Anchor, 0, -30)
         elseif unit == 'target' then
             object.Castbar.Frame:SetSize(300,30)
-            object.Castbar.Frame:SetPoint('BOTTOM', oUF_ZoeyUnitFrameAnchor, 0, 100)
+            object.Castbar.Frame:SetPoint('BOTTOM', self.Anchor, 0, 100)
         end
 
         -- Spell Icon
