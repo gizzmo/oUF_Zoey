@@ -45,5 +45,6 @@ core\functions.lua
 modules\unitframes\core.lua
 modules\unitframes\layouts.lua
 modules\unitframes\tags.lua
+modules\unitframes\test.lua
 
 modules\misc\core.lua
