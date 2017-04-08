@@ -63,16 +63,16 @@ function Module:CreateUnit(unit)
     return self.units[unit]
 end
 
-function Module:CreateHeader(unit, ...)
-    local unit = unit:lower()
+function Module:CreateHeader(header, ...)
+    local header = header:lower()
 
-    if not self.headers[unit] then
-        local object = oUF:SpawnHeader(self:CreateFrameName(unit), nil, ...)
+    if not self.headers[header] then
+        local object = oUF:SpawnHeader(self:CreateFrameName(header), nil, ...)
 
-        self.headers[unit] = object
+        self.headers[header] = object
     end
 
-    return self.headers[unit]
+    return self.headers[header]
 end
 
 
