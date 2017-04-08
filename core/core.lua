@@ -55,6 +55,22 @@ end
 function Addon:OnDisable()
 end
 
+--------------------------------------------------------------------- Modules --
+Addon.modulePrototype = {}
+Addon:SetDefaultModulePrototype(Addon.modulePrototype)
+Addon:SetDefaultModuleLibraries('AceConsole-3.0')
+
+Addon.ModuleSlashCommands = {}
+function Addon.modulePrototype:RegisterSlashCommand(command, func)
+    if type(func) == 'string' then
+        Addon.ModuleSlashCommands[command] = function(input)
+            self[func](self, input)
+        end
+    else
+        Addon.ModuleSlashCommands[command] = func
+    end
+end
+
 --------------------------------------------------------------- Slash Command --
 Addon:RegisterChatCommand('rl', ReloadUI) -- Easy reload slashcmd
 
@@ -67,5 +83,11 @@ Addon:RegisterChatCommand('zoey', function(input)
         -- TODO: find better pattern matching
     elseif strmatch(strlower(arg), '^ve?r?s?i?o?n?$') then
         Addon:Print(format(L['You are using version %s'], Addon.version))
+    else
+        for command, func in pairs(Addon.ModuleSlashCommands) do
+            if command == arg then
+                return func(input:sub(arg:len()+2))
+            end
+        end
     end
 end)
