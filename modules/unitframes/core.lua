@@ -106,11 +106,6 @@ function Module:OnInitialize()
         self.Anchor = Anchor
     end
 
-    -- Register our UF test command
-    self:RegisterSlashCommand('test', function()
-        self.ToggleTestFrames()
-    end)
-
     -- Regsitering our style functions
     oUF:RegisterStyle('Zoey', function(...) self:ConstructStyle(...) end)
     oUF:RegisterStyle('ZoeyThin', function(...) self:ConstructStyle(...) end)

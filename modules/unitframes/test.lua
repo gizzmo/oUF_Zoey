@@ -49,7 +49,10 @@ local function toggleHeaderFrame(obj, show)
 end
 
 local testActive = false
-function Module.ToggleTestFrames(type)
+
+-- Register our UF test command
+Module:RegisterSlashCommand('test', function(input)
+    local type = Module:GetArgs(input, 1)
 
     -- Always start with them being deactive
     for _, unit in pairs(oUF.objects) do
@@ -59,7 +62,6 @@ function Module.ToggleTestFrames(type)
     toggleHeaderFrame(ZoeyUI_Party, false)
     toggleHeaderFrame(ZoeyUI_PartyPets, false)
     toggleHeaderFrame(ZoeyUI_PartyTargets, false)
-
     toggleHeaderFrame(ZoeyUI_Raid, false)
 
     -- Then, if we want ot enable it, activate them
@@ -84,4 +86,4 @@ function Module.ToggleTestFrames(type)
     end
 
     testActive = not testActive
-end
+end)
