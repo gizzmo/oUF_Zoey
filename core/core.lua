@@ -1,7 +1,7 @@
 local ADDON_NAME, Addon = ...
 
 ------------------------------------------------------------------ Core Addon --
-LibStub('AceAddon-3.0'):NewAddon(Addon, ADDON_NAME, 'AceConsole-3.0', 'AceEvent-3.0')
+ZoeyUI = LibStub('AceAddon-3.0'):NewAddon(Addon, ADDON_NAME, 'AceConsole-3.0', 'AceEvent-3.0')
 Addon.version = GetAddOnMetadata(ADDON_NAME, 'Version')
 
 ---------------------------------------------------------------------- Locale --
