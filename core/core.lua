@@ -47,6 +47,9 @@ Addon.options = {
 function Addon:OnInitialize()
     self.db = LibStub("AceDB-3.0"):New(ADDON_NAME.."DB", defaultDB, true)
     LibStub('AceConfigRegistry-3.0'):RegisterOptionsTable(ADDON_NAME, self.options)
+
+    self.options.args.profile = LibStub('AceDBOptions-3.0'):GetOptionsTable(self.db)
+    self.options.args.profile.order = -1 -- always at the end.
 end
 
 function Addon:OnEnable()

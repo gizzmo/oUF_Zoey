@@ -78,6 +78,8 @@ end
 
 ---------------------------------------------------------------- Core Methods --
 function Module:OnInitialize()
+    self.db = Addon.db:RegisterNamespace(MODULE_NAME, defaultDB)
+
     -- Hide the Blizzard Buffs
     BuffFrame:Hide()
     BuffFrame:UnregisterAllEvents()
