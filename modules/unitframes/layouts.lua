@@ -745,6 +745,37 @@ function Module:Construct_Zoey(object, unit, isSingle)
         end
         object.Castbar.Text:SetPoint('LEFT', 5, 0)
         object.Castbar.Time:SetPoint('RIGHT', -5, 0)
+
+    elseif unit:match('boss%d') then
+        object.Castbar = CreateStatusBar(object)
+
+        object.Castbar.Frame = CreateFrame('Frame', nil, object.Castbar)
+        object.Castbar.Frame:SetFrameLevel(object.Castbar:GetFrameLevel()-1)
+        object.Castbar.Frame.bg = object.Castbar.Frame:CreateTexture(nil, 'BACKGROUND')
+        object.Castbar.Frame.bg:SetAllPoints(object.Castbar.Frame)
+        object.Castbar.Frame.bg:SetColorTexture(0, 0, 0, 1)
+
+        object.Castbar:SetPoint('TOPLEFT', object.Castbar.Frame, 1, -1)
+        object.Castbar:SetPoint('BOTTOMRIGHT', object.Castbar.Frame, -1, 1)
+
+        -- Size and place the Castbar Frame
+        object.Castbar.Frame:SetSize(FRAME_WIDTH, 20)
+        object.Castbar.Frame:SetPoint('BOTTOMLEFT', object, 'BOTTOMRIGHT', 8, 0)
+
+        -- Spell Icon
+        object.Castbar.Icon = object.Castbar:CreateTexture(nil, 'BACKDROP')
+        object.Castbar.Icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+        object.Castbar.Icon:SetPoint('TOPLEFT', object.Castbar.Frame, 1, -1)
+        object.Castbar.Icon:SetPoint('BOTTOMLEFT', object.Castbar.Frame, 1, 1)
+        object.Castbar.Icon:SetWidth(object.Castbar.Frame:GetHeight())
+
+        -- Anchor the castbar to the icon.
+        object.Castbar:SetPoint('TOPLEFT', object.Castbar.Icon, 'TOPRIGHT', 1, 0)
+
+        -- Castbar Texts
+        object.Castbar.Text = CreateFontString(object.Castbar, 9)
+        object.Castbar.Text:SetPoint('LEFT', 5, 0)
+
     else
         object.Castbar = CreateStatusBar(object, true)
 
@@ -829,6 +860,23 @@ function Module:Construct_Zoey(object, unit, isSingle)
         object.Debuffs.PostCreateIcon = PostCreateAuraIcon
         object.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
         object.Debuffs.PostUpdate = PostUpdateAuras
+
+    elseif unit:match('boss%d') then
+        object.Buffs = CreateFrame('Frame', nil, object)
+        object.Buffs:SetSize(FRAME_WIDTH, 1)
+        object.Buffs:SetPoint('TOPLEFT', object, 'TOPRIGHT', 8, 0)
+
+        object.Buffs.initialAnchor = 'TOPLEFT'
+        object.Buffs['growth-x'] = 'RIGHT'
+        object.Buffs['growth-y'] = 'DOWN'
+        object.Buffs.spacing = 3
+        object.Buffs.size = 20
+
+        local trueSize = object.Buffs.size + object.Buffs.spacing
+        object.Buffs.num = floor(object.Buffs:GetWidth() / trueSize)
+
+        object.Buffs.PostCreateIcon = PostCreateAuraIcon
+        object.Buffs.PostUpdateIcon = PostUpdateAuraIcon
 
     elseif unit == 'party' or unit == 'focus' then
 
