@@ -8,7 +8,7 @@ Module.units, Module.headers = {},{}
 
 ------------------------------------------------------------------ oUF Colors --
 oUF.colors.health = {89/255, 89/255, 89/255} -- dark grey
-oUF.colors['cast'] =  {
+oUF.colors['cast'] = {
     normal   = {89/255, 89/255, 89/255},      -- dark gray
     success  = {20/255, 208/255, 0/255},      -- green
     failed   = {255/255, 12/255, 0/255},      -- dark red
