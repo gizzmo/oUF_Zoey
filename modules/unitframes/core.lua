@@ -4,7 +4,7 @@ local L = Addon.L
 local MODULE_NAME = "Unitframes"
 local Module = Addon:NewModule(MODULE_NAME)
 
-Module.units, Module.headers = {},{}
+Module.units, Module.groups, Module.headers = {},{},{}
 
 ------------------------------------------------------------------ oUF Colors --
 oUF.colors.health = {89/255, 89/255, 89/255} -- dark grey
@@ -61,6 +61,26 @@ function Module:CreateUnit(unit)
     end
 
     return self.units[unit]
+end
+
+function Module:CreateGroup(group, gap)
+    local group = group:lower()
+
+    if not self.groups[group] then
+        local objects = {}
+        for i=1,5 do
+            local object = oUF:Spawn(group..i, self:CreateFrameName(group..i))
+
+            if i>1 then
+                object:SetPoint('BOTTOM', objects[i-1], 'TOP', 0, gap)
+            end
+            objects[i] = object
+        end
+
+        self.groups[group] = objects
+    end
+
+    return self.groups[group][1] -- return the first object
 end
 
 function Module:CreateHeader(header, ...)
@@ -130,19 +150,8 @@ function Module:OnEnable()
     self:CreateUnit('TargetTargetTarget'):SetPoint('TOPRIGHT', self.units.targettarget, 'BOTTOMRIGHT', 0, -gap)
 
     oUF:SetActiveStyle('Zoey')
-    local Boss, Arena = {},{}
-    for i = 1, 5 do
-        Boss[i] = self:CreateUnit('Boss'..i)
-        Arena[i] = self:CreateUnit('Arena'..i)
-
-        if i == 1 then
-            Boss[i]:SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap*3)
-            Arena[i]:SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap*3)
-        else
-            Boss[i]:SetPoint('BOTTOM', Boss[i - 1], 'TOP', 0, gap)
-            Arena[i]:SetPoint('BOTTOM', Arena[i - 1], 'TOP', 0, gap)
-        end
-    end
+    self:CreateGroup('Boss', gap):SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap*3)
+    self:CreateGroup('Arena', gap):SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap*3)
 
     local hgap = 130
     oUF:SetActiveStyle('Zoey')
