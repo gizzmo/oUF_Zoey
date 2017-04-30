@@ -338,7 +338,7 @@ end
 
 --------------------------------------------------------------------------------
 -- ClassIcons Functions
-local ClassPowerUpdateTexture
+local ClassPowerUpdateColor
 do
     local classPowerType = {
         MONK    = 'CHI',
@@ -349,21 +349,21 @@ do
         MAGE    = 'ARCANE_CHARGES'
     }
 
-    function ClassPowerUpdateTexture(element)
+    function ClassPowerUpdateColor(element)
         local color = colors.power[classPowerType[playerClass] or 'COMBO_POINTS']
         for i = 1, #element do
             local icon = element[i]
 
-            icon:SetVertexColor(color[1], color[2], color[3])
+            icon:SetStatusBarColor(color[1], color[2], color[3])
             icon.bg:SetVertexColor(color[1]*0.4, color[2]*0.4, color[3]*0.4)
         end
     end
 end
 
-local function ClassPowerPostUpdate(ClassPower, cur, max, maxChanged, powerType, event)
+local function ClassPowerPostUpdate(ClassPower, cur, max, mod, maxChanged, powerType)
     -- Show or hide the entire frame on enable/disable
-    if event == 'ClassPowerDisable' then return ClassPower:Hide()
-    elseif event == 'ClassPowerEnable' then ClassPower:Show() end
+    if max == nil then return ClassPower:Hide()
+    elseif max ~= nil then ClassPower:Show() end
 
     -- Only need to update when the max hax changed
     if maxChanged then
@@ -372,12 +372,6 @@ local function ClassPowerPostUpdate(ClassPower, cur, max, maxChanged, powerType,
 
         for i = 1, max do
             ClassPower[i]:SetWidth(width)
-            ClassPower[i].bg:Show()
-        end
-
-        -- hide unused bgs
-        for i = max + 1, 6 do
-            ClassPower[i].bg:Hide()
         end
     end
 end
@@ -557,11 +551,10 @@ function Module:Construct_Zoey(object, unit, isSingle)
         object.ClassPower.bg:SetColorTexture(0,0,0,1)
 
         object.ClassPower.PostUpdate = ClassPowerPostUpdate
-        object.ClassPower.UpdateTexture = ClassPowerUpdateTexture
+        object.ClassPower.UpdateTexture = ClassPowerUpdateColor
 
         for i = 1, 6 do
-            local icon = object.ClassPower:CreateTexture(nil, 'ARTWORK', nil, 2)
-            icon:SetTexture(Addon.media.statusbar)
+            local icon = CreateStatusBar(object.ClassPower)
 
             icon:SetPoint('TOP', 0, -1)
             icon:SetPoint('LEFT', 1, 0)
@@ -570,10 +563,6 @@ function Module:Construct_Zoey(object, unit, isSingle)
             if i ~= 1 then
                 icon:SetPoint('LEFT', object.ClassPower[i-1], 'RIGHT', 1, 0)
             end
-
-            icon.bg = object.ClassPower:CreateTexture(nil, 'BACKGROUND', nil, 1)
-            icon.bg:SetTexture(Addon.media.statusbar)
-            icon.bg:SetAllPoints(icon)
 
             object.ClassPower[i] = icon
         end
