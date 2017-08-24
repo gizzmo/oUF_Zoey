@@ -564,6 +564,9 @@ function Module:Construct_Zoey(object, unit, isSingle)
                 icon:SetPoint('LEFT', object.ClassPower[i-1], 'RIGHT', 1, 0)
             end
 
+            -- Reanchor it's not hidden when the icon is
+            icon.bg:SetParent(object.ClassPower)
+
             object.ClassPower[i] = icon
         end
     end
