@@ -1,6 +1,7 @@
 local ADDON_NAME, Addon = ...
 local Module = Addon:GetModule('Unitframes')
 
+local oUF = Addon.oUF
 local colors = oUF.colors
 local _, playerClass = UnitClass('player')
 

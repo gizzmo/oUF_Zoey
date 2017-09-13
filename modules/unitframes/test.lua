@@ -1,6 +1,8 @@
 local ADDON_NAME, Addon = ...
 local Module = Addon:GetModule('Unitframes')
 
+local oUF = Addon.oUF
+
 local function toggleUnitFrame(obj, show)
     if show then
         obj.old_unit = obj.unit

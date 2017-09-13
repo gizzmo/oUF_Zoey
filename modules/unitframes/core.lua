@@ -1,8 +1,10 @@
 local ADDON_NAME, Addon = ...
-local L = Addon.L
 
 local MODULE_NAME = "Unitframes"
 local Module = Addon:NewModule(MODULE_NAME)
+
+local L = Addon.L
+local oUF = Addon.oUF
 
 Module.units, Module.groups, Module.headers = {},{},{}
 

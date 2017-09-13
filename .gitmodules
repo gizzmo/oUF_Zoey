@@ -1,0 +1,3 @@
+[submodule "libs/oUF"]
+	path = libs/oUF
+	url = https://github.com/oUF-wow/oUF.git

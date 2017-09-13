@@ -6,7 +6,6 @@
 ## Notes: The persional UI build for me
 ## SavedVariables: ZoeyUIDB
 ## OptionalDeps: Ace3
-## RequiredDeps: oUF
 
 #--------------------------------------------------------------------- Author --
 ## Author: Gizzmo
@@ -19,6 +18,8 @@ libs\LibStub\LibStub.lua
 libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
 libs\LibSharedMedia-3.0\LibSharedMedia-3.0.lua
 libs\LibDispellable-1.0\LibDispellable-1.0.lua
+
+libs\oUF\oUF.xml
 
 libs\AceAddon-3.0\AceAddon-3.0.xml
 #libs\AceEvent-3.0\AceEvent-3.0.xml

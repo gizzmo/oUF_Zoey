@@ -1,6 +1,8 @@
 local ADDON_NAME, Addon = ...
 local Module = Addon:GetModule('Unitframes')
 
+local oUF = Addon.oUF
+
 local function IsMouseOver(unit)
     if Module.mousefocus and Module.mousefocus['unit'] == unit then
         return true
