@@ -478,7 +478,7 @@ function Module:ConstructStyle(object, unit, isSingle)
     -- DispelHighlight
     object.DispelHighlight = object.Overlay:CreateTexture(nil, 'OVERLAY')
     object.DispelHighlight:SetAllPoints(object.Health)
-    object.DispelHighlight:SetTexture([[Interface\AddOns\oUF_Zoey\media\Dispel.tga]])
+    object.DispelHighlight:SetTexture("Interface\\AddOns\\"..ADDON_NAME.."\\media\\Dispel.tga")
     object.DispelHighlight:SetBlendMode('ADD')
     object.DispelHighlight:SetAlpha(0.7)
 
