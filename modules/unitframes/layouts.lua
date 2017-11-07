@@ -373,6 +373,11 @@ local function ClassPowerPostUpdate(ClassPower, cur, max, mod, maxChanged, power
 
         for i = 1, max do
             ClassPower[i]:SetWidth(width)
+            ClassPower[i].bg:Show()
+        end
+
+        for i = max+1, 6 do
+            ClassPower[i].bg:Hide()
         end
     end
 end
