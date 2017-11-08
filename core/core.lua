@@ -11,17 +11,16 @@ local L = LibStub("AceLocale-3.0"):GetLocale(ADDON_NAME)
 Addon.L = L
 
 ----------------------------------------------------------------------- Media --
--- Addon.Media = LibStub('LibSharedMedia') -- TODO
--- Addon.Media:Register('statusbar', 'Armory', "Interface\\AddOns\\"..ADDON_NAME.."\\media\\Statusbar.tga")
--- Addon.Media:Register('font', 'Dorpis', "Interface\\AddOns\\"..ADDON_NAME.."\\media\\DORISPP.TTF")
-Addon.media = {}
-Addon.media.statusbar = "Interface\\AddOns\\"..ADDON_NAME.."\\media\\Statusbar.tga"
-Addon.media.font = "Interface\\AddOns\\"..ADDON_NAME.."\\media\\DORISPP.TTF"
+Addon.Media = LibStub('LibSharedMedia-3.0')
+Addon.Media:Register('statusbar', 'Armory', "Interface\\AddOns\\"..ADDON_NAME.."\\media\\Statusbar.tga")
+Addon.Media:Register('font', 'Dorpis', "Interface\\AddOns\\"..ADDON_NAME.."\\media\\DORISPP.TTF")
+Addon.Media:Register('border', 'ZoeyUI Border', "Interface\\AddOns\\"..ADDON_NAME.."\\media\\border.tga")
 
 -------------------------------------------------------------------- Database --
 local defaultDB = {
     profile = {
-
+        statusbar = 'Armory',
+        font = 'Dorpis',
     },
     global = {
 
@@ -32,16 +31,66 @@ local defaultDB = {
 Addon.options = {
     type = 'group',
     args = {
-        general = {
-            type = 'group',
-            name = L['General Settings'],
+        ZoeyUI_Header = {
             order = 1,
+            type = 'header',
+            name = L["Zoey UI!!!"],
+            width = 'full',
+        },
+
+        ReloadUI = {
+            order = 2,
+            type = 'execute',
+            name = L["ReloadUI"],
+            desc = L["Reloads the UI."],
+            func = function() ReloadUI() end,
+        },
+
+        general = {
+            order = 10,
+            type = 'group',
+            name = L['General'],
+            get = function(info) return Addon.db.profile[ info[#info] ] end,
+            set = function(info, value) Addon.db.profile[ info[#info] ] = value end,
             args = {
-                -- addon-wide settings here
+                fontHeader = {
+                    order = 10,
+                    type = "header",
+                    name = L["Fonts"],
+                },
+                fontSize = {
+                    order = 11,
+                    name = L["Font Size"],
+                    desc = L["Set the font size for everything in the UI."],
+                    type = 'range',
+                    min = 4, max = 200, step = 1,
+                },
+                font = {
+                    order = 12,
+                    name = L["Default"],
+                    desc = L["This is the description."],
+                    type = 'select', dialogControl = 'LSM30_Font',
+                    values = AceGUIWidgetLSMlists.font,
+                },
+                textureHeader = {
+                    order = 20,
+                    type = 'header',
+                    name = L["Textures"],
+                },
+                statusbar = {
+                    order = 21,
+                    name = L["Statusbar"],
+                    desc = L["The texture that will be used mainly for statusbars."],
+                    type = "select", dialogControl = 'LSM30_Statusbar',
+                    values = AceGUIWidgetLSMlists.statusbar,
+                },
             },
         },
     },
 }
+
+
+
 
 ---------------------------------------------------------------- Core Methods --
 function Addon:OnInitialize()
