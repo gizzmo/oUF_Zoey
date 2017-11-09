@@ -19,8 +19,13 @@ Addon.Media:Register('border', 'ZoeyUI Border', "Interface\\AddOns\\"..ADDON_NAM
 -------------------------------------------------------------------- Database --
 local defaultDB = {
     profile = {
-        statusbar = 'Armory',
-        font = 'Dorpis',
+        general = {
+            fontSize = 16,
+            font = 'Dorpis',
+            texture = 'Armory',
+            borderColor = {113/255, 113/255, 113/255},
+            textureColor = {89/255, 89/255, 89/255},
+        },
     },
     global = {
 
@@ -30,34 +35,32 @@ local defaultDB = {
 --------------------------------------------------------------------- Options --
 Addon.options = {
     type = 'group',
+    args = {},
+}
+
+Addon.options.args.general = {
+    order = 10,
+    type = 'group',
+    name = L['General'],
+    get = function(info) return Addon.db.profile.general[ info[#info] ] end,
+    set = function(info, value) Addon.db.profile.general[ info[#info] ] = value end,
     args = {
-        ZoeyUI_Header = {
-            order = 1,
-            type = 'header',
-            name = L["Zoey UI!!!"],
-            width = 'full',
-        },
-
-        ReloadUI = {
-            order = 2,
-            type = 'execute',
-            name = L["ReloadUI"],
-            desc = L["Reloads the UI."],
-            func = function() ReloadUI() end,
-        },
-
         general = {
             order = 10,
             type = 'group',
-            name = L['General'],
-            get = function(info) return Addon.db.profile[ info[#info] ] end,
-            set = function(info, value) Addon.db.profile[ info[#info] ] = value end,
+            inline = true,
+            name = L["General"],
             args = {
-                fontHeader = {
-                    order = 10,
-                    type = "header",
-                    name = L["Fonts"],
-                },
+                --
+            },
+        },
+
+        fonts = {
+            order = 20,
+            type = 'group',
+            inline = true,
+            name = L["Fonts"],
+            args = {
                 fontSize = {
                     order = 11,
                     name = L["Font Size"],
@@ -72,25 +75,49 @@ Addon.options = {
                     type = 'select', dialogControl = 'LSM30_Font',
                     values = AceGUIWidgetLSMlists.font,
                 },
-                textureHeader = {
-                    order = 20,
-                    type = 'header',
-                    name = L["Textures"],
-                },
-                statusbar = {
+            },
+        },
+
+        texture = {
+            order = 30,
+            type = 'group',
+            inline = true,
+            name = L["Textures"],
+            args = {
+                texture = {
                     order = 21,
-                    name = L["Statusbar"],
+                    name = L["Texture"],
                     desc = L["The texture that will be used mainly for statusbars."],
                     type = "select", dialogControl = 'LSM30_Statusbar',
                     values = AceGUIWidgetLSMlists.statusbar,
                 },
             },
         },
+
+        colors = {
+            order = 40,
+            type = 'group',
+            inline = true,
+            name = L["Colors"],
+            get = function(info) return unpack(Addon.db.profile.general[info[#info]]) end,
+            set = function(info, ...) Addon.db.profile.general[info[#info]] = {...} end,
+            args = {
+                textureColor = {
+                    order = 32,
+                    name = L["Texture color"],
+                    desc = L["The color used for statusbars."],
+                    type = 'color', hasAlpha = false,
+                },
+                borderColor = {
+                    order = 31,
+                    name = L["Border color"],
+                    desc = L["Main border color for the UI."],
+                    type = 'color', hasAlpha = false,
+                },
+            },
+        },
     },
 }
-
-
-
 
 ---------------------------------------------------------------- Core Methods --
 function Addon:OnInitialize()
