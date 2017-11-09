@@ -22,7 +22,7 @@ libs\LibDispellable-1.0\LibDispellable-1.0.lua
 libs\oUF\oUF.xml
 
 libs\AceAddon-3.0\AceAddon-3.0.xml
-#libs\AceEvent-3.0\AceEvent-3.0.xml
+libs\AceEvent-3.0\AceEvent-3.0.xml
 #libs\AceTimer-3.0\AceTimer-3.0.xml
 #libs\AceBucket-3.0\AceBucket-3.0.xml
 #libs\AceHook-3.0\AceHook-3.0.xml
@@ -35,6 +35,7 @@ libs\AceConfig-3.0\AceConfig-3.0.xml
 #libs\AceComm-3.0\AceComm-3.0.xml
 #libs\AceTab-3.0\AceTab-3.0.xml
 #libs\AceSerializer-3.0\AceSerializer-3.0.xml
+libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
 
 #---------------------------------------------------------------------- Files --
 libs\oUF_Elements\DispelHighlight.lua
