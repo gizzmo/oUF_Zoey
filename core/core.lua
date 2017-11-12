@@ -90,6 +90,10 @@ Addon.options.args.general = {
                     desc = L["The texture that will be used mainly for statusbars."],
                     type = "select", dialogControl = 'LSM30_Statusbar',
                     values = AceGUIWidgetLSMlists.statusbar,
+                    set = function(info, value)
+                        Addon.db.profile.general[ info[#info] ] = value;
+                        Addon:UpdateStatusBars()
+                    end
                 },
             },
         },
@@ -132,6 +136,24 @@ function Addon:OnEnable()
 end
 
 function Addon:OnDisable()
+end
+
+--------------------------------------------------------------------------------
+Addon.statusBars = {}
+function Addon:RegisterStatusBar(statusBar)
+    tinsert(self.statusBars, statusBar)
+end
+
+function Addon:UpdateStatusBars()
+    for _, statusBar in pairs(self.statusBars) do
+        if not statusBar then break end
+        local texture = self.Media:Fetch('statusbar', self.db.profile.general.texture)
+        if statusBar:GetObjectType() == "StatusBar" then
+            statusBar:SetStatusBarTexture(texture)
+        elseif statusBar:GetObjectType() == "Texture" then
+            statusBar:SetTexture(texture)
+        end
+    end
 end
 
 --------------------------------------------------------------------- Modules --

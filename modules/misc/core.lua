@@ -46,5 +46,6 @@ function Module:SkinMirrorTimers()
         bar.text:SetFont(Addon.Media:Fetch('font', Addon.db.profile.font), 16)
 
         Addon:CreateBorder(bar)
+        Addon:RegisterStatusBar(bar.bar)
     end
 end
