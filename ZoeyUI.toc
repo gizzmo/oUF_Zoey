@@ -49,4 +49,4 @@ modules\unitframes\layouts.lua
 modules\unitframes\tags.lua
 modules\unitframes\test.lua
 
-modules\misc\core.lua
+modules\misc\mirrortimers.lua

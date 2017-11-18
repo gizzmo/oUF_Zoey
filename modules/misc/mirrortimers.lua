@@ -1,16 +1,9 @@
 local ADDON_NAME, Addon = ...
 
-local MODULE_NAME = 'Miscellaneous'
+local MODULE_NAME = 'MirrorTimers'
 local Module = Addon:NewModule(MODULE_NAME)
 
--- The place to modify other parts of the UI
--- before they are big enough for a real module
-
 function Module:OnEnable()
-    self:SkinMirrorTimers()
-end
-
-function Module:SkinMirrorTimers()
     for i = 1, 3 do
         local barname = 'MirrorTimer'..i
         local bar = _G[barname]
