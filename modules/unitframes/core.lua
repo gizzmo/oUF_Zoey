@@ -44,20 +44,18 @@ Module.options = {
 Addon.options.args[MODULE_NAME] = Module.options
 
 --------------------------------------------------------------------------------
-function Module:CreateFrameName(string)
-    local frameName = string:lower() -- start all lower case
+local function unitToCamelCase(string)
+    return string:lower() -- start all lower case
         :gsub('^%l', string.upper)   -- set the first character upper case
         :gsub('t(arget)', 'T%1')
         :gsub('p(ets)', 'P%1')
-
-    return ADDON_NAME..'_'..frameName
 end
 
 function Module:CreateUnit(unit)
     local unit = unit:lower()
 
     if not self.units[unit] then
-        local object = oUF:Spawn(unit, self:CreateFrameName(unit))
+        local object = oUF:Spawn(unit, 'ZoeyUI_'..unitToCamelCase(unit))
 
         self.units[unit] = object
     end
@@ -71,7 +69,7 @@ function Module:CreateGroup(group, gap)
     if not self.groups[group] then
         local objects = {}
         for i=1,5 do
-            local object = oUF:Spawn(group..i, self:CreateFrameName(group..i))
+            local object = oUF:Spawn(group..i, 'ZoeyUI_'..unitToCamelCase(group..i))
 
             if i>1 then
                 object:SetPoint('BOTTOM', objects[i-1], 'TOP', 0, gap)
@@ -89,7 +87,7 @@ function Module:CreateHeader(header, ...)
     local header = header:lower()
 
     if not self.headers[header] then
-        local object = oUF:SpawnHeader(self:CreateFrameName(header), nil, ...)
+        local object = oUF:SpawnHeader('ZoeyUI_'..unitToCamelCase(header), nil, ...)
 
         self.headers[header] = object
     end
@@ -124,7 +122,7 @@ function Module:OnInitialize()
     end
 
     if not self.Anchor then
-        local Anchor = CreateFrame('Frame', self:CreateFrameName('UnitFrameAnchor'), UIParent)
+        local Anchor = CreateFrame('Frame', 'ZoeyUI_UnitFrameAnchor', UIParent)
         Anchor:SetSize(320, 1) -- width is the gap between target and player frames
         Anchor:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 245)
         self.Anchor = Anchor
