@@ -44,6 +44,42 @@ Module.options = {
 Addon.options.args[MODULE_NAME] = Module.options
 
 --------------------------------------------------------------------------------
+function Module:OnInitialize()
+    self.db = Addon.db:RegisterNamespace(MODULE_NAME, defaultDB)
+
+    -- Regsitering our style functions
+    oUF:RegisterStyle('Zoey', function(...) self:ConstructStyle(...) end)
+    oUF:RegisterStyle('ZoeyThin', function(...) self:ConstructStyle(...) end)
+    oUF:RegisterStyle('ZoeySquare', function(...) self:ConstructStyle(...) end)
+end
+
+function Module:OnEnable()
+    -- Hide the Blizzard Buffs
+    BuffFrame:Hide()
+    BuffFrame:UnregisterAllEvents()
+    TemporaryEnchantFrame:Hide()
+
+    -- Remove tanited items from the right click menu on units
+    for _, menu in pairs( UnitPopupMenus ) do
+        for i = #menu, 1, -1 do
+            local name = menu[ i ]
+            if name:match( '^LOCK_%u+_FRAME$' )
+            or name:match( '^UNLOCK_%u+_FRAME$' )
+            or name:match( '^MOVE_%u+_FRAME$' )
+            or name:match( '^RESET_%u+_FRAME_POSITION' )
+            or name:match( '^SET_FOCUS' )
+            or name:match( '^DISMISS' )
+            then
+                table.remove( menu, i )
+            end
+        end
+    end
+
+    self:LoadUnits()
+end
+
+
+--------------------------------------------------------------------------------
 local function unitToCamelCase(string)
     return string:lower() -- start all lower case
         :gsub('^%l', string.upper)   -- set the first character upper case
@@ -95,32 +131,7 @@ function Module:CreateHeader(header, ...)
     return self.headers[header]
 end
 
-
----------------------------------------------------------------- Core Methods --
-function Module:OnInitialize()
-    self.db = Addon.db:RegisterNamespace(MODULE_NAME, defaultDB)
-
-    -- Hide the Blizzard Buffs
-    BuffFrame:Hide()
-    BuffFrame:UnregisterAllEvents()
-    TemporaryEnchantFrame:Hide()
-
-    -- Remove tanited items from the right click menu on units
-    for _, menu in pairs( UnitPopupMenus ) do
-        for i = #menu, 1, -1 do
-            local name = menu[ i ]
-            if name:match( '^LOCK_%u+_FRAME$' )
-            or name:match( '^UNLOCK_%u+_FRAME$' )
-            or name:match( '^MOVE_%u+_FRAME$' )
-            or name:match( '^RESET_%u+_FRAME_POSITION' )
-            or name:match( '^SET_FOCUS' )
-            or name:match( '^DISMISS' )
-            then
-                table.remove( menu, i )
-            end
-        end
-    end
-
+function Module:LoadUnits()
     if not self.Anchor then
         local Anchor = CreateFrame('Frame', 'ZoeyUI_UnitFrameAnchor', UIParent)
         Anchor:SetSize(320, 1) -- width is the gap between target and player frames
@@ -128,13 +139,6 @@ function Module:OnInitialize()
         self.Anchor = Anchor
     end
 
-    -- Regsitering our style functions
-    oUF:RegisterStyle('Zoey', function(...) self:ConstructStyle(...) end)
-    oUF:RegisterStyle('ZoeyThin', function(...) self:ConstructStyle(...) end)
-    oUF:RegisterStyle('ZoeySquare', function(...) self:ConstructStyle(...) end)
-end
-
-function Module:OnEnable()
     local gap = 12
 
     oUF:SetActiveStyle('Zoey')
