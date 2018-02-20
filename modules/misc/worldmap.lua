@@ -31,6 +31,7 @@ end
 
 function Module:OnEnable()
     self:SecureHook("WorldMap_ToggleSizeUp", "SetLargeWorldMap")
+    self:RawHookScript(WorldMapScrollFrame, 'OnMouseWheel', 'FixWorldMapZoom')
     BlackoutWorld:SetTexture(nil)
 
     if WORLDMAP_SETTINGS.size == WORLDMAP_FULLMAP_SIZE then
@@ -38,7 +39,20 @@ function Module:OnEnable()
     end
 end
 
---------------------------------------------------------------------------------
+-- Fixes how the scroll zooming in the fullscreen world map
+do
+    local Real_WorldMapFrame_InWindowedMode = WorldMapFrame_InWindowedMode;
+    local function Fake_WorldMapFrame_InWindowedMode()
+        return true
+    end
+
+    function Module:FixWorldMapZoom(frame, ...)
+        WorldMapFrame_InWindowedMode = Fake_WorldMapFrame_InWindowedMode
+        self.hooks[frame].OnMouseWheel(frame, ...)
+        WorldMapFrame_InWindowedMode = Real_WorldMapFrame_InWindowedMode
+    end
+end
+
 function Module:SetLargeWorldMap()
 	if InCombatLockdown() then return end
 
