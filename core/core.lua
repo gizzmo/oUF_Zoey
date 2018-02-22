@@ -174,6 +174,13 @@ function Addon.modulePrototype:RegisterSlashCommand(command, func)
 
     elseif type(func) == 'function' then
         Addon.ModuleSlashCommands[command] = func
+
+    elseif type(func) == 'boolean' and func then
+        local Dialog = LibStub('AceConfigDialog-3.0')
+        Addon.ModuleSlashCommands[command] = function(input)
+            Dialog:Open(ADDON_NAME)
+            Dialog:SelectGroup(ADDON_NAME, self:GetName())
+        end
     else
         error(("Usage: RegisterSlashCommand(command, func): 'func' - string or function expected got '%s'"):format(type(func)), 2)
     end
