@@ -163,12 +163,19 @@ Addon:SetDefaultModuleLibraries('AceConsole-3.0')
 
 Addon.ModuleSlashCommands = {}
 function Addon.modulePrototype:RegisterSlashCommand(command, func)
+    if type(command) ~= 'string' then
+       error(("Usage: RegisterSlashCommand(command, func): 'command' - string expected got '%s'."):format(type(command)), 2)
+    end
+
     if type(func) == 'string' then
         Addon.ModuleSlashCommands[command] = function(input)
             self[func](self, input)
         end
-    else
+
+    elseif type(func) == 'function' then
         Addon.ModuleSlashCommands[command] = func
+    else
+        error(("Usage: RegisterSlashCommand(command, func): 'func' - string or function expected got '%s'"):format(type(func)), 2)
     end
 end
 
