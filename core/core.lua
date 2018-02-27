@@ -157,12 +157,12 @@ function Addon:UpdateStatusBars()
 end
 
 --------------------------------------------------------------------- Modules --
-Addon.modulePrototype = {}
-Addon:SetDefaultModulePrototype(Addon.modulePrototype)
+local ModulePrototype = {}
+Addon:SetDefaultModulePrototype(ModulePrototype)
 Addon:SetDefaultModuleLibraries('AceConsole-3.0')
 
 Addon.ModuleSlashCommands = {}
-function Addon.modulePrototype:RegisterSlashCommand(command, func)
+function ModulePrototype:RegisterSlashCommand(command, func)
     if type(command) ~= 'string' then
        error(("Usage: RegisterSlashCommand(command, func): 'command' - string expected got '%s'."):format(type(command)), 2)
     end
