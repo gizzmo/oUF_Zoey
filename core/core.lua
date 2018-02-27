@@ -166,23 +166,18 @@ function Addon.modulePrototype:RegisterSlashCommand(command, func)
     if type(command) ~= 'string' then
        error(("Usage: RegisterSlashCommand(command, func): 'command' - string expected got '%s'."):format(type(command)), 2)
     end
+    if type(func) ~= 'string' and type(func) ~= 'function' and type(func) ~= 'boolean' then
+        error(("Usage: RegisterSlashCommand(command, func): 'func' - string, function or boolean expected got '%s'"):format(type(func)), 2)
+    end
 
-    if type(func) == 'string' then
-        Addon.ModuleSlashCommands[command] = function(input)
-            self[func](self, input)
-        end
-
-    elseif type(func) == 'function' then
-        Addon.ModuleSlashCommands[command] = func
-
-    elseif type(func) == 'boolean' and func then
+    if type(func) == 'boolean' and func then
         local Dialog = LibStub('AceConfigDialog-3.0')
         Addon.ModuleSlashCommands[command] = function(input)
             Dialog:Open(ADDON_NAME)
             Dialog:SelectGroup(ADDON_NAME, self:GetName())
         end
     else
-        error(("Usage: RegisterSlashCommand(command, func): 'func' - string or function expected got '%s'"):format(type(func)), 2)
+        Addon.ModuleSlashCommands[command] = Addon.ConvertMethodToFunction(self, func)
     end
 end
 
@@ -206,3 +201,22 @@ Addon:RegisterChatCommand('zoey', function(input)
         end
     end
 end)
+
+------------------------------------------------------------------- Utilities --
+-- Leave a function as-is or if a string is passed in, convert it to a
+-- namespace-method function call.
+function Addon.ConvertMethodToFunction(namespace, func_name)
+    if type(func_name) == "function" then
+        return func_name
+    end
+
+    if type(namespace[func_name]) ~= 'function' then
+        error(("Usage: ConvertMethodToFunction(namespace, func_name): 'func_name' - method '%s' not found on namespace."):format(func_name), 2)
+    end
+
+    return function(...)
+        return namespace[func_name](namespace, ...)
+    end
+end
+
+------------------------------------------------------------------------ Fin! --
