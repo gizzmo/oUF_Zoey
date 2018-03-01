@@ -59,6 +59,11 @@ function Module:OnEnable()
     BuffFrame:UnregisterAllEvents()
     TemporaryEnchantFrame:Hide()
 
+    -- Hide Raidframes
+    CompactRaidFrameManager:Hide()
+    CompactRaidFrameManager:UnregisterAllEvents()
+    CompactRaidFrameContainer:UnregisterAllEvents()
+
     -- Remove tanited items from the right click menu on units
     for _, menu in pairs( UnitPopupMenus ) do
         for i = #menu, 1, -1 do
