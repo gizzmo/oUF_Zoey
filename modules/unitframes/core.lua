@@ -47,10 +47,16 @@ Addon.options.args[MODULE_NAME] = Module.options
 function Module:OnInitialize()
     self.db = Addon.db:RegisterNamespace(MODULE_NAME, defaultDB)
 
-    -- Regsitering our style functions
+    -- Registering our style functions
     oUF:RegisterStyle('Zoey', function(...) self:ConstructStyle(...) end)
     oUF:RegisterStyle('ZoeyThin', function(...) self:ConstructStyle(...) end)
     oUF:RegisterStyle('ZoeySquare', function(...) self:ConstructStyle(...) end)
+
+    -- Every object gets a update method to update its style
+    oUF:RegisterMetaFunction('Update', function(...) self:UpdateStyle(...) end)
+
+    -- After creating a object, also run the Update Method
+    oUF:RegisterInitCallback(function(object) object:Update() end)
 end
 
 function Module:OnEnable()
@@ -83,8 +89,14 @@ function Module:OnEnable()
     self:LoadUnits()
 end
 
+-------------------------------------------------------------------- Updating --
+function Module:UpdateAll()
+    for _, unit in pairs(self.units) do unit:Update() end
+    for _, group in pairs(self.groups) do group:Update() end
+    for _, header in pairs(self.headers) do header:Update() end
+end
 
---------------------------------------------------------------------------------
+-------------------------------------------------------------------- Creating --
 local function unitToCamelCase(string)
     return string:lower() -- start all lower case
         :gsub('^%l', string.upper)   -- set the first character upper case
@@ -95,6 +107,7 @@ end
 function Module:CreateUnit(unit)
     local unit = unit:lower()
 
+    -- If it doesnt exist, create it!
     if not self.units[unit] then
         local object = oUF:Spawn(unit, 'ZoeyUI_'..unitToCamelCase(unit))
 
@@ -107,6 +120,7 @@ end
 function Module:CreateGroup(group, gap)
     local group = group:lower()
 
+    -- If it doesnt exist, create it!
     if not self.groups[group] then
         local objects = {}
         for i=1,5 do
@@ -118,6 +132,15 @@ function Module:CreateGroup(group, gap)
             objects[i] = object
         end
 
+        -- Helper to call Update MetaFunction on for these units
+        objects.Update = function(objects)
+            -- TODO: need function to update this group sudo-header
+            -- mainly used to upgrade spacing/direction
+            for i, object in ipairs(objects) do
+                object:Update()
+            end
+        end
+
         self.groups[group] = objects
     end
 
@@ -127,8 +150,25 @@ end
 function Module:CreateHeader(header, ...)
     local header = header:lower()
 
+    -- If it doesnt exist, create it!
     if not self.headers[header] then
         local object = oUF:SpawnHeader('ZoeyUI_'..unitToCamelCase(header), nil, ...)
+
+        -- Helper to call Update MetaFunction on for the child units
+        object.Update = function(object)
+            -- TODO: need function to update this header's attributes
+            -- Mainly used for updating growth direction, gaps
+
+            local index = 1
+            local child = object:GetAttribute('child'..index)
+
+            while child do
+                child:Update()
+
+                index = index + 1
+                child = object:GetAttribute('child'..index)
+            end
+        end
 
         self.headers[header] = object
     end
