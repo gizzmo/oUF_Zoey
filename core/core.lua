@@ -169,6 +169,9 @@ function ModulePrototype:RegisterSlashCommand(command, func)
     if type(func) ~= 'string' and type(func) ~= 'function' and type(func) ~= 'boolean' then
         error(("Usage: RegisterSlashCommand(command, func): 'func' - string, function or boolean expected got '%s'"):format(type(func)), 2)
     end
+    if type(func) == 'string' and type(self[func]) ~= 'function' then
+        error(("Usage: RegisterSlashCommand(command, func): 'func' - method '%s' not found."):format(func), 2)
+    end
 
     if type(func) == 'boolean' and func then
         local Dialog = LibStub('AceConfigDialog-3.0')
