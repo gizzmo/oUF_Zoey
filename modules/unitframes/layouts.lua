@@ -494,7 +494,6 @@ end
 function Module:UpdateStyle(object)
     -- Update the rest of the object depening on the style
     -- Module['Update_'..object.style](self, object) -- NYI
-    self:Print('Ran update for unit: "'..object.unit..'" and with style: "'..object.style..'"')
 
     -- Update all oUF elements, something with them may have changed.
     object:UpdateAllElements('ForceUpdate')
