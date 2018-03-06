@@ -4,6 +4,9 @@ local ADDON_NAME, Addon = ...
 ZoeyUI = LibStub('AceAddon-3.0'):NewAddon(Addon, ADDON_NAME, 'AceConsole-3.0', 'AceEvent-3.0')
 Addon.version = GetAddOnMetadata(ADDON_NAME, 'Version')
 
+------------------------------------------------------------------------ Libs --
+local Dialog = LibStub("AceConfigDialog-3.0")
+
 ---------------------------------------------------------------------- Locale --
 -- If needed this can be extracted into its own file.
 LibStub('AceLocale-3.0'):NewLocale(ADDON_NAME, 'enUS', true, true)
@@ -174,7 +177,6 @@ function ModulePrototype:RegisterSlashCommand(command, func)
     end
 
     if type(func) == 'boolean' and func then
-        local Dialog = LibStub('AceConfigDialog-3.0')
         Addon.ModuleSlashCommands[command] = function(input)
             Dialog:Open(ADDON_NAME)
             Dialog:SelectGroup(ADDON_NAME, self:GetName())
@@ -186,8 +188,6 @@ end
 
 --------------------------------------------------------------- Slash Command --
 Addon:RegisterChatCommand('rl', ReloadUI) -- Easy reload slashcmd
-
-local Dialog = LibStub('AceConfigDialog-3.0')
 Addon:RegisterChatCommand('zoey', function(input)
     local arg = Addon:GetArgs(input, 1)
 
