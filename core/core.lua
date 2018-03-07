@@ -206,6 +206,10 @@ Addon:RegisterChatCommand('zoey', function(input)
 end)
 
 ------------------------------------------------------------------- Utilities --
+-- Can be used to overwrite a function without making it nil, or where you need
+-- to return a function that does nothing.
+Addon.noop = function() --[[No Operation]] end
+
 -- Leave a function as-is or if a string is passed in, convert it to a
 -- namespace-method function call.
 function Addon.ConvertMethodToFunction(namespace, func_name)
