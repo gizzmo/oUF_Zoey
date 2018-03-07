@@ -16,7 +16,7 @@ Addon.L = L
 ----------------------------------------------------------------------- Media --
 Addon.Media = LibStub('LibSharedMedia-3.0')
 Addon.Media:Register('statusbar', 'Armory', "Interface\\AddOns\\"..ADDON_NAME.."\\media\\Statusbar.tga")
-Addon.Media:Register('font', 'Dorpis', "Interface\\AddOns\\"..ADDON_NAME.."\\media\\DORISPP.TTF")
+Addon.Media:Register('font', 'Dorispp', "Interface\\AddOns\\"..ADDON_NAME.."\\media\\DORISPP.TTF")
 Addon.Media:Register('border', 'ZoeyUI Border', "Interface\\AddOns\\"..ADDON_NAME.."\\media\\border.tga")
 
 -------------------------------------------------------------------- Database --
@@ -24,7 +24,7 @@ local defaultDB = {
     profile = {
         general = {
             fontSize = 16,
-            font = 'Dorpis',
+            font = 'Dorispp',
             texture = 'Armory',
             borderColor = {113/255, 113/255, 113/255},
             textureColor = {89/255, 89/255, 89/255},
