@@ -128,6 +128,17 @@ function Module:CreateUnit(unit)
     return self.units[unit]
 end
 
+-- Group update method. Updates attributes and updates children.
+local function groupUpdateFunction(group, childOnly)
+    if not childOnly then
+        Module:UpdateGroupAtrributes(group)
+    end
+
+    for i, child in ipairs(group) do
+        child:Update()
+    end
+end
+
 function Module:CreateGroup(group)
     local group = group:lower()
 
@@ -147,15 +158,7 @@ function Module:CreateGroup(group)
         self:UpdateGroupAtrributes(objects)
 
         -- Helper to call Update MetaFunction on for these units
-        objects.Update = function(objects, childOnly)
-            if not childOnly then
-                self:UpdateGroupAtrributes(objects)
-            end
-
-            for i, object in ipairs(objects) do
-                object:Update()
-            end
-        end
+        objects.Update = groupUpdateFunction
 
         self.groups[group] = objects
     end
