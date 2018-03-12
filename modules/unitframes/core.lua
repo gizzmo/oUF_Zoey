@@ -128,15 +128,40 @@ function Module:CreateUnit(unit)
     return self.units[unit]
 end
 
--- Group update method. Updates attributes and updates children.
-local function groupUpdateFunction(group, childOnly)
-    if not childOnly then
-        Module:UpdateGroupAtrributes(group)
-    end
-
+-- Group update method. Updates and positions child the sudo-header.
+local function groupUpdateFunction(group)
     for i, child in ipairs(group) do
         child:Update()
+        child:ClearAllPoints()
+
+        local db = child.db
+        if i == 1 then -- Attaches to the sudo-header
+            if db.direction == 'UP' then        child:SetPoint('BOTTOM', group)
+            elseif db.direction == 'DOWN' then  child:SetPoint('TOP', group)
+            elseif db.direction == 'RIGHT' then child:SetPoint('LEFT', group)
+            elseif db.direction == 'LEFT' then  child:SetPoint('RIGHT', group)
+            end
+        else -- Attaches to the previous child
+            if db.direction == 'UP' then        child:SetPoint('BOTTOM', group[i-1], 'TOP', 0, db.spacing)
+            elseif db.direction == 'DOWN' then  child:SetPoint('TOP', group[i-1], 'BOTTOM', 0, -db.spacing)
+            elseif db.direction == 'RIGHT' then child:SetPoint('LEFT', group[i-1], 'RIGHT', db.spacing, 0)
+            elseif db.direction == 'LEFT' then  child:SetPoint('RIGHT', group[i-1], 'LEFT', -db.spacing, 0)
+            end
+        end
     end
+
+    -- Resize group sudo-header to fit the size of all the child units
+    local db = group.db
+    if db.direction == 'UP' or db.direction == 'DOWN' then
+        group:SetWidth(group[#group]:GetWidth())
+        group:SetHeight(((group[#group]:GetHeight() + db.spacing) * #group) - db.spacing)
+    elseif db.direction == 'LEFT' or db.direction == 'RIGHT' then
+        group:SetWidth(((group[#group]:GetWidth() + db.spacing) * #group) - db.spacing)
+        group:SetHeight(group[#group]:GetHeight())
+    end
+
+    -- TODO: should we add a column system?
+    -- TODO: needs combat protection.
 end
 
 function Module:CreateGroup(group)
@@ -154,11 +179,8 @@ function Module:CreateGroup(group)
 
         objects.db = self.db.profile.units[group] -- easy reference
 
-        -- Update children
-        self:UpdateGroupAtrributes(objects)
-
-        -- Helper to call Update MetaFunction on for these units
         objects.Update = groupUpdateFunction
+        objects:Update() -- run the update to position child units
 
         self.groups[group] = objects
     end
@@ -195,39 +217,6 @@ function Module:CreateHeader(header, ...)
     return self.headers[header]
 end
 
-function Module:UpdateGroupAtrributes(group)
-    for i=1, #group do
-        local groupUnit = group[i]
-        local db = groupUnit.db
-
-        groupUnit:ClearAllPoints()
-
-        -- Update children
-        if i == 1 then -- Attaches to the sudo-header
-            if db.direction == 'UP' then        groupUnit:SetPoint('BOTTOM', group)
-            elseif db.direction == 'DOWN' then  groupUnit:SetPoint('TOP', group)
-            elseif db.direction == 'RIGHT' then groupUnit:SetPoint('LEFT', group)
-            elseif db.direction == 'LEFT' then  groupUnit:SetPoint('RIGHT', group)
-            end
-        else -- Attaches to the previous child
-            if db.direction == 'UP' then        groupUnit:SetPoint('BOTTOM', group[i-1], 'TOP', 0, db.spacing)
-            elseif db.direction == 'DOWN' then  groupUnit:SetPoint('TOP', group[i-1], 'BOTTOM', 0, -db.spacing)
-            elseif db.direction == 'RIGHT' then groupUnit:SetPoint('LEFT', group[i-1], 'RIGHT', db.spacing, 0)
-            elseif db.direction == 'LEFT' then  groupUnit:SetPoint('RIGHT', group[i-1], 'LEFT', -db.spacing, 0)
-            end
-        end
-    end
-
-    -- Resize group sudo-header to fit the size of all the child units
-    local db = group.db
-    if db.direction == 'UP' or db.direction == 'DOWN' then
-        group:SetWidth(group[#group]:GetWidth())
-        group:SetHeight(((group[#group]:GetHeight() + db.spacing) * #group) - db.spacing)
-    elseif db.direction == 'LEFT' or db.direction == 'RIGHT' then
-        group:SetWidth(((group[#group]:GetWidth() + db.spacing) * #group) - db.spacing)
-        group:SetHeight(group[#group]:GetHeight())
-    end
-end
 
 function Module:LoadUnits()
     if not self.Anchor then
