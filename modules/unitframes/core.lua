@@ -27,6 +27,17 @@ oUF.colors['border'] = {
 -------------------------------------------------------------------- Database --
 local defaultDB = {
     profile = {
+        units = {
+            -- groups
+            boss = {
+                direction = 'UP',
+                spacing = 12,
+            },
+            arena = {
+                direction = 'UP',
+                spacing = 12,
+            },
+        }
 
     }
 }
@@ -117,25 +128,30 @@ function Module:CreateUnit(unit)
     return self.units[unit]
 end
 
-function Module:CreateGroup(group, gap)
+function Module:CreateGroup(group)
     local group = group:lower()
 
     -- If it doesnt exist, create it!
     if not self.groups[group] then
-        local objects = {}
+        local objects = CreateFrame('Frame', 'ZoeyUI_'..group:gsub('^%l', string.upper), UIParent)
+
         for i=1,5 do
             local object = oUF:Spawn(group..i, 'ZoeyUI_'..unitToCamelCase(group..i))
-
-            if i>1 then
-                object:SetPoint('BOTTOM', objects[i-1], 'TOP', 0, gap)
-            end
+            object.db = self.db.profile.units[group] -- easy reference
             objects[i] = object
         end
 
+        objects.db = self.db.profile.units[group] -- easy reference
+
+        -- Update children
+        self:UpdateGroupAtrributes(objects)
+
         -- Helper to call Update MetaFunction on for these units
-        objects.Update = function(objects)
-            -- TODO: need function to update this group sudo-header
-            -- mainly used to upgrade spacing/direction
+        objects.Update = function(objects, childOnly)
+            if not childOnly then
+                self:UpdateGroupAtrributes(objects)
+            end
+
             for i, object in ipairs(objects) do
                 object:Update()
             end
@@ -144,7 +160,7 @@ function Module:CreateGroup(group, gap)
         self.groups[group] = objects
     end
 
-    return self.groups[group][1] -- return the first object
+    return self.groups[group] -- Return the sudo-header
 end
 
 function Module:CreateHeader(header, ...)
@@ -176,6 +192,40 @@ function Module:CreateHeader(header, ...)
     return self.headers[header]
 end
 
+function Module:UpdateGroupAtrributes(group)
+    for i=1, #group do
+        local groupUnit = group[i]
+        local db = groupUnit.db
+
+        groupUnit:ClearAllPoints()
+
+        -- Update children
+        if i == 1 then -- Attaches to the sudo-header
+            if db.direction == 'UP' then        groupUnit:SetPoint('BOTTOM', group)
+            elseif db.direction == 'DOWN' then  groupUnit:SetPoint('TOP', group)
+            elseif db.direction == 'RIGHT' then groupUnit:SetPoint('LEFT', group)
+            elseif db.direction == 'LEFT' then  groupUnit:SetPoint('RIGHT', group)
+            end
+        else -- Attaches to the previous child
+            if db.direction == 'UP' then        groupUnit:SetPoint('BOTTOM', group[i-1], 'TOP', 0, db.spacing)
+            elseif db.direction == 'DOWN' then  groupUnit:SetPoint('TOP', group[i-1], 'BOTTOM', 0, -db.spacing)
+            elseif db.direction == 'RIGHT' then groupUnit:SetPoint('LEFT', group[i-1], 'RIGHT', db.spacing, 0)
+            elseif db.direction == 'LEFT' then  groupUnit:SetPoint('RIGHT', group[i-1], 'LEFT', -db.spacing, 0)
+            end
+        end
+    end
+
+    -- Resize group sudo-header to fit the size of all the child units
+    local db = group.db
+    if db.direction == 'UP' or db.direction == 'DOWN' then
+        group:SetWidth(group[#group]:GetWidth())
+        group:SetHeight(((group[#group]:GetHeight() + db.spacing) * #group) - db.spacing)
+    elseif db.direction == 'LEFT' or db.direction == 'RIGHT' then
+        group:SetWidth(((group[#group]:GetWidth() + db.spacing) * #group) - db.spacing)
+        group:SetHeight(group[#group]:GetHeight())
+    end
+end
+
 function Module:LoadUnits()
     if not self.Anchor then
         local Anchor = CreateFrame('Frame', 'ZoeyUI_UnitFrameAnchor', UIParent)
@@ -199,8 +249,8 @@ function Module:LoadUnits()
     self:CreateUnit('TargetTargetTarget'):SetPoint('TOPRIGHT', self.units.targettarget, 'BOTTOMRIGHT', 0, -gap)
 
     oUF:SetActiveStyle('Zoey')
-    self:CreateGroup('Boss', gap):SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap*3)
-    self:CreateGroup('Arena', gap):SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap*3)
+    self:CreateGroup('Boss'):SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap*3)
+    self:CreateGroup('Arena'):SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap*3)
 
     local hgap = 130
     oUF:SetActiveStyle('Zoey')
