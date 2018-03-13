@@ -136,6 +136,9 @@ function Addon:OnInitialize()
 end
 
 function Addon:OnEnable()
+    -- enter/leave combat for :RunOnLeaveCombat
+    self:RegisterEvent("PLAYER_REGEN_ENABLED")
+    self:RegisterEvent("PLAYER_REGEN_DISABLED")
 end
 
 function Addon:OnDisable()
@@ -224,6 +227,63 @@ function Addon.ConvertMethodToFunction(namespace, func_name)
     return function(...)
         return namespace[func_name](namespace, ...)
     end
+end
+
+
+--------------------------------------------------------------------------------
+-- Wrap the given function so that any call to it will be piped through
+-- Addon:RunAfterCombat.
+function Addon:AfterCombatWrapper(func)
+    if type(func) ~= 'function' then
+        error(("Usage: AfterCombatWrapper(func): 'func' - function expcted got '%s'."):format(type(func)), 2)
+    end
+
+    return function(...)
+        Addon:RunAfterCombat(func, ...)
+    end
+end
+
+local action_queue, in_combat = {}, false
+
+-- Call a function if out of combat or schedule to run once combat ends.
+function Addon:RunAfterCombat(func, ...)
+    if type(func) ~= 'function' then
+        error(("Usage: RunAfterCombat(func[, ...]): 'func' - function expcted got '%s'."):format(type(func)), 2)
+    end
+
+    -- Not in combat, call right away
+    if not in_combat or not InCombatLockdown() then
+        func(...)
+        return
+    end
+
+    -- Buildup the action table
+    local action = {
+        func = func,
+        num = select('#', ...)
+    }
+
+    -- Save the parameters passed
+    for i=1, action.num do
+        action[i] = select(i, ...)
+    end
+
+    action_queue[#action_queue+1] = action
+end
+
+-- Exiting combat, run and clear the queue
+function Addon:PLAYER_REGEN_ENABLED()
+    in_combat = false
+
+    for i, action in ipairs(action_queue) do
+        action.func(unpack(action, 1, action.num))
+        action_queue[i] = nil
+    end
+end
+
+-- Track entering combat
+function Addon:PLAYER_REGEN_DISABLED()
+    in_combat = true
 end
 
 ------------------------------------------------------------------------ Fin! --
