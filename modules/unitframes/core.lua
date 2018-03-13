@@ -37,6 +37,11 @@ local defaultDB = {
                 direction = 'UP',
                 spacing = 12,
             },
+
+            -- headers
+            party = {},
+            partytargets = {},
+            partypets = {},
         }
 
     }
@@ -188,6 +193,16 @@ function Module:CreateGroup(group)
     return self.groups[group] -- Return the sudo-header
 end
 
+local function headerUpdateFunction(object)
+    -- TODO: need function to update this header's attributes
+
+    for i = 1, object:GetNumChildren() do
+        -- NOTE: If a frame is created with this header as its parent, a error
+        -- could occure because that frame isnt the kinda child we're looking for.
+        select(i, object:GetChildren()):Update()
+    end
+end
+
 function Module:CreateHeader(header, ...)
     local header = header:lower()
 
@@ -195,21 +210,9 @@ function Module:CreateHeader(header, ...)
     if not self.headers[header] then
         local object = oUF:SpawnHeader('ZoeyUI_'..unitToCamelCase(header), nil, ...)
 
-        -- Helper to call Update MetaFunction on for the child units
-        object.Update = function(object)
-            -- TODO: need function to update this header's attributes
-            -- Mainly used for updating growth direction, gaps
+        object.db = self.db.profile.units[header] -- easy reference
 
-            local index = 1
-            local child = object:GetAttribute('child'..index)
-
-            while child do
-                child:Update()
-
-                index = index + 1
-                child = object:GetAttribute('child'..index)
-            end
-        end
+        object.Update = headerUpdateFunction
 
         self.headers[header] = object
     end
