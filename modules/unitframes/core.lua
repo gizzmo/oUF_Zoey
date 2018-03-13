@@ -28,6 +28,18 @@ oUF.colors['border'] = {
 local defaultDB = {
     profile = {
         units = {
+            ['**'] = {
+                enable = true,
+            },
+            player = {},
+            target = {},
+            focus = {},
+            focustarget = {},
+            pet = {},
+            pettarget = {},
+            targettarget = {},
+            targettargettarget = {},
+
             -- groups
             boss = {
                 direction = 'UP',
@@ -126,7 +138,7 @@ function Module:CreateUnit(unit)
     -- If it doesnt exist, create it!
     if not self.units[unit] then
         local object = oUF:Spawn(unit, 'ZoeyUI_'..unitToCamelCase(unit))
-
+        object.db = self.db.profile.units[unit] -- easy reference
         self.units[unit] = object
     end
 
