@@ -138,7 +138,6 @@ end
 function Addon:OnEnable()
     -- enter/leave combat for :RunOnLeaveCombat
     self:RegisterEvent("PLAYER_REGEN_ENABLED")
-    self:RegisterEvent("PLAYER_REGEN_DISABLED")
 end
 
 function Addon:OnDisable()
@@ -243,7 +242,7 @@ function Addon:AfterCombatWrapper(func)
     end
 end
 
-local action_queue, in_combat = {}, false
+local action_queue = {}
 
 -- Call a function if out of combat or schedule to run once combat ends.
 function Addon:RunAfterCombat(func, ...)
@@ -252,7 +251,7 @@ function Addon:RunAfterCombat(func, ...)
     end
 
     -- Not in combat, call right away
-    if not in_combat or not InCombatLockdown() then
+    if not InCombatLockdown() then
         func(...)
         return
     end
@@ -273,17 +272,10 @@ end
 
 -- Exiting combat, run and clear the queue
 function Addon:PLAYER_REGEN_ENABLED()
-    in_combat = false
-
     for i, action in ipairs(action_queue) do
         action.func(unpack(action, 1, action.num))
         action_queue[i] = nil
     end
-end
-
--- Track entering combat
-function Addon:PLAYER_REGEN_DISABLED()
-    in_combat = true
 end
 
 ------------------------------------------------------------------------ Fin! --
