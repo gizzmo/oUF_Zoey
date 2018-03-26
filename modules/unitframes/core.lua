@@ -51,9 +51,30 @@ local defaultDB = {
             },
 
             -- headers
-            party = {},
-            partytargets = {},
-            partypets = {},
+            party = {
+                direction = 'UP',
+                spacing = 50,
+                groupBy = 'ROLE',
+                visibility = '[group:party,nogroup:raid]show;hide;',
+            },
+            partytarget = {
+                direction = 'UP',
+                spacing = 90,
+                groupBy = 'ROLE',
+                visibility = '[group:party,nogroup:raid]show;hide;',
+            },
+            partypet = {
+                direction = 'UP',
+                spacing = 110,
+                groupBy = 'ROLE',
+                visibility = '[group:party,nogroup:raid]show;hide;',
+            },
+            raid = {
+                direction = 'RIGHT_UP',
+                spacing = 6,
+                groupBy = 'ROLE',
+                visibility = '[group:raid]show;hide;',
+            },
         }
 
     }
@@ -205,13 +226,104 @@ function Module:CreateGroup(group)
     return self.groups[group] -- Return the sudo-header
 end
 
-local function headerUpdateFunction(object)
-    -- TODO: need function to update this header's attributes
+-- Single directions should be identical to x_RIGHT or x_UP
+local directionToPoint = { -- opposite of first direction
+    UP_LEFT = 'BOTTOM',
+    UP_RIGHT = 'BOTTOM', UP = 'BOTTOM',
+    DOWN_LEFT = 'TOP',
+    DOWN_RIGHT = 'TOP',  DOWN = 'TOP',
 
-    for i = 1, object:GetNumChildren() do
+    LEFT_UP = 'RIGHT',   LEFT = 'RIGHT',
+    LEFT_DOWN = 'RIGHT',
+    RIGHT_UP = 'LEFT',   RIGHT = 'LEFT',
+    RIGHT_DOWN = 'LEFT',
+}
+local directionToColumnAnchorPoint = { -- opposite of second direction
+    UP_LEFT = 'RIGHT',
+    UP_RIGHT = 'LEFT',   UP = 'LEFT',
+    DOWN_LEFT = 'RIGHT',
+    DOWN_RIGHT = 'LEFT', DOWN = 'LEFT',
+
+    LEFT_UP = 'BOTTOM',  LEFT = 'BOTTOM',
+    LEFT_DOWN = 'TOP',
+    RIGHT_UP = 'BOTTOM', RIGHT = 'BOTTOM',
+    RIGHT_DOWN = 'TOP',
+}
+local directionToHorizontalSpacingMultiplier = {
+    UP_LEFT = -1,
+    UP_RIGHT = 1,   UP = 1,
+    DOWN_LEFT = -1,
+    DOWN_RIGHT = 1, DOWN = 1,
+
+    LEFT_UP = -1,   LEFT = -1,
+    LEFT_DOWN = -1,
+    RIGHT_UP = 1,   RIGHT = 1,
+    RIGHT_DOWN = 1,
+}
+local directionToVerticalSpacingMultiplier = {
+    UP_LEFT = 1,
+    UP_RIGHT = 1,    UP = 1,
+    DOWN_LEFT = -1,
+    DOWN_RIGHT = -1, DOWN = -1,
+
+    LEFT_UP = 1,     LEFT = 1,
+    LEFT_DOWN = -1,
+    RIGHT_UP = 1,    RIGHT = 1,
+    RIGHT_DOWN = -1,
+}
+
+local headerMethods = {}
+function headerMethods:Update()
+    local db = self.db
+
+    local point = directionToPoint[db.direction]
+
+    self:SetAttribute('point', point)
+
+    if point == 'LEFT' or point == 'RIGHT' then
+        self:SetAttribute('xOffset', (db.spacing or db.horizontalSpacing) * directionToHorizontalSpacingMultiplier[db.direction])
+        self:SetAttribute('yOffset', 0)
+        self:SetAttribute('columnSpacing', (db.spacing or db.verticalSpacing))
+    else
+        self:SetAttribute('xOffset', 0)
+        self:SetAttribute('yOffset', (db.spacing or db.verticalSpacing) * directionToVerticalSpacingMultiplier[db.direction])
+        self:SetAttribute('columnSpacing', (db.spacing or db.horizontalSpacing))
+    end
+
+    self:SetAttribute('columnAnchorPoint', directionToColumnAnchorPoint[db.direction])
+    self:SetAttribute('maxColumns', 8)
+    self:SetAttribute('unitsPerColumn', 5)
+    self:SetAttribute('sortDir', 'ASC')
+
+    -- Sorting
+    if db.groupBy == 'CLASS' then
+        self:SetAttribute("groupingOrder", "DEATHKNIGHT,DRUID,HUNTER,MAGE,PALADIN,PRIEST,SHAMAN,WARLOCK,WARRIOR,MONK")
+        self:SetAttribute('sortMethod', 'NAME')
+        self:SetAttribute("groupBy", 'CLASS')
+    elseif db.groupBy == 'ROLE' then
+        self:SetAttribute("groupingOrder", "TANK,HEALER,DAMAGER,NONE")
+        self:SetAttribute('sortMethod', 'NAME')
+        self:SetAttribute("groupBy", 'ASSIGNEDROLE')
+    elseif db.groupBy == 'NAME' then
+        self:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
+        self:SetAttribute('sortMethod', 'NAME')
+        self:SetAttribute("groupBy", nil)
+    elseif db.groupBy == 'GROUP' then
+        self:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
+        self:SetAttribute('sortMethod', 'INDEX')
+        self:SetAttribute("groupBy", 'GROUP')
+    end
+
+    -- Update visibility
+    if not self.visibility or self.visibility ~= self.db.visibility then
+        RegisterStateDriver(self, 'visibility', db.visibility)
+        self.visibility = db.visibility
+    end
+
+    for i = 1, self:GetNumChildren() do
         -- NOTE: If a frame is created with this header as its parent, a error
         -- could occure because that frame isnt the kinda child we're looking for.
-        select(i, object:GetChildren()):Update()
+        select(i, self:GetChildren()):Update()
     end
 end
 
@@ -220,11 +332,23 @@ function Module:CreateHeader(header, ...)
 
     -- If it doesnt exist, create it!
     if not self.headers[header] then
-        local object = oUF:SpawnHeader('ZoeyUI_'..unitToCamelCase(header), nil, ...)
+        local object = oUF:SpawnHeader('ZoeyUI_'..unitToCamelCase(header), nil, nil,
+            'showRaid', true, 'showParty', true, 'showSolo', true,
+            'oUF-initialConfigFunction', ([[
+                local header = self:GetParent()
+                self:SetWidth(header:GetAttribute("initial-width"))
+                self:SetHeight(header:GetAttribute("initial-height"))
+                -- Overwrite what oUF thinks the unit is
+                self:SetAttribute('oUF-guessUnit', '%s')
+            ]]):format(header), ...)
 
         object.db = self.db.profile.units[header] -- easy reference
 
-        object.Update = headerUpdateFunction
+        for k,v in pairs(headerMethods) do
+            object[k] = v
+        end
+
+        object:Update() -- run the update to configure header
 
         self.headers[header] = object
     end
@@ -259,82 +383,26 @@ function Module:LoadUnits()
     self:CreateGroup('Boss'):SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap*3)
     self:CreateGroup('Arena'):SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap*3)
 
-    local hgap = 130
     oUF:SetActiveStyle('Zoey')
-    self:CreateHeader('Party', 'party',
-        'showParty', true,
-        'yOffset', (hgap - 80),
-        'point', 'BOTTOM',
-
-        'groupBy', 'ASSIGNEDROLE',
-        'groupingOrder', 'TANK,HEALER,DAMAGER',
-
-        'initial-width', 135,
-        'initial-height', 80,
-        'oUF-initialConfigFunction', [[
-            local header = self:GetParent()
-            self:SetWidth(header:GetAttribute("initial-width"))
-            self:SetHeight(header:GetAttribute("initial-height"))
-        ]]
+    self:CreateHeader('Party',
+        'initial-width', 135, -- TODO: These can be moved later when the database holds the frame sizes
+        'initial-height', 80  --       Right now the style, and header initialConfigFunction holds the sizes
     ):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 240)
 
-    self:CreateHeader('PartyTargets', 'party',
-        'showParty', true,
-        'yOffset', (hgap - 40),
-        'point', 'BOTTOM',
-
-        'groupBy', 'ASSIGNEDROLE',
-        'groupingOrder', 'TANK,HEALER,DAMAGER',
-
+    self:CreateHeader('PartyTarget',
         'initial-width', 135,
-        'initial-height', 40,
-        'oUF-initialConfigFunction', [[
-            self:SetAttribute('unitsuffix', 'target')
-            local header = self:GetParent()
-            self:SetWidth(header:GetAttribute("initial-width"))
-            self:SetHeight(header:GetAttribute("initial-height"))
-        ]]
+        'initial-height', 40
     ):SetPoint('BOTTOMLEFT', self.headers.party, 'BOTTOMRIGHT', gap, 0)
 
     oUF:SetActiveStyle('ZoeyThin')
-    self:CreateHeader('PartyPets', 'party',
-        'showParty', true,
-        'yOffset', (hgap - 20),
-        'point', 'BOTTOM',
-
-        'groupBy', 'ASSIGNEDROLE',
-        'groupingOrder', 'TANK,HEALER,DAMAGER',
-
+    self:CreateHeader('PartyPet',
         'initial-width', 135,
-        'initial-height', 20,
-        'oUF-initialConfigFunction', [[
-            self:SetAttribute('unitsuffix', 'pet')
-            local header = self:GetParent()
-            self:SetWidth(header:GetAttribute("initial-width"))
-            self:SetHeight(header:GetAttribute("initial-height"))
-        ]]
+        'initial-height', 20
     ):SetPoint('BOTTOMLEFT', self.headers.party, 0, -28)
 
     oUF:SetActiveStyle('ZoeySquare')
-    self:CreateHeader('Raid', 'raid',
-        'showRaid', true,
-        'xOffset', gap/2,
-        'point', 'LEFT',
-
-        'maxColumns', 8,
-        'unitsPerColumn', 5, -- columns are really hoizontal rows
-        'columnSpacing', gap/2,
-        'columnAnchorPoint', 'BOTTOM',
-
-        'groupBy', 'ASSIGNEDROLE',
-        'groupingOrder', 'TANK,HEALER,DAMAGER',
-
+    self:CreateHeader('Raid',
         'initial-width', 65,
-        'initial-height', 40,
-        'oUF-initialConfigFunction', [[
-            local header = self:GetParent()
-            self:SetWidth(header:GetAttribute("initial-width"))
-            self:SetHeight(header:GetAttribute("initial-height"))
-        ]]
+        'initial-height', 40
     ):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', 5, 240)
 end
