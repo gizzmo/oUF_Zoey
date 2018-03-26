@@ -293,7 +293,6 @@ function headerMethods:Update()
     self:SetAttribute('columnAnchorPoint', directionToColumnAnchorPoint[db.direction])
     self:SetAttribute('maxColumns', 8)
     self:SetAttribute('unitsPerColumn', 5)
-    self:SetAttribute('sortDir', 'ASC')
 
     -- Sorting
     if db.groupBy == 'CLASS' then
@@ -313,6 +312,8 @@ function headerMethods:Update()
         self:SetAttribute('sortMethod', 'INDEX')
         self:SetAttribute("groupBy", 'GROUP')
     end
+
+    self:SetAttribute('sortDir', db.sortDir or 'ASC')
 
     -- Update visibility
     if not self.visibility or self.visibility ~= self.db.visibility then
