@@ -178,6 +178,17 @@ local directionToPoint = { -- opposite of first direction
     RIGHT_UP = 'LEFT',   RIGHT = 'LEFT',
     RIGHT_DOWN = 'LEFT',
 }
+local directionToOppositePoint = {
+    UP_LEFT = 'TOP',
+    UP_RIGHT = 'TOP', UP = 'TOP',
+    DOWN_LEFT = 'BOTTOM',
+    DOWN_RIGHT = 'BOTTOM',  DOWN = 'BOTTOM',
+
+    LEFT_UP = 'LEFT',   LEFT = 'LEFT',
+    LEFT_DOWN = 'LEFT',
+    RIGHT_UP = 'RIGHT',   RIGHT = 'RIGHT',
+    RIGHT_DOWN = 'RIGHT',
+}
 local directionToColumnAnchorPoint = { -- opposite of second direction
     UP_LEFT = 'RIGHT',
     UP_RIGHT = 'LEFT',   UP = 'LEFT',
@@ -215,34 +226,35 @@ local directionToVerticalSpacingMultiplier = {
 local groupMethods = {}
 -- Group update method. Updates and positions child the sudo-header.
 function groupMethods:Update()
+    local db = self.db
+
+    local point = directionToPoint[db.direction]
+    local relativePoint = directionToOppositePoint[db.direction]
+
     for i, child in ipairs(self) do
         child:Update()
         child:ClearAllPoints()
 
-        local db = child.db
-        if i == 1 then -- Attaches to the sudo-header
-            if db.direction == 'UP' then        child:SetPoint('BOTTOM', self)
-            elseif db.direction == 'DOWN' then  child:SetPoint('TOP', self)
-            elseif db.direction == 'RIGHT' then child:SetPoint('LEFT', self)
-            elseif db.direction == 'LEFT' then  child:SetPoint('RIGHT', self)
-            end
-        else -- Attaches to the previous child
-            if db.direction == 'UP' then        child:SetPoint('BOTTOM', self[i-1], 'TOP', 0, db.spacing)
-            elseif db.direction == 'DOWN' then  child:SetPoint('TOP', self[i-1], 'BOTTOM', 0, -db.spacing)
-            elseif db.direction == 'RIGHT' then child:SetPoint('LEFT', self[i-1], 'RIGHT', db.spacing, 0)
-            elseif db.direction == 'LEFT' then  child:SetPoint('RIGHT', self[i-1], 'LEFT', -db.spacing, 0)
+        if i == 1 then
+            child:SetPoint(point, self, point, 0, 0)
+        else
+            if point == 'LEFT' or point == 'RIGHT' then
+                child:SetPoint(point, self[i-1], relativePoint,
+                    db.spacing * directionToHorizontalSpacingMultiplier[db.direction], 0)
+            else
+                child:SetPoint(point, self[i-1], relativePoint,
+                    0, db.spacing * directionToVerticalSpacingMultiplier[db.direction])
             end
         end
     end
 
     -- Resize group sudo-header to fit the size of all the child units
-    local db = self.db
-    if db.direction == 'UP' or db.direction == 'DOWN' then
-        self:SetWidth(self[#self]:GetWidth())
-        self:SetHeight(((self[#self]:GetHeight() + db.spacing) * #self) - db.spacing)
-    elseif db.direction == 'LEFT' or db.direction == 'RIGHT' then
-        self:SetWidth(((self[#self]:GetWidth() + db.spacing) * #self) - db.spacing)
-        self:SetHeight(self[#self]:GetHeight())
+    if point == 'LEFT' or point == 'RIGHT' then
+        self:SetWidth((self[1]:GetWidth() + db.spacing) * #self - db.spacing)
+        self:SetHeight(self[1]:GetHeight())
+    else
+        self:SetWidth(self[1]:GetWidth())
+        self:SetHeight((self[1]:GetHeight() + db.spacing) * #self - db.spacing)
     end
 
     -- TODO: should we add a column system?
