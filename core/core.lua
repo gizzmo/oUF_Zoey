@@ -257,15 +257,9 @@ function Addon:RunAfterCombat(func, ...)
     end
 
     -- Buildup the action table
-    local action = {
-        func = func,
-        num = select('#', ...)
-    }
-
-    -- Save the parameters passed
-    for i=1, action.num do
-        action[i] = select(i, ...)
-    end
+    local action = {...}
+    action.func = func
+    action.argsCount = select('#', ...)
 
     action_queue[#action_queue+1] = action
 end
@@ -273,7 +267,7 @@ end
 -- Exiting combat, run and clear the queue
 function Addon:PLAYER_REGEN_ENABLED()
     for i, action in ipairs(action_queue) do
-        action.func(unpack(action, 1, action.num))
+        action.func(unpack(action, 1, action.argsCount))
         action_queue[i] = nil
     end
 end
