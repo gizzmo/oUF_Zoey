@@ -166,6 +166,52 @@ function Module:CreateUnit(unit)
     return self.units[unit]
 end
 
+-- Single directions should be identical to x_RIGHT or x_UP
+local directionToPoint = { -- opposite of first direction
+    UP_LEFT = 'BOTTOM',
+    UP_RIGHT = 'BOTTOM', UP = 'BOTTOM',
+    DOWN_LEFT = 'TOP',
+    DOWN_RIGHT = 'TOP',  DOWN = 'TOP',
+
+    LEFT_UP = 'RIGHT',   LEFT = 'RIGHT',
+    LEFT_DOWN = 'RIGHT',
+    RIGHT_UP = 'LEFT',   RIGHT = 'LEFT',
+    RIGHT_DOWN = 'LEFT',
+}
+local directionToColumnAnchorPoint = { -- opposite of second direction
+    UP_LEFT = 'RIGHT',
+    UP_RIGHT = 'LEFT',   UP = 'LEFT',
+    DOWN_LEFT = 'RIGHT',
+    DOWN_RIGHT = 'LEFT', DOWN = 'LEFT',
+
+    LEFT_UP = 'BOTTOM',  LEFT = 'BOTTOM',
+    LEFT_DOWN = 'TOP',
+    RIGHT_UP = 'BOTTOM', RIGHT = 'BOTTOM',
+    RIGHT_DOWN = 'TOP',
+}
+local directionToHorizontalSpacingMultiplier = {
+    UP_LEFT = -1,
+    UP_RIGHT = 1,   UP = 1,
+    DOWN_LEFT = -1,
+    DOWN_RIGHT = 1, DOWN = 1,
+
+    LEFT_UP = -1,   LEFT = -1,
+    LEFT_DOWN = -1,
+    RIGHT_UP = 1,   RIGHT = 1,
+    RIGHT_DOWN = 1,
+}
+local directionToVerticalSpacingMultiplier = {
+    UP_LEFT = 1,
+    UP_RIGHT = 1,    UP = 1,
+    DOWN_LEFT = -1,
+    DOWN_RIGHT = -1, DOWN = -1,
+
+    LEFT_UP = 1,     LEFT = 1,
+    LEFT_DOWN = -1,
+    RIGHT_UP = 1,    RIGHT = 1,
+    RIGHT_DOWN = -1,
+}
+
 local groupMethods = {}
 -- Group update method. Updates and positions child the sudo-header.
 function groupMethods:Update()
@@ -229,52 +275,6 @@ function Module:CreateGroup(group)
 
     return self.groups[group] -- Return the sudo-header
 end
-
--- Single directions should be identical to x_RIGHT or x_UP
-local directionToPoint = { -- opposite of first direction
-    UP_LEFT = 'BOTTOM',
-    UP_RIGHT = 'BOTTOM', UP = 'BOTTOM',
-    DOWN_LEFT = 'TOP',
-    DOWN_RIGHT = 'TOP',  DOWN = 'TOP',
-
-    LEFT_UP = 'RIGHT',   LEFT = 'RIGHT',
-    LEFT_DOWN = 'RIGHT',
-    RIGHT_UP = 'LEFT',   RIGHT = 'LEFT',
-    RIGHT_DOWN = 'LEFT',
-}
-local directionToColumnAnchorPoint = { -- opposite of second direction
-    UP_LEFT = 'RIGHT',
-    UP_RIGHT = 'LEFT',   UP = 'LEFT',
-    DOWN_LEFT = 'RIGHT',
-    DOWN_RIGHT = 'LEFT', DOWN = 'LEFT',
-
-    LEFT_UP = 'BOTTOM',  LEFT = 'BOTTOM',
-    LEFT_DOWN = 'TOP',
-    RIGHT_UP = 'BOTTOM', RIGHT = 'BOTTOM',
-    RIGHT_DOWN = 'TOP',
-}
-local directionToHorizontalSpacingMultiplier = {
-    UP_LEFT = -1,
-    UP_RIGHT = 1,   UP = 1,
-    DOWN_LEFT = -1,
-    DOWN_RIGHT = 1, DOWN = 1,
-
-    LEFT_UP = -1,   LEFT = -1,
-    LEFT_DOWN = -1,
-    RIGHT_UP = 1,   RIGHT = 1,
-    RIGHT_DOWN = 1,
-}
-local directionToVerticalSpacingMultiplier = {
-    UP_LEFT = 1,
-    UP_RIGHT = 1,    UP = 1,
-    DOWN_LEFT = -1,
-    DOWN_RIGHT = -1, DOWN = -1,
-
-    LEFT_UP = 1,     LEFT = 1,
-    LEFT_DOWN = -1,
-    RIGHT_UP = 1,    RIGHT = 1,
-    RIGHT_DOWN = -1,
-}
 
 local headerMethods = {}
 function headerMethods:Update()
