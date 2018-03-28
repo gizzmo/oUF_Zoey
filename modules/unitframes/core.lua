@@ -171,7 +171,7 @@ function Module:CreateUnit(unit)
 end
 
 -- Single directions should be identical to x_RIGHT or x_UP
-local directionToPoint = { -- opposite of first direction
+local directionToAnchorPoint = { -- opposite of first direction
     UP_LEFT = 'BOTTOM',
     UP_RIGHT = 'BOTTOM', UP = 'BOTTOM',
     DOWN_LEFT = 'TOP',
@@ -194,10 +194,10 @@ local directionToColumnAnchorPoint = { -- opposite of second direction
     RIGHT_DOWN = 'TOP',
 }
 
--- relativePoint, xMultiplier, yMultiplier = getRelativePointAnchor( point )
+-- relativePoint, xMultiplier, yMultiplier = getRelativeAnchorPoint( point )
 -- Given a point return the opposite point and which axes the point
 -- depends on.
-local function getRelativePointAnchor(point)
+local function getRelativeAnchorPoint(point)
     point = point:upper();
     if point == 'TOP' then return 'BOTTOM', 0, -1
     elseif point == 'BOTTOM' then return 'TOP', 0, 1
@@ -211,8 +211,8 @@ local groupMethods = {}
 function groupMethods:Update()
     local db = self.db
 
-    local point = directionToPoint[db.direction]
-    local relativePoint, xMult, yMult = getRelativePointAnchor(point)
+    local point = directionToAnchorPoint[db.direction]
+    local relativePoint, xMult, yMult = getRelativeAnchorPoint(point)
 
     for i, child in ipairs(self) do
         child:Update()
@@ -265,8 +265,8 @@ local headerMethods = {}
 function headerMethods:Update()
     local db = self.db
 
-    local point = directionToPoint[db.direction]
-    local _, xMult, yMult = getRelativePointAnchor(point)
+    local point = directionToAnchorPoint[db.direction]
+    local _, xMult, yMult = getRelativeAnchorPoint(point)
 
     self:SetAttribute('point', point)
 
@@ -394,9 +394,9 @@ function holderMethods:Update()
         end
 
         -- Anchor child headers together
-        local point = directionToPoint[db.direction]
+        local point = directionToAnchorPoint[db.direction]
         local columnAnchorPoint = directionToColumnAnchorPoint[db.direction]
-        local relativeColumnAnchorPoint, xMult, yMult = getRelativePointAnchor(columnAnchorPoint)
+        local relativeColumnAnchorPoint, xMult, yMult = getRelativeAnchorPoint(columnAnchorPoint)
 
         childHeader:ClearAllPoints()
 
@@ -416,8 +416,8 @@ function holderMethods:Update()
     local unit = self[1]:GetAttribute('child1')
     if unit then -- has the raid been filled yet?
        local unitWidth, unitHeight = unit:GetSize()
-       local _, xMult, yMult = getRelativePointAnchor(directionToPoint[db.direction])
-       local _, colxMult, colyMult = getRelativePointAnchor(directionToColumnAnchorPoint[db.direction])
+       local _, xMult, yMult = getRelativeAnchorPoint(directionToAnchorPoint[db.direction])
+       local _, colxMult, colyMult = getRelativeAnchorPoint(directionToColumnAnchorPoint[db.direction])
 
        local groupWidth = (abs(xMult)*(unitWidth + (db.horizontalSpacing or db.spacing)) * 4 + unitWidth)
        local groupHeight = (abs(yMult)*(unitHeight + (db.verticalSpacing or db.spacing)) * 4 + unitHeight)
