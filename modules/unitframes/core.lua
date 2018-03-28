@@ -425,8 +425,6 @@ function holderMethods:Update()
        self:SetWidth(abs(colxMult) * (groupWidth + horizontalSpacing) * (db.numGroups - 1) + groupWidth)
        self:SetHeight(abs(colyMult) * (groupHeight + verticalSpacing) * (db.numGroups - 1) + groupHeight)
     end
-
-    Module:Print(self:GetName(), 'Update Called')
 end
 
 function Module:CreateHeader(header, ...)
