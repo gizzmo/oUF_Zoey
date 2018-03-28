@@ -178,17 +178,6 @@ local directionToPoint = { -- opposite of first direction
     RIGHT_UP = 'LEFT',   RIGHT = 'LEFT',
     RIGHT_DOWN = 'LEFT',
 }
-local directionToOppositePoint = {
-    UP_LEFT = 'TOP',
-    UP_RIGHT = 'TOP', UP = 'TOP',
-    DOWN_LEFT = 'BOTTOM',
-    DOWN_RIGHT = 'BOTTOM',  DOWN = 'BOTTOM',
-
-    LEFT_UP = 'LEFT',   LEFT = 'LEFT',
-    LEFT_DOWN = 'LEFT',
-    RIGHT_UP = 'RIGHT',   RIGHT = 'RIGHT',
-    RIGHT_DOWN = 'RIGHT',
-}
 local directionToColumnAnchorPoint = { -- opposite of second direction
     UP_LEFT = 'RIGHT',
     UP_RIGHT = 'LEFT',   UP = 'LEFT',
@@ -200,28 +189,18 @@ local directionToColumnAnchorPoint = { -- opposite of second direction
     RIGHT_UP = 'BOTTOM', RIGHT = 'BOTTOM',
     RIGHT_DOWN = 'TOP',
 }
-local directionToHorizontalSpacingMultiplier = {
-    UP_LEFT = -1,
-    UP_RIGHT = 1,   UP = 1,
-    DOWN_LEFT = -1,
-    DOWN_RIGHT = 1, DOWN = 1,
 
-    LEFT_UP = -1,   LEFT = -1,
-    LEFT_DOWN = -1,
-    RIGHT_UP = 1,   RIGHT = 1,
-    RIGHT_DOWN = 1,
-}
-local directionToVerticalSpacingMultiplier = {
-    UP_LEFT = 1,
-    UP_RIGHT = 1,    UP = 1,
-    DOWN_LEFT = -1,
-    DOWN_RIGHT = -1, DOWN = -1,
-
-    LEFT_UP = 1,     LEFT = 1,
-    LEFT_DOWN = -1,
-    RIGHT_UP = 1,    RIGHT = 1,
-    RIGHT_DOWN = -1,
-}
+-- relativePoint, xMultiplier, yMultiplier = getRelativePointAnchor( point )
+-- Given a point return the opposite point and which axes the point
+-- depends on.
+local function getRelativePointAnchor(point)
+    point = point:upper();
+    if point == 'TOP' then return 'BOTTOM', 0, -1
+    elseif point == 'BOTTOM' then return 'TOP', 0, 1
+    elseif point == 'LEFT' then return 'RIGHT', 1, 0
+    elseif point == 'RIGHT' then return 'LEFT', -1, 0
+    end
+end
 
 local groupMethods = {}
 -- Group update method. Updates and positions child the sudo-header.
@@ -229,7 +208,7 @@ function groupMethods:Update()
     local db = self.db
 
     local point = directionToPoint[db.direction]
-    local relativePoint = directionToOppositePoint[db.direction]
+    local relativePoint, xMult, yMult = getRelativePointAnchor(point)
 
     for i, child in ipairs(self) do
         child:Update()
@@ -238,24 +217,14 @@ function groupMethods:Update()
         if i == 1 then
             child:SetPoint(point, self, point, 0, 0)
         else
-            if point == 'LEFT' or point == 'RIGHT' then
-                child:SetPoint(point, self[i-1], relativePoint,
-                    db.spacing * directionToHorizontalSpacingMultiplier[db.direction], 0)
-            else
-                child:SetPoint(point, self[i-1], relativePoint,
-                    0, db.spacing * directionToVerticalSpacingMultiplier[db.direction])
-            end
+            child:SetPoint(point, self[i-1], relativePoint, db.spacing * xMult, db.spacing * yMult)
         end
     end
 
     -- Resize group sudo-header to fit the size of all the child units
-    if point == 'LEFT' or point == 'RIGHT' then
-        self:SetWidth((self[1]:GetWidth() + db.spacing) * #self - db.spacing)
-        self:SetHeight(self[1]:GetHeight())
-    else
-        self:SetWidth(self[1]:GetWidth())
-        self:SetHeight((self[1]:GetHeight() + db.spacing) * #self - db.spacing)
-    end
+    local unitWidth, unitHeight = self[1]:GetSize()
+    self:SetWidth(abs(xMult) * (unitWidth + db.spacing) * (#self-1) + unitWidth)
+    self:SetHeight(abs(yMult) * (unitHeight + db.spacing) * (#self-1) + unitHeight)
 
     -- TODO: should we add a column system?
     -- TODO: needs combat protection.
@@ -293,17 +262,18 @@ function headerMethods:Update()
     local db = self.db
 
     local point = directionToPoint[db.direction]
+    local _, xMult, yMult = getRelativePointAnchor(point)
 
     self:SetAttribute('point', point)
 
+    self:SetAttribute('xOffset', (db.horizontalSpacing or db.spacing) * xMult)
+    self:SetAttribute('yOffset', (db.verticalSpacing or db.spacing) * yMult)
+
+    -- First direction is horizontal so, columns are grow verticaly
     if point == 'LEFT' or point == 'RIGHT' then
-        self:SetAttribute('xOffset', (db.spacing or db.horizontalSpacing) * directionToHorizontalSpacingMultiplier[db.direction])
-        self:SetAttribute('yOffset', 0)
-        self:SetAttribute('columnSpacing', (db.spacing or db.verticalSpacing))
+        self:SetAttribute('columnSpacing', (db.verticalSpacing or db.spacing))
     else
-        self:SetAttribute('xOffset', 0)
-        self:SetAttribute('yOffset', (db.spacing or db.verticalSpacing) * directionToVerticalSpacingMultiplier[db.direction])
-        self:SetAttribute('columnSpacing', (db.spacing or db.horizontalSpacing))
+        self:SetAttribute('columnSpacing', (db.horizontalSpacing or db.spacing))
     end
 
     self:SetAttribute('columnAnchorPoint', directionToColumnAnchorPoint[db.direction])
@@ -337,10 +307,16 @@ function headerMethods:Update()
         self.visibility = db.visibility
     end
 
+    -- Update children
     for i = 1, self:GetNumChildren() do
+        local child = select(i, self:GetChildren())
         -- NOTE: If a frame is created with this header as its parent, a error
         -- could occure because that frame isnt the kinda child we're looking for.
-        select(i, self:GetChildren()):Update()
+        child:Update()
+
+        -- Need to clear the points of the child for the SecureGroupHeader_Update
+        -- to anchor incase attributes change after first Update.
+        child:ClearAllPoints()
     end
 end
 
