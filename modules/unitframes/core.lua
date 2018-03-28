@@ -331,6 +331,7 @@ function Module:CreateHeader(header, ...)
                 local header = self:GetParent()
                 self:SetWidth(header:GetAttribute("initial-width"))
                 self:SetHeight(header:GetAttribute("initial-height"))
+                self:SetAttribute('unitsuffix', header:GetAttribute('oUF-unitsuffix'))
                 -- Overwrite what oUF thinks the unit is
                 self:SetAttribute('oUF-guessUnit', '%s')
             ]]):format(header), ...)
@@ -384,13 +385,15 @@ function Module:LoadUnits()
 
     self:CreateHeader('PartyTarget',
         'initial-width', 135,
-        'initial-height', 40
+        'initial-height', 40,
+        'oUF-unitsuffix', 'target'
     ):SetPoint('BOTTOMLEFT', self.headers.party, 'BOTTOMRIGHT', gap, 0)
 
     oUF:SetActiveStyle('ZoeyThin')
     self:CreateHeader('PartyPet',
         'initial-width', 135,
-        'initial-height', 20
+        'initial-height', 20,
+        'oUF-unitsuffix', 'pet'
     ):SetPoint('BOTTOMLEFT', self.headers.party, 0, -28)
 
     oUF:SetActiveStyle('ZoeySquare')
