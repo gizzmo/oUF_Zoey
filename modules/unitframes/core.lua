@@ -56,24 +56,28 @@ local defaultDB = {
                 spacing = 50,
                 groupBy = 'ROLE',
                 visibility = '[group:party,nogroup:raid]show;hide;',
+                numGroups = 1
             },
             partytarget = {
                 direction = 'UP',
                 spacing = 90,
                 groupBy = 'ROLE',
                 visibility = '[group:party,nogroup:raid]show;hide;',
+                numGroups = 1
             },
             partypet = {
                 direction = 'UP',
                 spacing = 110,
                 groupBy = 'ROLE',
                 visibility = '[group:party,nogroup:raid]show;hide;',
+                numGroups = 1
             },
             raid = {
                 direction = 'RIGHT_UP',
                 spacing = 6,
                 groupBy = 'ROLE',
                 visibility = '[group:raid]show;hide;',
+                numGroups = 8
             },
         }
 
@@ -277,7 +281,7 @@ function headerMethods:Update()
     end
 
     self:SetAttribute('columnAnchorPoint', directionToColumnAnchorPoint[db.direction])
-    self:SetAttribute('maxColumns', 8)
+    self:SetAttribute('maxColumns', db.raidWideSorting and db.numGroups or 1)
     self:SetAttribute('unitsPerColumn', 5)
 
     -- Sorting
@@ -301,12 +305,6 @@ function headerMethods:Update()
 
     self:SetAttribute('sortDir', db.sortDir or 'ASC')
 
-    -- Update visibility
-    if not self.visibility or self.visibility ~= self.db.visibility then
-        RegisterStateDriver(self, 'visibility', db.visibility)
-        self.visibility = db.visibility
-    end
-
     -- Update children
     for i = 1, self:GetNumChildren() do
         local child = select(i, self:GetChildren())
@@ -320,31 +318,140 @@ function headerMethods:Update()
     end
 end
 
+local function createChildHeader(parent, overrideName, headerName)
+    local header = parent.headerName or headerName
+    local object = oUF:SpawnHeader(overrideName, nil, nil,
+        'showRaid', true, 'showParty', true, 'showSolo', true,
+        'oUF-initialConfigFunction', ([[
+            local header = self:GetParent()
+            self:SetWidth(header:GetAttribute("initial-width"))
+            self:SetHeight(header:GetAttribute("initial-height"))
+            self:SetAttribute('unitsuffix', header:GetAttribute('oUF-unitsuffix'))
+            -- Overwrite what oUF thinks the unit is
+            self:SetAttribute('oUF-guessUnit', '%s')
+        ]]):format(header))
+
+    object:SetParent(parent)
+    object.headerName = group
+    object.db = parent.db
+
+    if parent.childAttribues then
+        for att, val in pairs(parent.childAttribues) do
+            object:SetAttribute(att, val)
+        end
+    end
+
+    for k, v in pairs(headerMethods) do
+        object[k] = v
+    end
+
+    return object
+end
+
+
+
+local holderMethods = {}
+function holderMethods:Update()
+    local db = self.db
+
+    -- Create any child headers if needed
+    if db.raidWideSorting then
+        if not self[1] then -- only need the first group with raidWideSorting
+            table.insert(self, createChildHeader(self, 'ZoeyUI_'..unitToCamelCase(self.headerName)..'Group1'))
+        end
+    else
+        while self.db.numGroups > #self do
+            local index = tostring(#self + 1)
+            table.insert(self, createChildHeader(self, 'ZoeyUI_'..unitToCamelCase(self.headerName)..'Group'..index))
+        end
+    end
+
+    -- Update visibility
+    if not self.visibility or self.visibility ~= self.db.visibility then
+        RegisterStateDriver(self, 'visibility', db.visibility)
+        self.visibility = db.visibility
+    end
+
+    for i=1, #self do
+        local childHeader = self[i]
+
+        -- if numGroups changed or raidWideSorting was enabled,
+        -- hide child headers that aren't used.
+        if i > db.numGroups or db.raidWideSorting and i > 1 then
+            childHeader:Hide()
+        else
+            childHeader:Show()
+        end
+
+        -- Configure/Update child headers
+        childHeader:Update()
+
+        -- A child header doesnt know what group it is
+        if i == 1 and db.raidWideSorting then
+            childHeader:SetAttribute('groupFilter', '1,2,3,4,5,6,7,8')
+        else
+            childHeader:SetAttribute('groupFilter', tostring(i))
+        end
+
+        -- Anchor child headers together
+        local point = directionToPoint[db.direction]
+        local columnAnchorPoint = directionToColumnAnchorPoint[db.direction]
+        local relativeColumnAnchorPoint, xMult, yMult = getRelativePointAnchor(columnAnchorPoint)
+
+        childHeader:ClearAllPoints()
+
+        if i == 1 then
+            childHeader:SetPoint(point, self)
+            childHeader:SetPoint(columnAnchorPoint, self)
+        else
+            childHeader:SetPoint(point, self[i-1]) -- Needed to align
+            childHeader:SetPoint(columnAnchorPoint, self[i-1], relativeColumnAnchorPoint,
+                db.horizontalSpacing or db.spacing * xMult,
+                db.verticalSpacing or db.spacing * yMult
+            )
+        end
+    end
+
+    -- Resize holder to fit the size of all the child headers
+    local unit = self[1]:GetAttribute('child1')
+    if unit then -- has the raid been filled yet?
+       local unitWidth, unitHeight = unit:GetSize()
+       local _, xMult, yMult = getRelativePointAnchor(directionToPoint[db.direction])
+       local _, colxMult, colyMult = getRelativePointAnchor(directionToColumnAnchorPoint[db.direction])
+
+       local groupWidth = (abs(xMult)*(unitWidth + (db.horizontalSpacing or db.spacing)) * 4 + unitWidth)
+       local groupHeight = (abs(yMult)*(unitHeight + (db.verticalSpacing or db.spacing)) * 4 + unitHeight)
+
+       self:SetWidth (abs(colxMult)*(groupWidth + (db.horizontalSpacing or db.spacing)) * (db.numGroups - 1) + groupWidth)
+       self:SetHeight(abs(colyMult)*(groupHeight + (db.verticalSpacing or db.spacing)) * (db.numGroups-1) + groupHeight)
+    end
+end
+
 function Module:CreateHeader(header, ...)
     local header = header:lower()
 
-    -- If it doesnt exist, create it!
     if not self.headers[header] then
-        local object = oUF:SpawnHeader('ZoeyUI_'..unitToCamelCase(header), nil, nil,
-            'showRaid', true, 'showParty', true, 'showSolo', true,
-            'oUF-initialConfigFunction', ([[
-                local header = self:GetParent()
-                self:SetWidth(header:GetAttribute("initial-width"))
-                self:SetHeight(header:GetAttribute("initial-height"))
-                self:SetAttribute('unitsuffix', header:GetAttribute('oUF-unitsuffix'))
-                -- Overwrite what oUF thinks the unit is
-                self:SetAttribute('oUF-guessUnit', '%s')
-            ]]):format(header), ...)
+        local db = self.db.profile.units[header]
 
-        object.db = self.db.profile.units[header] -- easy reference
+        local holder = CreateFrame('Frame', 'ZoeyUI_'..unitToCamelCase(header), UIParent, 'SecureHandlerStateTemplate');
+        holder.db = db
+        holder.headerName = header
 
-        for k,v in pairs(headerMethods) do
-            object[k] = v
+        -- Save extra attributes for children
+        holder.childAttribues = {}
+        for i=1, select('#', ...), 2 do
+            local att, val = select(i, ...)
+            holder.childAttribues[att] = val
         end
 
-        object:Update() -- run the update to configure header
+        for k,v in pairs(holderMethods) do
+            holder[k] = v
+        end
 
-        self.headers[header] = object
+        -- Update to configure child headers and anchor
+        holder:Update()
+
+        self.headers[header] = holder
     end
 
     return self.headers[header]
