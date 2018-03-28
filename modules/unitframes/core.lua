@@ -150,7 +150,7 @@ local function unitToCamelCase(string)
     return string:lower() -- start all lower case
         :gsub('^%l', string.upper)   -- set the first character upper case
         :gsub('t(arget)', 'T%1')
-        :gsub('p(ets)', 'P%1')
+        :gsub('p(et)', 'P%1')
 end
 
 function Module:CreateUnit(unit)
