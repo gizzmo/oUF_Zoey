@@ -1,6 +1,6 @@
 local ADDON_NAME, Addon = ...
 
-local MODULE_NAME = "Unitframes"
+local MODULE_NAME = 'Unitframes'
 local Module = Addon:NewModule(MODULE_NAME)
 
 local L = Addon.L
@@ -194,9 +194,8 @@ local directionToColumnAnchorPoint = { -- opposite of second direction
     RIGHT_DOWN = 'TOP',
 }
 
--- relativePoint, xMultiplier, yMultiplier = getRelativeAnchorPoint( point )
--- Given a point return the opposite point and which axes the point
--- depends on.
+-- relativePoint, xMultiplier, yMultiplier = getRelativeAnchorPoint(point)
+-- Given a point return the opposite point and which axes the point depends on.
 local function getRelativeAnchorPoint(point)
     point = point:upper();
     if point == 'TOP' then return 'BOTTOM', 0, -1
@@ -227,8 +226,8 @@ function groupMethods:Update()
 
     -- Resize group sudo-header to fit the size of all the child units
     local unitWidth, unitHeight = self[1]:GetSize()
-    self:SetWidth(abs(xMult) * (unitWidth + db.spacing) * (#self-1) + unitWidth)
-    self:SetHeight(abs(yMult) * (unitHeight + db.spacing) * (#self-1) + unitHeight)
+    self:SetWidth(abs(xMult) * (unitWidth + db.spacing) * (#self - 1) + unitWidth)
+    self:SetHeight(abs(yMult) * (unitHeight + db.spacing) * (#self - 1) + unitHeight)
 
     -- TODO: should we add a column system?
     -- TODO: needs combat protection.
@@ -268,16 +267,19 @@ function headerMethods:Update()
     local point = directionToAnchorPoint[db.direction]
     local _, xMult, yMult = getRelativeAnchorPoint(point)
 
+    local horizontalSpacing = db.horizontalSpacing or db.spacing
+    local verticalSpacing = db.verticalSpacing or db.spacing
+
     self:SetAttribute('point', point)
 
-    self:SetAttribute('xOffset', (db.horizontalSpacing or db.spacing) * xMult)
-    self:SetAttribute('yOffset', (db.verticalSpacing or db.spacing) * yMult)
+    self:SetAttribute('xOffset', horizontalSpacing * xMult)
+    self:SetAttribute('yOffset', verticalSpacing * yMult)
 
     -- First direction is horizontal so, columns are grow verticaly
     if point == 'LEFT' or point == 'RIGHT' then
-        self:SetAttribute('columnSpacing', (db.verticalSpacing or db.spacing))
+        self:SetAttribute('columnSpacing', verticalSpacing)
     else
-        self:SetAttribute('columnSpacing', (db.horizontalSpacing or db.spacing))
+        self:SetAttribute('columnSpacing', horizontalSpacing)
     end
 
     self:SetAttribute('columnAnchorPoint', directionToColumnAnchorPoint[db.direction])
@@ -286,21 +288,21 @@ function headerMethods:Update()
 
     -- Sorting
     if db.groupBy == 'CLASS' then
-        self:SetAttribute("groupingOrder", "DEATHKNIGHT,DRUID,HUNTER,MAGE,PALADIN,PRIEST,SHAMAN,WARLOCK,WARRIOR,MONK")
+        self:SetAttribute('groupingOrder', 'DEATHKNIGHT,DRUID,HUNTER,MAGE,PALADIN,PRIEST,SHAMAN,WARLOCK,WARRIOR,MONK')
         self:SetAttribute('sortMethod', 'NAME')
-        self:SetAttribute("groupBy", 'CLASS')
+        self:SetAttribute('groupBy', 'CLASS')
     elseif db.groupBy == 'ROLE' then
-        self:SetAttribute("groupingOrder", "TANK,HEALER,DAMAGER,NONE")
+        self:SetAttribute('groupingOrder', 'TANK,HEALER,DAMAGER,NONE')
         self:SetAttribute('sortMethod', 'NAME')
-        self:SetAttribute("groupBy", 'ASSIGNEDROLE')
+        self:SetAttribute('groupBy', 'ASSIGNEDROLE')
     elseif db.groupBy == 'NAME' then
-        self:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
+        self:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
         self:SetAttribute('sortMethod', 'NAME')
-        self:SetAttribute("groupBy", nil)
+        self:SetAttribute('groupBy', nil)
     elseif db.groupBy == 'GROUP' then
-        self:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
+        self:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
         self:SetAttribute('sortMethod', 'INDEX')
-        self:SetAttribute("groupBy", 'GROUP')
+        self:SetAttribute('groupBy', 'GROUP')
     end
 
     self:SetAttribute('sortDir', db.sortDir or 'ASC')
@@ -324,8 +326,8 @@ local function createChildHeader(parent, overrideName, headerName)
         'showRaid', true, 'showParty', true, 'showSolo', true,
         'oUF-initialConfigFunction', ([[
             local header = self:GetParent()
-            self:SetWidth(header:GetAttribute("initial-width"))
-            self:SetHeight(header:GetAttribute("initial-height"))
+            self:SetWidth(header:GetAttribute('initial-width'))
+            self:SetHeight(header:GetAttribute('initial-height'))
             self:SetAttribute('unitsuffix', header:GetAttribute('oUF-unitsuffix'))
             -- Overwrite what oUF thinks the unit is
             self:SetAttribute('oUF-guessUnit', '%s')
@@ -347,8 +349,6 @@ local function createChildHeader(parent, overrideName, headerName)
 
     return object
 end
-
-
 
 local holderMethods = {}
 function holderMethods:Update()
@@ -372,6 +372,15 @@ function holderMethods:Update()
         self.visibility = db.visibility
     end
 
+    local point = directionToAnchorPoint[db.direction]
+    local _, xMult, yMult = getRelativeAnchorPoint(point)
+
+    local columnAnchorPoint = directionToColumnAnchorPoint[db.direction]
+    local relativeColumnAnchorPoint, colxMult, colyMult = getRelativeAnchorPoint(columnAnchorPoint)
+
+    local horizontalSpacing = db.horizontalSpacing or db.spacing
+    local verticalSpacing = db.verticalSpacing or db.spacing
+
     for i=1, #self do
         local childHeader = self[i]
 
@@ -394,10 +403,6 @@ function holderMethods:Update()
         end
 
         -- Anchor child headers together
-        local point = directionToAnchorPoint[db.direction]
-        local columnAnchorPoint = directionToColumnAnchorPoint[db.direction]
-        local relativeColumnAnchorPoint, xMult, yMult = getRelativeAnchorPoint(columnAnchorPoint)
-
         childHeader:ClearAllPoints()
 
         if i == 1 then
@@ -406,9 +411,7 @@ function holderMethods:Update()
         else
             childHeader:SetPoint(point, self[i-1]) -- Needed to align
             childHeader:SetPoint(columnAnchorPoint, self[i-1], relativeColumnAnchorPoint,
-                db.horizontalSpacing or db.spacing * xMult,
-                db.verticalSpacing or db.spacing * yMult
-            )
+                horizontalSpacing * colxMult, verticalSpacing * colyMult)
         end
     end
 
@@ -416,15 +419,14 @@ function holderMethods:Update()
     local unit = self[1]:GetAttribute('child1')
     if unit then -- has the raid been filled yet?
        local unitWidth, unitHeight = unit:GetSize()
-       local _, xMult, yMult = getRelativeAnchorPoint(directionToAnchorPoint[db.direction])
-       local _, colxMult, colyMult = getRelativeAnchorPoint(directionToColumnAnchorPoint[db.direction])
+       local groupWidth = (abs(xMult) * (unitWidth + horizontalSpacing) * 4 + unitWidth)
+       local groupHeight = (abs(yMult) * (unitHeight + verticalSpacing) * 4 + unitHeight)
 
-       local groupWidth = (abs(xMult)*(unitWidth + (db.horizontalSpacing or db.spacing)) * 4 + unitWidth)
-       local groupHeight = (abs(yMult)*(unitHeight + (db.verticalSpacing or db.spacing)) * 4 + unitHeight)
-
-       self:SetWidth (abs(colxMult)*(groupWidth + (db.horizontalSpacing or db.spacing)) * (db.numGroups - 1) + groupWidth)
-       self:SetHeight(abs(colyMult)*(groupHeight + (db.verticalSpacing or db.spacing)) * (db.numGroups-1) + groupHeight)
+       self:SetWidth(abs(colxMult) * (groupWidth + horizontalSpacing) * (db.numGroups - 1) + groupWidth)
+       self:SetHeight(abs(colyMult) * (groupHeight + verticalSpacing) * (db.numGroups - 1) + groupHeight)
     end
+
+    Module:Print(self:GetName(), 'Update Called')
 end
 
 function Module:CreateHeader(header, ...)
