@@ -435,7 +435,7 @@ function Module:CreateHeader(header, ...)
     if not self.headers[header] then
         local db = self.db.profile.units[header]
 
-        local holder = CreateFrame('Frame', 'ZoeyUI_'..unitToCamelCase(header), UIParent, 'SecureHandlerStateTemplate');
+        local holder = CreateFrame('Frame', 'ZoeyUI_'..unitToCamelCase(header), oUF_PetBattleFrameHider, 'SecureHandlerStateTemplate');
         holder.db = db
         holder.headerName = header
 
