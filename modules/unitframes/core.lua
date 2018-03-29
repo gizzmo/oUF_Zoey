@@ -418,12 +418,12 @@ function holderMethods:Update()
     -- Resize holder to fit the size of all the child headers
     local unit = self[1]:GetAttribute('child1')
     if unit then -- has the raid been filled yet?
-       local unitWidth, unitHeight = unit:GetSize()
-       local groupWidth = (abs(xMult) * (unitWidth + horizontalSpacing) * 4 + unitWidth)
-       local groupHeight = (abs(yMult) * (unitHeight + verticalSpacing) * 4 + unitHeight)
+        local unitWidth, unitHeight = unit:GetSize()
+        local groupWidth = (abs(xMult) * (unitWidth + horizontalSpacing) * 4 + unitWidth)
+        local groupHeight = (abs(yMult) * (unitHeight + verticalSpacing) * 4 + unitHeight)
 
-       self:SetWidth(abs(colxMult) * (groupWidth + horizontalSpacing) * (db.numGroups - 1) + groupWidth)
-       self:SetHeight(abs(colyMult) * (groupHeight + verticalSpacing) * (db.numGroups - 1) + groupHeight)
+        self:SetWidth(abs(colxMult) * (groupWidth + horizontalSpacing) * (db.numGroups - 1) + groupWidth)
+        self:SetHeight(abs(colyMult) * (groupHeight + verticalSpacing) * (db.numGroups - 1) + groupHeight)
     end
 end
 
