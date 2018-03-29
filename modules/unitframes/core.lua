@@ -372,15 +372,6 @@ function holderMethods:Update()
         self.visibility = db.visibility
     end
 
-    local point = directionToAnchorPoint[db.direction]
-    local _, xMult, yMult = getRelativeAnchorPoint(point)
-
-    local columnAnchorPoint = directionToColumnAnchorPoint[db.direction]
-    local relativeColumnAnchorPoint, colxMult, colyMult = getRelativeAnchorPoint(columnAnchorPoint)
-
-    local horizontalSpacing = db.horizontalSpacing or db.spacing
-    local verticalSpacing = db.verticalSpacing or db.spacing
-
     for i=1, #self do
         local childHeader = self[i]
 
@@ -391,6 +382,20 @@ function holderMethods:Update()
         else
             childHeader:Show()
         end
+    end
+
+    local point = directionToAnchorPoint[db.direction]
+    local _, xMult, yMult = getRelativeAnchorPoint(point)
+
+    local columnAnchorPoint = directionToColumnAnchorPoint[db.direction]
+    local relativeColumnAnchorPoint, colxMult, colyMult = getRelativeAnchorPoint(columnAnchorPoint)
+
+    local horizontalSpacing = db.horizontalSpacing or db.spacing
+    local verticalSpacing = db.verticalSpacing or db.spacing
+
+    -- Only update the groups we're using
+    for i=1, db.raidWideSorting and 1 or db.numGroups do
+        local childHeader = self[i]
 
         -- Configure/Update child headers
         childHeader:Update()
