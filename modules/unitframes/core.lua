@@ -56,28 +56,29 @@ local defaultDB = {
                 spacing = 50,
                 groupBy = 'ROLE',
                 visibility = '[group:party,nogroup:raid]show;hide;',
-                numGroups = 1
+                numGroups = 1,
             },
             partytarget = {
                 direction = 'UP',
                 spacing = 90,
                 groupBy = 'ROLE',
                 visibility = '[group:party,nogroup:raid]show;hide;',
-                numGroups = 1
+                numGroups = 1,
             },
             partypet = {
                 direction = 'UP',
                 spacing = 110,
                 groupBy = 'ROLE',
                 visibility = '[group:party,nogroup:raid]show;hide;',
-                numGroups = 1
+                numGroups = 1,
             },
             raid = {
                 direction = 'RIGHT_UP',
                 spacing = 6,
                 groupBy = 'ROLE',
                 visibility = '[group:raid]show;hide;',
-                numGroups = 8
+                numGroups = 8,
+                raidWideSorting = true,
             },
         }
 
