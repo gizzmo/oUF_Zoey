@@ -262,6 +262,11 @@ end
 
 local headerMethods = {}
 function headerMethods:Update()
+    -- SecureGroupHeader_Update gets called with each attribute change.
+    -- Thats to much. We dont want that. So lets disable that.
+    local oldIgnore = self:GetAttribute("_ignore")
+    self:SetAttribute("_ignore", "attributeChanges")
+
     local db = self.db
 
     local point = directionToAnchorPoint[db.direction]
@@ -306,6 +311,9 @@ function headerMethods:Update()
     end
 
     self:SetAttribute('sortDir', db.sortDir or 'ASC')
+
+    -- Renable SecureGroupheader updating
+    self:SetAttribute("_ignore", oldIgnore)
 
     -- Update children
     for i = 1, self:GetNumChildren() do
