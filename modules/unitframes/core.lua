@@ -318,10 +318,9 @@ function headerMethods:Update()
     self:SetAttribute("_ignore", oldIgnore)
 
     -- Update children
-    for i = 1, self:GetNumChildren() do
-        local child = select(i, self:GetChildren())
-        -- NOTE: If a frame is created with this header as its parent, a error
-        -- could occure because that frame isnt the kinda child we're looking for.
+    for i = 1, #self do
+        local child = self[i]
+
         child:Update()
 
         -- Need to clear the points of the child for the SecureGroupHeader_Update
