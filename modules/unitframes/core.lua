@@ -238,24 +238,24 @@ function Module:CreateGroup(group)
 
     -- If it doesnt exist, create it!
     if not self.groups[group] then
-        local objects = CreateFrame('Frame', 'ZoeyUI_'..group:gsub('^%l', string.upper), oUF_PetBattleFrameHider)
+        local holder = CreateFrame('Frame', 'ZoeyUI_'..group:gsub('^%l', string.upper), oUF_PetBattleFrameHider)
 
         for i=1,5 do
             local object = oUF:Spawn(group..i, 'ZoeyUI_'..unitToCamelCase(group..i))
-            object:SetParent(objects)
+            object:SetParent(holder)
             object.db = self.db.profile.units[group] -- easy reference
-            objects[i] = object
+            holder[i] = object
         end
 
-        objects.db = self.db.profile.units[group] -- easy reference
+        holder.db = self.db.profile.units[group] -- easy reference
 
         for k,v in pairs(groupMethods) do
-            objects[k] = v
+            holder[k] = v
         end
 
-        objects:Update() -- run the update to position child units
+        holder:Update() -- run the update to position child units
 
-        self.groups[group] = objects
+        self.groups[group] = holder
     end
 
     return self.groups[group] -- Return the sudo-header
