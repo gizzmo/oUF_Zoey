@@ -238,10 +238,11 @@ function Module:CreateGroup(group)
 
     -- If it doesnt exist, create it!
     if not self.groups[group] then
-        local objects = CreateFrame('Frame', 'ZoeyUI_'..group:gsub('^%l', string.upper), UIParent)
+        local objects = CreateFrame('Frame', 'ZoeyUI_'..group:gsub('^%l', string.upper), oUF_PetBattleFrameHider)
 
         for i=1,5 do
             local object = oUF:Spawn(group..i, 'ZoeyUI_'..unitToCamelCase(group..i))
+            object:SetParent(objects)
             object.db = self.db.profile.units[group] -- easy reference
             objects[i] = object
         end
