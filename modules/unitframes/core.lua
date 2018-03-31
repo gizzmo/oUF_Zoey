@@ -223,7 +223,7 @@ function groupMethods:Update()
         if i == 1 then
             child:SetPoint(point, self, point, 0, 0)
         else
-            child:SetPoint(point, self[i-1], relativePoint, db.spacing * xMult, db.spacing * yMult)
+            child:SetPoint(point, self[i - 1], relativePoint, db.spacing * xMult, db.spacing * yMult)
         end
     end
 
@@ -423,8 +423,8 @@ function holderMethods:Update()
             childHeader:SetPoint(point, self)
             childHeader:SetPoint(columnAnchorPoint, self)
         else
-            childHeader:SetPoint(point, self[i-1]) -- Needed to align
-            childHeader:SetPoint(columnAnchorPoint, self[i-1], relativeColumnAnchorPoint,
+            childHeader:SetPoint(point, self[i - 1]) -- Needed to align
+            childHeader:SetPoint(columnAnchorPoint, self[i - 1], relativeColumnAnchorPoint,
                 horizontalSpacing * colxMult, verticalSpacing * colyMult)
         end
     end
@@ -484,7 +484,7 @@ function Module:LoadUnits()
     oUF:SetActiveStyle('Zoey')
     self:CreateUnit('Player'):SetPoint('BOTTOMRIGHT', self.Anchor, 'BOTTOMLEFT', 0, 0)
     self:CreateUnit('Target'):SetPoint('BOTTOMLEFT', self.Anchor, 'BOTTOMRIGHT', 0, 0)
-    self:CreateUnit('Focus'):SetPoint('RIGHT', self.units.player, 'LEFT', -gap*2, 0)
+    self:CreateUnit('Focus'):SetPoint('RIGHT', self.units.player, 'LEFT', -gap * 2, 0)
     self:CreateUnit('FocusTarget'):SetPoint('BOTTOM', self.units.focus, 'TOP', 0, gap)
 
     oUF:SetActiveStyle('ZoeyThin')
@@ -494,8 +494,8 @@ function Module:LoadUnits()
     self:CreateUnit('TargetTargetTarget'):SetPoint('TOPRIGHT', self.units.targettarget, 'BOTTOMRIGHT', 0, -gap)
 
     oUF:SetActiveStyle('Zoey')
-    self:CreateGroup('Boss'):SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap*3)
-    self:CreateGroup('Arena'):SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap*3)
+    self:CreateGroup('Boss'):SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap * 3)
+    self:CreateGroup('Arena'):SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap * 3)
 
     oUF:SetActiveStyle('Zoey')
     self:CreateHeader('Party',
