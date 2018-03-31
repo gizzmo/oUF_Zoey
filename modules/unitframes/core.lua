@@ -344,7 +344,7 @@ local function createChildHeader(parent, overrideName, headerName)
         ]]):format(header))
 
     object:SetParent(parent)
-    object.headerName = group
+    object.headerName = header
     object.db = parent.db
 
     if parent.childAttribues then
