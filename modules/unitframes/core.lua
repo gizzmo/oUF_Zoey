@@ -125,17 +125,17 @@ function Module:OnEnable()
     CompactRaidFrameContainer:UnregisterAllEvents()
 
     -- Remove tanited items from the right click menu on units
-    for _, menu in pairs( UnitPopupMenus ) do
+    for _, menu in pairs(UnitPopupMenus) do
         for i = #menu, 1, -1 do
-            local name = menu[ i ]
-            if name:match( '^LOCK_%u+_FRAME$' )
-            or name:match( '^UNLOCK_%u+_FRAME$' )
-            or name:match( '^MOVE_%u+_FRAME$' )
-            or name:match( '^RESET_%u+_FRAME_POSITION' )
-            or name:match( '^SET_FOCUS' )
-            or name:match( '^DISMISS' )
+            local name = menu[i]
+            if name:match('^LOCK_%u+_FRAME$')
+            or name:match('^UNLOCK_%u+_FRAME$')
+            or name:match('^MOVE_%u+_FRAME$')
+            or name:match('^RESET_%u+_FRAME_POSITION')
+            or name:match('^SET_FOCUS')
+            or name:match('^DISMISS')
             then
-                table.remove( menu, i )
+                table.remove(menu, i)
             end
         end
     end
@@ -153,7 +153,7 @@ end
 -------------------------------------------------------------------- Creating --
 local function unitToCamelCase(string)
     return string:lower() -- start all lower case
-        :gsub('^%l', string.upper)   -- set the first character upper case
+        :gsub('^%l', string.upper) -- set the first character upper case
         :gsub('t(arget)', 'T%1')
         :gsub('p(et)', 'P%1')
 end
@@ -214,7 +214,9 @@ function groupMethods:Update()
     local point = directionToAnchorPoint[db.direction]
     local relativePoint, xMult, yMult = getRelativeAnchorPoint(point)
 
-    for i, child in ipairs(self) do
+    for i = 1, #self do
+        local child = self[i]
+
         child:Update()
         child:ClearAllPoints()
 
@@ -231,7 +233,6 @@ function groupMethods:Update()
     self:SetHeight(abs(yMult) * (unitHeight + db.spacing) * (#self - 1) + unitHeight)
 
     -- TODO: should we add a column system?
-    -- TODO: needs combat protection.
 end
 
 function Module:CreateGroup(group)
@@ -241,7 +242,7 @@ function Module:CreateGroup(group)
     if not self.groups[group] then
         local holder = CreateFrame('Frame', 'ZoeyUI_'..group:gsub('^%l', string.upper), oUF_PetBattleFrameHider)
 
-        for i=1,5 do
+        for i = 1, 5 do
             local object = oUF:Spawn(group..i, 'ZoeyUI_'..unitToCamelCase(group..i))
             object:SetParent(holder)
             object.db = self.db.profile.units[group] -- easy reference
@@ -250,7 +251,7 @@ function Module:CreateGroup(group)
 
         holder.db = self.db.profile.units[group] -- easy reference
 
-        for k,v in pairs(groupMethods) do
+        for k, v in pairs(groupMethods) do
             holder[k] = v
         end
 
@@ -317,14 +318,14 @@ function headerMethods:Update()
     -- Renable SecureGroupheader updating
     self:SetAttribute("_ignore", oldIgnore)
 
-    -- Update children
+    -- Update child units
     for i = 1, #self do
         local child = self[i]
 
         child:Update()
 
         -- Need to clear the points of the child for the SecureGroupHeader_Update
-        -- to anchor incase attributes change after first Update.
+        -- to anchor, incase attributes change after first Update.
         child:ClearAllPoints()
     end
 end
@@ -366,12 +367,11 @@ function holderMethods:Update()
     -- Create any child headers if needed
     if db.raidWideSorting then
         if not self[1] then -- only need the first group with raidWideSorting
-            table.insert(self, createChildHeader(self, 'ZoeyUI_'..unitToCamelCase(self.headerName)..'Group1'))
+            self[1] = createChildHeader(self, 'ZoeyUI_'..unitToCamelCase(self.headerName)..'Group1')
         end
     else
         while self.db.numGroups > #self do
-            local index = tostring(#self + 1)
-            table.insert(self, createChildHeader(self, 'ZoeyUI_'..unitToCamelCase(self.headerName)..'Group'..index))
+            self[#self + 1] = createChildHeader(self, 'ZoeyUI_'..unitToCamelCase(self.headerName)..'Group'..(#self + 1))
         end
     end
 
@@ -381,7 +381,8 @@ function holderMethods:Update()
         self.visibility = db.visibility
     end
 
-    for i=1, #self do
+    -- Update child header visibility
+    for i = 1, #self do
         local childHeader = self[i]
 
         -- if numGroups changed or raidWideSorting was enabled,
@@ -403,7 +404,7 @@ function holderMethods:Update()
     local verticalSpacing = db.verticalSpacing or db.spacing
 
     -- Only update the groups we're using
-    for i=1, db.raidWideSorting and 1 or db.numGroups do
+    for i = 1, db.raidWideSorting and 1 or db.numGroups do
         local childHeader = self[i]
 
         -- Configure/Update child headers
@@ -416,9 +417,10 @@ function holderMethods:Update()
             childHeader:SetAttribute('groupFilter', tostring(i))
         end
 
-        -- Anchor child headers together
+        -- Start over with anchors
         childHeader:ClearAllPoints()
 
+        -- Anchor child headers together
         if i == 1 then
             childHeader:SetPoint(point, self)
             childHeader:SetPoint(columnAnchorPoint, self)
@@ -452,12 +454,12 @@ function Module:CreateHeader(header, ...)
 
         -- Save extra attributes for children
         holder.childAttribues = {}
-        for i=1, select('#', ...), 2 do
+        for i = 1, select('#', ...), 2 do
             local att, val = select(i, ...)
             holder.childAttribues[att] = val
         end
 
-        for k,v in pairs(holderMethods) do
+        for k, v in pairs(holderMethods) do
             holder[k] = v
         end
 
