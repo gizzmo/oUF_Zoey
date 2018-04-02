@@ -1,91 +1,154 @@
 local ADDON_NAME, Addon = ...
-local Module = Addon:GetModule('Unitframes')
+local Module = Addon:NewModule('UnitframesTest', 'AceEvent-3.0', 'AceHook-3.0')
 
-local oUF = Addon.oUF
-
-local function toggleUnitFrame(obj, show)
-    if show then
-        obj.old_unit = obj.unit
-        obj.unit = 'player'
-
-        obj.old_onUpdate = obj:GetScript('OnUpdate')
-        obj:SetScript('OnUpdate', nil)
-
-        UnregisterUnitWatch(obj)
-        RegisterUnitWatch(obj, true)
-
-        obj:Show()
-    elseif obj.old_unit then
-        obj.unit = obj.old_unit or obj.unit
-        obj.old_unit = nil
-
-        obj:SetScript('OnUpdate', obj.old_OnUpdate)
-        obj.old_OnUpdate = nil
-
-        UnregisterUnitWatch(obj)
-        RegisterUnitWatch(obj)
-
-        obj:UpdateAllElements('OnShow')
-    end
-end
-
-local function toggleHeaderFrame(obj, show)
-    if show then
-        local numMembers = math.max(GetNumSubgroupMembers(LE_PARTY_CATEGORY_HOME) or 0, GetNumSubgroupMembers(LE_PARTY_CATEGORY_INSTANCE) or 0)
-        obj:SetAttribute('startingIndex', (numMembers - 3))
-        RegisterAttributeDriver(obj, 'state-visibility', 'show')
-
-        for i = 1, obj:GetNumChildren() do
-            local child = select(i, obj:GetChildren())
-            toggleUnitFrame(child, true)
-        end
-    else
-        obj:SetAttribute('startingIndex', nil)
-        RegisterAttributeDriver(obj, 'state-visibility', obj.visibility)
-
-        for i = 1, obj:GetNumChildren() do
-            local child = select(i, obj:GetChildren())
-            toggleUnitFrame(child, false)
-        end
-    end
-end
+local Unitframes = Addon:GetModule('Unitframes')
 
 local testActive = false
+
+function Module:ForceShowUnit(object)
+    -- if no object or object is already forced. Return early
+    if not object or object.isForced then return end
+
+    object.oldUnit = object.unit
+    object.oldOnUpdate = object:GetScript('OnUpdate')
+
+    object.unit = 'player'
+    object:SetScript('OnUpdate', nil)
+
+    object:Disable()
+    object:Enable(true)
+    object:Show()
+    object:Update()
+
+    object.isForced = true
+end
+function Module:UnForceShowUnit(object)
+    -- if no object or object isnt forced. return early
+    if not object or not object.isForced then return end
+
+    object.unit = object.oldUnit
+    object:SetScript('OnUpdate', object.oldOnUpdate)
+
+    object:Disable()
+    object:Enable()
+    object:Show()
+    object:Update()
+
+    object.oldUnit = nil
+    object.oldOnUpdate = nil
+    object.isForced = nil
+end
+
+
+function Module:ForceShowHolder(holder)
+    -- if no holder or holder is already forced. Return early
+    if not holder or holder.isForced then return end
+
+    RegisterStateDriver(holder, 'visibility', 'show')
+
+    local db = holder.db
+    local maxUnits = db.raidWideSorting and min(db.numGroups * 5, MAX_RAID_MEMBERS) or 5
+
+    -- loop over child headers
+    for i=1, #holder do
+        local header = holder[i]
+
+        -- TODO: This may need to change if people are in the group.
+        -- IDEA: Use RegisterEvent('GROUP_ROSTER_UPDATE') to keep track of
+        --   the number of units in the group and change 'startingIndex' to make
+        --   sure all real units show, and the rest are filled up with 'player'
+
+        -- Setting startingIndex, encourages SecureGroupheaders to create the buttons
+        header:SetAttribute('startingIndex', -maxUnits + 1)
+        for i=1, #header do
+            self:ForceShowUnit(header[i])
+        end
+    end
+
+    holder:Update()
+    holder.isForced = true
+end
+function Module:UnForceShowHolder(holder)
+    -- if no holder or holder isnt forced. return early
+    if not holder or not holder.isForced then return end
+
+    RegisterStateDriver(holder, 'visibility', holder.visibility)
+
+    for i=1, #holder do
+        local header = holder[i]
+
+        header:SetAttribute('startingIndex', nil)
+        for i=1, #header do
+            self:UnForceShowUnit(header[i])
+        end
+    end
+
+    holder:Update()
+    holder.isForced = nil
+end
+
+
+function Module:EnableTest(type)
+    if InCombatLockdown() then return self:Print('Can\'t toggle test frames while in combat.') end
+    if testActive == true then return self:Print('Test frames already active.') end
+
+    for _, unit in pairs(Unitframes.units) do
+        self:ForceShowUnit(unit)
+    end
+    for _, groupHolder in pairs(Unitframes.groups) do
+        for i=1, #groupHolder do
+            self:ForceShowUnit(groupHolder[i])
+        end
+    end
+
+    if type == nil or type == 'party' then
+        self:ForceShowHolder(ZoeyUI_Party)
+        self:ForceShowHolder(ZoeyUI_PartyPet)
+        self:ForceShowHolder(ZoeyUI_PartyTarget)
+    elseif type == 'raid' then
+        self:ForceShowHolder(ZoeyUI_Raid)
+    end
+
+    testActive = true
+    self:Print('Test frames are now active.')
+
+    -- Disable the test if we enter combat.
+    Module:RegisterEvent('PLAYER_REGEN_DISABLED', 'DisableTest', true)
+end
+
+function Module:DisableTest(dueToCombat)
+    if testActive == false then return self:Print('Test frames are not active.') end
+    for _, unit in pairs(Unitframes.units) do
+        self:UnForceShowUnit(unit)
+    end
+    for _, groupHolder in pairs(Unitframes.groups) do
+        for i=1, #groupHolder do
+            self:UnForceShowUnit(groupHolder[i])
+        end
+    end
+    for _, headerHolder in pairs(Unitframes.headers) do
+        self:UnForceShowHolder(headerHolder)
+    end
+
+    testActive = false
+
+    if dueToCombat then
+        self:Print('|cFFFF0000Entering Combat|r disabling test frames.')
+    else
+        self:Print('Test frames are now inactive.')
+    end
+
+    -- Frames are disabled, stop watching the event
+    Module:UnregisterEvent('PLAYER_REGEN_DISABLED')
+end
 
 -- Register our UF test command
 Module:RegisterSlashCommand('test', function(input)
     local type = Module:GetArgs(input, 1)
 
-    -- Always start with them being deactive
-    for _, unit in pairs(oUF.objects) do
-        toggleUnitFrame(unit, false)
-    end
-
-    toggleHeaderFrame(ZoeyUI_Party, false)
-    toggleHeaderFrame(ZoeyUI_PartyPets, false)
-    toggleHeaderFrame(ZoeyUI_PartyTargets, false)
-    toggleHeaderFrame(ZoeyUI_Raid, false)
-
-    -- Then, if we want ot enable it, activate them
     if not testActive then
-        if InCombatLockdown() then return print('ZoeyUI: Can\'t toggle test frames in combat.')end
-        print('ZoeyUI: Test frames are active')
-
-        for _, unit in pairs(oUF.objects) do
-            toggleUnitFrame(unit, true)
-        end
-
-        if type==nil or type == 'group' then
-            toggleHeaderFrame(ZoeyUI_Party, true)
-            toggleHeaderFrame(ZoeyUI_PartyPets, true)
-            toggleHeaderFrame(ZoeyUI_PartyTargets, true)
-        elseif type == 'raid' then
-            toggleHeaderFrame(ZoeyUI_Raid, true)
-        end
-
+        Module:EnableTest(type)
     elseif testActive then
-        print('ZoeyUI: Test frames are inactive')
+        Module:DisableTest()
     end
-
-    testActive = not testActive
 end)
