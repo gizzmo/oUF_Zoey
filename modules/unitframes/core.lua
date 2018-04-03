@@ -295,7 +295,7 @@ function headerMethods:Update()
     end
 
     self:SetAttribute('columnAnchorPoint', directionToColumnAnchorPoint[db.direction])
-    self:SetAttribute('maxColumns', db.raidWideSorting and math.ceil(db.numGroups / db.groupsPerCol) or 1)
+    self:SetAttribute('maxColumns', db.raidWideSorting and ceil(db.numGroups / db.groupsPerCol) or 1)
     self:SetAttribute('unitsPerColumn', db.raidWideSorting and (db.groupsPerCol * 5) or 5)
 
     -- Sorting
@@ -449,8 +449,8 @@ function holderMethods:Update()
 
     -- Then increase by the number of rows
     local numRows = ceil(db.numGroups / db.groupsPerCol)
-    width = width + ((numRows - 1) * abs(colxMult) * (width + horizontalSpacing))
-    height = height + ( (numRows - 1) * abs(colyMult) * (height + verticalSpacing))
+    width = width + (abs(colxMult) * (width + horizontalSpacing) * (numRows - 1))
+    height = height + (abs(colyMult) * (height + verticalSpacing) * (numRows - 1))
 
     self:SetWidth(width)
     self:SetHeight(height)
