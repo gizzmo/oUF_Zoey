@@ -57,6 +57,7 @@ local defaultDB = {
                 groupBy = 'ROLE',
                 visibility = '[group:party,nogroup:raid]show;hide;',
                 numGroups = 1,
+                groupsPerCol = 1,
             },
             partytarget = {
                 direction = 'UP',
@@ -64,6 +65,7 @@ local defaultDB = {
                 groupBy = 'ROLE',
                 visibility = '[group:party,nogroup:raid]show;hide;',
                 numGroups = 1,
+                groupsPerCol = 1,
             },
             partypet = {
                 direction = 'UP',
@@ -71,6 +73,7 @@ local defaultDB = {
                 groupBy = 'ROLE',
                 visibility = '[group:party,nogroup:raid]show;hide;',
                 numGroups = 1,
+                groupsPerCol = 1,
             },
             raid = {
                 direction = 'RIGHT_UP',
@@ -78,6 +81,7 @@ local defaultDB = {
                 groupBy = 'ROLE',
                 visibility = '[group:raid]show;hide;',
                 numGroups = 8,
+                groupsPerCol = 1,
                 raidWideSorting = true,
             },
         }
@@ -291,8 +295,8 @@ function headerMethods:Update()
     end
 
     self:SetAttribute('columnAnchorPoint', directionToColumnAnchorPoint[db.direction])
-    self:SetAttribute('maxColumns', db.raidWideSorting and db.numGroups or 1)
-    self:SetAttribute('unitsPerColumn', 5)
+    self:SetAttribute('maxColumns', db.raidWideSorting and math.ceil(db.numGroups / db.groupsPerCol) or 1)
+    self:SetAttribute('unitsPerColumn', db.raidWideSorting and (db.groupsPerCol * 5) or 5)
 
     -- Sorting
     if db.groupBy == 'CLASS' then
@@ -393,7 +397,7 @@ function holderMethods:Update()
     end
 
     local point = directionToAnchorPoint[db.direction]
-    local _, xMult, yMult = getRelativeAnchorPoint(point)
+    local relativePoint, xMult, yMult = getRelativeAnchorPoint(point)
 
     local columnAnchorPoint = directionToColumnAnchorPoint[db.direction]
     local relativeColumnAnchorPoint, colxMult, colyMult = getRelativeAnchorPoint(columnAnchorPoint)
@@ -422,10 +426,13 @@ function holderMethods:Update()
         if i == 1 then
             childHeader:SetPoint(point, self)
             childHeader:SetPoint(columnAnchorPoint, self)
-        else
-            childHeader:SetPoint(point, self[i - 1]) -- Needed to align
-            childHeader:SetPoint(columnAnchorPoint, self[i - 1], relativeColumnAnchorPoint,
+        elseif (i - 1) % db.groupsPerCol == 0 then
+            childHeader:SetPoint(point, self[i - db.groupsPerCol]) -- Needed to align
+            childHeader:SetPoint(columnAnchorPoint, self[i - db.groupsPerCol], relativeColumnAnchorPoint,
                 horizontalSpacing * colxMult, verticalSpacing * colyMult)
+        else
+            childHeader:SetPoint(point, self[i - 1], relativePoint,
+                horizontalSpacing * xMult, verticalSpacing * yMult)
         end
     end
 
@@ -436,8 +443,17 @@ function holderMethods:Update()
     local groupWidth = (abs(xMult) * (unitWidth + horizontalSpacing) * 4 + unitWidth)
     local groupHeight = (abs(yMult) * (unitHeight + verticalSpacing) * 4 + unitHeight)
 
-    self:SetWidth(abs(colxMult) * (groupWidth + horizontalSpacing) * (db.numGroups - 1) + groupWidth)
-    self:SetHeight(abs(colyMult) * (groupHeight + verticalSpacing) * (db.numGroups - 1) + groupHeight)
+    -- Start with 1 column of groups: if groupsPerCol is 1 then just the group size
+    local width = abs(xMult) * (groupWidth + horizontalSpacing) * (db.groupsPerCol - 1) + groupWidth
+    local height = abs(yMult) * (groupHeight + verticalSpacing) * (db.groupsPerCol - 1) + groupHeight
+
+    -- Then increase by the number of rows
+    local numRows = ceil(db.numGroups / db.groupsPerCol)
+    width = width + ((numRows - 1) * abs(colxMult) * (width + horizontalSpacing))
+    height = height + ( (numRows - 1) * abs(colyMult) * (height + verticalSpacing))
+
+    self:SetWidth(width)
+    self:SetHeight(height)
 end
 
 function Module:CreateHeader(header, ...)
