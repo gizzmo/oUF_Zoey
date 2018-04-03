@@ -440,8 +440,8 @@ function holderMethods:Update()
     local unitWidth = self[1]:GetAttribute('initial-width')   -- We can use these attributes until
     local unitHeight = self[1]:GetAttribute('initial-height') -- the size gets stored in the database
 
-    local groupWidth = (abs(xMult) * (unitWidth + horizontalSpacing) * 4 + unitWidth)
-    local groupHeight = (abs(yMult) * (unitHeight + verticalSpacing) * 4 + unitHeight)
+    local groupWidth = abs(xMult) * (unitWidth + horizontalSpacing) * 4 + unitWidth
+    local groupHeight = abs(yMult) * (unitHeight + verticalSpacing) * 4 + unitHeight
 
     -- Start with 1 column of groups: if groupsPerCol is 1 then just the group size
     local width = abs(xMult) * (groupWidth + horizontalSpacing) * (db.groupsPerCol - 1) + groupWidth
