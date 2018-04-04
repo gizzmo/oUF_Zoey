@@ -236,8 +236,6 @@ function groupMethods:Update()
     local unitWidth, unitHeight = self[1]:GetSize()
     self:SetWidth(abs(xMult) * (unitWidth + db.spacing) * (#self - 1) + unitWidth)
     self:SetHeight(abs(yMult) * (unitHeight + db.spacing) * (#self - 1) + unitHeight)
-
-    -- TODO: should we add a column system?
 end
 
 function Module:CreateGroup(group)
@@ -272,8 +270,8 @@ local headerMethods = {}
 function headerMethods:Update()
     -- SecureGroupHeader_Update gets called with each attribute change.
     -- Thats to much. We dont want that. So lets disable that.
-    local oldIgnore = self:GetAttribute("_ignore")
-    self:SetAttribute("_ignore", "attributeChanges")
+    local oldIgnore = self:GetAttribute('_ignore')
+    self:SetAttribute('_ignore', 'attributeChanges')
 
     local db = self.db
 
@@ -321,7 +319,7 @@ function headerMethods:Update()
     self:SetAttribute('sortDir', db.sortDir or 'ASC')
 
     -- Renable SecureGroupheader updating
-    self:SetAttribute("_ignore", oldIgnore)
+    self:SetAttribute('_ignore', oldIgnore)
 
     -- Update child units
     for i = 1, #self do
