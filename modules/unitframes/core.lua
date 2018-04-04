@@ -243,7 +243,7 @@ function Module:CreateGroup(group)
 
     -- If it doesnt exist, create it!
     if not self.groups[group] then
-        local holder = CreateFrame('Frame', 'ZoeyUI_'..group:gsub('^%l', string.upper), oUF_PetBattleFrameHider)
+        local holder = CreateFrame('Frame', 'ZoeyUI_'..unitToCamelCase(group), oUF_PetBattleFrameHider)
 
         for i = 1, 5 do
             local object = oUF:Spawn(group..i, 'ZoeyUI_'..unitToCamelCase(group..i))
