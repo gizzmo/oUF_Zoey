@@ -83,6 +83,7 @@ local defaultDB = {
                 numGroups = 8,
                 groupsPerCol = 1,
                 raidWideSorting = true,
+                invertGroupGrowth = false, -- TODO: New name?
             },
         }
 
@@ -404,6 +405,7 @@ function holderMethods:Update()
 
     local horizontalSpacing = db.horizontalSpacing or db.spacing
     local verticalSpacing = db.verticalSpacing or db.spacing
+    local numRows = ceil(db.numGroups / db.groupsPerCol)
 
     -- Only update the groups we're using
     for i = 1, db.raidWideSorting and 1 or db.numGroups do
@@ -426,12 +428,15 @@ function holderMethods:Update()
         if i == 1 then
             childHeader:SetPoint(point, self)
             childHeader:SetPoint(columnAnchorPoint, self)
-        elseif (i - 1) % db.groupsPerCol == 0 then
-            childHeader:SetPoint(point, self[i - db.groupsPerCol]) -- Needed to align
-            childHeader:SetPoint(columnAnchorPoint, self[i - db.groupsPerCol], relativeColumnAnchorPoint,
+        elseif db.invertGroupGrowth and (i <= numRows)
+        or not db.invertGroupGrowth and ((i - 1) % db.groupsPerCol == 0) then
+            local anchorTo = self[i - (db.invertGroupGrowth and 1 or db.groupsPerCol)]
+            childHeader:SetPoint(point, anchorTo) -- Needed to align
+            childHeader:SetPoint(columnAnchorPoint, anchorTo, relativeColumnAnchorPoint,
                 horizontalSpacing * colxMult, verticalSpacing * colyMult)
         else
-            childHeader:SetPoint(point, self[i - 1], relativePoint,
+            local anchorTo = self[i - (db.invertGroupGrowth and numRows or 1)]
+            childHeader:SetPoint(point, anchorTo, relativePoint,
                 horizontalSpacing * xMult, verticalSpacing * yMult)
         end
     end
@@ -448,7 +453,6 @@ function holderMethods:Update()
     local height = abs(yMult) * (groupHeight + verticalSpacing) * (db.groupsPerCol - 1) + groupHeight
 
     -- Then increase by the number of rows
-    local numRows = ceil(db.numGroups / db.groupsPerCol)
     width = width + (abs(colxMult) * (width + horizontalSpacing) * (numRows - 1))
     height = height + (abs(colyMult) * (height + verticalSpacing) * (numRows - 1))
 
