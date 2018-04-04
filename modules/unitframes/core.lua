@@ -451,8 +451,8 @@ function holderMethods:Update()
     local height = abs(yMult) * (groupHeight + verticalSpacing) * (db.groupsPerCol - 1) + groupHeight
 
     -- Then increase by the number of rows
-    width = width + (abs(colxMult) * (width + horizontalSpacing) * (numRows - 1))
-    height = height + (abs(colyMult) * (height + verticalSpacing) * (numRows - 1))
+    width = abs(colxMult) * (width + horizontalSpacing) * (numRows - 1) + width
+    height = abs(colyMult) * (height + verticalSpacing) * (numRows - 1) + height
 
     self:SetWidth(width)
     self:SetHeight(height)
