@@ -129,6 +129,10 @@ Addon.options.args.general = {
 ---------------------------------------------------------------- Core Methods --
 function Addon:OnInitialize()
     self.db = LibStub("AceDB-3.0"):New(ADDON_NAME.."DB", defaultDB, true)
+    self.db.RegisterCallback(self, 'OnProfileChanged', 'OnProfileRefresh')
+    self.db.RegisterCallback(self, 'OnProfileCopied', 'OnProfileRefresh')
+    self.db.RegisterCallback(self, 'OnProfileReset', 'OnProfileRefresh')
+
     LibStub('AceConfigRegistry-3.0'):RegisterOptionsTable(ADDON_NAME, self.options)
 
     self.options.args.profile = LibStub('AceDBOptions-3.0'):GetOptionsTable(self.db)
@@ -141,6 +145,10 @@ function Addon:OnEnable()
 end
 
 function Addon:OnDisable()
+end
+
+function Addon:OnProfileRefresh(args)
+    self:FireModuleMethod('OnProfileRefresh')
 end
 
 --------------------------------------------------------------------------------
@@ -185,6 +193,19 @@ function ModulePrototype:RegisterSlashCommand(command, func)
         end
     else
         Addon.ModuleSlashCommands[command] = Addon.ConvertMethodToFunction(self, func)
+    end
+end
+
+-- Call a given method on all modules if those modules have the method
+function Addon:FireModuleMethod(method, ...)
+    if type(method) ~= 'string' then
+        error(("Usage: FireModuleMethod(method[, arg, arg, ...]): 'method' - string expcted got '%s'."):format(type(method)), 2)
+    end
+
+    for name, module in self:IterateModules() do
+        if type(module[method]) == 'function' then
+           module[method](module, ...)
+        end
     end
 end
 

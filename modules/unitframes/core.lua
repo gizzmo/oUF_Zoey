@@ -148,7 +148,23 @@ function Module:OnEnable()
     self:LoadUnits()
 end
 
--------------------------------------------------------------------- Updating --
+-- Update all database references
+function Module:OnProfileRefresh()
+    for name, unit in pairs(self.units) do
+        unit.db = self.db.profile.units[name]
+    end
+    for name, group in pairs(self.groups) do
+        group.db = self.db.profile.units[name]
+        for i = 1, #group do group[i].db = group.db end
+    end
+    for name, header in pairs(self.headers) do
+        header.db = self.db.profile.units[name]
+        for i = 1, #header do header[i].db = header.db end
+    end
+
+    self:UpdateAll()
+end
+
 function Module:UpdateAll()
     for _, unit in pairs(self.units) do unit:Update() end
     for _, group in pairs(self.groups) do group:Update() end
@@ -169,7 +185,7 @@ function Module:CreateUnit(unit)
     -- If it doesnt exist, create it!
     if not self.units[unit] then
         local object = oUF:Spawn(unit, 'ZoeyUI_'..unitToCamelCase(unit))
-        object.db = self.db.profile.units[unit] -- easy reference
+        object.db = self.db.profile.units[unit]
         self.units[unit] = object
     end
 
@@ -212,7 +228,6 @@ local function getRelativeAnchorPoint(point)
 end
 
 local groupMethods = {}
--- Group update method. Updates and positions child the sudo-header.
 function groupMethods:Update()
     local db = self.db
 
@@ -244,15 +259,14 @@ function Module:CreateGroup(group)
     -- If it doesnt exist, create it!
     if not self.groups[group] then
         local holder = CreateFrame('Frame', 'ZoeyUI_'..unitToCamelCase(group), oUF_PetBattleFrameHider)
+        holder.db = self.db.profile.units[group]
 
         for i = 1, 5 do
             local object = oUF:Spawn(group..i, 'ZoeyUI_'..unitToCamelCase(group..i))
             object:SetParent(holder)
-            object.db = self.db.profile.units[group] -- easy reference
+            object.db = holder.db
             holder[i] = object
         end
-
-        holder.db = self.db.profile.units[group] -- easy reference
 
         for k, v in pairs(groupMethods) do
             holder[k] = v
@@ -462,10 +476,8 @@ function Module:CreateHeader(header, ...)
     local header = header:lower()
 
     if not self.headers[header] then
-        local db = self.db.profile.units[header]
-
         local holder = CreateFrame('Frame', 'ZoeyUI_'..unitToCamelCase(header), oUF_PetBattleFrameHider, 'SecureHandlerStateTemplate');
-        holder.db = db
+        holder.db = self.db.profile.units[header]
         holder.headerName = header
 
         -- Save extra attributes for children
