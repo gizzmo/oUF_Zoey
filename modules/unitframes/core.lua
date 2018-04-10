@@ -382,8 +382,10 @@ function holderMethods:Update()
     local db = self.db
 
     -- Create any child headers if needed
-    if db.raidWideSorting and not self[1] then -- only need the first group with raidWideSorting
-        self[1] = createChildHeader(self, 'ZoeyUI_'..unitToCamelCase(self.headerName)..'Group1')
+    if db.raidWideSorting then
+        if not self[1] then -- only need the first group with raidWideSorting
+            self[1] = createChildHeader(self, 'ZoeyUI_'..unitToCamelCase(self.headerName)..'Group1')
+        end
     else
         while self.db.numGroups > #self do
             self[#self + 1] = createChildHeader(self, 'ZoeyUI_'..unitToCamelCase(self.headerName)..'Group'..(#self + 1))
