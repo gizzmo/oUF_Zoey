@@ -300,17 +300,6 @@ function headerMethods:Update()
     self:SetAttribute('xOffset', horizontalSpacing * xMult)
     self:SetAttribute('yOffset', verticalSpacing * yMult)
 
-    -- First direction is horizontal so, columns are grow verticaly
-    if point == 'LEFT' or point == 'RIGHT' then
-        self:SetAttribute('columnSpacing', verticalSpacing)
-    else
-        self:SetAttribute('columnSpacing', horizontalSpacing)
-    end
-
-    self:SetAttribute('columnAnchorPoint', directionToColumnAnchorPoint[db.direction])
-    self:SetAttribute('maxColumns', db.raidWideSorting and ceil(db.numGroups / db.groupsPerCol) or 1)
-    self:SetAttribute('unitsPerColumn', db.raidWideSorting and (db.groupsPerCol * 5) or 5)
-
     -- Sorting
     if db.groupBy == 'CLASS' then
         self:SetAttribute('groupingOrder', 'DEATHKNIGHT,DRUID,HUNTER,MAGE,PALADIN,PRIEST,SHAMAN,WARLOCK,WARRIOR,MONK')
@@ -434,6 +423,17 @@ function holderMethods:Update()
         else
             childHeader:SetAttribute('groupFilter', tostring(i))
         end
+
+        -- Setup column settings
+        if point == 'LEFT' or point == 'RIGHT' then
+            childHeader:SetAttribute('columnSpacing', verticalSpacing)
+        else
+            childHeader:SetAttribute('columnSpacing', horizontalSpacing)
+        end
+
+        childHeader:SetAttribute('columnAnchorPoint', directionToColumnAnchorPoint[db.direction])
+        childHeader:SetAttribute('maxColumns', db.raidWideSorting and numRows or 1)
+        childHeader:SetAttribute('unitsPerColumn', db.raidWideSorting and (db.groupsPerCol * 5) or 5)
 
         -- Start over with anchors
         childHeader:ClearAllPoints()
