@@ -429,6 +429,17 @@ end
 
 ------------------------------------------------------------------ The Styles --
 function Module:ConstructStyle(object, unit, isSingle)
+    -- Clean unit names like 'boss1'
+    unit = unit:gsub('%d', '')
+
+    -- We can trust that the 'unit' passed will be the correct database key.
+    -- Following execution, if it came from oUF:Spawn its the first parameter;
+    -- If it came from oUF:SpawnHeader its the 'oUF-guessUnit', which we force
+    -- the value of in 'oUF-initialConfigFunction'
+    object.db = self.db.profile.units[unit]
+    object.isSingle = isSingle
+    object.objectName = unit
+
     -- Make the frame interactiveable
     object:RegisterForClicks('AnyUp')
     object:SetScript('OnEnter', OnEnter)

@@ -155,11 +155,18 @@ function Module:OnProfileRefresh()
     end
     for name, group in pairs(self.groups) do
         group.db = self.db.profile.units[name]
-        for i = 1, #group do group[i].db = group.db end
+        for i = 1, #group do
+            group[i].db = group.db
+        end
     end
-    for name, header in pairs(self.headers) do
-        header.db = self.db.profile.units[name]
-        for i = 1, #header do header[i].db = header.db end
+    for name, holder in pairs(self.headers) do
+        holder.db = self.db.profile.units[name]
+        for i = 1, #holder do
+            holder[i].db = holder.db
+            for j = 1, #holder[i] do
+                holder[i][j].db = holder.db
+            end
+        end
     end
 
     self:UpdateAll()
@@ -185,7 +192,6 @@ function Module:CreateUnit(unit)
     -- If it doesnt exist, create it!
     if not self.units[unit] then
         local object = oUF:Spawn(unit, 'ZoeyUI_'..unitToCamelCase(unit))
-        object.db = self.db.profile.units[unit]
         self.units[unit] = object
     end
 
@@ -264,7 +270,6 @@ function Module:CreateGroup(group)
         for i = 1, 5 do
             local object = oUF:Spawn(group..i, 'ZoeyUI_'..unitToCamelCase(group..i))
             object:SetParent(holder)
-            object.db = holder.db
             holder[i] = object
         end
 
