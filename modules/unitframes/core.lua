@@ -376,13 +376,13 @@ function holderMethods:Update()
             self[1] = createChildHeader(self, 'ZoeyUI_'..unitToCamelCase(self.headerName)..'Group1')
         end
     else
-        while self.db.numGroups > #self do
+        while db.numGroups > #self do
             self[#self + 1] = createChildHeader(self, 'ZoeyUI_'..unitToCamelCase(self.headerName)..'Group'..(#self + 1))
         end
     end
 
     -- Update visibility
-    if not self.visibility or self.visibility ~= self.db.visibility then
+    if not self.visibility or self.visibility ~= db.visibility then
         RegisterStateDriver(self, 'visibility', db.visibility)
         self.visibility = db.visibility
     end
