@@ -90,18 +90,6 @@ local defaultDB = {
     }
 }
 
---------------------------------------------------------------------- Options --
-Module.options = {
-    type = 'group',
-    name = L['Unitframes'],
-    args = {
-
-    }
-}
-
--- Register the modules with the Addon
-Addon.options.args[MODULE_NAME] = Module.options
-
 --------------------------------------------------------------------------------
 function Module:OnInitialize()
     self.db = Addon.db:RegisterNamespace(MODULE_NAME, defaultDB)

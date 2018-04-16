@@ -15,16 +15,15 @@ local defaultDB = {
 }
 
 --------------------------------------------------------------------- Options --
-Module.options = {
-    type = 'group',
-    name = L['WorldMap'],
-    args = {
+function Module.get_module_options()
+    return {
+        type = 'group',
+        name = L['WorldMap'],
+        args = {
 
+        }
     }
-}
-
--- Register the modules with the Addon
-Addon.options.args[MODULE_NAME] = Module.options
+end
 
 --------------------------------------------------------------------------------
 function Module:OnInitialize()

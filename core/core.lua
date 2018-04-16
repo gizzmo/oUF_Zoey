@@ -35,108 +35,12 @@ local defaultDB = {
     }
 }
 
---------------------------------------------------------------------- Options --
-Addon.options = {
-    type = 'group',
-    args = {},
-}
-
-Addon.options.args.general = {
-    order = 10,
-    type = 'group',
-    name = L['General'],
-    get = function(info) return Addon.db.profile.general[ info[#info] ] end,
-    set = function(info, value) Addon.db.profile.general[ info[#info] ] = value end,
-    args = {
-        general = {
-            order = 10,
-            type = 'group',
-            inline = true,
-            name = L["General"],
-            args = {
-                --
-            },
-        },
-
-        fonts = {
-            order = 20,
-            type = 'group',
-            inline = true,
-            name = L["Fonts"],
-            args = {
-                fontSize = {
-                    order = 11,
-                    name = L["Font Size"],
-                    desc = L["Set the font size for everything in the UI."],
-                    type = 'range',
-                    min = 4, max = 200, step = 1,
-                },
-                font = {
-                    order = 12,
-                    name = L["Default"],
-                    desc = L["This is the description."],
-                    type = 'select', dialogControl = 'LSM30_Font',
-                    values = AceGUIWidgetLSMlists.font,
-                },
-            },
-        },
-
-        texture = {
-            order = 30,
-            type = 'group',
-            inline = true,
-            name = L["Textures"],
-            args = {
-                texture = {
-                    order = 21,
-                    name = L["Texture"],
-                    desc = L["The texture that will be used mainly for statusbars."],
-                    type = "select", dialogControl = 'LSM30_Statusbar',
-                    values = AceGUIWidgetLSMlists.statusbar,
-                    set = function(info, value)
-                        Addon.db.profile.general[ info[#info] ] = value;
-                        Addon:UpdateStatusBars()
-                    end
-                },
-            },
-        },
-
-        colors = {
-            order = 40,
-            type = 'group',
-            inline = true,
-            name = L["Colors"],
-            get = function(info) return unpack(Addon.db.profile.general[info[#info]]) end,
-            set = function(info, ...) Addon.db.profile.general[info[#info]] = {...} end,
-            args = {
-                textureColor = {
-                    order = 32,
-                    name = L["Texture color"],
-                    desc = L["The color used for statusbars."],
-                    type = 'color', hasAlpha = false,
-                },
-                borderColor = {
-                    order = 31,
-                    name = L["Border color"],
-                    desc = L["Main border color for the UI."],
-                    type = 'color', hasAlpha = false,
-                },
-            },
-        },
-    },
-}
-
 ---------------------------------------------------------------- Core Methods --
 function Addon:OnInitialize()
     self.db = LibStub("AceDB-3.0"):New(ADDON_NAME.."DB", defaultDB, true)
     self.db.RegisterCallback(self, 'OnProfileChanged', 'OnProfileRefresh')
     self.db.RegisterCallback(self, 'OnProfileCopied', 'OnProfileRefresh')
     self.db.RegisterCallback(self, 'OnProfileReset', 'OnProfileRefresh')
-
-    LibStub('AceConfigRegistry-3.0'):RegisterOptionsTable(ADDON_NAME, self.options)
-
-    self.options.args.profile = LibStub('AceDBOptions-3.0'):GetOptionsTable(self.db)
-    self.options.args.profile.order = -1 -- always at the end.
 end
 
 function Addon:OnEnable()
@@ -215,8 +119,9 @@ Addon:RegisterChatCommand('zoey', function(input)
     local arg = Addon:GetArgs(input, 1)
 
     if not arg then
-        Dialog:Open(ADDON_NAME)
-        -- TODO: find better pattern matching
+        Addon:OpenOptions()
+
+    -- TODO: find better pattern matching
     elseif strmatch(strlower(arg), '^ve?r?s?i?o?n?$') then
         Addon:Print(format(L['You are using version %s'], Addon.version))
     else
