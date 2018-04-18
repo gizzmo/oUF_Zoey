@@ -287,8 +287,7 @@ end
 
 local headerMethods = {}
 function headerMethods:Update()
-    -- SecureGroupHeader_Update gets called with each attribute change.
-    -- Thats to much. We dont want that. So lets disable that.
+    -- Disable SecureGroupHeader from updating on attribute changes.
     local oldIgnore = self:GetAttribute('_ignore')
     self:SetAttribute('_ignore', 'attributeChanges')
 
@@ -326,9 +325,6 @@ function headerMethods:Update()
 
     self:SetAttribute('sortDir', db.sortDir or 'ASC')
 
-    -- Renable SecureGroupheader updating
-    self:SetAttribute('_ignore', oldIgnore)
-
     -- Update child units
     for i = 1, #self do
         local child = self[i]
@@ -339,6 +335,10 @@ function headerMethods:Update()
         -- to anchor, incase attributes change after first Update.
         child:ClearAllPoints()
     end
+
+    -- Reenable Updating and set a attribute to force an update
+    self:SetAttribute('_ignore', oldIgnore)
+    self:SetAttribute('ForceUpdate')
 end
 
 local function createChildHeader(parent, overrideName, headerName)
@@ -419,6 +419,10 @@ function holderMethods:Update()
     for i = 1, db.raidWideSorting and 1 or db.numGroups do
         local childHeader = self[i]
 
+        -- Disable SecureGroupHeader from updating on attribute changes.
+        local oldIgnore = childHeader:GetAttribute('_ignore')
+        childHeader:SetAttribute('_ignore', 'attributeChanges')
+
         -- Configure/Update child headers
         childHeader:Update()
 
@@ -439,6 +443,10 @@ function holderMethods:Update()
         childHeader:SetAttribute('columnAnchorPoint', directionToColumnAnchorPoint[db.direction])
         childHeader:SetAttribute('maxColumns', db.raidWideSorting and numRows or 1)
         childHeader:SetAttribute('unitsPerColumn', db.raidWideSorting and (db.groupsPerCol * 5) or 5)
+
+        -- Reenable Updating and set a attribute to force an update
+        childHeader:SetAttribute('_ignore', oldIgnore)
+        childHeader:SetAttribute('ForceUpdate')
 
         -- Start over with anchors
         childHeader:ClearAllPoints()
