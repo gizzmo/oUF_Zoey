@@ -193,6 +193,86 @@ local headerOptionsTable = {
             },
         },
     },
+    sortingGroup = {
+        type = 'group',
+        guiInline = true,
+        name = L["Grouping and Sorting"],
+
+        get = 'Get',
+        set = 'Set',
+
+        args = {
+            raidWideSorting = {
+                order = 1,
+                type = 'toggle',
+                name = L["Raid-Wide Sorting"],
+                desc = L["Enabling this will make you not be able to distinguish between groups."],
+            },
+            numGroups = {
+                order = 2,
+                type = 'range',
+                name = L["Number of Groups"],
+                min = 1, max = 8, step = 1,
+            },
+            groupsPerCol = {
+                order = 3,
+                type = 'range',
+                name = L["Groups per column"],
+                desc = L["The number of groups before creating a new row."],
+                min = 1, max = 8, step = 1,
+                disabled = function(info)
+                    return info.handler.object.db.numGroups == 1
+                end
+            },
+            invertGroupGrowth = {
+                order = 4,
+                type = 'toggle',
+                name = L['Invert group growth'],
+                desc = L['Change how groups grow.'],
+                disabled = function(info)
+                    return info.handler.object.db.groupsPerCol == 1
+                    or info.handler.object.db.raidWideSorting
+                end
+            },
+            groupBy = {
+                order = 5,
+                name = L["Group By"],
+                desc = L["Set the order that the group will sort."],
+                type = 'select',
+                values = {
+                    ['CLASS'] = CLASS,
+                    ['ROLE'] = ROLE,
+                    ['NAME'] = NAME,
+                    ['GROUP'] = GROUP,
+                },
+            },
+        },
+    },
+    visibilityGroup = {
+        type = 'group',
+        name = L["Visibility"],
+        guiInline = true,
+
+        get = 'Get',
+        set = 'Set',
+
+        args = {
+            visibility = {
+                order = 1,
+                type = 'input',
+                name = L["Visibility"],
+                width = 'full',
+                -- TODO: validation?
+            },
+            visibilityHelp = {
+                order = 2,
+                type = 'description',
+                name = L["The above macro must be true in order for the group to be shown."],
+                -- TODO: Add better explaination and examples
+                fontSize = 'medium'
+            },
+        },
+    },
 }
 
 local function create_header_options(name, header)
