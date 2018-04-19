@@ -84,10 +84,10 @@ end
 ----------------------------------------------------------- Handler Prototype --
 local handlerPrototype = {}
 function handlerPrototype:Get(info)
-    return Module.db.profile.units[self.name][info[#info]]
+    return self.object.db[info[#info]]
 end
 function handlerPrototype:Set(info, value)
-    Module.db.profile.units[self.name][info[#info]] = value
+    self.object.db[info[#info]] = value
     self.object:Update()
 end
 function handlerPrototype:GetName()
