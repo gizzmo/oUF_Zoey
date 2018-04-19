@@ -151,7 +151,7 @@ function Addon:OpenOptions()
 
     -- Register
     AceConfig:RegisterOptionsTable(ADDON_NAME, options)
-    AceConfigDialog:SetDefaultSize(835, 550)
+    AceConfigDialog:SetDefaultSize(ADDON_NAME, 835, 550)
 
     -- Redefine
     function Addon:OpenOptions()
