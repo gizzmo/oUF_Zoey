@@ -121,10 +121,11 @@ end
 
 --------------------------------------------------------------- Group Options --
 local groupOptionsTable = {
-    NoNameYetGroup = {
-        order = 1,
+    growthAndSpacingGroup = {
         type = 'group',
-        name = L["Size and Position"],
+        guiInline = true,
+        name = L["Growth and Spacing"],
+
         get = 'Get',
         set = 'Set',
 
@@ -163,10 +164,11 @@ end
 
 -------------------------------------------------------------- Header Options --
 local headerOptionsTable = {
-    NoNameYetGroup = {
-        order = 1,
+    growthAndSpacingGroup = {
         type = 'group',
-        name = L["Size and Position"],
+        guiInline = true,
+        name = L["Growth and Spacing"],
+
         get = 'Get',
         set = 'Set',
 
