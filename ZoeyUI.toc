@@ -41,10 +41,12 @@ libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
 libs\oUF_Elements\DispelHighlight.lua
 
 core\core.lua
+core\options.lua
 core\border.lua
 core\functions.lua
 
 modules\unitframes\core.lua
+modules\unitframes\options.lua
 modules\unitframes\layouts.lua
 modules\unitframes\tags.lua
 modules\unitframes\test.lua
