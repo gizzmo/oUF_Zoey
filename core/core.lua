@@ -92,8 +92,7 @@ function ModulePrototype:RegisterSlashCommand(command, func)
 
     if type(func) == 'boolean' and func then
         Addon.ModuleSlashCommands[command] = function(input)
-            Dialog:Open(ADDON_NAME)
-            Dialog:SelectGroup(ADDON_NAME, self:GetName())
+            Addon:OpenOptions(self:GetName())
         end
     else
         Addon.ModuleSlashCommands[command] = Addon.ConvertMethodToFunction(self, func)

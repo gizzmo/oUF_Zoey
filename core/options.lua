@@ -103,7 +103,7 @@ end
 
 --------------------------------------------------------------------------------
 
-function Addon:OpenOptions()
+function Addon:OpenOptions(...)
     local options = {
         name = L[ADDON_NAME],
         handler = Addon,
@@ -154,9 +154,13 @@ function Addon:OpenOptions()
     AceConfigDialog:SetDefaultSize(ADDON_NAME, 835, 550)
 
     -- Redefine
-    function Addon:OpenOptions()
+    function Addon:OpenOptions(...)
         AceConfigDialog:Open(ADDON_NAME)
+
+        if select('#', ...) > 0 then
+            AceConfigDialog:SelectGroup(ADDON_NAME, ...)
+        end
     end
 
-    return Addon:OpenOptions()
+    return Addon:OpenOptions(...)
 end
