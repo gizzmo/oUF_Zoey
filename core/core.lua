@@ -212,7 +212,7 @@ end
 --------------------------------------------------------------- Slash Command --
 Addon:RegisterChatCommand('rl', ReloadUI) -- Easy reload slashcmd
 Addon:RegisterChatCommand('zoey', function(input)
-    local arg = Addon:GetArgs(input, 1)
+    local arg, nextpos = Addon:GetArgs(input, 1)
 
     if not arg then
         Dialog:Open(ADDON_NAME)
@@ -222,7 +222,7 @@ Addon:RegisterChatCommand('zoey', function(input)
     else
         for command, func in pairs(Addon.ModuleSlashCommands) do
             if command == arg then
-                return func(input:sub(arg:len()+2))
+                return func(input:sub(nextpos))
             end
         end
     end
