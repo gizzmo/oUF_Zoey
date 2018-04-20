@@ -47,7 +47,7 @@ local function get_general_options()
             },
             barGroup = {
                 type = 'group',
-                guiInline = true,
+                inline = true,
                 name = L["Status Bars"],
                 args = {
                     statusbar = {
@@ -60,7 +60,7 @@ local function get_general_options()
             },
             fontGroup = {
                 type = 'group',
-                guiInline = true,
+                inline = true,
                 name = L["Fonts"],
                 args = {
                     font = {
@@ -123,7 +123,7 @@ end
 local groupOptionsTable = {
     growthAndSpacingGroup = {
         type = 'group',
-        guiInline = true,
+        inline = true,
         name = L["Growth and Spacing"],
 
         get = 'Get',
@@ -166,7 +166,7 @@ end
 local headerOptionsTable = {
     growthAndSpacingGroup = {
         type = 'group',
-        guiInline = true,
+        inline = true,
         name = L["Growth and Spacing"],
 
         get = 'Get',
@@ -195,7 +195,7 @@ local headerOptionsTable = {
     },
     sortingGroup = {
         type = 'group',
-        guiInline = true,
+        inline = true,
         name = L["Grouping and Sorting"],
 
         get = 'Get',
@@ -251,7 +251,7 @@ local headerOptionsTable = {
     visibilityGroup = {
         type = 'group',
         name = L["Visibility"],
-        guiInline = true,
+        inline = true,
 
         get = 'Get',
         set = 'Set',
