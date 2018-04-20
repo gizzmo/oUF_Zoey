@@ -109,7 +109,7 @@ function Addon:OpenOptions(...)
         handler = Addon,
         type = 'group',
         args = {},
-        childGroups = 'tree',
+        childGroups = 'tab',
     }
 
     local new_order
@@ -121,12 +121,6 @@ function Addon:OpenOptions(...)
         end
     end
 
-    options.args.version = {
-        order = -1,
-        type = 'description',
-        name = L['Version: %s']:format(Addon.version),
-        width = 'full',
-    }
 
     options.args.generalOptions = get_general_options()
     options.args.generalOptions.order = new_order()

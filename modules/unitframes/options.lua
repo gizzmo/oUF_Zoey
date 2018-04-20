@@ -297,7 +297,7 @@ function Module.get_module_options()
         type = 'group',
         name = L['Unitframes'],
         args = {},
-        childGroups = 'tab',
+        childGroups = 'tree',
     }
 
     local new_order
