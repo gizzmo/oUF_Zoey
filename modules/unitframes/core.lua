@@ -27,6 +27,82 @@ oUF.colors['border'] = {
 -------------------------------------------------------------------- Database --
 local defaultDB = {
     profile = {
+        colors = {
+            health_class = false,
+            health_force_reaction = false,
+            health_by_value = false,
+            health_custom = true,
+            health = { 89/255, 89/255, 89/255 },
+
+            health_backdrop_class = false,
+            health_backdrop_custom = false,
+            health_backdrop = { 204/255, 3/255, 3/255 },
+
+            use_health_backdrop_dead = false,
+            health_backdrop_dead = { 204/255, 3/255, 3/255 },
+
+            tapped = { 0.6, 0.6, 0.6 },
+            disconnected = { 0.6, 0.6, 0.6 },
+
+            power_class = true,
+
+            power = {
+                MANA = { 0.00, 0.00, 1.00 },
+                RAGE = { 1.00, 0.00, 0.00 },
+                FOCUS = { 1.00, 0.50, 0.25 },
+                ENERGY = { 1.00, 1.00, 0.00 },
+                CHI = { 0.71, 1.0, 0.92 },
+                RUNES = { 0.50, 0.50, 0.50 },
+                RUNIC_POWER = { 0.00, 0.82, 1.00 },
+                SOUL_SHARDS = { 0.50, 0.32, 0.55 },
+                LUNAR_POWER = { 0.30, 0.52, 0.90 },
+                HOLY_POWER = { 0.95, 0.90, 0.60 },
+                MAELSTROM = { 0.00, 0.50, 1.00 },
+                INSANITY = { 0.40, 0, 0.80 },
+                FURY = { 0.788, 0.259, 0.992 },
+                PAIN = { 255/255, 156/255, 0 },
+            },
+
+            healPrediction = {
+                personal = {64/255, 204/255, 255/255, .7},
+                others = {64/255, 255/255, 64/255, .7},
+                absorbs = {220/255, 255/255, 230/255, .7},
+                healAbsorbs = {220/255, 228/255, 255/255, .7},
+                maxOverflow = 0.75,
+            },
+
+            debuffHighlight = {
+                Magic = { 0, 0.8, 1},
+                Curse = { 0.8, 0, 1},
+                Poison = { 0, 0.8, 0},
+                Disease = { 0.8, 0.6, 0},
+            },
+
+            reaction = {
+                HATED = { 0.8,  0.3,  0.22 },
+                UNFRIENDLY = { 0.75,  0.27,  0 },
+                NEUTRAL = { 0.9,  0.7,  0 },
+                GOOD = { 0,  0.6,  0.1 },
+            },
+
+            classification = {
+                rare      = { 1, 1, 1},
+                rareelite = { 41/255, 128/255, 204/255 },
+                elite     = { 204/255, 177/255, 41/255 },
+                boss      = { 136/255, 41/255, 204/255 },
+                minus     = { 0,0,0 } --
+            },
+
+            cast = {
+                normal   = {89/255, 89/255, 89/255},
+                inline   = {1,1,1},
+                success  = {20/255, 208/255, 0/255},
+                failed   = {255/255, 12/255, 0/255},
+                safezone = {255/255, 25/255, 0/255, 0.5},
+            }
+
+
+        },
         units = {
             ['**'] = {
                 enable = true,
@@ -133,6 +209,7 @@ function Module:OnEnable()
         end
     end
 
+    self:UpdateColors()
     self:LoadUnits()
 end
 
@@ -161,9 +238,55 @@ function Module:OnProfileRefresh()
 end
 
 function Module:UpdateAll()
+    self:UpdateColors()
+
     for _, unit in pairs(self.units) do unit:Update() end
     for _, group in pairs(self.groups) do group:Update() end
     for _, header in pairs(self.headers) do header:Update() end
+end
+
+function Module:UpdateColors()
+    local db = self.db.profile.colors
+
+    oUF.colors.tapped = db.tapped
+    oUF.colors.disconnected = db.disconnected
+
+    oUF.colors.health = db.health
+
+    oUF.colors.power.MANA = db.power.MANA
+    oUF.colors.power.RAGE = db.power.RAGE
+    oUF.colors.power.FOCUS = db.power.FOCUS
+    oUF.colors.power.ENERGY = db.power.ENERGY
+    oUF.colors.power.CHI = db.power.CHI
+    oUF.colors.power.RUNES = db.power.RUNES
+    oUF.colors.power.RUNIC_POWER = db.power.RUNIC_POWER
+    oUF.colors.power.SOUL_SHARDS = db.power.SOUL_SHARDS
+    oUF.colors.power.LUNAR_POWER = db.power.LUNAR_POWER
+    oUF.colors.power.HOLY_POWER = db.power.HOLY_POWER
+    oUF.colors.power.MAELSTROM = db.power.MAELSTROM
+    oUF.colors.power.INSANITY = db.power.INSANITY
+    oUF.colors.power.FURY = db.power.FURY
+    oUF.colors.power.PAIN = db.power.PAIN
+
+    oUF.colors.debuff.Magic = db.debuffHighlight.Magic
+    oUF.colors.debuff.Curse = db.debuffHighlight.Curse
+    oUF.colors.debuff.Disease = db.debuffHighlight.Disease
+    oUF.colors.debuff.Poison = db.debuffHighlight.Poison
+
+    -- Reaction
+    local bad = db.reaction.HATED
+    local unfriendly = db.reaction.UNFRIENDLY
+    local neutral = db.reaction.NEUTRAL
+    local good = db.reaction.GOOD
+
+    oUF.colors.reaction[1] = bad        -- Hated
+    oUF.colors.reaction[2] = bad        -- Hostile
+    oUF.colors.reaction[3] = unfriendly -- Unfriendly
+    oUF.colors.reaction[4] = neutral    -- Neutral
+    oUF.colors.reaction[5] = good      -- Friendly
+    oUF.colors.reaction[6] = good      -- Honored
+    oUF.colors.reaction[7] = good      -- Revered
+    oUF.colors.reaction[8] = good      -- Exalted
 end
 
 -------------------------------------------------------------------- Creating --

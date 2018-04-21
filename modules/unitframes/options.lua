@@ -33,19 +33,21 @@ end
 
 ------------------------------------------------------------- General Options --
 local function get_general_options()
-    return {
+     local options =  {
         type = 'group',
         name = L["General Options"],
         -- get = function(info) return Module.db.profile[ info[#info] ] end,
         -- set = function(info, value) Module.db.profile[ info[#info] ] = value end,
         args = {
             outOfRangeAlpha = {
+                order = new_order(),
                 name = L["Out of range Alpha"],
                 desc = L["The alpha to set units that are out of range to."],
                 type = 'range',
                 min = 0, max = 1, step = 0.01,
             },
             debuffHighlighting = {
+                order = new_order(),
                 name = L["Debuff Highlighting"],
                 desc = L["Color the unit healthbar if there is a debuff that can be dispelled by you."],
                 type = 'select',
@@ -56,6 +58,7 @@ local function get_general_options()
                 },
             },
             barGroup = {
+                order = new_order(),
                 type = 'group',
                 inline = true,
                 name = L["Status Bars"],
@@ -69,6 +72,7 @@ local function get_general_options()
                 },
             },
             fontGroup = {
+                order = new_order(),
                 type = 'group',
                 inline = true,
                 name = L["Fonts"],
@@ -89,6 +93,365 @@ local function get_general_options()
             },
         },
     }
+
+    options.args.colorsGroup = {
+        order = new_order(),
+        type = 'group',
+        name = L["Colors"],
+
+        -- Smart functions to deal with both colos and other types
+        get = function(info)
+            local db = Module.db.profile.colors
+            local key = info[#info]
+
+            local data = db[ key ]
+
+            if not data then -- check one deeper that matches the group key
+                local parent = (info[#info-1]):sub(0, -6)
+                data = db[parent][ key ]
+            end
+
+            if info.type == 'color' then
+                return data[1], data[2], data[3], data[4]
+            elseif info.type == 'toggle' or info.type == 'range' then
+                return data
+            else
+                error('Unknown type used for colors get method.')
+            end
+        end,
+        set = function(info, ...)
+            local db = Module.db.profile.colors
+            local key = info[#info]
+            local parent = (info[#info-1]):sub(0, -6)
+
+            if info.type == 'color' then
+                local data = db[ key ]
+
+                if not data then
+                    data = db[parent][ key ]
+                end
+                data[1], data[2], data[3], data[4] = ...
+
+            elseif info.type == 'toggle' or info.type == 'range' then
+                if db[ key ] ~= nil then
+                    db[ key ] = ...
+                else
+                    db[ parent ][ key ] = ...
+                end
+            else
+                error('Unknown type used for colors set method.')
+            end
+            Module:UpdateAll()
+        end,
+
+        args = {
+            healthGroup = {
+                order = new_order(),
+                type = 'group',
+                inline = true,
+                name = L['Health'],
+                args = {
+                    -- IDEA: use select radio
+                    health_class = {
+                        order = new_order(),
+                        type = 'toggle',
+                        name = L["Class Health"],
+                        desc = L["Color health by class or reaction."],
+                    },
+                    health_force_reaction = {
+                        order = new_order(),
+                        type = 'toggle',
+                        name = L['Force Reaction Color'],
+                        desc = L['Forces reaction color instead of class color on player units.'],
+                        disabled = function(info) return not Module.db.profile.colors.health_class end
+                    },
+                    health_by_value = {
+                        order = new_order(),
+                        type = 'toggle',
+                        name = L["Health By Value"],
+                        desc = L["Color health by amount remaining."],
+                        desc = L['Color with a smooth gradient based on the units health percentage.'],
+                    },
+                    health_custom = {
+                        order = new_order(),
+                        type = 'toggle',
+                        name = L['Custom health color']
+                    },
+                    health = {
+                        order = new_order(),
+                        type = 'color',
+                        name = L['Health'],
+                        disabled = function(info) return not Module.db.profile.colors.health_custom end
+                    },
+
+                    spacer1 = {
+                        order = new_order(),
+                        type = 'description',
+                        name = ' ',
+                    },
+                    health_backdrop_class = {
+                        order = new_order(),
+                        type = 'toggle',
+                        name = L["Class Backdrop"],
+                        desc = L["Color the health backdrop by class."],
+                    },
+                    health_backdrop_custom = {
+                        order = new_order(),
+                        type = 'toggle',
+                        name = L["Custom Backdrop"],
+                        desc = L["Use the custom health backdrop color."],
+                    },
+                    health_backdrop = {
+                        order = new_order(),
+                        type = 'color',
+                        name = L["Backdrop Color"],
+                        disabled = function(info) return not Module.db.profile.colors.health_backdrop_custom end
+                    },
+
+                    use_health_backdrop_dead = {
+                        order = new_order(),
+                        type = "toggle",
+                        name = L["Use Dead Backdrop"],
+                        desc = L['Use a custom backdrop color for units that are dead or ghosts.'],
+                    },
+                    health_backdrop_dead = {
+                        order = new_order(),
+                        type = 'color',
+                        name = L['Custom Dead Backdrop'],
+                        disabled = function(info) return not Module.db.profile.colors.use_health_backdrop_dead end
+                    },
+
+                    spacer2 = {
+                        order = new_order(),
+                        type = 'description',
+                        name = ' ',
+                    },
+                    tapped = {
+                        order = new_order(),
+                        type = 'color',
+                        name = L['Tapped'],
+                        desc = L['The color of the frame when the unit been tapped by the other faction.'],
+                    },
+                    disconnected = {
+                        order = new_order(),
+                        type = 'color',
+                        name = L['Disconnected'],
+                        desc = L['The color the bar when a unit is disconnected.'],
+                    },
+
+                },
+            },
+            powerGroup = {
+                order = new_order(),
+                type = 'group',
+                inline = true,
+                name = L['Power'],
+                args = {
+                    power_class = {
+                        order = new_order(),
+                        type = 'toggle',
+                        name = L["Class Power"],
+                        desc = L["Color power by classcolor or reaction."],
+                    },
+
+                    -- Basic Power Types
+                    key = {
+                        order = new_order(),
+                        type = 'header',
+                        name = L['Basic Power Types'],
+                    },
+
+                    MANA = { order = new_order(), type = 'color', name = MANA },
+                    RAGE = { order = new_order(), type = 'color', name = RAGE },
+                    FOCUS = { order = new_order(), type = 'color', name = FOCUS },
+                    ENERGY = { order = new_order(), type = 'color', name = ENERGY },
+                    CHI = { order = new_order(), type = 'color', name = CHI },
+                    RUNES = { order = new_order(), type = 'color', name = RUNES },
+                    RUNIC_POWER = { order = new_order(), type = 'color', name = RUNIC_POWER },
+                    SOUL_SHARDS = { order = new_order(), type = 'color', name = SOUL_SHARDS },
+                    LUNAR_POWER = { order = new_order(), type = 'color', name = LUNAR_POWER },
+                    HOLY_POWER = { order = new_order(), type = 'color', name = HOLY_POWER },
+                    MAELSTROM = { order = new_order(), type = 'color', name = MAELSTROM },
+                    INSANITY = { order = new_order(), type = 'color', name = INSANITY },
+                    FURY = { order = new_order(), type = 'color', name = FURY },
+                    PAIN = { order = new_order(), type = 'color', name = PAIN },
+
+
+                },
+            },
+            healPredictionGroup = {
+                order = new_order(),
+                name = L["Heal Prediction"],
+                type = 'group',
+                inline = true,
+
+                args = {
+                    personal = {
+                        order = new_order(),
+                        name = L["Personal"],
+                        type = 'color',
+                        hasAlpha = true,
+                    },
+                    others = {
+                        order = new_order(),
+                        name = L["Others"],
+                        type = 'color',
+                        hasAlpha = true,
+                    },
+                    absorbs = {
+                        order = new_order(),
+                        name = L["Absorbs"],
+                        type = 'color',
+                        hasAlpha = true,
+                    },
+                    healAbsorbs = {
+                        order = new_order(),
+                        name = L["Heal Absorbs"],
+                        type = 'color',
+                        hasAlpha = true,
+                    },
+                    maxOverflow = {
+                        order = new_order(),
+                        type = "range",
+                        name = L["Max Overflow"],
+                        desc = L["Max amount of overflow allowed to extend past the end of the health bar."],
+                        isPercent = true,
+                        min = 0, max = 1, step = 0.01,
+                    },
+                },
+            },
+            debuffHighlightGroup = {
+                order = new_order(),
+                name = L["Debuff Highlighting"],
+                type = 'group',
+                inline = true,
+
+                args = {
+                    Magic = {
+                        order = new_order(),
+                        name = ENCOUNTER_JOURNAL_SECTION_FLAG7,--Magic Effect
+                        type = 'color',
+                        hasAlpha = true,
+                    },
+                    Curse = {
+                        order = new_order(),
+                        name = ENCOUNTER_JOURNAL_SECTION_FLAG8,--Curse Effect
+                        type = 'color',
+                        hasAlpha = true,
+                    },
+                    Poison = {
+                        order = new_order(),
+                        name = ENCOUNTER_JOURNAL_SECTION_FLAG9,--Poison Effect
+                        type = 'color',
+                        hasAlpha = true,
+                    },
+                    Disease = {
+                        order = new_order(),
+                        name = ENCOUNTER_JOURNAL_SECTION_FLAG10,--Disease Effect
+                        type = 'color',
+                        hasAlpha = true,
+                    },
+                },
+            },
+            reactionGroup = {
+                order = new_order(),
+                type = 'group',
+                inline = true,
+                name = L["Reactions"],
+                args = {
+                    HATED = {
+                        order = new_order(),
+                        name = L["Bad"],
+                        type = 'color',
+                    },
+                    UNFRIENDLY = {
+                        order = new_order(),
+                        name = L["Unfriendly"],
+                        type = 'color',
+                    },
+                    NEUTRAL = {
+                        order = new_order(),
+                        name = L["Neutral"],
+                        type = 'color',
+                    },
+                    GOOD = {
+                        order = new_order(),
+                        name = L['Great'],
+                        type = 'color'
+                    },
+                },
+            },
+            classificationGroup = {
+                order = new_order(),
+                type = 'group',
+                inline = true,
+                name = L['Classifications'],
+
+                args = {
+                    rare = {
+                        order = new_order(),
+                        type = 'color',
+                        name = L['Rare'],
+                    },
+                    rareelite = {
+                        order = new_order(),
+                        type = 'color',
+                        name = L['Rare-Elite'],
+                    },
+                    elite = {
+                        order = new_order(),
+                        type = 'color',
+                        name = L['Elite'],
+                    },
+                    boss = {
+                        order = new_order(),
+                        type = 'color',
+                        name = L['Boss'],
+                    },
+                },
+            },
+            castGroup = {
+                order = new_order(),
+                type = 'group',
+                inline = true,
+                name = L['Cast Bars'],
+
+                args = {
+                    normal = {
+                        order = new_order(),
+                        type = 'color',
+                        name = L['Normal'],
+                    },
+                    success = {
+                        order = new_order(),
+                        type = 'color',
+                        name = L['Success'],
+                        desc = L['Color the castbar when its successfully cast.']
+                    },
+                    failed = {
+                        order = new_order(),
+                        type = 'color',
+                        name = L['Failed'],
+                        desc = L['Color the castbar the cast failed.']
+                    },
+                    safezone = {
+                        order = new_order(),
+                        type = 'color',
+                        name = L['Safezone'],
+                        desc = L['Color representing latency on the cast.'],
+                        hasAlpha = true,
+                    },
+                    inline = {
+                        order = new_order(),
+                        type = 'color',
+                        name = L['Inline'],
+                    },
+                }
+            },
+        },
+    }
+
+    return options
 end
 
 ----------------------------------------------------------- Handler Prototype --
