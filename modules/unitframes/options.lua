@@ -172,16 +172,11 @@ local function get_general_options()
                         desc = L["Color health by amount remaining."],
                         desc = L['Color with a smooth gradient based on the units health percentage.'],
                     },
-                    health_custom = {
-                        order = new_order(),
-                        type = 'toggle',
-                        name = L['Custom health color']
-                    },
                     health = {
                         order = new_order(),
                         type = 'color',
                         name = L['Health'],
-                        disabled = function(info) return not Module.db.profile.colors.health_custom end
+                        desc = L['Use this custom color if none of the above options are enabled.']
                     },
 
                     spacer1 = {

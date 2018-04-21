@@ -31,7 +31,6 @@ local defaultDB = {
             health_class = false,
             health_force_reaction = false,
             health_by_value = false,
-            health_custom = true,
             health = { 89/255, 89/255, 89/255 },
 
             health_backdrop_class = false,
