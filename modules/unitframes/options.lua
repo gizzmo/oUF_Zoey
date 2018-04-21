@@ -25,8 +25,8 @@ local singleGrowthDirectionValues = {
 local new_order
 do
     local current = 0
-    function new_order()
-        current = current + 1
+    function new_order(reset)
+        current = reset and 0 or current + 1
         return current
     end
 end
