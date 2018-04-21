@@ -449,11 +449,6 @@ local function get_general_options()
                         desc = L['Color representing latency on the cast.'],
                         hasAlpha = true,
                     },
-                    inline = {
-                        order = new_order(),
-                        type = 'color',
-                        name = L['Inline'],
-                    },
                 }
             },
         },
