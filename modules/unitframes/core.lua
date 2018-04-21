@@ -8,26 +8,12 @@ local oUF = Addon.oUF
 
 Module.units, Module.groups, Module.headers = {},{},{}
 
------------------------------------------------------------------- oUF Colors --
-oUF.colors.health = {89/255, 89/255, 89/255} -- dark grey
-oUF.colors['cast'] = {
-    normal   = {89/255, 89/255, 89/255},      -- dark gray
-    success  = {20/255, 208/255, 0/255},      -- green
-    failed   = {255/255, 12/255, 0/255},      -- dark red
-    safezone = {255/255, 25/255, 0/255, 0.5}, -- transparent red
-}
-oUF.colors['border'] = {
-    normal    = {113/255, 113/255, 113/255}, -- Dark Grey
-    rare      = {1, 1, 1},                   -- White
-    elite     = {204/255, 177/255, 41/255},  -- Yellow
-    rareelite = {41/255,  128/255, 204/255}, -- Blue
-    boss      = {136/255, 41/255, 204/255}   -- Purple
-}
-
 -------------------------------------------------------------------- Database --
 local defaultDB = {
     profile = {
         colors = {
+            border = { 113/255, 113/255, 113/255 },
+
             health_class = false,
             health_force_reaction = false,
             health_by_value = false,
@@ -290,6 +276,21 @@ function Module:UpdateColors()
     oUF.colors.reaction[6] = good      -- Honored
     oUF.colors.reaction[7] = good      -- Revered
     oUF.colors.reaction[8] = good      -- Exalted
+
+    oUF.colors.classification = oUF.colors.classification or {}
+    oUF.colors.classification.rare = db.classification.rare
+    oUF.colors.classification.rareelite = db.classification.rareelite
+    oUF.colors.classification.elite = db.classification.elite
+    oUF.colors.classification.boss = db.classification.boss
+
+    oUF.colors.cast = oUF.colors.cast or {}
+    oUF.colors.cast.normal = db.cast.normal
+    oUF.colors.cast.success = db.cast.success
+    oUF.colors.cast.failed = db.cast.failed
+    oUF.colors.cast.safezone = db.cast.safezone
+    oUF.colors.cast.notInterruptible = db.cast.notInterruptible
+
+    oUF.colors.border = db.border
 end
 
 -------------------------------------------------------------------- Creating --
