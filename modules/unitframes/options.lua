@@ -246,7 +246,20 @@ local function get_general_options()
                         order = new_order(),
                         type = 'toggle',
                         name = L["Class Power"],
-                        desc = L["Color power by classcolor or reaction."],
+                        desc = L["Color power by class color or reaction."],
+                    },
+                    power_custom = {
+                        order = new_order(),
+                        type = 'toggle',
+                        name = L['Custom Power'],
+                        desc = L['Color powerbar with a custom color.'],
+
+                    },
+                    custom = {
+                        order = new_order(),
+                        type = 'color',
+                        name = L['Power'],
+                        disabled = function(info) return not Module.db.profile.colors.power_custom end
                     },
 
                     -- Basic Power Types

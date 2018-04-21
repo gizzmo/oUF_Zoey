@@ -44,8 +44,10 @@ local defaultDB = {
             disconnected = { 0.6, 0.6, 0.6 },
 
             power_class = true,
+            power_custom = false,
 
             power = {
+                custom = { 89/255, 89/255, 89/255 },
                 MANA = { 0.00, 0.00, 1.00 },
                 RAGE = { 1.00, 0.00, 0.00 },
                 FOCUS = { 1.00, 0.50, 0.25 },
@@ -251,6 +253,8 @@ function Module:UpdateColors()
     oUF.colors.disconnected = db.disconnected
 
     oUF.colors.health = db.health
+
+    oUF.colors.power.custom = db.power.custom
 
     oUF.colors.power.MANA = db.power.MANA
     oUF.colors.power.RAGE = db.power.RAGE
