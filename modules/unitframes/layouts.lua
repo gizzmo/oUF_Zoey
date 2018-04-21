@@ -58,7 +58,7 @@ local function UpdateUnitBorderColor(object)
 
     local c = UnitClassification(object.unit)
     if c == 'worldboss' then c = 'boss' end
-    local t = colors.border[c] or colors.border.normal
+    local t = colors.classification[c] or colors.border
 
     object.Border:SetColor(unpack(t))
 end
@@ -171,7 +171,7 @@ end
 
 local function PostCastInterruptible(Castbar, unit)
     if unit == 'target' then
-        Castbar.Frame.Border:SetColor(unpack(colors.border.normal))
+        Castbar.Frame.Border:SetColor(unpack(colors.border))
     end
 end
 
