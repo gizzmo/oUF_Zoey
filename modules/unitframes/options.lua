@@ -141,13 +141,13 @@ local groupOptionsTable = {
 
         args = {
             direction = {
-                order = 1,
+                order = new_order(),
                 type = "select",
                 name = L["Growth Direction"],
                 values = singleGrowthDirectionValues,
             },
             spacing = {
-                order = 2,
+                order = new_order(),
                 type = "range",
                 name = L["Spacing"],
                 min = 0, max = 400, step = 1,
@@ -184,19 +184,19 @@ local headerOptionsTable = {
 
         args = {
             direction = {
-                order = 1,
+                order = new_order(),
                 type = "select",
                 name = L["Growth Direction"],
                 values = growthDirectionValues,
             },
             horizontalSpacing = {
-                order = 2,
+                order = new_order(),
                 type = "range",
                 name = L["Horizontal Spacing"],
                 min = 0, max = 400, step = 1,
             },
             verticalSpacing = {
-                order = 3,
+                order = new_order(),
                 type = "range",
                 name = L["Vertical Spacing"],
                 min = 0, max = 400, step = 1,
@@ -213,19 +213,19 @@ local headerOptionsTable = {
 
         args = {
             raidWideSorting = {
-                order = 1,
+                order = new_order(),
                 type = 'toggle',
                 name = L["Raid-Wide Sorting"],
                 desc = L["Enabling this will make you not be able to distinguish between groups."],
             },
             numGroups = {
-                order = 2,
+                order = new_order(),
                 type = 'range',
                 name = L["Number of Groups"],
                 min = 1, max = 8, step = 1,
             },
             groupsPerCol = {
-                order = 3,
+                order = new_order(),
                 type = 'range',
                 name = L["Groups per column"],
                 desc = L["The number of groups before creating a new row."],
@@ -235,7 +235,7 @@ local headerOptionsTable = {
                 end
             },
             invertGroupGrowth = {
-                order = 4,
+                order = new_order(),
                 type = 'toggle',
                 name = L['Invert group growth'],
                 desc = L['Change how groups grow.'],
@@ -245,7 +245,7 @@ local headerOptionsTable = {
                 end
             },
             groupBy = {
-                order = 5,
+                order = new_order(),
                 name = L["Group By"],
                 desc = L["Set the order that the group will sort."],
                 type = 'select',
@@ -268,14 +268,14 @@ local headerOptionsTable = {
 
         args = {
             visibility = {
-                order = 1,
+                order = new_order(),
                 type = 'input',
                 name = L["Visibility"],
                 width = 'full',
                 -- TODO: validation?
             },
             visibilityHelp = {
-                order = 2,
+                order = new_order(),
                 type = 'description',
                 name = L["The above macro must be true in order for the group to be shown."],
                 -- TODO: Add better explaination and examples
