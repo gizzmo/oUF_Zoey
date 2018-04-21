@@ -20,6 +20,16 @@ local singleGrowthDirectionValues = {
     LEFT = L['Left'],
     RIGHT = L['Right'],
 }
+--------------------------------------------------------------------------------
+-- To make tables ordered by how they are constructed
+local new_order
+do
+    local current = 0
+    function new_order()
+        current = current + 1
+        return current
+    end
+end
 
 ------------------------------------------------------------- General Options --
 local function get_general_options()
@@ -299,15 +309,6 @@ function Module.get_module_options()
         args = {},
         childGroups = 'tree',
     }
-
-    local new_order
-    do
-        local current = 0
-        function new_order()
-            current = current + 1
-            return current
-        end
-    end
 
     options.args.generalGroup = get_general_options()
     options.args.generalGroup.order = new_order()
