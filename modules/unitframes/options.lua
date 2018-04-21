@@ -33,7 +33,7 @@ end
 
 ------------------------------------------------------------- General Options --
 local function get_general_options()
-     local options =  {
+    local options =  {
         type = 'group',
         name = L["General Options"],
         -- get = function(info) return Module.db.profile[ info[#info] ] end,
@@ -125,18 +125,18 @@ local function get_general_options()
             local parent = (info[#info-1]):sub(0, -6)
 
             if info.type == 'color' then
-                local data = db[ key ]
+                local data = db[key]
 
                 if not data then
-                    data = db[parent][ key ]
+                    data = db[parent][key]
                 end
                 data[1], data[2], data[3], data[4] = ...
 
             elseif info.type == 'toggle' or info.type == 'range' then
-                if db[ key ] ~= nil then
-                    db[ key ] = ...
+                if db[key] ~= nil then
+                    db[key] = ...
                 else
-                    db[ parent ][ key ] = ...
+                    db[parent][key] = ...
                 end
             else
                 error('Unknown type used for colors set method.')
@@ -233,7 +233,6 @@ local function get_general_options()
                         name = L['Disconnected'],
                         desc = L['The color the bar when a unit is disconnected.'],
                     },
-
                 },
             },
             powerGroup = {
