@@ -156,7 +156,7 @@ local function get_general_options()
                         order = new_order(),
                         type = 'toggle',
                         name = L["Class Health"],
-                        desc = L["Color health by class or reaction."],
+                        desc = L["Color health by player class or reaction."],
                     },
                     health_force_reaction = {
                         order = new_order(),
@@ -169,14 +169,13 @@ local function get_general_options()
                         order = new_order(),
                         type = 'toggle',
                         name = L["Health By Value"],
-                        desc = L["Color health by amount remaining."],
                         desc = L['Color with a smooth gradient based on the units health percentage.'],
                     },
                     health = {
                         order = new_order(),
                         type = 'color',
                         name = L['Health'],
-                        desc = L['Use this custom color if none of the above options are enabled.']
+                        desc = L['Use this custom color if none of the above options are enabled.'],
                     },
 
                     spacer1 = {
@@ -188,13 +187,13 @@ local function get_general_options()
                         order = new_order(),
                         type = 'toggle',
                         name = L["Class Backdrop"],
-                        desc = L["Color the health backdrop by class."],
+                        desc = L["If the unit is controlled by a player, color by their class."],
                     },
                     health_backdrop_custom = {
                         order = new_order(),
                         type = 'toggle',
                         name = L["Custom Backdrop"],
-                        desc = L["Use the custom health backdrop color."],
+                        desc = L["Use the custom health backdrop color instead of a multiplier."],
                     },
                     health_backdrop = {
                         order = new_order(),
@@ -245,14 +244,13 @@ local function get_general_options()
                         order = new_order(),
                         type = 'toggle',
                         name = L["Class Power"],
-                        desc = L["Color power by class color or reaction."],
+                        desc = L["If the unit is controlled by a player, color by their class."],
                     },
                     power_custom = {
                         order = new_order(),
                         type = 'toggle',
                         name = L['Custom Power'],
-                        desc = L['Color powerbar with a custom color.'],
-
+                        desc = L['Color power bar with a custom color.'],
                     },
                     custom = {
                         order = new_order(),

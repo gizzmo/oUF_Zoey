@@ -103,9 +103,14 @@ local function PowerUpdateColor(Power, unit, cur, min, max, displayType)
         local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 
         t = colors.power[ptoken]
-        if not t  then
+        if not t then
             if altR then
                 r, g, b = altR, altG, altB
+
+                if r > 1 or g > 1 or b > 1 then
+                    -- BUG: As of 7.0.3, altR, altG, altB may be in 0-1 or 0-255 range.
+                    r, g, b = r / 255, g / 255, b / 255
+                end
             else
                 t = colors.power[ptype]
             end
@@ -116,9 +121,14 @@ local function PowerUpdateColor(Power, unit, cur, min, max, displayType)
         r, g, b = t[1], t[2], t[3]
     end
 
-    if b then
+    if r or g or b then
         Power:SetStatusBarColor(r, g, b)
-        Power.bg:SetVertexColor(r*0.4, g*0.4, b*0.4)
+
+        local bg = Power.bg
+        if bg then
+            local mult = 0.4
+            bg:SetVertexColor(r * mult, g * mult, b * mult)
+        end
     end
 end
 
@@ -131,29 +141,26 @@ local function HealthUpdateColor(Health, unit, cur, max)
         t = colors.tapped
     elseif Health.disconnected then
         t = colors.disconnected
-    elseif db.health_class then
-        if UnitIsPlayer(unit) and not db.health_force_reaction then
-            local _, class = UnitClass(unit)
-            t = colors.class[class]
-        elseif UnitReaction(unit, 'player') then
-            t = colors.reaction[UnitReaction(unit, 'player')]
-        end
+    elseif db.health_class and UnitIsPlayer(unit) and not db.health_force_reaction then
+        local _, class = UnitClass(unit)
+        t = colors.class[class]
+    elseif db.health_class and UnitReaction(unit, 'player') then
+        t = colors.reaction[UnitReaction(unit, 'player')]
     elseif db.health_by_value then
         r, g, b = parent.ColorGradient(cur, max, unpack(colors.smooth))
     else
         t = colors.health
     end
 
-    if t  then
+    if t then
         r, g, b = t[1], t[2], t[3]
     end
 
-    if(r or g or b) then
+    if r or g or b then
         Health:SetStatusBarColor(r, g, b)
 
         local bg = Health.bg
-        if(bg) then
-
+        if bg then
             local t
 
             if db.use_health_backdrop_dead and UnitIsDeadOrGhost(unit) then
@@ -175,7 +182,8 @@ local function HealthUpdateColor(Health, unit, cur, max)
                 t = db.health_backdrop
                 r, g, b = t[1], t[2], t[3]
             else -- defaults to a multiplier
-                r, g, b = r * 0.4, g * 0.4, b * 0.4
+                local mult = 0.4
+                r, g, b = r * mult, g * mult, b * mult
             end
 
             bg:SetVertexColor(r, g, b)
