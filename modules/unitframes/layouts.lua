@@ -87,51 +87,6 @@ local function HighlightUpdate(object)
 end
 
 --------------------------------------------------------------------------------
-local function PowerUpdateColor(Power, unit, cur, min, max, displayType)
-    local db = Module.db.profile.colors
-
-    local r, g, b, t
-
-    if db.power_class and UnitIsPlayer(unit) then
-        local class = select(2, UnitClass(unit))
-        t = colors.class[class]
-    elseif db.power_class and UnitReaction(unit, 'player') then
-        t = colors.reaction[UnitReaction(unit, 'player')]
-    elseif db.power_custom then
-        t = colors.power.custom
-    else
-        local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
-
-        t = colors.power[ptoken]
-        if not t then
-            if altR then
-                r, g, b = altR, altG, altB
-
-                if r > 1 or g > 1 or b > 1 then
-                    -- BUG: As of 7.0.3, altR, altG, altB may be in 0-1 or 0-255 range.
-                    r, g, b = r / 255, g / 255, b / 255
-                end
-            else
-                t = colors.power[ptype]
-            end
-        end
-    end
-
-    if t then
-        r, g, b = t[1], t[2], t[3]
-    end
-
-    if r or g or b then
-        Power:SetStatusBarColor(r, g, b)
-
-        local bg = Power.bg
-        if bg then
-            local mult = 0.4
-            bg:SetVertexColor(r * mult, g * mult, b * mult)
-        end
-    end
-end
-
 local function HealthUpdateColor(Health, unit, cur, max)
     local db = Module.db.profile.colors
 
@@ -187,6 +142,51 @@ local function HealthUpdateColor(Health, unit, cur, max)
             end
 
             bg:SetVertexColor(r, g, b)
+        end
+    end
+end
+
+local function PowerUpdateColor(Power, unit, cur, min, max, displayType)
+    local db = Module.db.profile.colors
+
+    local r, g, b, t
+
+    if db.power_class and UnitIsPlayer(unit) then
+        local class = select(2, UnitClass(unit))
+        t = colors.class[class]
+    elseif db.power_class and UnitReaction(unit, 'player') then
+        t = colors.reaction[UnitReaction(unit, 'player')]
+    elseif db.power_custom then
+        t = colors.power.custom
+    else
+        local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
+
+        t = colors.power[ptoken]
+        if not t then
+            if altR then
+                r, g, b = altR, altG, altB
+
+                if r > 1 or g > 1 or b > 1 then
+                    -- BUG: As of 7.0.3, altR, altG, altB may be in 0-1 or 0-255 range.
+                    r, g, b = r / 255, g / 255, b / 255
+                end
+            else
+                t = colors.power[ptype]
+            end
+        end
+    end
+
+    if t then
+        r, g, b = t[1], t[2], t[3]
+    end
+
+    if r or g or b then
+        Power:SetStatusBarColor(r, g, b)
+
+        local bg = Power.bg
+        if bg then
+            local mult = 0.4
+            bg:SetVertexColor(r * mult, g * mult, b * mult)
         end
     end
 end
