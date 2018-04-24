@@ -587,7 +587,6 @@ function Module:Construct_Zoey(object, unit, isSingle)
     ----------------------------------------------------------------------------
     local FRAME_HEIGHT = 40
     local FRAME_WIDTH = 135
-    local POWER_HEIGHT = 10 -- (FRAME_HEIGHT * 0.2)
 
     if unit == 'player' or unit == 'target' then
         FRAME_WIDTH = 227
@@ -603,7 +602,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
     -- Build the other status bars
     ----------------------------------------------------------------------------
     object.Power = CreateStatusBar(object)
-    object.Power:SetHeight(POWER_HEIGHT)
+    object.Power:SetHeight(FRAME_HEIGHT * 0.25)
     object.Power:SetPoint('LEFT', 1, 0)
     object.Power:SetPoint('RIGHT', -1, 0)
     object.Power:SetPoint('BOTTOM', 0, 1)
@@ -613,9 +612,8 @@ function Module:Construct_Zoey(object, unit, isSingle)
     object.Health:SetPoint('BOTTOM', object.Power, 'TOP', 0, 1)
 
     if unit == 'party' then
-        local PORTRAIT_HEIGHT = FRAME_HEIGHT
         object.Portrait = CreateFrame('PlayerModel', nil, object)
-        object.Portrait:SetHeight(PORTRAIT_HEIGHT - 1.5)
+        object.Portrait:SetHeight(FRAME_HEIGHT - 1.5)
         object.Portrait:SetPoint('TOP', 0, -1)
         object.Portrait:SetPoint('LEFT', 1, 0)
         object.Portrait:SetPoint('RIGHT', -2, 0)
@@ -623,10 +621,9 @@ function Module:Construct_Zoey(object, unit, isSingle)
 
         object.Health:SetPoint('TOP', object.Portrait, 'BOTTOM', 0, -1.5)
 
-        -- Keep this var up to date
-        FRAME_HEIGHT = FRAME_HEIGHT + PORTRAIT_HEIGHT
+        -- Portraits double the frame size
+        FRAME_HEIGHT = FRAME_HEIGHT * 2
 
-        --
         if isSingle then object:SetHeight(FRAME_HEIGHT) end
     end
 
@@ -1046,7 +1043,6 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
     ----------------------------------------------------------------------------
     local FRAME_HEIGHT = 40
     local FRAME_WIDTH  = 65
-    local POWER_HEIGHT = 5
 
     if isSingle then
         object:SetSize(FRAME_WIDTH, FRAME_HEIGHT)
@@ -1067,7 +1063,7 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
     -- Build the other status bars
     ----------------------------------------------------------------------------
     object.Power = CreateStatusBar(object)
-    object.Power:SetHeight(POWER_HEIGHT)
+    object.Power:SetHeight(FRAME_HEIGHT * 0.125)
     object.Power:SetPoint('LEFT', 1, 0)
     object.Power:SetPoint('RIGHT', -1, 0)
     object.Power:SetPoint('BOTTOM', 0, 1)
