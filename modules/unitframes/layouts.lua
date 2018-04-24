@@ -395,7 +395,7 @@ do
     end
 end
 
-local function GroupRoleIndicatorOverride(self)
+local function GroupRoleCornerIndicator(self)
     local element = self.GroupRoleIndicator
     local role = UnitGroupRolesAssigned(self.unit)
     if role == 'TANK' then
@@ -422,11 +422,11 @@ do
         MAGE    = 'ARCANE_CHARGES'
     }
 
-    function ClassPowerUpdateColor(element)
-        local parent = element.__owner
+    function ClassPowerUpdateColor(ClassPower)
+        local parent = ClassPower.__owner
         local color = parent.colors.power[classPowerType[playerClass] or 'COMBO_POINTS']
-        for i = 1, #element do
-            local icon = element[i]
+        for i = 1, #ClassPower do
+            local icon = ClassPower[i]
 
             icon:SetStatusBarColor(color[1], color[2], color[3])
             icon.bg:SetVertexColor(color[1]*0.4, color[2]*0.4, color[3]*0.4)
@@ -1030,7 +1030,7 @@ function Module:Construct_ZoeyThin(object, unit, isSingle)
 
     object.GroupRoleIndicator = CreateCornerIndicator(object.Overlay)
     object.GroupRoleIndicator:SetPoint('TOPRIGHT')
-    object.GroupRoleIndicator.Override = GroupRoleIndicatorOverride
+    object.GroupRoleIndicator.Override = GroupRoleCornerIndicator
 
     object.RaidTargetIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
     object.RaidTargetIndicator:SetSize(16,16)
@@ -1101,7 +1101,7 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
 
     object.GroupRoleIndicator = CreateCornerIndicator(object.Overlay)
     object.GroupRoleIndicator:SetPoint('TOPRIGHT')
-    object.GroupRoleIndicator.Override = GroupRoleIndicatorOverride
+    object.GroupRoleIndicator.Override = GroupRoleCornerIndicator
 
     object.ReadyCheckIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
     object.ReadyCheckIndicator:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
