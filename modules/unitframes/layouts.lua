@@ -191,7 +191,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Castbar Functions
-local function PostCastStart(Castbar, unit, name, castid)
+local function PostCastStart(Castbar, unit, name, castID, spellID)
     local parent = Castbar.__owner
     local r,g,b = unpack(parent.colors.cast.normal)
 
@@ -216,17 +216,17 @@ local function PostCastStart(Castbar, unit, name, castid)
     end
 end
 
-local function PostCastStop(Castbar, unit, name, castid)
+local function PostCastStop(Castbar, unit, spellname, castID, spellID)
     Castbar:SetValue(Castbar.max)
     Castbar:Show()
 end
 
-local function PostChannelStop(Castbar, unit, name)
+local function PostChannelStop(Castbar, unit, spellname, spellID)
     Castbar:SetValue(0)
     Castbar:Show()
 end
 
-local function PostCastFailed(Castbar, unit, name, castid)
+local function PostCastFailed(Castbar, unit, spellname, castID, spellID)
     local parent = Castbar.__owner
     local r,g,b = unpack(parent.colors.cast.failed)
 
