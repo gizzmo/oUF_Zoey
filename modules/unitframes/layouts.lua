@@ -1,8 +1,6 @@
 local ADDON_NAME, Addon = ...
 local Module = Addon:GetModule('Unitframes')
 
-local oUF = Addon.oUF
-local colors = oUF.colors
 local _, playerClass = UnitClass('player')
 
 --------------------------------------------------------------------------------
@@ -58,7 +56,7 @@ local function UpdateUnitBorderColor(object)
 
     local c = UnitClassification(object.unit)
     if c == 'worldboss' then c = 'boss' end
-    local t = colors.classification[c] or colors.border
+    local t = object.colors.classification[c] or object.colors.border
 
     object.Border:SetColor(unpack(t))
 end
@@ -89,22 +87,22 @@ end
 --------------------------------------------------------------------------------
 local function HealthUpdateColor(Health, unit, cur, max)
     local db = Module.db.profile.colors
-
     local parent = Health.__owner
     local r, g, b, t
+
     if not UnitPlayerControlled(unit) and UnitIsTapDenied(unit) then
-        t = colors.tapped
+        t = parent.colors.tapped
     elseif Health.disconnected then
-        t = colors.disconnected
+        t = parent.colors.disconnected
     elseif db.health_class and UnitIsPlayer(unit) and not db.health_force_reaction then
         local _, class = UnitClass(unit)
-        t = colors.class[class]
+        t = parent.colors.class[class]
     elseif db.health_class and UnitReaction(unit, 'player') then
-        t = colors.reaction[UnitReaction(unit, 'player')]
+        t = parent.colors.reaction[UnitReaction(unit, 'player')]
     elseif db.health_by_value then
-        r, g, b = parent.ColorGradient(cur, max, unpack(colors.smooth))
+        r, g, b = parent.ColorGradient(cur, max, unpack(parent.colors.smooth))
     else
-        t = colors.health
+        t = parent.colors.health
     end
 
     if t then
@@ -125,9 +123,9 @@ local function HealthUpdateColor(Health, unit, cur, max)
                 local t
                 if UnitIsPlayer(unit) then
                     local _, class = UnitClass(unit)
-                    t = colors.class[class]
+                    t = parent.colors.class[class]
                 elseif UnitReaction(unit, 'player') then
-                    t = colors.reaction[UnitReaction(unit, 'player')]
+                    t = parent.colors.reaction[UnitReaction(unit, 'player')]
                 end
 
                 if t then
@@ -148,20 +146,20 @@ end
 
 local function PowerUpdateColor(Power, unit, cur, min, max, displayType)
     local db = Module.db.profile.colors
-
+    local parent = Power.__owner
     local r, g, b, t
 
     if db.power_class and UnitIsPlayer(unit) then
         local class = select(2, UnitClass(unit))
-        t = colors.class[class]
+        t = parent.colors.class[class]
     elseif db.power_class and UnitReaction(unit, 'player') then
-        t = colors.reaction[UnitReaction(unit, 'player')]
+        t = parent.colors.reaction[UnitReaction(unit, 'player')]
     elseif db.power_custom then
-        t = colors.power.custom
+        t = parent.colors.power.custom
     else
         local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 
-        t = colors.power[ptoken]
+        t = parent.colors.power[ptoken]
         if not t then
             if altR then
                 r, g, b = altR, altG, altB
@@ -171,7 +169,7 @@ local function PowerUpdateColor(Power, unit, cur, min, max, displayType)
                     r, g, b = r / 255, g / 255, b / 255
                 end
             else
-                t = colors.power[ptype]
+                t = parent.colors.power[ptype]
             end
         end
     end
@@ -194,7 +192,8 @@ end
 --------------------------------------------------------------------------------
 -- Castbar Functions
 local function PostCastStart(Castbar, unit, name, castid)
-    local r,g,b = unpack(colors.cast.normal)
+    local parent = Castbar.__owner
+    local r,g,b = unpack(parent.colors.cast.normal)
 
     if not Castbar.Frame then
         r,g,b = 1,1,1
@@ -228,7 +227,8 @@ local function PostChannelStop(Castbar, unit, name)
 end
 
 local function PostCastFailed(Castbar, unit, name, castid)
-    local r,g,b = unpack(colors.cast.failed)
+    local parent = Castbar.__owner
+    local r,g,b = unpack(parent.colors.cast.failed)
 
     Castbar:SetValue(Castbar.max)
     Castbar:Show()
@@ -242,8 +242,9 @@ local function PostCastFailed(Castbar, unit, name, castid)
 end
 
 local function PostCastInterruptible(Castbar, unit)
+    local parent = Castbar.__owner
     if unit == 'target' then
-        Castbar.Frame.Border:SetColor(unpack(colors.border))
+        Castbar.Frame.Border:SetColor(unpack(parent.colors.border))
     end
 end
 
@@ -298,7 +299,6 @@ local function CastbarOnUpdate(Castbar, elapsed)
         else
             Castbar:Hide()
         end
-
     end
 end
 
@@ -423,7 +423,8 @@ do
     }
 
     function ClassPowerUpdateColor(element)
-        local color = colors.power[classPowerType[playerClass] or 'COMBO_POINTS']
+        local parent = element.__owner
+        local color = parent.colors.power[classPowerType[playerClass] or 'COMBO_POINTS']
         for i = 1, #element do
             local icon = element[i]
 
@@ -815,7 +816,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
         if unit == 'player' then
             object.Castbar.SafeZone = object.Castbar:CreateTexture(nil,'OVERLAY')
             object.Castbar.SafeZone:SetTexture(object.Castbar:GetStatusBarTexture():GetTexture())
-            object.Castbar.SafeZone:SetVertexColor(unpack(colors.cast.safezone))
+            object.Castbar.SafeZone:SetVertexColor(unpack(object.colors.cast.safezone))
 
             object.Castbar.Lag = CreateFontString(object.Castbar, 10)
             object.Castbar.Lag:SetPoint('TOPRIGHT', object.Castbar, 'BOTTOMRIGHT', 0, -7)
