@@ -323,28 +323,21 @@ local function PostCreateAuraIcon(Auras, button)
     button.bg:SetColorTexture(0, 0, 0, 1)
 end
 
-local PostUpdateAuraIcon
-do
-    local playerUnits = { player = true, pet = true, vehicle = true }
+local function PostUpdateAuraIcon(Auras, unit, button, index, position, duration, expiration, debuffType, isStealable)
+    if button.isPlayer or button.caster == 'pet' then
+        button.icon:SetDesaturated(false)
+    else
+        button.icon:SetDesaturated(true)
+    end
 
-    function PostUpdateAuraIcon(Auras, unit, button, index, offset)
-        local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, button.filter)
+    if unit == 'player' then
+        button:SetScript('OnMouseUp', function(self, mouseButton)
+            if mouseButton ~= 'RightButton'
+            or InCombatLockdown()
+            then return end
 
-        if playerUnits[caster] then
-            button.icon:SetDesaturated(false)
-        else
-            button.icon:SetDesaturated(true)
-        end
-
-        if unit == 'player' then
-            button:SetScript('OnMouseUp', function(self, mouseButton)
-                if mouseButton ~= 'RightButton'
-                or InCombatLockdown()
-                then return end
-
-                CancelUnitBuff(unit, index)
-            end)
-        end
+            CancelUnitBuff(unit, index)
+        end)
     end
 end
 
