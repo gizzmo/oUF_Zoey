@@ -254,28 +254,15 @@ local function PostCastNotInterruptible(Castbar, unit)
     end
 end
 
--- We overwrite the `OnUpdate` function so we can fade out after.
+-- We override the `OnUpdate` function so we can fade out after.
 local function CastbarOnUpdate(Castbar, elapsed)
     if Castbar.casting or Castbar.channeling then
         local duration = Castbar.casting and Castbar.duration + elapsed or Castbar.duration - elapsed
-        local remaining = (duration * -1 + Castbar.max) -- incase i want to use it :p
+
         if (Castbar.casting and duration >= Castbar.max) or (Castbar.channeling and duration <= 0) then
             Castbar.casting = nil
             Castbar.channeling = nil
             return
-        end
-
-        local latency = select(4, GetNetStats())
-
-        if Castbar.SafeZone then
-            local width = Castbar:GetWidth() * (latency / 1e3) / Castbar.max
-            if width < 1 then width = 1 end
-            if width > Castbar:GetWidth() then width = Castbar:GetWidth() end
-            Castbar.SafeZone:SetWidth(width)
-        end
-
-        if Castbar.Lag then
-            Castbar.Lag:SetFormattedText('%d ms', latency)
         end
 
         if Castbar.Time then
@@ -288,8 +275,17 @@ local function CastbarOnUpdate(Castbar, elapsed)
 
         Castbar.duration = duration
         Castbar:SetValue(duration)
+
         if Castbar.Spark then
-            Castbar.Spark:SetPoint('CENTER', Castbar, 'LEFT', (duration / Castbar.max) * Castbar:GetWidth(), 0)
+            local horiz = Castbar.horizontal
+            local size = Castbar[horiz and 'GetWidth' or 'GetHeight'](Castbar)
+
+            local offset = (duration / Castbar.max) * size
+            if(Castbar:GetReverseFill()) then
+                offset = size - offset
+            end
+
+            Castbar.Spark:SetPoint('CENTER', Castbar, horiz and 'LEFT' or 'BOTTOM', horiz and offset or 0, horiz and 0 or offset)
         end
     else
         Castbar.Spark:Hide()
