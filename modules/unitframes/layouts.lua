@@ -209,6 +209,11 @@ local function PostCastStart(Castbar, unit, name, castID, spellID)
         Castbar.bg:SetVertexColor(r*mu, g*mu, b*mu)
     end
 
+    if Castbar.Lag then
+        local _, _, _, ms = GetNetStats()
+        Castbar.Lag:SetFormattedText('%d ms', ms)
+    end
+
     if Castbar.notInterruptible then
         Castbar:PostCastNotInterruptible(unit)
     else
