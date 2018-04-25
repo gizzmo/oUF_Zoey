@@ -825,7 +825,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
         object.Castbar.Text:SetPoint('LEFT', 5, 0)
         object.Castbar.Time:SetPoint('RIGHT', -5, 0)
 
-    elseif unit:match('boss%d') then
+    elseif unit == 'boss' then
         object.Castbar = CreateStatusBar(object)
 
         object.Castbar.Frame = CreateFrame('Frame', nil, object.Castbar)
