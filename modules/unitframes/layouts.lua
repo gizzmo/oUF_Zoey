@@ -1045,7 +1045,26 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
 
     -- Adust the health prediction bars
     do
-        object.HealthPrediction = nil -- FUCK IT FOR NOW
+        local myBar = object.HealthPrediction.myBar
+        myBar:SetOrientation('VERTICAL')
+        myBar:ClearAllPoints()
+        myBar:SetPoint('BOTTOM', object.Health:GetStatusBarTexture(), 'TOP')
+
+        local otherBar = object.HealthPrediction.otherBar
+        otherBar:SetOrientation('VERTICAL')
+        otherBar:ClearAllPoints()
+        otherBar:SetPoint('BOTTOM', myBar:GetStatusBarTexture(), 'TOP')
+
+        local absorbBar = object.HealthPrediction.absorbBar
+        absorbBar:SetOrientation('VERTICAL')
+        absorbBar:ClearAllPoints()
+        absorbBar:SetPoint('BOTTOM', otherBar:GetStatusBarTexture(), 'TOP')
+
+        local healAbsorbBar = object.HealthPrediction.healAbsorbBar
+        healAbsorbBar:SetOrientation('VERTICAL')
+        healAbsorbBar:ClearAllPoints()
+        healAbsorbBar:SetPoint('TOP', object.Health:GetStatusBarTexture())
+
     end
 
     -- Change Range Fading
