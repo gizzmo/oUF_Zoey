@@ -284,9 +284,9 @@ local function get_general_options()
 
                 },
             },
-            healPredictionGroup = {
+            healthPredictionGroup = {
                 order = new_order(),
-                name = L["Heal Prediction"],
+                name = L["Health Prediction"],
                 type = 'group',
                 inline = true,
 
