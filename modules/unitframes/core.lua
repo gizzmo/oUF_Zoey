@@ -50,7 +50,7 @@ local defaultDB = {
                 PAIN = { 255/255, 156/255, 0 },
             },
 
-            healPrediction = {
+            healthPrediction = {
                 personal = {64/255, 204/255, 255/255, .7},
                 others = {64/255, 255/255, 64/255, .7},
                 absorbs = {220/255, 255/255, 230/255, .7},
@@ -288,6 +288,13 @@ function Module:UpdateColors()
     oUF.colors.cast.notInterruptible = db.cast.notInterruptible
 
     oUF.colors.border = db.border
+
+    oUF.colors.healthPrediction = oUF.colors.healthPrediction or {}
+    oUF.colors.healthPrediction.personal = db.healthPrediction.personal
+    oUF.colors.healthPrediction.others = db.healthPrediction.others
+    oUF.colors.healthPrediction.absorbs = db.healthPrediction.absorbs
+    oUF.colors.healthPrediction.healAbsorbs = db.healthPrediction.healAbsorbs
+    oUF.colors.healthPrediction.maxOverflow = db.healthPrediction.maxOverflow
 end
 
 -------------------------------------------------------------------- Creating --
