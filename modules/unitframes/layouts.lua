@@ -450,46 +450,15 @@ end
 
 --------------------------------------------------------------------------------
 -- HealPrediction
-local function CreateHealPrediction(self, vertical)
-    local myBar = CreateStatusBar(self.Health, true)
-    myBar:SetStatusBarColor(64/255, 204/255, 255/255, .7)
+local function PostUpdateHealthPrediction(HealthPrediction, unit, myIncomingHeal, otherIncomingHeal, absorb, healAbsorb, hasOverAbsorb, hasOverHealAbsorb)
+    local parent = HealthPrediction.__owner
+    local width, height = parent.Health:GetSize()
 
-    local otherBar = CreateStatusBar(self.Health, true)
-    otherBar:SetStatusBarColor(64/255, 255/255, 64/255, .7)
-
-    local absorbBar = CreateStatusBar(self.Health, true)
-    absorbBar:SetStatusBarColor(220/255, 255/255, 230/255, .7)
-
-    local healAbsorbBar = CreateStatusBar(self.Health, true)
-    healAbsorbBar:SetStatusBarColor(220/255, 228/255, 255/255, .7)
-
-    -- Loop over the bars and set the points
-    local bars = {myBar,otherBar,absorbBar,healAbsorbBar}
-    for i=1, #bars do
-
-        if vertical then
-            bars[i]:SetHeight(self:GetHeight())
-            bars[i]:SetOrientation('VERTICAL')
-            bars[i]:SetPoint('LEFT')
-            bars[i]:SetPoint('RIGHT')
-            bars[i]:SetPoint('BOTTOM', self.Health:GetStatusBarTexture(), 'TOP')
-        else
-            bars[i]:SetWidth(self:GetWidth())
-            bars[i]:SetPoint('TOP')
-            bars[i]:SetPoint('BOTTOM')
-            bars[i]:SetPoint('LEFT', self.Health:GetStatusBarTexture(), 'RIGHT')
-        end
-    end
-
-    -- Register with oUF
-    self.HealthPrediction = {
-        myBar = myBar,
-        otherBar = otherBar,
-        absorbBar = absorbBar,
-        healAbsorbBar = healAbsorbBar,
-        maxOverflow = 1.00,
-        frequentUpdates = true,
-    }
+    -- The size cant be set at creation, so we'll do it here.
+    HealthPrediction.myBar:SetSize(width, height)
+    HealthPrediction.otherBar:SetSize(width, height)
+    HealthPrediction.absorbBar:SetSize(width, height)
+    HealthPrediction.healAbsorbBar:SetSize(width, height)
 end
 
 
@@ -555,6 +524,40 @@ function Module:ConstructStyle(object, unit, isSingle)
     object.Health.frequentUpdates = true
     object.Health.UpdateColor = HealthUpdateColor
 
+    do
+        -- Incoming heals from the player
+        local myBar = CreateStatusBar(object.Health, true)
+        myBar:SetStatusBarColor(unpack(object.colors.healthPrediction.personal))
+        myBar:SetPoint('LEFT', object.Health:GetStatusBarTexture(), 'RIGHT')
+
+        -- Incoming heals from others
+        local otherBar = CreateStatusBar(object.Health, true)
+        otherBar:SetStatusBarColor(unpack(object.colors.healthPrediction.others))
+        otherBar:SetPoint('LEFT', myBar:GetStatusBarTexture(), 'RIGHT')
+
+        -- Damage absorptions
+        local absorbBar = CreateStatusBar(object.Health, true)
+        absorbBar:SetStatusBarColor(unpack(object.colors.healthPrediction.absorbs))
+        absorbBar:SetPoint('LEFT', otherBar:GetStatusBarTexture(), 'RIGHT')
+
+        -- Healing absorptions
+        local healAbsorbBar = CreateStatusBar(object.Health, true)
+        healAbsorbBar:SetStatusBarColor(unpack(object.colors.healthPrediction.healAbsorbs))
+        healAbsorbBar:SetPoint('RIGHT', object.Health:GetStatusBarTexture())
+        healAbsorbBar:SetReverseFill(true)
+
+        -- Register with oUF
+        object.HealthPrediction = {
+            myBar = myBar,
+            otherBar = otherBar,
+            absorbBar = absorbBar,
+            healAbsorbBar = healAbsorbBar,
+            maxOverflow = 1 + object.colors.healthPrediction.maxOverflow,
+            frequentUpdates = true,
+            PostUpdate = PostUpdateHealthPrediction,
+        }
+    end
+
     -- DispelHighlight
     object.DispelHighlight = object.Overlay:CreateTexture(nil, 'OVERLAY')
     object.DispelHighlight:SetAllPoints(object.Health)
@@ -588,8 +591,6 @@ function Module:Construct_Zoey(object, unit, isSingle)
     if isSingle then
         object:SetSize(FRAME_WIDTH, FRAME_HEIGHT)
     end
-
-    CreateHealPrediction(object)
 
     ----------------------------------------------------------------------------
     -- Build the other status bars
@@ -993,8 +994,6 @@ function Module:Construct_ZoeyThin(object, unit, isSingle)
         object:SetSize(FRAME_WIDTH, FRAME_HEIGHT)
     end
 
-    CreateHealPrediction(object)
-
     ----------------------------------------------------------------------------
     -- Tags
     ----------------------------------------------------------------------------
@@ -1041,10 +1040,13 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
         object:SetSize(FRAME_WIDTH, FRAME_HEIGHT)
     end
 
-    CreateHealPrediction(object,true)
-
     -- Grow healthbar top to bottom
     object.Health:SetOrientation('VERTICAL')
+
+    -- Adust the health prediction bars
+    do
+        object.HealthPrediction = nil -- FUCK IT FOR NOW
+    end
 
     -- Change Range Fading
     object[IsAddOnLoaded('oUF_SpellRange') and 'SpellRange' or 'Range'] = {
