@@ -460,6 +460,9 @@ local function PostUpdateHealthPrediction(HealthPrediction, unit, myIncomingHeal
     HealthPrediction.otherBar:SetSize(width, height)
     HealthPrediction.absorbBar:SetSize(width, height)
     HealthPrediction.healAbsorbBar:SetSize(width, height)
+
+    -- We only need to run once, used to init the bar size.
+    HealthPrediction.PostUpdate = nil
 end
 
 
