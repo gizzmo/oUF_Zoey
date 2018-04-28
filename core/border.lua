@@ -26,6 +26,18 @@ function prototype:SetSize(size, offset)
     self.BOTTOMLEFT:SetPoint('BOTTOMLEFT', -o, -o)
     self.BOTTOMRIGHT:SetPoint('BOTTOMRIGHT', o, -o)
 end
+
+function prototype:Show()
+    for _, tex in pairs(self) do
+        tex:Show()
+    end
+end
+
+function prototype:Hide()
+    for _, tex in pairs(self) do
+        tex:Hide()
+    end
+end
 -- do we need more methods?
 
 
