@@ -415,11 +415,13 @@ local function ClassPowerPostUpdate(ClassPower, cur, max, mod, maxChanged, power
         -- Figure out the new width -- (Inside width - number of gaps / max)
         local width = (((ClassPower:GetWidth()-2) - (max-1)) / max)
 
+        -- Update the new width
         for i = 1, max do
             ClassPower[i]:SetWidth(width)
-            ClassPower[i].bg:Show()
+            ClassPower[i].bg:Show() --insure it's shown
         end
 
+        -- oUF has already hidden the icon, so lets also hide the bg.
         for i = max+1, 6 do
             ClassPower[i].bg:Hide()
         end
@@ -631,7 +633,8 @@ function Module:Construct_Zoey(object, unit, isSingle)
                 icon:SetPoint('LEFT', object.ClassPower[i-1], 'RIGHT', 1, 0)
             end
 
-            -- Reanchor so it's not hidden when the icon is
+            -- oUF Hides the child icon when its not active. But we want the
+            -- background to still be visable while its inactive.
             icon.bg:SetParent(object.ClassPower)
             icon.bg:SetDrawLayer('BACKGROUND', 1)
 
