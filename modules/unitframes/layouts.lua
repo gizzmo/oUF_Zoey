@@ -405,29 +405,6 @@ end
 
 --------------------------------------------------------------------------------
 -- ClassIcons Functions
-local ClassPowerUpdateColor
-do
-    local classPowerType = {
-        MONK    = 'CHI',
-        PALADIN = 'HOLY_POWER',
-        WARLOCK = 'SOUL_SHARDS',
-        ROGUE   = 'COMBO_POINTS',
-        DRUID   = 'COMBO_POINTS',
-        MAGE    = 'ARCANE_CHARGES'
-    }
-
-    function ClassPowerUpdateColor(ClassPower)
-        local parent = ClassPower.__owner
-        local color = parent.colors.power[classPowerType[playerClass] or 'COMBO_POINTS']
-        for i = 1, #ClassPower do
-            local icon = ClassPower[i]
-
-            icon:SetStatusBarColor(color[1], color[2], color[3])
-            icon.bg:SetVertexColor(color[1]*0.4, color[2]*0.4, color[3]*0.4)
-        end
-    end
-end
-
 local function ClassPowerPostUpdate(ClassPower, cur, max, mod, maxChanged, powerType)
     -- Show or hide the entire frame on enable/disable
     if max == nil then return ClassPower:Hide()
@@ -642,7 +619,6 @@ function Module:Construct_Zoey(object, unit, isSingle)
         object.ClassPower.bg:SetColorTexture(0,0,0,1)
 
         object.ClassPower.PostUpdate = ClassPowerPostUpdate
-        object.ClassPower.UpdateTexture = ClassPowerUpdateColor
 
         for i = 1, 6 do
             local icon = CreateStatusBar(object.ClassPower)
