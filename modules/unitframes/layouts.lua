@@ -189,6 +189,11 @@ local function PowerUpdateColor(Power, unit, cur, min, max, displayType)
     end
 end
 
+local function PowerPostUpdate(Power, unit, cur, min, max)
+    -- Fixes the issue of a bar with MinMaxValues of 0,0 showing as empty.
+    if max == 0 then Power:SetMinMaxValues(-1, 0) end
+end
+
 --------------------------------------------------------------------------------
 -- Castbar Functions
 local function PostCastStart(Castbar, unit, name, castID, spellID)
@@ -585,6 +590,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
     object.Power:SetPoint('BOTTOM', 0, 1)
     object.Power.frequentUpdates = true
     object.Power.UpdateColor = PowerUpdateColor
+    object.Power.PostUpdate = PowerPostUpdate
 
     object.Health:SetPoint('BOTTOM', object.Power, 'TOP', 0, 1)
 
