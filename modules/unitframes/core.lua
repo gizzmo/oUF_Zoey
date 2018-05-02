@@ -48,6 +48,11 @@ local defaultDB = {
                 INSANITY = { 0.40, 0, 0.80 },
                 FURY = { 0.788, 0.259, 0.992 },
                 PAIN = { 255/255, 156/255, 0 },
+                STAGGER = {
+                    {0.52, 1.0, 0.52},
+                    {1.0, 0.98, 0.72},
+                    {1.0, 0.42, 0.42}
+                },
             },
 
             healthPrediction = {
@@ -253,6 +258,7 @@ function Module:UpdateColors()
     oUF.colors.power.INSANITY = db.power.INSANITY
     oUF.colors.power.FURY = db.power.FURY
     oUF.colors.power.PAIN = db.power.PAIN
+    oUF.colors.power.STAGGER = db.power.STAGGER
 
     oUF.colors.debuff.Magic = db.debuffHighlight.Magic
     oUF.colors.debuff.Curse = db.debuffHighlight.Curse

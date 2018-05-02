@@ -3,6 +3,8 @@ local L = Addon.L
 
 local Module = Addon:GetModule('Unitframes')
 
+local _, playerClass = UnitClass('player')
+
 --------------------------------------------------------------------------------
 local growthDirectionValues = {
     UP_LEFT = format(L['%s and then %s'],    L['Up'], L['Left']),
@@ -280,8 +282,48 @@ local function get_general_options()
                     INSANITY = { order = new_order(), type = 'color', name = INSANITY },
                     FURY = { order = new_order(), type = 'color', name = FURY },
                     PAIN = { order = new_order(), type = 'color', name = PAIN },
+                },
+            },
+            staggerGroup = {
+                order = new_order(),
+                type = 'group',
+                inline = true,
+                name = L['Stagger'],
 
+                hidden = function(info) return playerClass ~= 'MONK' end,
 
+                get = function(info)
+                    local db = Module.db.profile.colors.power.STAGGER
+                    return unpack(db[ info.arg ])
+                end,
+                set = function(info, ...)
+                    local db = Module.db.profile.colors.power.STAGGER
+                    local data = db[ info.arg ]
+                    data[1], data[2], data[3], data[4] = ...
+                    Module:UpdateAll()
+                end,
+
+                args = {
+                    light = {
+                        order = new_order(),
+                        type = 'color',
+                        name = L['Light'],
+                        arg = 1, -- AceConfig doesnt like keys not being strings
+                                 -- So we use the arg option for the key of the
+                                 -- STAGGER table
+                    },
+                    moderate = {
+                        order = new_order(),
+                        type = 'color',
+                        name = L['Moderate'],
+                        arg = 2,
+                    },
+                    heavy = {
+                        order = new_order(),
+                        type = 'color',
+                        name = L['Heavy'],
+                        arg = 3,
+                    },
                 },
             },
             healthPredictionGroup = {
