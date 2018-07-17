@@ -10,7 +10,7 @@
 #--------------------------------------------------------------------- Author --
 ## Author: Gizzmo
 ## X-eMail: addons@justgizzmo.com
-## X-Copyright: Copyright (c) 2011-2017 Gizzmo. All rights reserved
+## X-Copyright: Copyright (c) 2011-2018 Gizzmo. All rights reserved
 ## X-Website: http://justgizzmo.com
 
 #------------------------------------------------------------------ Libraries --
