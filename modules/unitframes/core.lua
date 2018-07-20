@@ -389,7 +389,7 @@ function Module:CreateGroup(group)
 
     -- If it doesnt exist, create it!
     if not self.groups[group] then
-        local holder = CreateFrame('Frame', 'ZoeyUI_'..unitToCamelCase(group), oUF_PetBattleFrameHider)
+        local holder = CreateFrame('Frame', 'ZoeyUI_'..unitToCamelCase(group), ZoeyUI_PetBattleFrameHider)
         holder.db = self.db.profile.units[group]
 
         for i = 1, 5 do
@@ -616,7 +616,7 @@ function Module:CreateHeader(header, ...)
     local header = header:lower()
 
     if not self.headers[header] then
-        local holder = CreateFrame('Frame', 'ZoeyUI_'..unitToCamelCase(header), oUF_PetBattleFrameHider, 'SecureHandlerStateTemplate');
+        local holder = CreateFrame('Frame', 'ZoeyUI_'..unitToCamelCase(header), ZoeyUI_PetBattleFrameHider, 'SecureHandlerStateTemplate');
         holder.db = self.db.profile.units[header]
         holder.headerName = header
 
