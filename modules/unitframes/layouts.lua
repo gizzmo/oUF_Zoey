@@ -734,9 +734,9 @@ function Module:Construct_Zoey(object, unit, isSingle)
     object.PvPIndicator:SetSize(21,21)
     object.PvPIndicator:SetPoint('CENTER', object.Overlay, 'LEFT')
 
-    object.PvPIndicator.Prestige = object.Overlay:CreateTexture(nil, 'OVERLAY')
-    object.PvPIndicator.Prestige:SetSize(41,43)
-    object.PvPIndicator.Prestige:SetPoint('CENTER', object.PvPIndicator)
+    object.PvPIndicator.Badge = object.Overlay:CreateTexture(nil, 'OVERLAY')
+    object.PvPIndicator.Badge:SetSize(41,43)
+    object.PvPIndicator.Badge:SetPoint('CENTER', object.PvPIndicator)
 
     if unit == 'party' or unit == 'target' or unit == 'focus' then
         object.PhaseIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
