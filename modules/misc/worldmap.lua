@@ -32,12 +32,25 @@ end
 
 function Module:OnEnable()
     if self.db.profile.smallerWorldMap then
-        self:SecureHook("WorldMap_ToggleSizeUp", "SetLargeWorldMap")
-        self:RawHookScript(WorldMapScrollFrame, 'OnMouseWheel', 'FixWorldMapZoom')
+        WorldMapFrame.BlackoutFrame.Blackout:SetTexture(nil)
+        WorldMapFrame.BlackoutFrame:EnableMouse(false)
 
-        if WORLDMAP_SETTINGS.size == WORLDMAP_FULLMAP_SIZE then
-            self:SetLargeWorldMap()
-        end
+        self:SecureHook(WorldMapFrame, 'Maximize', 'SetLargeWorldMap')
+        self:SecureHook(WorldMapFrame, 'Minimize', 'SetSmallWorldMap')
+        self:SecureHook(WorldMapFrame, 'SynchronizeDisplayState')
+        self:SecureHook(WorldMapFrame, 'UpdateMaximizedSize')
+
+        self:SecureHookScript(WorldMapFrame, 'OnShow', function()
+            if WorldMapFrame:IsMaximized() then
+                self:SetLargeWorldMap()
+                self:UpdateMaximizedSize()
+            else
+                self:SetSmallWorldMap()
+                self:UpdateMaximizedSize()
+            end
+
+            self:Unhook(WorldMapFrame, 'OnShow')
+        end)
     end
 
     -- Set alpha used when moving
@@ -48,30 +61,19 @@ function Module:OnEnable()
     SetCVar("mapFade", (self.db.profile.fadeMapWhenMoving == true and 1 or 0))
 end
 
--- Fixes how the scroll zooming in the fullscreen world map
--- Doesnt really work. Causes taint. May not be possible. Yet
-do
-    local Real_WorldMapFrame_InWindowedMode = WorldMapFrame_InWindowedMode;
-    local function Fake_WorldMapFrame_InWindowedMode()
-        return true
-    end
+local tooltips = {
+    WorldMapTooltip,
+    WorldMapCompareTooltip1,
+    WorldMapCompareTooltip2,
+    WorldMapCompareTooltip3
+}
 
-    function Module:FixWorldMapZoom(frame, ...)
-        WorldMapFrame_InWindowedMode = Fake_WorldMapFrame_InWindowedMode
-        self.hooks[frame].OnMouseWheel(frame, ...)
-        WorldMapFrame_InWindowedMode = Real_WorldMapFrame_InWindowedMode
-    end
-end
+local smallerMapScale = 0.7
 
 function Module:SetLargeWorldMap()
-    BlackoutWorld:SetTexture(nil)
     WorldMapFrame:SetParent(UIParent)
-    WorldMapFrame:EnableKeyboard(false)
     WorldMapFrame:SetScale(1)
-    WorldMapFrame:EnableMouse(true)
-    WorldMapTooltip:SetFrameStrata("TOOLTIP")
-    WorldMapCompareTooltip1:SetFrameStrata("TOOLTIP")
-    WorldMapCompareTooltip2:SetFrameStrata("TOOLTIP")
+    WorldMapFrame.ScrollContainer.Child:SetScale(smallerMapScale)
 
     if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
         SetUIPanelAttribute(WorldMapFrame, "area", "center");
@@ -81,10 +83,32 @@ function Module:SetLargeWorldMap()
         SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)
     end
 
-    WorldMapFrame:ClearAllPoints()
-    WorldMapFrame:SetPoint("CENTER", UIParent, "CENTER", 0, 100)
-    WorldMapFrame:SetSize(1002, 668)
+    WorldMapFrame:OnFrameSizeChanged()
+    if WorldMapFrame:GetMapID() then
+        WorldMapFrame.NavBar:Refresh()
+    end
+
+    for _, tt in pairs(tooltips) do
+        if _G[tt] then _G[tt]:SetFrameStrata("TOOLTIP") end
+    end
 end
 
--- Wrap so it happens after combat
-Module.SetLargeWorldMap = Addon:AfterCombatWrapper(Module.SetLargeWorldMap)
+function Module:UpdateMaximizedSize()
+    local width, height = WorldMapFrame:GetSize()
+    local magicNumber = (1 - smallerMapScale) * 100
+    WorldMapFrame:SetSize((width * smallerMapScale) - (magicNumber + 2), (height * smallerMapScale) - 2)
+end
+
+function Module:SynchronizeDisplayState()
+    if WorldMapFrame:IsMaximized() then
+        WorldMapFrame:ClearAllPoints()
+        WorldMapFrame:SetPoint("TOP", UIParent, "TOP", 0, -94)
+    end
+end
+
+function Module:SetSmallWorldMap()
+    if not WorldMapFrame:IsMaximized() then
+        WorldMapFrame:ClearAllPoints()
+        WorldMapFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 16, -94)
+    end
+end
