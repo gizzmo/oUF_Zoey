@@ -172,32 +172,7 @@ function Module:OnInitialize()
 end
 
 function Module:OnEnable()
-    -- Hide the Blizzard Buffs
-    BuffFrame:Hide()
-    BuffFrame:UnregisterAllEvents()
-    TemporaryEnchantFrame:Hide()
-
-    -- Hide Raidframes
-    CompactRaidFrameManager:Hide()
-    CompactRaidFrameManager:UnregisterAllEvents()
-    CompactRaidFrameContainer:UnregisterAllEvents()
-
-    -- Remove tanited items from the right click menu on units
-    for _, menu in pairs(UnitPopupMenus) do
-        for i = #menu, 1, -1 do
-            local name = menu[i]
-            if name:match('^LOCK_%u+_FRAME$')
-            or name:match('^UNLOCK_%u+_FRAME$')
-            or name:match('^MOVE_%u+_FRAME$')
-            or name:match('^RESET_%u+_FRAME_POSITION')
-            or name:match('^SET_FOCUS')
-            or name:match('^DISMISS')
-            then
-                table.remove(menu, i)
-            end
-        end
-    end
-
+    self:DisableBlizzard()
     self:UpdateColors()
     self:LoadUnits()
 end
@@ -301,6 +276,34 @@ function Module:UpdateColors()
     oUF.colors.healthPrediction.absorbs = db.healthPrediction.absorbs
     oUF.colors.healthPrediction.healAbsorbs = db.healthPrediction.healAbsorbs
     oUF.colors.healthPrediction.maxOverflow = db.healthPrediction.maxOverflow
+end
+
+function Module:DisableBlizzard()
+    -- Hide the Blizzard Buffs
+    BuffFrame:Hide()
+    BuffFrame:UnregisterAllEvents()
+    TemporaryEnchantFrame:Hide()
+
+    -- Hide Raidframes
+    CompactRaidFrameManager:Hide()
+    CompactRaidFrameManager:UnregisterAllEvents()
+    CompactRaidFrameContainer:UnregisterAllEvents()
+
+    -- Remove tanited items from the right click menu on units
+    for _, menu in pairs(UnitPopupMenus) do
+        for i = #menu, 1, -1 do
+            local name = menu[i]
+            if name:match('^LOCK_%u+_FRAME$')
+            or name:match('^UNLOCK_%u+_FRAME$')
+            or name:match('^MOVE_%u+_FRAME$')
+            or name:match('^RESET_%u+_FRAME_POSITION')
+            or name:match('^SET_FOCUS')
+            or name:match('^DISMISS')
+            then
+                table.remove(menu, i)
+            end
+        end
+    end
 end
 
 -------------------------------------------------------------------- Creating --
