@@ -645,18 +645,12 @@ end
 
 
 function Module:LoadUnits()
-    if not self.Anchor then
-        local Anchor = CreateFrame('Frame', 'ZoeyUI_UnitFrameAnchor', UIParent)
-        Anchor:SetSize(320, 1) -- width is the gap between target and player frames
-        Anchor:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 245)
-        self.Anchor = Anchor
-    end
-
     local gap = 12
 
     oUF:SetActiveStyle('Zoey')
-    self:CreateUnit('Player'):SetPoint('BOTTOMRIGHT', self.Anchor, 'BOTTOMLEFT', 0, 0)
-    self:CreateUnit('Target'):SetPoint('BOTTOMLEFT', self.Anchor, 'BOTTOMRIGHT', 0, 0)
+    self:CreateUnit('Player'):SetPoint('BOTTOMRIGHT', UIParent, 'BOTTOM', -160, 245)
+    self:CreateUnit('Target'):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOM', 160, 245)
+
     self:CreateUnit('Focus'):SetPoint('RIGHT', self.units.player, 'LEFT', -gap * 2, 0)
     self:CreateUnit('FocusTarget'):SetPoint('BOTTOM', self.units.focus, 'TOP', 0, gap)
 
