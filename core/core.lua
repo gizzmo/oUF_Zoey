@@ -133,6 +133,11 @@ Addon:RegisterChatCommand('zoey', function(input)
 end)
 
 ------------------------------------------------------------------- Utilities --
+-- A frame to attach to to make sure its hidden.
+Addon.HiddenFrame = CreateFrame('Frame')
+Addon.HiddenFrame.Show = Addon.HiddenFrame.Hide -- Remove the ability to show it
+Addon.HiddenFrame:Hide()
+
 -- Can be used to overwrite a function without making it nil, or where you need
 -- to return a function that does nothing.
 Addon.noop = function() --[[No Operation]] end
