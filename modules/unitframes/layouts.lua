@@ -774,10 +774,10 @@ function Module:Construct_Zoey(object, unit, isSingle)
         -- Size and place the Castbar Frame
         if unit == 'player' then
             object.Castbar.Frame:SetSize(300,18)
-            object.Castbar.Frame:SetPoint('BOTTOM', self.Anchor, 0, -30)
+            object.Castbar.Frame:SetPoint('BOTTOM', UIParent, 0, 215)
         elseif unit == 'target' then
             object.Castbar.Frame:SetSize(300,30)
-            object.Castbar.Frame:SetPoint('BOTTOM', self.Anchor, 0, 100)
+            object.Castbar.Frame:SetPoint('BOTTOM', UIParent, 0, 345)
         end
 
         -- Spell Icon
