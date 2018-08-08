@@ -312,6 +312,8 @@ end
 -- Aura Function
 local function PostCreateAuraIcon(Auras, button)
     button.cd:SetReverse(true)
+    button.cd:SetHideCountdownNumbers(true) -- hides cooldown font
+
     button.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
 
     button.count:ClearAllPoints()
