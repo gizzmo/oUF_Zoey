@@ -47,6 +47,7 @@ local defaultDB = {
                 HOLY_POWER = { 0.95, 0.90, 0.60 },
                 MAELSTROM = { 0.00, 0.50, 1.00 },
                 INSANITY = { 0.40, 0, 0.80 },
+                ARCANE_CHARGES = { 0.1, 0.1, 0.98 },
                 FURY = { 0.788, 0.259, 0.992 },
                 PAIN = { 255/255, 156/255, 0 },
                 STAGGER = {
@@ -233,6 +234,7 @@ function Module:UpdateColors()
     oUF.colors.power.HOLY_POWER = db.power.HOLY_POWER
     oUF.colors.power.MAELSTROM = db.power.MAELSTROM
     oUF.colors.power.INSANITY = db.power.INSANITY
+    oUF.colors.power.ARCANE_CHARGES = db.power.ARCANE_CHARGES
     oUF.colors.power.FURY = db.power.FURY
     oUF.colors.power.PAIN = db.power.PAIN
     oUF.colors.power.STAGGER = db.power.STAGGER

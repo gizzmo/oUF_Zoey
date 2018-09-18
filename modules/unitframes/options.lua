@@ -281,6 +281,7 @@ local function get_general_options()
                     HOLY_POWER = { order = new_order(), type = 'color', name = HOLY_POWER },
                     MAELSTROM = { order = new_order(), type = 'color', name = MAELSTROM },
                     INSANITY = { order = new_order(), type = 'color', name = INSANITY },
+                    ARCANE_CHARGES = { order = new_order(), type = 'color', name = ARCANE_CHARGES },
                     FURY = { order = new_order(), type = 'color', name = FURY },
                     PAIN = { order = new_order(), type = 'color', name = PAIN },
                 },
