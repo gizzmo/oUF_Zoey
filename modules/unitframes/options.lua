@@ -272,6 +272,7 @@ local function get_general_options()
                     RAGE = { order = new_order(), type = 'color', name = RAGE },
                     FOCUS = { order = new_order(), type = 'color', name = FOCUS },
                     ENERGY = { order = new_order(), type = 'color', name = ENERGY },
+                    COMBO_POINTS = { order = new_order(), type = 'color', name = COMBO_POINTS },
                     CHI = { order = new_order(), type = 'color', name = CHI },
                     RUNES = { order = new_order(), type = 'color', name = RUNES },
                     RUNIC_POWER = { order = new_order(), type = 'color', name = RUNIC_POWER },

@@ -38,6 +38,7 @@ local defaultDB = {
                 RAGE = { 1.00, 0.00, 0.00 },
                 FOCUS = { 1.00, 0.50, 0.25 },
                 ENERGY = { 1.00, 1.00, 0.00 },
+                COMBO_POINTS = {1, 0.96, 0.41},
                 CHI = { 0.71, 1.0, 0.92 },
                 RUNES = { 0.50, 0.50, 0.50 },
                 RUNIC_POWER = { 0.00, 0.82, 1.00 },
@@ -223,6 +224,7 @@ function Module:UpdateColors()
     oUF.colors.power.RAGE = db.power.RAGE
     oUF.colors.power.FOCUS = db.power.FOCUS
     oUF.colors.power.ENERGY = db.power.ENERGY
+    oUF.colors.power.COMBO_POINTS = db.power.COMBO_POINTS
     oUF.colors.power.CHI = db.power.CHI
     oUF.colors.power.RUNES = db.power.RUNES
     oUF.colors.power.RUNIC_POWER = db.power.RUNIC_POWER
