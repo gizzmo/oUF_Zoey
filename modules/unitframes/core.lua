@@ -186,16 +186,16 @@ function Module:OnProfileRefresh()
     end
     for name, group in pairs(self.groups) do
         group.db = self.db.profile.units[name]
-        for i = 1, #group do
-            group[i].db = group.db
+        for unit = 1, #group do
+            group[unit].db = group.db
         end
     end
     for name, holder in pairs(self.headers) do
         holder.db = self.db.profile.units[name]
-        for i = 1, #holder do
-            holder[i].db = holder.db
-            for j = 1, #holder[i] do
-                holder[i][j].db = holder.db
+        for group = 1, #holder do
+            holder[group].db = holder.db
+            for unit = 1, #holder[group] do
+                holder[group][unit].db = holder.db
             end
         end
     end
