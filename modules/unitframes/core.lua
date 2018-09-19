@@ -547,6 +547,13 @@ function holderMethods:Update()
     local verticalSpacing = db.verticalSpacing or db.spacing
     local numRows = ceil(db.numGroups / db.groupsPerCol)
 
+    -- Guesstimate the size of one group
+    local unitWidth = self[1]:GetAttribute('initial-width')   -- We can use these attributes until
+    local unitHeight = self[1]:GetAttribute('initial-height') -- the size gets stored in the database
+
+    local groupWidth = abs(xMult) * (unitWidth + horizontalSpacing) * 4 + unitWidth
+    local groupHeight = abs(yMult) * (unitHeight + verticalSpacing) * 4 + unitHeight
+
     -- Only update the groups we're using
     for i = 1, db.raidWideSorting and 1 or db.numGroups do
         local childHeader = self[i]
@@ -583,29 +590,32 @@ function holderMethods:Update()
         -- Start over with anchors
         childHeader:ClearAllPoints()
 
-        -- Anchor child headers together
+        -- Anchoring has to starts somewhere
         if i == 1 then
             childHeader:SetPoint(point, self)
             childHeader:SetPoint(columnAnchorPoint, self)
+
+        -- Start a new row
         elseif db.invertGroupGrowth and (i <= numRows)
         or not db.invertGroupGrowth and ((i - 1) % db.groupsPerCol == 0) then
             local anchorTo = self[i - (db.invertGroupGrowth and 1 or db.groupsPerCol)]
-            childHeader:SetPoint(point, anchorTo) -- Needed to align
+            childHeader:SetPoint(point, anchorTo) -- Needed to align, if the groups arnt the same size
             childHeader:SetPoint(columnAnchorPoint, anchorTo, relativeColumnAnchorPoint,
                 horizontalSpacing * colxMult, verticalSpacing * colyMult)
+
+        -- New column, if there are any.
         else
             local anchorTo = self[i - (db.invertGroupGrowth and numRows or 1)]
-            childHeader:SetPoint(point, anchorTo, relativePoint,
-                horizontalSpacing * xMult, verticalSpacing * yMult)
+
+            -- Offset by the width of a full group, to keep a gap for missing players
+            -- idea: make this an option?
+            childHeader:SetPoint(point, anchorTo, point,
+                xMult * (groupWidth + horizontalSpacing),
+                yMult * (groupHeight + verticalSpacing))
         end
     end
 
-    -- Resize holder to fit the size of all the child headers
-    local unitWidth = self[1]:GetAttribute('initial-width')   -- We can use these attributes until
-    local unitHeight = self[1]:GetAttribute('initial-height') -- the size gets stored in the database
-
-    local groupWidth = abs(xMult) * (unitWidth + horizontalSpacing) * 4 + unitWidth
-    local groupHeight = abs(yMult) * (unitHeight + verticalSpacing) * 4 + unitHeight
+    -- Rezize the holder to fit the size of the child headers
 
     -- Start with 1 column of groups: if groupsPerCol is 1 then just the group size
     local width = abs(xMult) * (groupWidth + horizontalSpacing) * (db.groupsPerCol - 1) + groupWidth
