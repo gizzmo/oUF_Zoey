@@ -633,12 +633,20 @@ local headerOptionsTable = {
                 type = "range",
                 name = L["Horizontal Spacing"],
                 min = 0, max = 400, step = 1,
+                get = function(info)
+                    local db = info.handler.object.db
+                    return db.horizontalSpacing or db.spacing
+                end
             },
             verticalSpacing = {
                 order = new_order(),
                 type = "range",
                 name = L["Vertical Spacing"],
                 min = 0, max = 400, step = 1,
+                get = function(info)
+                    local db = info.handler.object.db
+                    return db.verticalSpacing or db.spacing
+                end
             },
         },
     },
