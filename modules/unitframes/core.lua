@@ -473,9 +473,9 @@ function headerMethods:Update()
     self:SetAttribute('ForceUpdate')
 end
 
-local function createChildHeader(parent, overrideName, headerName)
+local function createChildHeader(parent, overrideName, headerName, headerTemplate, template)
     local header = parent.headerName or headerName
-    local object = oUF:SpawnHeader(overrideName, nil, nil,
+    local object = oUF:SpawnHeader(overrideName, headerTemplate, nil,
         'showRaid', true, 'showParty', true, 'showSolo', true,
         'oUF-initialConfigFunction', ([[
             local header = self:GetParent()
@@ -484,7 +484,9 @@ local function createChildHeader(parent, overrideName, headerName)
             self:SetAttribute('unitsuffix', header:GetAttribute('unitsuffix'))
             -- Overwrite what oUF thinks the unit is
             self:SetAttribute('oUF-guessUnit', '%s')
-        ]]):format(header))
+        ]]):format(header),
+        template and 'template', template
+    )
 
     object:SetParent(parent)
     object.headerName = header
