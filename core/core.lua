@@ -158,8 +158,20 @@ function Addon.ConvertMethodToFunction(namespace, func_name)
     end
 end
 
+-- Wrap a function so that it cant be run while combat. If you want the function
+-- to run after combat use, `AfterCombatWrapper`
+function Addon:NoCombatWrapper(func, withError)
+    if type(func) ~= 'function' then
+        error(("Usage: NoCombatWrapper(func): 'func' - function expected got '%s'"):format(type(func)), 2)
+    end
 
---------------------------------------------------------------------------------
+    return function(...)
+        if not InCombatLockdown() then
+            func(...)
+        end
+    end
+end
+
 -- Wrap the given function so that any call to it will be piped through
 -- Addon:RunAfterCombat.
 function Addon:AfterCombatWrapper(func)
@@ -172,6 +184,8 @@ function Addon:AfterCombatWrapper(func)
     end
 end
 
+
+--------------------------------------------------------------------------------
 local action_queue = {}
 
 -- Call a function if out of combat or schedule to run once combat ends.
