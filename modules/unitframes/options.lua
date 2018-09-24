@@ -272,20 +272,52 @@ local function get_general_options()
                     RAGE = { order = new_order(), type = 'color', name = RAGE },
                     FOCUS = { order = new_order(), type = 'color', name = FOCUS },
                     ENERGY = { order = new_order(), type = 'color', name = ENERGY },
+                    -- TODO add into own section to allow for "max combo points color"
                     COMBO_POINTS = { order = new_order(), type = 'color', name = COMBO_POINTS },
-                    RUNES = { order = new_order(), type = 'color', name = RUNES },
                     RUNIC_POWER = { order = new_order(), type = 'color', name = RUNIC_POWER },
-                    SOUL_SHARDS = { order = new_order(), type = 'color', name = SOUL_SHARDS },
                     LUNAR_POWER = { order = new_order(), type = 'color', name = LUNAR_POWER },
-                    HOLY_POWER = { order = new_order(), type = 'color', name = HOLY_POWER },
                     MAELSTROM = { order = new_order(), type = 'color', name = MAELSTROM },
                     INSANITY = { order = new_order(), type = 'color', name = INSANITY },
-                    CHI = { order = new_order(), type = 'color', name = CHI },
-                    ARCANE_CHARGES = { order = new_order(), type = 'color', name = ARCANE_CHARGES },
                     FURY = { order = new_order(), type = 'color', name = FURY },
                     PAIN = { order = new_order(), type = 'color', name = PAIN },
                 },
             },
+            classResourceGroup = {
+                order = new_order(),
+                type = 'group',
+                inline = true,
+                name = L['Class Resources'],
+                hidden = function(info)
+                    return playerClass ~= 'DEATHKNIGHT'
+                       and playerClass ~= 'WARLOCK'
+                       and playerClass ~= 'PALADIN'
+                       and playerClass ~= 'MONK'
+                       and playerClass ~= 'MAGE'
+                end,
+                args = {
+                    RUNES = {
+                        order = new_order(), type = 'color', name = RUNES,
+                        hidden = function(info) return playerClass ~= 'DEATHKNIGHT' end,
+                    },
+                    SOUL_SHARDS = {
+                        order = new_order(), type = 'color', name = SOUL_SHARDS,
+                        hidden = function(info) return playerClass ~= 'WARLOCK' end,
+                    },
+                    HOLY_POWER = {
+                        order = new_order(), type = 'color', name = HOLY_POWER,
+                        hidden = function(info) return playerClass ~= 'PALADIN' end,
+                    },
+                    CHI = { -- TODO: multiple colors for each one
+                    order = new_order(), type = 'color', name = CHI,
+                        hidden = function(info) return playerClass ~= 'MONK' end,
+                    },
+                    ARCANE_CHARGES = {
+                        order = new_order(), type = 'color', name = ARCANE_CHARGES,
+                        hidden = function(info) return playerClass ~= 'MAGE' end,
+                    },
+                },
+            },
+
             staggerGroup = {
                 order = new_order(),
                 type = 'group',
