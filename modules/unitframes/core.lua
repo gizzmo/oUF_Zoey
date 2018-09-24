@@ -490,7 +490,7 @@ local function createChildHeader(parent, overrideName, headerName, headerTemplat
 
     object:SetParent(parent)
     object.headerName = header
-    object.db = parent.db
+    object.db = Module.db.profile.units[header]
 
     if parent.childAttribues then
         for att, val in pairs(parent.childAttribues) do
