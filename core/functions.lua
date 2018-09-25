@@ -85,3 +85,12 @@ function Addon.HextoRGB(hex)
     tonumber("0x"..hex:sub(3,4))/255,
     tonumber("0x"..hex:sub(5,6))/255
 end
+
+-- Converts a UnitID string to nice looking CamelCase style
+-- usefull for converting a UnitID to a method
+function Addon.UnitToCamelCase(string)
+    return string:lower() -- start all lower case
+        :gsub('^%l', string.upper) -- set the first character upper case
+        :gsub('t(arget)', 'T%1')
+        :gsub('p(et)', 'P%1')
+end

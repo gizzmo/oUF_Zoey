@@ -8,6 +8,8 @@ local oUF = Addon.oUF
 
 Module.units, Module.groups, Module.headers = {},{},{}
 
+local unitToCamelCase = Addon.UnitToCamelCase
+
 -------------------------------------------------------------------- Database --
 local defaultDB = {
     profile = {
@@ -311,13 +313,6 @@ function Module:DisableBlizzard()
 end
 
 -------------------------------------------------------------------- Creating --
-local function unitToCamelCase(string)
-    return string:lower() -- start all lower case
-        :gsub('^%l', string.upper) -- set the first character upper case
-        :gsub('t(arget)', 'T%1')
-        :gsub('p(et)', 'P%1')
-end
-
 function Module:CreateUnit(unit)
     local unit = unit:lower()
 
