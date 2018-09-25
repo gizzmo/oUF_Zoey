@@ -79,13 +79,6 @@ function Addon.Percent(cur, max)
     end
 end
 
-function Addon.HextoRGB(hex)
-    hex = hex:gsub("#","")
-    return tonumber("0x"..hex:sub(1,2))/255,
-    tonumber("0x"..hex:sub(3,4))/255,
-    tonumber("0x"..hex:sub(5,6))/255
-end
-
 -- Converts a UnitID string to nice looking CamelCase style
 -- usefull for converting a UnitID to a method
 function Addon.UnitToCamelCase(string)
