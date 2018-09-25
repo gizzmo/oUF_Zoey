@@ -163,13 +163,33 @@ local defaultDB = {
 function Module:OnInitialize()
     self.db = Addon.db:RegisterNamespace(MODULE_NAME, defaultDB)
 
-    -- Registering our style functions
-    oUF:RegisterStyle('Zoey', function(...) self:ConstructStyle(...) end)
-    oUF:RegisterStyle('ZoeyThin', function(...) self:ConstructStyle(...) end)
-    oUF:RegisterStyle('ZoeySquare', function(...) self:ConstructStyle(...) end)
+    -- Register our style function
+    local function styleFunc(object, unit, isSingle)
+        -- Clean unit names like 'boss1'
+        unit = unit:gsub('%d', '')
+
+        -- We can trust that the 'unit' passed will be the correct database key.
+        -- Following execution, if it came from oUF:Spawn its the first parameter;
+        -- If it came from oUF:SpawnHeader its the 'oUF-guessUnit', which we force
+        -- the value of in 'oUF-initialConfigFunction'
+        object.db = self.db.profile.units[unit]
+        object.isSingle = isSingle
+        object.objectName = unit
+
+        self:ConstructStyle(object, unit, isSingle)
+    end
+
+    oUF:RegisterStyle('Zoey', styleFunc)
+    oUF:RegisterStyle('ZoeyThin', styleFunc)
+    oUF:RegisterStyle('ZoeySquare', styleFunc)
 
     -- Every object gets a update method to update its style
-    oUF:RegisterMetaFunction('Update', function(...) self:UpdateStyle(...) end)
+    oUF:RegisterMetaFunction('Update', function(object)
+        self:UpdateStyle(object)
+
+        -- Update all oUF elements, something with them may have changed.
+        object:UpdateAllElements('ForceUpdate')
+    end)
 
     -- After creating a object, also run the Update Method
     oUF:RegisterInitCallback(function(object) object:Update() end)
