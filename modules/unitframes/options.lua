@@ -535,8 +535,43 @@ local function getName(info)
     return info.handler:GetName()
 end
 
+-- A group that is unit/group/header agnostic.
+local generalUnitOptionsTable = {
+    order = new_order(),
+    type = 'group',
+    inline = true,
+    name = L['General'],
+
+    get = 'Get',
+    set = 'Set',
+
+    args = {
+        enable = {
+            order = new_order(),
+            type = 'toggle',
+            name = L['Enable'],
+            width = 'full',
+            disabled = true, -- disabled because its not implemented.
+        },
+        width = {
+            order = new_order(),
+            name = L["Width"],
+            type = 'range',
+            min = 50, max = 1000, step = 1,
+        },
+        height = {
+            order = new_order(),
+            name = L["Height"],
+            type = 'range',
+            min = 10, max = 500, step = 1,
+        },
+    },
+}
+
 ---------------------------------------------------------------- Unit Options --
-local unitOptionsTable = {}
+local unitOptionsTable = {
+    generalGroup = generalUnitOptionsTable,
+}
 
 local function create_unit_options(name, unit)
     local tbl = {
@@ -557,6 +592,8 @@ end
 
 --------------------------------------------------------------- Group Options --
 local groupOptionsTable = {
+    generalGroup = generalUnitOptionsTable,
+
     growthAndSpacingGroup = {
         type = 'group',
         inline = true,
@@ -600,6 +637,8 @@ end
 
 -------------------------------------------------------------- Header Options --
 local headerOptionsTable = {
+    generalGroup = generalUnitOptionsTable,
+
     growthAndSpacingGroup = {
         type = 'group',
         inline = true,
@@ -746,6 +785,11 @@ function Module.get_module_options()
 
     options.args.generalGroup = get_general_options()
     options.args.generalGroup.order = new_order()
+
+    for name, unit in pairs(Module.units) do
+        options.args[name] = create_unit_options(name, unit)
+        options.args[name].order = new_order()
+    end
 
     for name, group in pairs(Module.groups) do
         options.args[name] = create_group_options(name, group)
