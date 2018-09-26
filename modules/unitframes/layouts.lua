@@ -572,7 +572,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
     -- Build the other status bars
     ----------------------------------------------------------------------------
     object.Power = CreateStatusBar(object)
-    object.Power:SetHeight(FRAME_HEIGHT * 0.25)
+    object.Power:SetHeight(10)
     object.Power:SetPoint('LEFT', 1, 0)
     object.Power:SetPoint('RIGHT', -1, 0)
     object.Power:SetPoint('BOTTOM', 0, 1)
@@ -1054,7 +1054,7 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
     -- Build the other status bars
     ----------------------------------------------------------------------------
     object.Power = CreateStatusBar(object)
-    object.Power:SetHeight(FRAME_HEIGHT * 0.125)
+    object.Power:SetHeight(5)
     object.Power:SetPoint('LEFT', 1, 0)
     object.Power:SetPoint('RIGHT', -1, 0)
     object.Power:SetPoint('BOTTOM', 0, 1)
