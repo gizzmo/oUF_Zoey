@@ -99,15 +99,30 @@ local defaultDB = {
         units = {
             ['**'] = {
                 enable = true,
+
+                width = 135,
+                height = 40,
             },
-            player = {},
-            target = {},
+            player = {
+                width = 227,
+            },
+            target = {
+                width = 227,
+            },
             focus = {},
             focustarget = {},
-            pet = {},
-            pettarget = {},
-            targettarget = {},
-            targettargettarget = {},
+            pet = {
+                height = 20,
+            },
+            pettarget = {
+                height = 20,
+            },
+            targettarget = {
+                height = 20,
+            },
+            targettargettarget = {
+                height = 20,
+            },
 
             -- groups
             boss = {
@@ -121,6 +136,8 @@ local defaultDB = {
 
             -- headers
             party = {
+                height = 80,
+
                 direction = 'UP',
                 spacing = 50,
                 groupBy = 'ROLE',
@@ -137,6 +154,8 @@ local defaultDB = {
                 groupsPerCol = 1,
             },
             partypet = {
+                height = 20,
+
                 direction = 'UP',
                 spacing = 110,
                 groupBy = 'ROLE',
@@ -145,6 +164,8 @@ local defaultDB = {
                 groupsPerCol = 1,
             },
             raid = {
+                width = 65,
+
                 direction = 'RIGHT_UP',
                 spacing = 6,
                 groupBy = 'ROLE',
@@ -155,7 +176,6 @@ local defaultDB = {
                 invertGroupGrowth = false, -- TODO: New name?
             },
         }
-
     }
 }
 
@@ -175,6 +195,9 @@ function Module:OnInitialize()
         object.db = self.db.profile.units[unit]
         object.isSingle = isSingle
         object.objectName = unit
+
+        -- Header units' size are set in oUF-initialConfigFunction
+        if isSingle then object:SetSize(object.db.width, object.db.height) end
 
         self:ConstructStyle(object, unit, isSingle)
     end
@@ -490,22 +513,24 @@ end
 
 local function createChildHeader(parent, overrideName, headerName, headerTemplate, template)
     local header = parent.headerName or headerName
+    local db = Module.db.profile.units[header]
+
     local object = oUF:SpawnHeader(overrideName, headerTemplate, nil,
         'showRaid', true, 'showParty', true, 'showSolo', true,
         'oUF-initialConfigFunction', ([[
             local header = self:GetParent()
-            self:SetWidth(header:GetAttribute('initial-width'))
-            self:SetHeight(header:GetAttribute('initial-height'))
+            self:SetWidth(%d)  -- note: self is a 'restricted frame' and there
+            self:SetHeight(%d) --       is no SetSize mirror
             self:SetAttribute('unitsuffix', header:GetAttribute('unitsuffix'))
             -- Overwrite what oUF thinks the unit is
             self:SetAttribute('oUF-guessUnit', '%s')
-        ]]):format(header),
+        ]]):format(db.width, db.height, header),
         template and 'template', template
     )
 
     object:SetParent(parent)
     object.headerName = header
-    object.db = Module.db.profile.units[header]
+    object.db = db
 
     if parent.childAttribues then
         for att, val in pairs(parent.childAttribues) do
@@ -565,8 +590,7 @@ function holderMethods:Update()
     local numRows = ceil(db.numGroups / db.groupsPerCol)
 
     -- Guesstimate the size of one group
-    local unitWidth = self[1]:GetAttribute('initial-width')   -- We can use these attributes until
-    local unitHeight = self[1]:GetAttribute('initial-height') -- the size gets stored in the database
+    local unitWidth, unitHeight = db.width, db.height
 
     local groupWidth = abs(xMult) * (unitWidth + horizontalSpacing) * 4 + unitWidth
     local groupHeight = abs(yMult) * (unitHeight + verticalSpacing) * 4 + unitHeight
@@ -696,27 +720,17 @@ function Module:LoadUnits()
     self:CreateGroup('Arena'):SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap * 3)
 
     oUF:SetActiveStyle('Zoey')
-    self:CreateHeader('Party',
-        'initial-width', 135, -- TODO: These can be moved later when the database holds the frame sizes
-        'initial-height', 80  --       Right now the style, and header initialConfigFunction holds the sizes
-    ):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 240)
+    self:CreateHeader('Party'):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 240)
 
     self:CreateHeader('PartyTarget',
-        'initial-width', 135,
-        'initial-height', 40,
         'unitsuffix', 'target'
     ):SetPoint('BOTTOMLEFT', self.headers.party, 'BOTTOMRIGHT', gap, 0)
 
     oUF:SetActiveStyle('ZoeyThin')
     self:CreateHeader('PartyPet',
-        'initial-width', 135,
-        'initial-height', 20,
         'unitsuffix', 'pet'
     ):SetPoint('BOTTOMLEFT', self.headers.party, 0, -28)
 
     oUF:SetActiveStyle('ZoeySquare')
-    self:CreateHeader('Raid',
-        'initial-width', 65,
-        'initial-height', 40
-    ):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', 5, 240)
+    self:CreateHeader('Raid'):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', 5, 240)
 end

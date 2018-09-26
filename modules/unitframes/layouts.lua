@@ -555,20 +555,6 @@ end
 
 function Module:Construct_Zoey(object, unit, isSingle)
     ----------------------------------------------------------------------------
-    -- Setup the frame
-    ----------------------------------------------------------------------------
-    local FRAME_HEIGHT = 40
-    local FRAME_WIDTH = 135
-
-    if unit == 'player' or unit == 'target' then
-        FRAME_WIDTH = 227
-    end
-
-    if isSingle then
-        object:SetSize(FRAME_WIDTH, FRAME_HEIGHT)
-    end
-
-    ----------------------------------------------------------------------------
     -- Build the other status bars
     ----------------------------------------------------------------------------
     object.Power = CreateStatusBar(object)
@@ -584,18 +570,13 @@ function Module:Construct_Zoey(object, unit, isSingle)
 
     if unit == 'party' then
         object.Portrait = CreateFrame('PlayerModel', nil, object)
-        object.Portrait:SetHeight(FRAME_HEIGHT - 1.5)
+        object.Portrait:SetHeight((object:GetHeight() / 2) - 1.5)
         object.Portrait:SetPoint('TOP', 0, -1)
         object.Portrait:SetPoint('LEFT', 1, 0)
         object.Portrait:SetPoint('RIGHT', -2, 0)
         object.Portrait:SetAlpha(0.4)
 
         object.Health:SetPoint('TOP', object.Portrait, 'BOTTOM', 0, -1.5)
-
-        -- Portraits double the frame size
-        FRAME_HEIGHT = FRAME_HEIGHT * 2
-
-        if isSingle then object:SetHeight(FRAME_HEIGHT) end
     end
 
     ----------------------------------------------------------------------------
@@ -605,7 +586,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
     if unit == 'player' then
         object.ClassPower = CreateFrame('Frame', nil, object)
         object.ClassPower:SetHeight(10)
-        object.ClassPower:SetWidth(FRAME_WIDTH - 10)
+        object.ClassPower:SetWidth(object:GetWidth() - 10)
         object.ClassPower:SetPoint('TOP', object, 'BOTTOM', 0, -3)
         object.ClassPower:SetFrameLevel(object:GetFrameLevel() -1)
         Addon:CreateBorder(object.ClassPower)
@@ -651,7 +632,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
 
         -- Size and place the Stagger Frame
         object.Stagger.Frame:SetHeight(10)
-        object.Stagger.Frame:SetWidth(FRAME_WIDTH - 10)
+        object.Stagger.Frame:SetWidth(object:GetWidth() - 10)
         object.Stagger.Frame:SetPoint('TOP', object, 'BOTTOM', 0, -3)
 
         -- Attach the Stagger bar to the Frame
@@ -710,7 +691,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
 
     if unit == 'party' then
         object.ReadyCheckIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
-        object.ReadyCheckIndicator:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
+        object.ReadyCheckIndicator:SetSize(object:GetHeight(), object:GetHeight())
         object.ReadyCheckIndicator:SetPoint('CENTER')
     end
 
@@ -730,7 +711,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
         object.PhaseIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
         object.PhaseIndicator:SetPoint('TOP', object)
         object.PhaseIndicator:SetPoint('BOTTOM', object)
-        object.PhaseIndicator:SetWidth(FRAME_HEIGHT * 2)
+        object.PhaseIndicator:SetWidth(object:GetHeight() * 2)
         object.PhaseIndicator:SetTexture([[Interface\Icons\Spell_Frost_Stun]])
         object.PhaseIndicator:SetTexCoord(0.05, 0.95, 0.25, 0.75)
         object.PhaseIndicator:SetAlpha(0.5)
@@ -740,7 +721,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
     end
 
     object.ResurrectIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
-    object.ResurrectIndicator:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
+    object.ResurrectIndicator:SetSize(object:GetHeight(), object:GetHeight())
     object.ResurrectIndicator:SetPoint('CENTER')
 
     ----------------------------------------------------------------------------
@@ -815,7 +796,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
         object.Castbar:SetPoint('BOTTOMRIGHT', object.Castbar.Frame, -1, 1)
 
         -- Size and place the Castbar Frame
-        object.Castbar.Frame:SetSize(FRAME_WIDTH, 20)
+        object.Castbar.Frame:SetSize(object:GetWidth(), 20)
         object.Castbar.Frame:SetPoint('BOTTOMLEFT', object, 'BOTTOMRIGHT', 8, 0)
 
         -- Spell Icon
@@ -919,7 +900,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
 
     elseif unit:match('boss%d') then
         object.Buffs = CreateFrame('Frame', nil, object)
-        object.Buffs:SetSize(FRAME_WIDTH, 1)
+        object.Buffs:SetSize(object:GetWidth(), 1)
         object.Buffs:SetPoint('TOPLEFT', object, 'TOPRIGHT', 8, 0)
 
         object.Buffs.initialAnchor = 'TOPLEFT'
@@ -942,7 +923,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
             object.Debuffs:SetSize(object:GetWidth(), 1)
             object.Debuffs:SetPoint('TOP', object, 'BOTTOM', 0, -8)
         else
-            object.Debuffs:SetSize(FRAME_WIDTH, 1)
+            object.Debuffs:SetSize(object:GetWidth(), 1)
             object.Debuffs:SetPoint('TOPLEFT', object, 'TOPRIGHT', 12, 0)
         end
 
@@ -961,16 +942,6 @@ function Module:Construct_Zoey(object, unit, isSingle)
     end
 end
 function Module:Construct_ZoeyThin(object, unit, isSingle)
-    ----------------------------------------------------------------------------
-    -- Setup the frame
-    ----------------------------------------------------------------------------
-    local FRAME_HEIGHT = 20
-    local FRAME_WIDTH  = 135
-
-    if isSingle then
-        object:SetSize(FRAME_WIDTH, FRAME_HEIGHT)
-    end
-
     ----------------------------------------------------------------------------
     -- Tags
     ----------------------------------------------------------------------------
@@ -1007,16 +978,6 @@ function Module:Construct_ZoeyThin(object, unit, isSingle)
     object.PvPIndicator:SetPoint('CENTER', object.Overlay, 'LEFT')
 end
 function Module:Construct_ZoeySquare(object, unit, isSingle)
-    ----------------------------------------------------------------------------
-    -- Setup the frame
-    ----------------------------------------------------------------------------
-    local FRAME_HEIGHT = 40
-    local FRAME_WIDTH  = 65
-
-    if isSingle then
-        object:SetSize(FRAME_WIDTH, FRAME_HEIGHT)
-    end
-
     -- Grow healthbar top to bottom
     object.Health:SetOrientation('VERTICAL')
 
@@ -1091,7 +1052,7 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
     object.GroupRoleIndicator.Override = GroupRoleCornerIndicator
 
     object.ReadyCheckIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
-    object.ReadyCheckIndicator:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
+    object.ReadyCheckIndicator:SetSize(object:GetHeight(), object:GetHeight())
     object.ReadyCheckIndicator:SetPoint('CENTER')
 
     object.RaidTargetIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
@@ -1099,6 +1060,6 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
     object.RaidTargetIndicator:SetPoint('LEFT', 3, 0)
 
     object.ResurrectIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
-    object.ResurrectIndicator:SetSize(FRAME_HEIGHT, FRAME_HEIGHT)
+    object.ResurrectIndicator:SetSize(object:GetHeight(), object:GetHeight())
     object.ResurrectIndicator:SetPoint('CENTER')
 end
