@@ -280,21 +280,8 @@ local function get_general_options()
                     INSANITY = { order = new_order(), type = 'color', name = INSANITY },
                     FURY = { order = new_order(), type = 'color', name = FURY },
                     PAIN = { order = new_order(), type = 'color', name = PAIN },
-                },
-            },
-            classResourceGroup = {
-                order = new_order(),
-                type = 'group',
-                inline = true,
-                name = L['Class Resources'],
-                hidden = function(info)
-                    return playerClass ~= 'DEATHKNIGHT'
-                       and playerClass ~= 'WARLOCK'
-                       and playerClass ~= 'PALADIN'
-                       and playerClass ~= 'MONK'
-                       and playerClass ~= 'MAGE'
-                end,
-                args = {
+
+                    -- Class Resource
                     RUNES = {
                         order = new_order(), type = 'color', name = RUNES,
                         hidden = function(info) return playerClass ~= 'DEATHKNIGHT' end,
