@@ -1,0 +1,22 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Button name="ZoeyUI_UnitTargetTemplate" inherits="SecureUnitButtonTemplate" virtual="true">
+        <Frames>
+            <Button name="$parentTarget" inherits="SecureUnitButtonTemplate">
+                <Attributes>
+                    <Attribute name="unitsuffix" type="string" value="target"/>
+                    <Attribute name="useparent-unit" type="boolean" value="true"/>
+                </Attributes>
+            </Button>
+        </Frames>
+    </Button>
+    <Button name="ZoeyUI_UnitPetTemplate" inherits="SecureUnitButtonTemplate" virtual="true">
+        <Frames>
+            <Button name="$parentPet" inherits="SecureUnitButtonTemplate">
+                <Attributes>
+                    <Attribute name="unitsuffix" type="string" value="pet"/>
+                    <Attribute name="useparent-unit" type="boolean" value="true"/>
+                </Attributes>
+            </Button>
+        </Frames>
+    </Button>
+</Ui>

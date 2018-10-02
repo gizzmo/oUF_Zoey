@@ -10,6 +10,30 @@ Module.units, Module.groups, Module.headers = {},{},{}
 
 local unitToCamelCase = Addon.UnitToCamelCase
 
+-- Converts a anchor side variable into varibles used for SetPoint.
+-- A side variable starts with the side its to be on, then which side it should
+-- align to. This means RIGHT_BOTTOM is on the right side, aligned to the bottom.
+
+-- returns: point, relativePoint, xMultiplier, yMultiplier
+local function getSideAnchorPoints(side)
+    if     side == 'TOP_LEFT'     then return 'BOTTOMLEFT',  'TOPLEFT',     0, 1
+    elseif side == 'TOP'          then return 'BOTTOM',      'TOP',         0, 1
+    elseif side == 'TOP_RIGHT'    then return 'BOTTOMRIGHT', 'TOPRIGHT',    0, 1
+
+    elseif side == 'BOTTOM_LEFT'  then return 'TOPLEFT',     'BOTTOMLEFT',  0, -1
+    elseif side == 'BOTTOM'       then return 'TOP',         'BOTTOM',      0, -1
+    elseif side == 'BOTTOM_RIGHT' then return 'TOPRIGHT',    'BOTTOMRIGHT', 0, -1
+
+    elseif side == 'LEFT_TOP'     then return 'TOPRIGHT',    'TOPLEFT',     -1, 0
+    elseif side == 'LEFT'         then return 'RIGHT',       'LEFT',        -1, 0
+    elseif side == 'LEFT_BOTTOM'  then return 'BOTTOMRIGHT', 'BOTTOMLEFT',  -1, 0
+
+    elseif side == 'RIGHT_TOP'    then return 'TOPLEFT',     'TOPRIGHT',    1, 0
+    elseif side == 'RIGHT'        then return 'LEFT',        'RIGHT',       1, 0
+    elseif side == 'RIGHT_BOTTOM' then return 'BOTTOMLEFT',  'BOTTOMRIGHT', 1, 0
+    end
+end
+
 -------------------------------------------------------------------- Database --
 local defaultDB = {
     profile = {
@@ -144,6 +168,20 @@ local defaultDB = {
                 visibility = '[group:party,nogroup:raid]show;hide;',
                 numGroups = 1,
                 groupsPerCol = 1,
+                target = {
+                    enable = true,
+                    width = 135,
+                    height = 40,
+                    side = 'RIGHT_BOTTOM',
+                    spacing = 12,
+                },
+                pet = {
+                    enable = true,
+                    width = 135,
+                    height = 20,
+                    side = 'BOTTOM',
+                    spacing = 8,
+                }
             },
             partytarget = {
                 direction = 'UP',
@@ -196,8 +234,28 @@ function Module:OnInitialize()
         object.isSingle = isSingle
         object.objectName = unit
 
-        -- Header units' size are set in oUF-initialConfigFunction
-        if isSingle then object:SetSize(object.db.width, object.db.height) end
+        -- Set the Frame size
+        if isSingle then -- Header units' size are set in oUF-initialConfigFunction
+            object:SetSize(object.db.width, object.db.height)
+
+        -- A child frame comes from xml templates
+        elseif object.isChild then
+            -- This frame is protected, so setting the anchor and size can not
+            -- be done in combat. We could do this in oUF-initialConfigFunction
+            -- but that would be to much work for such a rare event. If the frame
+            -- is created in combat, we can live without it being visable until now
+            local parent = object:GetParent()
+            local childType = object:GetAttribute('unitsuffix')
+            local childDB = parent.db[childType]
+
+            local point, relativePoint, xMult, yMult = getSideAnchorPoints(childDB.side)
+
+            Addon:RunAfterCombat(function()
+                object:SetSize(childDB.width, childDB.height)
+                object:ClearAllPoints()
+                object:SetPoint(point, parent, relativePoint, childDB.spacing * xMult, childDB.spacing * yMult)
+            end)
+        end
 
         self:ConstructStyle(object, unit, isSingle)
     end
@@ -521,9 +579,20 @@ local function createChildHeader(parent, overrideName, headerName, headerTemplat
             local header = self:GetParent()
             self:SetWidth(%d)  -- note: self is a 'restricted frame' and there
             self:SetHeight(%d) --       is no SetSize mirror
-            self:SetAttribute('unitsuffix', header:GetAttribute('unitsuffix'))
+
+            -- Temp, until we go full templates
+            local headerSuffix = header:GetAttribute('unitsuffix')
+            if headerSuffix then
+                self:SetAttribute('unitsuffix', headerSuffix)
+            end
+
             -- Overwrite what oUF thinks the unit is
-            self:SetAttribute('oUF-guessUnit', '%s')
+            local unit = '%s'
+            local suffix = self:GetAttribute('unitsuffix')
+            if suffix then
+                unit = unit .. suffix
+            end
+            self:SetAttribute('oUF-guessUnit', unit)
         ]]):format(db.width, db.height, header),
         template and 'template', template
     )
@@ -720,11 +789,9 @@ function Module:LoadUnits()
     self:CreateGroup('Arena'):SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap * 3)
 
     oUF:SetActiveStyle('Zoey')
-    self:CreateHeader('Party'):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 240)
-
-    self:CreateHeader('PartyTarget',
-        'unitsuffix', 'target'
-    ):SetPoint('BOTTOMLEFT', self.headers.party, 'BOTTOMRIGHT', gap, 0)
+    self:CreateHeader('Party'
+        ,'template', 'ZoeyUI_UnitTargetTemplate' --, ZoeyUI_UnitPetTemplate'
+    ):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 240)
 
     oUF:SetActiveStyle('ZoeyThin')
     self:CreateHeader('PartyPet',

@@ -45,6 +45,7 @@ core\options.lua
 core\border.lua
 core\functions.lua
 
+modules\unitframes\templates.xml
 modules\unitframes\core.lua
 modules\unitframes\options.lua
 modules\unitframes\layouts.lua

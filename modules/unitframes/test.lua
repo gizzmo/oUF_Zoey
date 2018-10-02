@@ -61,7 +61,12 @@ function Module:ForceShowHolder(holder)
         -- Setting startingIndex, encourages SecureGroupheaders to create the buttons
         header:SetAttribute('startingIndex', -maxUnits + 1)
         for i=1, #header do
-            self:ForceShowUnit(header[i])
+            local object = header[i]
+            self:ForceShowUnit(object)
+
+            -- Template child frames support
+            self:ForceShowUnit(_G[object:GetName()..'Target'])
+            self:ForceShowUnit(_G[object:GetName()..'Pet'])
         end
     end
 
@@ -79,7 +84,12 @@ function Module:UnForceShowHolder(holder)
 
         header:SetAttribute('startingIndex', nil)
         for i=1, #header do
-            self:UnForceShowUnit(header[i])
+            local object = header[i]
+            self:UnForceShowUnit(object)
+
+            -- Template child frames support
+            self:UnForceShowUnit(_G[object:GetName()..'Target'])
+            self:UnForceShowUnit(_G[object:GetName()..'Pet'])
         end
     end
 
