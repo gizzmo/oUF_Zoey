@@ -34,6 +34,42 @@ local function getSideAnchorPoints(side)
     end
 end
 
+-- Single directions should be identical to x_RIGHT or x_UP
+local directionToAnchorPoint = { -- opposite of first direction
+    UP_LEFT = 'BOTTOM',
+    UP_RIGHT = 'BOTTOM', UP = 'BOTTOM',
+    DOWN_LEFT = 'TOP',
+    DOWN_RIGHT = 'TOP',  DOWN = 'TOP',
+
+    LEFT_UP = 'RIGHT',   LEFT = 'RIGHT',
+    LEFT_DOWN = 'RIGHT',
+    RIGHT_UP = 'LEFT',   RIGHT = 'LEFT',
+    RIGHT_DOWN = 'LEFT',
+}
+local directionToColumnAnchorPoint = { -- opposite of second direction
+    UP_LEFT = 'RIGHT',
+    UP_RIGHT = 'LEFT',   UP = 'LEFT',
+    DOWN_LEFT = 'RIGHT',
+    DOWN_RIGHT = 'LEFT', DOWN = 'LEFT',
+
+    LEFT_UP = 'BOTTOM',  LEFT = 'BOTTOM',
+    LEFT_DOWN = 'TOP',
+    RIGHT_UP = 'BOTTOM', RIGHT = 'BOTTOM',
+    RIGHT_DOWN = 'TOP',
+}
+
+-- relativePoint, xMultiplier, yMultiplier = getRelativeAnchorPoint(point)
+-- Given a point return the opposite point and which axes the point depends on.
+local function getRelativeAnchorPoint(point)
+    point = point:upper();
+    if point == 'TOP' then return 'BOTTOM', 0, -1
+    elseif point == 'BOTTOM' then return 'TOP', 0, 1
+    elseif point == 'LEFT' then return 'RIGHT', 1, 0
+    elseif point == 'RIGHT' then return 'LEFT', -1, 0
+    end
+end
+
+
 -------------------------------------------------------------------- Database --
 local defaultDB = {
     profile = {
@@ -424,41 +460,6 @@ function Module:CreateUnit(unit)
     end
 
     return self.units[unit]
-end
-
--- Single directions should be identical to x_RIGHT or x_UP
-local directionToAnchorPoint = { -- opposite of first direction
-    UP_LEFT = 'BOTTOM',
-    UP_RIGHT = 'BOTTOM', UP = 'BOTTOM',
-    DOWN_LEFT = 'TOP',
-    DOWN_RIGHT = 'TOP',  DOWN = 'TOP',
-
-    LEFT_UP = 'RIGHT',   LEFT = 'RIGHT',
-    LEFT_DOWN = 'RIGHT',
-    RIGHT_UP = 'LEFT',   RIGHT = 'LEFT',
-    RIGHT_DOWN = 'LEFT',
-}
-local directionToColumnAnchorPoint = { -- opposite of second direction
-    UP_LEFT = 'RIGHT',
-    UP_RIGHT = 'LEFT',   UP = 'LEFT',
-    DOWN_LEFT = 'RIGHT',
-    DOWN_RIGHT = 'LEFT', DOWN = 'LEFT',
-
-    LEFT_UP = 'BOTTOM',  LEFT = 'BOTTOM',
-    LEFT_DOWN = 'TOP',
-    RIGHT_UP = 'BOTTOM', RIGHT = 'BOTTOM',
-    RIGHT_DOWN = 'TOP',
-}
-
--- relativePoint, xMultiplier, yMultiplier = getRelativeAnchorPoint(point)
--- Given a point return the opposite point and which axes the point depends on.
-local function getRelativeAnchorPoint(point)
-    point = point:upper();
-    if point == 'TOP' then return 'BOTTOM', 0, -1
-    elseif point == 'BOTTOM' then return 'TOP', 0, 1
-    elseif point == 'LEFT' then return 'RIGHT', 1, 0
-    elseif point == 'RIGHT' then return 'LEFT', -1, 0
-    end
 end
 
 local groupMethods = {}
