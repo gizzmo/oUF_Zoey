@@ -9,18 +9,14 @@ local function OnEnter(self)
     UnitFrame_OnEnter(self)
 
     Module.mousefocus = self
-    for _, fs in ipairs( self.__tags ) do
-        fs:UpdateTag()
-    end
+    self:UpdateTags()
 end
 
 local function OnLeave(self)
     UnitFrame_OnLeave(self)
 
     Module.mousefocus = nil
-    for _, fs in ipairs( self.__tags ) do
-        fs:UpdateTag()
-    end
+    self:UpdateTags()
 end
 
 
@@ -318,12 +314,6 @@ local function PostCreateAuraIcon(Auras, button)
 
     button.count:ClearAllPoints()
     button.count:SetPoint('CENTER', button, 'BOTTOMRIGHT', -1, 0)
-
-    -- parent count fontstring to a frame
-    -- so we can push it above the Cooldown Frame
-    local countFrame = CreateFrame('Frame', nil, button)
-    countFrame:SetFrameLevel(button.cd:GetFrameLevel() +1)
-    button.count:SetParent(countFrame)
 
     button.bg = button:CreateTexture(nil, 'BACKGROUND')
     button.bg:SetPoint('TOPLEFT', -1, 1)
