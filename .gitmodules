@@ -1,3 +1,9 @@
 [submodule "libs/oUF"]
 	path = libs/oUF
 	url = https://github.com/oUF-wow/oUF.git
+[submodule "libs/oUF_Dispellable"]
+	path = libs/oUF_Dispellable
+	url = https://github.com/Rainrider/oUF_Dispellable.git
+[submodule "libs/LibPlayerSpells-1.0"]
+	path = libs/LibPlayerSpells-1.0
+	url = https://github.com/AdiAddons/LibPlayerSpells-1.0.git

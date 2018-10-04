@@ -528,11 +528,19 @@ function Module:ConstructStyle(object, unit, isSingle)
     end
 
     -- DispelHighlight
-    object.DispelHighlight = object.Overlay:CreateTexture(nil, 'OVERLAY')
-    object.DispelHighlight:SetAllPoints(object.Health)
-    object.DispelHighlight:SetTexture("Interface\\AddOns\\"..ADDON_NAME.."\\media\\Dispel.tga")
-    object.DispelHighlight:SetBlendMode('ADD')
-    object.DispelHighlight:SetAlpha(0.7)
+    do
+        local texture = object.Overlay:CreateTexture(nil, 'OVERLAY')
+        texture:SetAllPoints(object.Health)
+        texture:SetTexture("Interface\\AddOns\\"..ADDON_NAME.."\\media\\Dispel.tga")
+        texture:SetBlendMode("ADD")
+        texture:SetVertexColor(1, 1, 1, 0) -- start hiddend
+        texture.dispelAlpha = 0.7
+
+        -- Register with oUF
+        object.Dispellable = {
+            dispelTexture = texture
+        }
+    end
 
     -- Build the rest of the object depending on the style
     Module['Construct_'..object.style](self, object, unit, isSingle)

@@ -17,9 +17,10 @@
 libs\LibStub\LibStub.lua
 libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
 libs\LibSharedMedia-3.0\LibSharedMedia-3.0.lua
-libs\LibDispellable-1.0\LibDispellable-1.0.lua
+libs\LibPlayerSpells-1.0\lib.xml
 
 libs\oUF\oUF.xml
+libs\oUF_Dispellable\oUF_Dispellable.lua
 
 libs\AceAddon-3.0\AceAddon-3.0.xml
 libs\AceEvent-3.0\AceEvent-3.0.xml
@@ -38,8 +39,6 @@ libs\AceConfig-3.0\AceConfig-3.0.xml
 libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
 
 #---------------------------------------------------------------------- Files --
-libs\oUF_Elements\DispelHighlight.lua
-
 core\core.lua
 core\options.lua
 core\border.lua
