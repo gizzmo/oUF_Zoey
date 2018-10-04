@@ -493,6 +493,7 @@ function Module:ConstructStyle(object, unit, isSingle)
     object.Health.frequentUpdates = true
     object.Health.UpdateColor = HealthUpdateColor
 
+    -- Health Prediction
     do
         -- Incoming heals from the player
         local myBar = CreateStatusBar(object.Health, true)
@@ -613,29 +614,29 @@ function Module:Construct_Zoey(object, unit, isSingle)
 
             object.ClassPower[i] = icon
         end
-    end
 
-    -- Monk Stagger Bar
-    if unit == 'player' and playerClass == 'MONK' then
-        object.Stagger = CreateStatusBar(object)
-        object.Stagger:SetFrameLevel(object:GetFrameLevel()-1)
+        -- Monk Stagger Bar
+        if playerClass == 'MONK' then
+            object.Stagger = CreateStatusBar(object)
+            object.Stagger:SetFrameLevel(object:GetFrameLevel()-1)
 
-        -- Build a frame around the stagger bar
-        object.Stagger.Frame = CreateFrame('Frame', nil, object.Stagger)
-        object.Stagger.Frame:SetFrameLevel(object.Stagger:GetFrameLevel()-1)
-        object.Stagger.Frame.bg = object.Stagger.Frame:CreateTexture(nil, 'BACKGROUND')
-        object.Stagger.Frame.bg:SetAllPoints(object.Stagger.Frame)
-        object.Stagger.Frame.bg:SetColorTexture(0, 0, 0, 1)
-        Addon:CreateBorder(object.Stagger.Frame)
+            -- Build a frame around the stagger bar
+            object.Stagger.Frame = CreateFrame('Frame', nil, object.Stagger)
+            object.Stagger.Frame:SetFrameLevel(object.Stagger:GetFrameLevel()-1)
+            object.Stagger.Frame.bg = object.Stagger.Frame:CreateTexture(nil, 'BACKGROUND')
+            object.Stagger.Frame.bg:SetAllPoints(object.Stagger.Frame)
+            object.Stagger.Frame.bg:SetColorTexture(0, 0, 0, 1)
+            Addon:CreateBorder(object.Stagger.Frame)
 
-        -- Size and place the Stagger Frame
-        object.Stagger.Frame:SetHeight(10)
-        object.Stagger.Frame:SetWidth(object:GetWidth() - 10)
-        object.Stagger.Frame:SetPoint('TOP', object, 'BOTTOM', 0, -3)
+            -- Size and place the Stagger Frame
+            object.Stagger.Frame:SetHeight(10)
+            object.Stagger.Frame:SetWidth(object:GetWidth() - 10)
+            object.Stagger.Frame:SetPoint('TOP', object, 'BOTTOM', 0, -3)
 
-        -- Attach the Stagger bar to the Frame
-        object.Stagger:SetPoint('TOPLEFT', object.Stagger.Frame)
-        object.Stagger:SetPoint('BOTTOMRIGHT', object.Stagger.Frame, 0, 1)
+            -- Attach the Stagger bar to the Frame
+            object.Stagger:SetPoint('TOPLEFT', object.Stagger.Frame)
+            object.Stagger:SetPoint('BOTTOMRIGHT', object.Stagger.Frame, 0, 1)
+        end
     end
 
     ----------------------------------------------------------------------------
@@ -683,27 +684,11 @@ function Module:Construct_Zoey(object, unit, isSingle)
         object.QuestIndicator:SetPoint('CENTER', object.Overlay, 'LEFT')
     end
 
-    object.GroupRoleIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
-    object.GroupRoleIndicator:SetSize(15,15)
-    object.GroupRoleIndicator:SetPoint('CENTER', object.Overlay, 'TOPRIGHT', 1, 0)
-
     if unit == 'party' then
         object.ReadyCheckIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
         object.ReadyCheckIndicator:SetSize(object:GetHeight(), object:GetHeight())
         object.ReadyCheckIndicator:SetPoint('CENTER')
     end
-
-    object.RaidTargetIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
-    object.RaidTargetIndicator:SetSize(23,23)
-    object.RaidTargetIndicator:SetPoint('LEFT', 3, 0)
-
-    object.PvPIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY', nil, 1)
-    object.PvPIndicator:SetSize(21,21)
-    object.PvPIndicator:SetPoint('CENTER', object.Overlay, 'LEFT')
-
-    object.PvPIndicator.Badge = object.Overlay:CreateTexture(nil, 'OVERLAY')
-    object.PvPIndicator.Badge:SetSize(41,43)
-    object.PvPIndicator.Badge:SetPoint('CENTER', object.PvPIndicator)
 
     if unit == 'party' or unit == 'target' or unit == 'focus' then
         object.PhaseIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
@@ -717,6 +702,22 @@ function Module:Construct_Zoey(object, unit, isSingle)
         object.PhaseIndicator:SetDesaturated(true)
         object.PhaseIndicator:SetVertexColor(0.4, 0.8, 1)
     end
+
+    object.GroupRoleIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
+    object.GroupRoleIndicator:SetSize(15,15)
+    object.GroupRoleIndicator:SetPoint('CENTER', object.Overlay, 'TOPRIGHT', 1, 0)
+
+    object.RaidTargetIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
+    object.RaidTargetIndicator:SetSize(23,23)
+    object.RaidTargetIndicator:SetPoint('LEFT', 3, 0)
+
+    object.PvPIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY', nil, 1)
+    object.PvPIndicator:SetSize(21,21)
+    object.PvPIndicator:SetPoint('CENTER', object.Overlay, 'LEFT')
+
+    object.PvPIndicator.Badge = object.Overlay:CreateTexture(nil, 'OVERLAY')
+    object.PvPIndicator.Badge:SetSize(41,43)
+    object.PvPIndicator.Badge:SetPoint('CENTER', object.PvPIndicator)
 
     object.ResurrectIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
     object.ResurrectIndicator:SetSize(object:GetHeight(), object:GetHeight())
