@@ -204,32 +204,16 @@ local defaultDB = {
                 visibility = '[group:party,nogroup:raid]show;hide;',
                 numGroups = 1,
                 groupsPerCol = 1,
-                target = {
-                    enable = true,
-                    width = 135,
-                    height = 40,
-                    side = 'RIGHT_BOTTOM',
-                    spacing = 12,
-                },
-                pet = {
-                    enable = true,
-                    width = 135,
-                    height = 20,
-                    side = 'BOTTOM',
-                    spacing = 8,
-                }
             },
             partytarget = {
-                direction = 'UP',
-                spacing = 90,
-                groupBy = 'ROLE',
-                visibility = '[group:party,nogroup:raid]show;hide;',
-                numGroups = 1,
-                groupsPerCol = 1,
+                side = 'RIGHT_BOTTOM',
+                spacing = 12,
             },
             partypet = {
                 height = 20,
 
+                -- side = 'BOTTOM',
+                -- spacing = 8,
                 direction = 'UP',
                 spacing = 110,
                 groupBy = 'ROLE',
@@ -281,15 +265,12 @@ function Module:OnInitialize()
             -- but that would be to much work for such a rare event. If the frame
             -- is created in combat, we can live without it being visable until now
             local parent = object:GetParent()
-            local childType = object:GetAttribute('unitsuffix')
-            local childDB = parent.db[childType]
-
-            local point, relativePoint, xMult, yMult = getSideAnchorPoints(childDB.side)
+            local point, relativePoint, xMult, yMult = getSideAnchorPoints(object.db.side)
 
             Addon:RunAfterCombat(function()
-                object:SetSize(childDB.width, childDB.height)
+                object:SetSize(object.db.width, object.db.height)
                 object:ClearAllPoints()
-                object:SetPoint(point, parent, relativePoint, childDB.spacing * xMult, childDB.spacing * yMult)
+                object:SetPoint(point, parent, relativePoint, object.db.spacing * xMult, object.db.spacing * yMult)
             end)
         end
 
