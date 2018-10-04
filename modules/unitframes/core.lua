@@ -301,22 +301,21 @@ end
 
 -- Update all database references
 function Module:OnProfileRefresh()
-    for name, unit in pairs(self.units) do
-        unit.db = self.db.profile.units[name]
+    -- Update all objects which oUF has initialized.
+    for i, object in pairs(oUF.objects) do
+        object.db = self.db.profile.units[object.objectName]
     end
+
+    -- Group Holder
     for name, group in pairs(self.groups) do
         group.db = self.db.profile.units[name]
-        for unit = 1, #group do
-            group[unit].db = group.db
-        end
     end
+
+    -- Header Holder
     for name, holder in pairs(self.headers) do
         holder.db = self.db.profile.units[name]
         for group = 1, #holder do
             holder[group].db = holder.db
-            for unit = 1, #holder[group] do
-                holder[group][unit].db = holder.db
-            end
         end
     end
 
