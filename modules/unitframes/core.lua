@@ -540,6 +540,13 @@ function headerMethods:Update()
 
         child:Update()
 
+        -- Grand children come from templates.
+        if child.hasChildren then -- hasChildren and isChild come from oUF initObject
+            for i, grandChild in pairs({child:GetChildren()}) do
+                if grandChild.isChild then grandChild:Update() end
+            end
+        end
+
         -- Need to clear the points of the child for the SecureGroupHeader_Update
         -- to anchor, incase attributes change after first Update.
         child:ClearAllPoints()
