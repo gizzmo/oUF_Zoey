@@ -796,7 +796,6 @@ function Module:LoadUnits()
 
     oUF:SetActiveStyle('Zoey')
     self:CreateGroup('Boss'):SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap * 3)
-    self:CreateGroup('Arena'):SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap * 3)
 
     oUF:SetActiveStyle('Zoey')
     self:CreateHeader('Party'
