@@ -79,10 +79,10 @@ function Addon.Percent(cur, max)
     end
 end
 
--- Converts a UnitID string to nice looking CamelCase style
--- usefull for converting a UnitID to a method
-function Addon.UnitToCamelCase(string)
-    return string:lower() -- start all lower case
+-- Converts a UnitID string to nice looking `PascalCase` style
+-- Useful for converting a UnitID to a method
+function Addon.UnitToPascalCase(UnitID)
+    return UnitID:lower() -- start all lower case
         :gsub('^%l', string.upper) -- set the first character upper case
         :gsub('t(arget)', 'T%1')
         :gsub('p(et)', 'P%1')

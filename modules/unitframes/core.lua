@@ -8,7 +8,7 @@ local oUF = Addon.oUF
 
 Module.units, Module.groups, Module.headers = {},{},{}
 
-local unitToCamelCase = Addon.UnitToCamelCase
+local unitToPascalCase = Addon.UnitToPascalCase
 
 -- Converts a anchor side variable into varibles used for SetPoint.
 -- A side variable starts with the side its to be on, then which side it should
@@ -435,7 +435,7 @@ function Module:CreateUnit(unit)
 
     -- If it doesnt exist, create it!
     if not self.units[unit] then
-        local object = oUF:Spawn(unit, 'ZoeyUI_'..unitToCamelCase(unit))
+        local object = oUF:Spawn(unit, 'ZoeyUI_'..unitToPascalCase(unit))
         self.units[unit] = object
     end
 
@@ -473,11 +473,11 @@ function Module:CreateGroup(group)
 
     -- If it doesnt exist, create it!
     if not self.groups[group] then
-        local holder = CreateFrame('Frame', 'ZoeyUI_'..unitToCamelCase(group), ZoeyUI_PetBattleFrameHider)
+        local holder = CreateFrame('Frame', 'ZoeyUI_'..unitToPascalCase(group), ZoeyUI_PetBattleFrameHider)
         holder.db = self.db.profile.units[group]
 
         for i = 1, 5 do
-            local object = oUF:Spawn(group..i, 'ZoeyUI_'..unitToCamelCase(group..i))
+            local object = oUF:Spawn(group..i, 'ZoeyUI_'..unitToPascalCase(group..i))
             object:SetParent(holder)
             holder[i] = object
         end
@@ -602,11 +602,11 @@ function holderMethods:Update()
     -- Create any child headers if needed
     if db.raidWideSorting then
         if not self[1] then -- only need the first group with raidWideSorting
-            self[1] = createChildHeader(self, 'ZoeyUI_'..unitToCamelCase(self.headerName)..'Group1')
+            self[1] = createChildHeader(self, 'ZoeyUI_'..unitToPascalCase(self.headerName)..'Group1')
         end
     else
         while db.numGroups > #self do
-            self[#self + 1] = createChildHeader(self, 'ZoeyUI_'..unitToCamelCase(self.headerName)..'Group'..(#self + 1))
+            self[#self + 1] = createChildHeader(self, 'ZoeyUI_'..unitToPascalCase(self.headerName)..'Group'..(#self + 1))
         end
     end
 
@@ -724,7 +724,7 @@ function Module:CreateHeader(header, ...)
     local header = header:lower()
 
     if not self.headers[header] then
-        local holder = CreateFrame('Frame', 'ZoeyUI_'..unitToCamelCase(header), ZoeyUI_PetBattleFrameHider, 'SecureHandlerStateTemplate');
+        local holder = CreateFrame('Frame', 'ZoeyUI_'..unitToPascalCase(header), ZoeyUI_PetBattleFrameHider, 'SecureHandlerStateTemplate');
         holder.db = self.db.profile.units[header]
         holder.headerName = header
 
