@@ -65,8 +65,11 @@ function Module:ForceShowHolder(holder)
             self:ForceShowUnit(object)
 
             -- Template child frames support
-            self:ForceShowUnit(_G[object:GetName()..'Target'])
-            self:ForceShowUnit(_G[object:GetName()..'Pet'])
+            if object.hasChildren then -- hasChildren and isChild come from oUF initObject
+                for i, child in pairs({object:GetChildren()}) do
+                    if child.isChild then self:ForceShowUnit(child) end
+                end
+            end
         end
     end
 
@@ -88,8 +91,11 @@ function Module:UnForceShowHolder(holder)
             self:UnForceShowUnit(object)
 
             -- Template child frames support
-            self:UnForceShowUnit(_G[object:GetName()..'Target'])
-            self:UnForceShowUnit(_G[object:GetName()..'Pet'])
+            if object.hasChildren then -- hasChildren and isChild come from oUF initObject
+                for i, child in pairs({object:GetChildren()}) do
+                    if child.isChild then self:UnForceShowUnit(child) end
+                end
+            end
         end
     end
 
