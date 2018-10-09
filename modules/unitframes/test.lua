@@ -73,7 +73,7 @@ function Module:ForceShowHolder(holder)
         end
     end
 
-    holder:Update()
+    holder:Configure()
     holder.isForced = true
 end
 function Module:UnForceShowHolder(holder)
@@ -99,7 +99,7 @@ function Module:UnForceShowHolder(holder)
         end
     end
 
-    holder:Update()
+    holder:Configure()
     holder.isForced = nil
 end
 

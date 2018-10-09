@@ -600,7 +600,10 @@ local groupOptionsTable = {
         name = L["Growth and Spacing"],
 
         get = 'Get',
-        set = 'Set',
+        set = function(info, value)
+            info.handler:Set(info, value)
+            info.handler.object:Configure()
+        end,
 
         args = {
             direction = {
@@ -645,7 +648,10 @@ local headerOptionsTable = {
         name = L["Growth and Spacing"],
 
         get = 'Get',
-        set = 'Set',
+        set = function(info, value)
+            info.handler:Set(info, value)
+            info.handler.object:Configure()
+        end,
 
         args = {
             direction = {

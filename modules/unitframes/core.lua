@@ -443,7 +443,7 @@ function Module:CreateUnit(unit)
 end
 
 local groupMethods = {}
-function groupMethods:Update()
+function groupMethods:Configure()
     local db = self.db
 
     local point = directionToAnchorPoint[db.direction]
@@ -452,7 +452,6 @@ function groupMethods:Update()
     for i = 1, #self do
         local child = self[i]
 
-        child:Update()
         child:ClearAllPoints()
 
         if i == 1 then
@@ -466,6 +465,14 @@ function groupMethods:Update()
     local unitWidth, unitHeight = self[1]:GetSize()
     self:SetWidth(abs(xMult) * (unitWidth + db.spacing) * (#self - 1) + unitWidth)
     self:SetHeight(abs(yMult) * (unitHeight + db.spacing) * (#self - 1) + unitHeight)
+end
+
+-- Run the update metamethod for all child units
+function groupMethods:Update()
+    -- Run the update metamethod for all children
+    for i = 1, #self do
+        self[i]:Update()
+    end
 end
 
 function Module:CreateGroup(group)
@@ -486,7 +493,7 @@ function Module:CreateGroup(group)
             holder[k] = v
         end
 
-        holder:Update() -- run the update to position child units
+        holder:Configure()
 
         self.groups[group] = holder
     end
@@ -495,7 +502,7 @@ function Module:CreateGroup(group)
 end
 
 local headerMethods = {}
-function headerMethods:Update()
+function headerMethods:Configure()
     -- Disable SecureGroupHeader from updating on attribute changes.
     local oldIgnore = self:GetAttribute('_ignore')
     self:SetAttribute('_ignore', 'attributeChanges')
@@ -534,6 +541,19 @@ function headerMethods:Update()
 
     self:SetAttribute('sortDir', db.sortDir or 'ASC')
 
+    -- Need to clear the points of the child for the SecureGroupHeader_Update
+    -- to anchor, incase attributes change after first Update.
+    for i = 1, #self do
+        self[i]:ClearAllPoints()
+    end
+
+    -- Reenable Updating and set a attribute to force an update
+    self:SetAttribute('_ignore', oldIgnore)
+    self:SetAttribute('ForceUpdate')
+end
+
+-- Run the update metamethod for all child units
+function headerMethods:Update()
     -- Update child units
     for i = 1, #self do
         local child = self[i]
@@ -546,15 +566,7 @@ function headerMethods:Update()
                 if grandChild.isChild then grandChild:Update() end
             end
         end
-
-        -- Need to clear the points of the child for the SecureGroupHeader_Update
-        -- to anchor, incase attributes change after first Update.
-        child:ClearAllPoints()
     end
-
-    -- Reenable Updating and set a attribute to force an update
-    self:SetAttribute('_ignore', oldIgnore)
-    self:SetAttribute('ForceUpdate')
 end
 
 local function createChildHeader(parent, overrideName, headerName, headerTemplate, template)
@@ -603,7 +615,7 @@ local function createChildHeader(parent, overrideName, headerName, headerTemplat
 end
 
 local holderMethods = {}
-function holderMethods:Update()
+function holderMethods:Configure()
     local db = self.db
 
     -- Create any child headers if needed
@@ -660,8 +672,8 @@ function holderMethods:Update()
         local oldIgnore = childHeader:GetAttribute('_ignore')
         childHeader:SetAttribute('_ignore', 'attributeChanges')
 
-        -- Configure/Update child headers
-        childHeader:Update()
+        -- Configure child headers
+        childHeader:Configure()
 
         -- A child header doesnt know what group it is
         if i == 1 and db.raidWideSorting then
@@ -727,6 +739,16 @@ function holderMethods:Update()
     self:SetHeight(height)
 end
 
+-- Run the update metamethod for all child units
+function holderMethods:Update()
+    local db = self.db
+
+    -- Only update the groups we're using
+    for i = 1, db.raidWideSorting and 1 or db.numGroups do
+        self[i]:Update()
+    end
+end
+
 function Module:CreateHeader(header, ...)
     local header = header:lower()
 
@@ -746,8 +768,8 @@ function Module:CreateHeader(header, ...)
             holder[k] = v
         end
 
-        -- Update to configure child headers and anchor
-        holder:Update()
+        -- Configure child headers and anchor them
+        holder:Configure()
 
         self.headers[header] = holder
     end
