@@ -189,10 +189,6 @@ local defaultDB = {
                 direction = 'UP',
                 spacing = 12,
             },
-            arena = {
-                direction = 'UP',
-                spacing = 12,
-            },
 
             -- headers
             party = {
