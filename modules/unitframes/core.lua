@@ -469,7 +469,6 @@ end
 
 -- Run the update metamethod for all child units
 function groupMethods:Update()
-    -- Run the update metamethod for all children
     for i = 1, #self do
         self[i]:Update()
     end
@@ -554,7 +553,6 @@ end
 
 -- Run the update metamethod for all child units
 function headerMethods:Update()
-    -- Update child units
     for i = 1, #self do
         local child = self[i]
 
@@ -741,10 +739,8 @@ end
 
 -- Run the update metamethod for all child units
 function holderMethods:Update()
-    local db = self.db
-
-    -- Only update the groups we're using
-    for i = 1, db.raidWideSorting and 1 or db.numGroups do
+    -- Note: Should we update the child headers, that arent being used?
+    for i = 1, #self do
         self[i]:Update()
     end
 end
