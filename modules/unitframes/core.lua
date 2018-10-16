@@ -246,7 +246,7 @@ function Module:OnInitialize()
     oUF:RegisterMetaFunction('Update', self.UpdateObject)
 
     -- After creating a object, also run the Update Method
-    oUF:RegisterInitCallback(function(object) object:Update() end)
+    oUF:RegisterInitCallback(self.UpdateObject)
 end
 
 function Module:OnEnable()
