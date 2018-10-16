@@ -3,8 +3,27 @@ local Module = Addon:GetModule('Unitframes')
 
 local oUF = Addon.oUF
 
+-- Track which object the mouse is over. To keep track for `IsMouseOver`
+local mouseFocus
+do
+    local function onEnter(self)
+        mouseFocus = self
+        self:UpdateTags()
+    end
+    local function onLeave(self)
+        mouseFocus = nil
+        self:UpdateTags()
+    end
+
+    -- This function is called after a object has been initialized.
+    oUF:RegisterInitCallback(function(object)
+        object:HookScript('OnEnter', onEnter)
+        object:HookScript('OnLeave', onLeave)
+    end)
+end
+
 local function IsMouseOver(unit)
-    if Module.mousefocus and Module.mousefocus['unit'] == unit then
+    if mouseFocus and mouseFocus['unit'] == unit then
         return true
     end
 
