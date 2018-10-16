@@ -470,7 +470,7 @@ function groupMethods:Update()
     end
 end
 
-function Module:CreateGroup(group)
+function Module:CreateGroup(group, numUnits)
     local group = group:lower()
 
     -- If it doesnt exist, create it!
@@ -478,7 +478,7 @@ function Module:CreateGroup(group)
         local holder = CreateFrame('Frame', 'ZoeyUI_'..unitToPascalCase(group), ZoeyUI_PetBattleFrameHider)
         holder.db = self.db.profile.units[group]
 
-        for i = 1, 5 do
+        for i = 1, tonumber(numUnits) or 5 do
             local object = oUF:Spawn(group..i, 'ZoeyUI_'..unitToPascalCase(group..i))
             object:SetParent(holder)
             holder[i] = object
