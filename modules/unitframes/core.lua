@@ -238,52 +238,12 @@ function Module:OnInitialize()
     self.db = Addon.db:RegisterNamespace(MODULE_NAME, defaultDB)
 
     -- Register our style function
-    local function styleFunc(object, unit, isSingle)
-        -- Clean unit names like 'boss1'
-        unit = unit:gsub('%d', '')
-
-        -- We can trust that the 'unit' passed will be the correct database key.
-        -- Following execution, if it came from oUF:Spawn its the first parameter;
-        -- If it came from oUF:SpawnHeader its the 'oUF-guessUnit', which we force
-        -- the value of in 'oUF-initialConfigFunction'
-        object.db = self.db.profile.units[unit]
-        object.isSingle = isSingle
-        object.objectName = unit
-
-        -- Set the Frame size
-        if isSingle then -- Header units' size are set in oUF-initialConfigFunction
-            object:SetSize(object.db.width, object.db.height)
-
-        -- A child frame comes from xml templates
-        elseif object.isChild then
-            -- This frame is protected, so setting the anchor and size can not
-            -- be done in combat. We could do this in oUF-initialConfigFunction
-            -- but that would be to much work for such a rare event. If the frame
-            -- is created in combat, we can live without it being visable until now
-            local parent = object:GetParent()
-            local point, relativePoint, xMult, yMult = getSideAnchorPoints(object.db.side)
-
-            Addon:RunAfterCombat(function()
-                object:SetSize(object.db.width, object.db.height)
-                object:ClearAllPoints()
-                object:SetPoint(point, parent, relativePoint, object.db.spacing * xMult, object.db.spacing * yMult)
-            end)
-        end
-
-        self:ConstructStyle(object, unit, isSingle)
-    end
-
-    oUF:RegisterStyle('Zoey', styleFunc)
-    oUF:RegisterStyle('ZoeyThin', styleFunc)
-    oUF:RegisterStyle('ZoeySquare', styleFunc)
+    oUF:RegisterStyle('Zoey', self.InitObject)
+    oUF:RegisterStyle('ZoeyThin', self.InitObject)
+    oUF:RegisterStyle('ZoeySquare', self.InitObject)
 
     -- Every object gets a update method to update its style
-    oUF:RegisterMetaFunction('Update', function(object)
-        self:UpdateStyle(object)
-
-        -- Update all oUF elements, something with them may have changed.
-        object:UpdateAllElements('ForceUpdate')
-    end)
+    oUF:RegisterMetaFunction('Update', self.UpdateObject)
 
     -- After creating a object, also run the Update Method
     oUF:RegisterInitCallback(function(object) object:Update() end)
@@ -423,6 +383,50 @@ function Module:DisableBlizzard()
             end
         end
     end
+end
+
+--------------------------------------------------------------------------------
+-- This is the function that oUF calls after it initializes an object.
+function Module.InitObject(object, unit, isSingle)
+    -- Clean unit names like 'boss1'
+    unit = unit:gsub('%d', '')
+
+    -- We can trust that the 'unit' passed will be the correct database key.
+    -- Following execution, if it came from oUF:Spawn its the first parameter;
+    -- If it came from oUF:SpawnHeader its the 'oUF-guessUnit', which we force
+    -- the value of in 'oUF-initialConfigFunction'
+    object.db = Module.db.profile.units[unit]
+    object.isSingle = isSingle
+    object.objectName = unit
+
+    -- Set the Frame size
+    if isSingle then -- Header units' size are set in oUF-initialConfigFunction
+        object:SetSize(object.db.width, object.db.height)
+
+        -- A child frame comes from xml templates
+    elseif object.isChild then
+        -- This frame is protected, so setting the anchor and size can not
+        -- be done in combat. We could do this in oUF-initialConfigFunction
+        -- but that would be to much work for such a rare event. If the frame
+        -- is created in combat, we can live without it being visable until now
+        local parent = object:GetParent()
+        local point, relativePoint, xMult, yMult = getSideAnchorPoints(object.db.side)
+
+        Addon:RunAfterCombat(function()
+            object:SetSize(object.db.width, object.db.height)
+            object:ClearAllPoints()
+            object:SetPoint(point, parent, relativePoint, object.db.spacing * xMult, object.db.spacing * yMult)
+        end)
+    end
+
+    Module:ConstructStyle(object, unit, isSingle)
+end
+
+function Module.UpdateObject(object)
+   Module:UpdateStyle(object)
+
+   -- Update all oUF elements, something with them may have changed.
+   object:UpdateAllElements('ForceUpdate')
 end
 
 -------------------------------------------------------------------- Creating --
