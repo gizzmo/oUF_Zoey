@@ -142,6 +142,15 @@ Addon.HiddenFrame:Hide()
 -- to return a function that does nothing.
 Addon.noop = function() --[[No Operation]] end
 
+-- Converts a UnitID string to nice looking `PascalCase` style
+-- Useful for converting a UnitIDsto a method
+function Addon.UnitToPascalCase(UnitID)
+    return UnitID:lower() -- start all lower case
+        :gsub('^%l', string.upper) -- set the first character upper case
+        :gsub('t(arget)', 'T%1')
+        :gsub('p(et)', 'P%1')
+end
+
 -- Leave a function as-is or if a string is passed in, convert it to a
 -- namespace-method function call.
 function Addon.ConvertMethodToFunction(namespace, func_name)
