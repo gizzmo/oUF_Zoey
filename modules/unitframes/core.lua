@@ -567,7 +567,7 @@ function headerMethods:Update()
     end
 end
 
-local function createChildHeader(parent, overrideName, headerName, headerTemplate, template)
+local function createChildHeader(parent, overrideName, headerName, template, headerTemplate)
     local header = parent.headerName or headerName
     local db = Module.db.profile.units[header]
 
