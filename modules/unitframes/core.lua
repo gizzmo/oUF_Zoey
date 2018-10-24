@@ -423,10 +423,10 @@ function Module.InitObject(object, unit, isSingle)
 end
 
 function Module.UpdateObject(object)
-   Module:UpdateStyle(object)
+    Module:UpdateStyle(object)
 
-   -- Update all oUF elements, something with them may have changed.
-   object:UpdateAllElements('ForceUpdate')
+    -- Update all oUF elements, something with them may have changed.
+    object:UpdateAllElements('ForceUpdate')
 end
 
 -------------------------------------------------------------------- Creating --
