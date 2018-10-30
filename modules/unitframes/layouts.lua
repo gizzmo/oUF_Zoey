@@ -446,6 +446,11 @@ function Module:ConstructStyle(object, unit, isSingle)
     object:SetScript('OnEnter', UnitFrame_OnEnter)
     object:SetScript('OnLeave', UnitFrame_OnLeave)
 
+    -- Overlay Frame -- used to attach icons/text to
+    object.Overlay = CreateFrame('Frame', nil, object)
+    object.Overlay:SetAllPoints(object)
+    object.Overlay:SetFrameLevel(10) -- todo: does it have to be that high?
+
     -- Background
     object.bg = object:CreateTexture(nil, 'BACKGROUND')
     object.bg:SetAllPoints(object)
@@ -455,11 +460,6 @@ function Module:ConstructStyle(object, unit, isSingle)
     Addon:CreateBorder(object)
     object:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', UpdateUnitBorderColor)
     table.insert(object.__elements, UpdateUnitBorderColor)
-
-    -- Overlay Frame -- used to attach icons/text to
-    object.Overlay = CreateFrame('Frame', nil, object)
-    object.Overlay:SetAllPoints(object)
-    object.Overlay:SetFrameLevel(10) -- todo: does it have to be that high?
 
     -- Highlight
     object.Highlight = object.Overlay:CreateTexture(nil, 'OVERLAY')
