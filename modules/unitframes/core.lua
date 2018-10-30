@@ -687,7 +687,7 @@ function holderMethods:Configure()
             childHeader:SetAttribute('columnSpacing', horizontalSpacing)
         end
 
-        childHeader:SetAttribute('columnAnchorPoint', directionToColumnAnchorPoint[db.direction])
+        childHeader:SetAttribute('columnAnchorPoint', columnAnchorPoint)
         childHeader:SetAttribute('maxColumns', db.raidWideSorting and numRows or 1)
         childHeader:SetAttribute('unitsPerColumn', db.raidWideSorting and (db.groupsPerCol * 5) or 5)
 
