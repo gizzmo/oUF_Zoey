@@ -394,28 +394,13 @@ function Module.InitObject(object, unit, isSingle)
     object.isSingle = isSingle
     object.objectName = unit
 
-    -- Set the Frame size
+    -- Set the Frame's initial size
     if isSingle then -- Header units' size are set in oUF-initialConfigFunction
         object:SetSize(object.db.width, object.db.height)
-
-        -- A child frame comes from xml templates
-    elseif object.isChild then
-        -- This frame is protected, so setting the anchor and size can not
-        -- be done in combat. We could do this in oUF-initialConfigFunction
-        -- but that would be to much work for such a rare event. If the frame
-        -- is created in combat, we can live without it being visable until now
-        local parent = object:GetParent()
-        local point, relativePoint, xMult, yMult = getSideAnchorPoints(object.db.side)
-
-        Addon:RunAfterCombat(function()
-            object:SetSize(object.db.width, object.db.height)
-            object:ClearAllPoints()
-            object:SetPoint(point, parent, relativePoint, object.db.spacing * xMult, object.db.spacing * yMult)
-        end)
-
-        -- Temp: The UnitPetTemplate uses a different style then the parent object
-        if unit:match('.+pet') then object.style = 'ZoeyThin' end
     end
+
+    -- Temp: The UnitPetTemplate uses a different style then the parent object
+    if object.isChild and unit:match('.+pet') then object.style = 'ZoeyThin' end
 
     Module:ConstructStyle(object, unit, isSingle)
 end
@@ -423,9 +408,24 @@ end
 function Module.UpdateObject(object)
     Module:UpdateStyle(object)
 
+    -- Update the frame Size
+    object:SetSize(object.db.width, object.db.height)
+
+    -- A child frame comes from xml templates and its anchoring is configurable
+    if object.isChild then
+        local parent = object:GetParent()
+        local point, relativePoint, xMult, yMult = getSideAnchorPoints(object.db.side)
+
+        object:ClearAllPoints()
+        object:SetPoint(point, parent, relativePoint, object.db.spacing * xMult, object.db.spacing * yMult)
+    end
+
     -- Update all oUF elements, something with them may have changed.
     object:UpdateAllElements('ForceUpdate')
 end
+
+-- We shouldn't run durning combat. Could cause issues.
+Module.UpdateObject = Addon:AfterCombatWrapper(Module.UpdateObject)
 
 -------------------------------------------------------------------- Creating --
 function Module:CreateUnit(unit)
