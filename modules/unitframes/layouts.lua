@@ -466,9 +466,8 @@ function Module:ConstructStyle(object, unit, isSingle)
     object.Highlight:SetAllPoints(object)
     object.Highlight:SetTexture([[Interface\QuestFrame\UI-QuestLogTitleHighlight]])
     object.Highlight:SetBlendMode('ADD')
-    object.Highlight:SetVertexColor(1,1,1)
-    object.Highlight:SetAlpha(0.3)
-    object.Highlight:Hide()
+    object.Highlight:SetVertexColor(1,1,1, 0.3)
+    object.Highlight:Hide() -- start hidden
 
     object:HookScript('OnEnter', HighlightOnEnter)
     object:HookScript('OnLeave', HighlightOnLeave)
