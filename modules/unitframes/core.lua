@@ -567,10 +567,10 @@ end
 
 local function createChildHeader(parent, overrideName, headerName, template, headerTemplate)
     local header = parent.headerName or headerName
-    local db = Module.db.profile.units[header]
-
     local template = parent.template or template
     local headerTemplate = parent.headerTemplate or headerTemplate
+
+    local db = Module.db.profile.units[header]
 
     local object = oUF:SpawnHeader(overrideName, headerTemplate, nil,
         'showRaid', true, 'showParty', true, 'showSolo', true,
