@@ -208,15 +208,10 @@ local defaultDB = {
             partypet = {
                 height = 20,
 
-                -- side = 'BOTTOM',
-                -- spacing = 8,
-                direction = 'UP',
-                spacing = 110,
-                groupBy = 'ROLE',
-                visibility = '[group:party,nogroup:raid]show;hide;',
-                numGroups = 1,
-                groupsPerCol = 1,
+                side = 'BOTTOM',
+                spacing = 8,
             },
+
             raid = {
                 width = 65,
 
@@ -417,6 +412,9 @@ function Module.InitObject(object, unit, isSingle)
             object:ClearAllPoints()
             object:SetPoint(point, parent, relativePoint, object.db.spacing * xMult, object.db.spacing * yMult)
         end)
+
+        -- Temp: The UnitPetTemplate uses a different style then the parent object
+        if unit:match('.+pet') then object.style = 'ZoeyThin' end
     end
 
     Module:ConstructStyle(object, unit, isSingle)
@@ -571,18 +569,15 @@ local function createChildHeader(parent, overrideName, headerName, template, hea
     local header = parent.headerName or headerName
     local db = Module.db.profile.units[header]
 
+    local template = parent.template or template
+    local headerTemplate = parent.headerTemplate or headerTemplate
+
     local object = oUF:SpawnHeader(overrideName, headerTemplate, nil,
         'showRaid', true, 'showParty', true, 'showSolo', true,
         'oUF-initialConfigFunction', ([[
             local header = self:GetParent()
             self:SetWidth(%d)  -- note: self is a 'restricted frame' and there
             self:SetHeight(%d) --       is no SetSize mirror
-
-            -- Temp, until we go full templates
-            local headerSuffix = header:GetAttribute('unitsuffix')
-            if headerSuffix then
-                self:SetAttribute('unitsuffix', headerSuffix)
-            end
 
             -- Overwrite what oUF thinks the unit is
             local unit = '%s'
@@ -598,12 +593,6 @@ local function createChildHeader(parent, overrideName, headerName, template, hea
     object:SetParent(parent)
     object.headerName = header
     object.db = db
-
-    if parent.childAttribues then
-        for att, val in pairs(parent.childAttribues) do
-            object:SetAttribute(att, val)
-        end
-    end
 
     for k, v in pairs(headerMethods) do
         object[k] = v
@@ -745,26 +734,20 @@ function holderMethods:Update()
     end
 end
 
-function Module:CreateHeader(header, ...)
+function Module:CreateHeader(header, template, headerTemplate)
     local header = header:lower()
 
     if not self.headers[header] then
         local holder = CreateFrame('Frame', 'ZoeyUI_'..unitToPascalCase(header), ZoeyUI_PetBattleFrameHider, 'SecureHandlerStateTemplate');
         holder.db = self.db.profile.units[header]
         holder.headerName = header
-
-        -- Save extra attributes for children
-        holder.childAttribues = {}
-        for i = 1, select('#', ...), 2 do
-            local att, val = select(i, ...)
-            holder.childAttribues[att] = val
-        end
+        holder.template = template
+        holder.headerTemplate = headerTemplate
 
         for k, v in pairs(holderMethods) do
             holder[k] = v
         end
 
-        -- Configure child headers and anchor them
         holder:Configure()
 
         self.headers[header] = holder
@@ -793,15 +776,8 @@ function Module:LoadUnits()
     oUF:SetActiveStyle('Zoey')
     self:CreateGroup('Boss'):SetPoint('BOTTOM', self.units.focustarget, 'TOP', 0, gap * 3)
 
-    oUF:SetActiveStyle('Zoey')
-    self:CreateHeader('Party'
-        ,'template', 'ZoeyUI_UnitTargetTemplate' --, ZoeyUI_UnitPetTemplate'
-    ):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 240)
-
-    oUF:SetActiveStyle('ZoeyThin')
-    self:CreateHeader('PartyPet',
-        'unitsuffix', 'pet'
-    ):SetPoint('BOTTOMLEFT', self.headers.party, 0, -28)
+    self:CreateHeader('Party', 'ZoeyUI_UnitTargetTemplate, ZoeyUI_UnitPetTemplate')
+        :SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', gap, 240)
 
     oUF:SetActiveStyle('ZoeySquare')
     self:CreateHeader('Raid'):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', 5, 240)
