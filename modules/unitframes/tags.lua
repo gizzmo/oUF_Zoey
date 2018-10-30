@@ -167,8 +167,9 @@ oUF.Tags.Methods['Level'] = function(unit)
     local level = UnitLevel(unit)
     local levelColor = Hex(GetQuestDifficultyColor(level <= 0 and 99 or level))
 
-    -- Hide level for max level players
-    if UnitIsPlayer(unit) and level == MAX_PLAYER_LEVEL then
+    -- Hide level for max level players, and pet, if it matches our level
+    if UnitIsPlayer(unit) and level == MAX_PLAYER_LEVEL
+    or UnitIsUnit(unit, 'pet') and level == UnitLevel('player') then
         level = nil
 
     -- Battle pet level
