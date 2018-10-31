@@ -573,13 +573,17 @@ local function createChildHeader(parent, overrideName, headerName, template, hea
     local db = Module.db.profile.units[header]
 
     local object = oUF:SpawnHeader(overrideName, headerTemplate, nil,
+        -- These are all set so the header will show in all situations.
+        -- Visibility will be controlled with RegisterStateDriver()
         'showRaid', true, 'showParty', true, 'showSolo', true,
-        'oUF-initialConfigFunction', ([[
-            local header = self:GetParent()
-            self:SetWidth(%d)  -- note: self is a 'restricted frame' and there
-            self:SetHeight(%d) --       is no SetSize mirror
 
-            -- Overwrite what oUF thinks the unit is
+        -- oUF-initialConfigFunction is used to set units default sizes, and
+        -- to override what oUF thinks the unit is, because of the above settings
+        -- the unit will always some out as `raid`.
+        -- Also there is no `SetSize` mirror for restricted frames
+        'oUF-initialConfigFunction', ([[
+            self:SetWidth(%d) self:SetHeight(%d)
+
             local unit = '%s'
             local suffix = self:GetAttribute('unitsuffix')
             if suffix then
