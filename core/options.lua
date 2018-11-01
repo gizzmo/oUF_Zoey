@@ -108,10 +108,10 @@ end
 function Addon:OpenOptions(...)
     local options = {
         name = L[ADDON_NAME],
-        handler = Addon,
         type = 'group',
         args = {},
         childGroups = 'tab',
+        disabled = function() return InCombatLockdown() end,
     }
 
     options.args.generalOptions = get_general_options()
