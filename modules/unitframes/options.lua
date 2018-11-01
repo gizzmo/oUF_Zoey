@@ -546,9 +546,6 @@ local generalUnitOptionsTable = {
     inline = true,
     name = L['General'],
 
-    get = 'Get',
-    set = 'Set',
-
     args = {
         enable = {
             order = new_order(),
@@ -584,6 +581,7 @@ local function create_unit_options(name, unit)
         name = getName,
         args = unitOptionsTable,
         handler = { name = name, object = unit },
+        get = 'Get', set = 'Set',
     }
 
     for k, v in pairs(handlerPrototype) do
@@ -603,8 +601,6 @@ local groupOptionsTable = {
         type = 'group',
         inline = true,
         name = L["Growth and Spacing"],
-
-        get = 'Get',
         set = 'SetAndConfigure',
 
         args = {
@@ -631,6 +627,7 @@ local function create_group_options(name, group)
         name = getName,
         args = groupOptionsTable,
         handler = { name = name, object = group },
+        get = 'Get', set = 'Set',
     }
 
     for k, v in pairs(handlerPrototype) do
@@ -649,8 +646,6 @@ local headerOptionsTable = {
         type = 'group',
         inline = true,
         name = L["Growth and Spacing"],
-
-        get = 'Get',
         set = 'SetAndConfigure',
 
         args = {
@@ -687,9 +682,6 @@ local headerOptionsTable = {
         type = 'group',
         inline = true,
         name = L["Grouping and Sorting"],
-
-        get = 'Get',
-        set = 'Set',
 
         args = {
             raidWideSorting = {
@@ -744,9 +736,6 @@ local headerOptionsTable = {
         name = L["Visibility"],
         inline = true,
 
-        get = 'Get',
-        set = 'Set',
-
         args = {
             visibility = {
                 order = new_order(),
@@ -773,6 +762,7 @@ local function create_header_options(name, header)
         name = getName,
         args = headerOptionsTable,
         handler = { name = name, object = header },
+        get = 'Get', set = 'Set',
     }
 
     for k, v in pairs(handlerPrototype) do
