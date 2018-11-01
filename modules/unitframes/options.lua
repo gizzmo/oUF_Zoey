@@ -539,39 +539,36 @@ local function getName(info)
     return info.handler:GetName()
 end
 
--- A group that is unit/group/header agnostic.
-local generalUnitOptionsTable = {
-    order = new_order(10),
-    type = 'group',
-    inline = true,
-    name = L['General'],
-
-    args = {
-        enable = {
-            order = new_order(),
-            type = 'toggle',
-            name = L['Enable'],
-            width = 'full',
-            disabled = true, -- disabled because its not implemented.
-        },
-        width = {
-            order = new_order(),
-            name = L["Width"],
-            type = 'range',
-            min = 50, max = 1000, step = 1,
-        },
-        height = {
-            order = new_order(),
-            name = L["Height"],
-            type = 'range',
-            min = 10, max = 500, step = 1,
-        },
-    },
-}
-
 ---------------------------------------------------------------- Unit Options --
 local unitOptionsTable = {
-    generalGroup = generalUnitOptionsTable,
+    generalGroup = {
+        order = new_order(10),
+        type = 'group',
+        inline = true,
+        name = L['General'],
+
+        args = {
+            enable = {
+                order = new_order(),
+                type = 'toggle',
+                name = L['Enable'],
+                width = 'full',
+                disabled = true, -- disabled because its not implemented.
+            },
+            width = {
+                order = new_order(),
+                name = L["Width"],
+                type = 'range',
+                min = 50, max = 1000, step = 1,
+            },
+            height = {
+                order = new_order(),
+                name = L["Height"],
+                type = 'range',
+                min = 10, max = 500, step = 1,
+            },
+        },
+    },
 }
 
 local function create_unit_options(name, unit)
@@ -594,8 +591,6 @@ end
 
 --------------------------------------------------------------- Group Options --
 local groupOptionsTable = {
-    generalGroup = generalUnitOptionsTable,
-
     growthAndSpacingGroup = {
         order = new_order(20),
         type = 'group',
@@ -630,6 +625,11 @@ local function create_group_options(name, group)
         get = 'Get', set = 'Set',
     }
 
+    -- merg in unit specific options
+    for k, v in pairs(unitOptionsTable) do
+        tbl.args[k] = v
+    end
+
     for k, v in pairs(handlerPrototype) do
         tbl.handler[k] = v
     end
@@ -639,8 +639,6 @@ end
 
 -------------------------------------------------------------- Header Options --
 local headerOptionsTable = {
-    generalGroup = generalUnitOptionsTable,
-
     growthAndSpacingGroup = {
         order = new_order(20),
         type = 'group',
@@ -764,6 +762,11 @@ local function create_header_options(name, header)
         handler = { name = name, object = header },
         get = 'Get', set = 'Set',
     }
+
+    -- merg in unit specific options
+    for k, v in pairs(unitOptionsTable) do
+        tbl.args[k] = v
+    end
 
     for k, v in pairs(handlerPrototype) do
         tbl.handler[k] = v
