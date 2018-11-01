@@ -526,6 +526,10 @@ function handlerPrototype:Set(info, value)
     self.object.db[info[#info]] = value
     self.object:Update()
 end
+function handlerPrototype:SetAndConfigure(info, value)
+    self:Set(info, value)
+    self.object:Configure()
+end
 function handlerPrototype:GetName()
     return self.object:GetName():sub(8) -- Removes 'ZoeyUI_'
 end
@@ -601,10 +605,7 @@ local groupOptionsTable = {
         name = L["Growth and Spacing"],
 
         get = 'Get',
-        set = function(info, value)
-            info.handler:Set(info, value)
-            info.handler.object:Configure()
-        end,
+        set = 'SetAndConfigure',
 
         args = {
             direction = {
@@ -650,10 +651,7 @@ local headerOptionsTable = {
         name = L["Growth and Spacing"],
 
         get = 'Get',
-        set = function(info, value)
-            info.handler:Set(info, value)
-            info.handler.object:Configure()
-        end,
+        set = 'SetAndConfigure',
 
         args = {
             direction = {
