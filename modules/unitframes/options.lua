@@ -28,7 +28,7 @@ local new_order
 do
     local current = 0
     function new_order(reset)
-        current = reset and 0 or current + 1
+        current = reset and (tonumber(reset) or 1) or current + 1
         return current
     end
 end
@@ -42,7 +42,7 @@ local function get_general_options()
         -- set = function(info, value) Module.db.profile[ info[#info] ] = value end,
         args = {
             outOfRangeAlpha = {
-                order = new_order(),
+                order = new_order(1),
                 name = L["Out of range Alpha"],
                 desc = L["The alpha to set units that are out of range to."],
                 type = 'range',
@@ -537,7 +537,7 @@ end
 
 -- A group that is unit/group/header agnostic.
 local generalUnitOptionsTable = {
-    order = new_order(),
+    order = new_order(10),
     type = 'group',
     inline = true,
     name = L['General'],
@@ -595,6 +595,7 @@ local groupOptionsTable = {
     generalGroup = generalUnitOptionsTable,
 
     growthAndSpacingGroup = {
+        order = new_order(20),
         type = 'group',
         inline = true,
         name = L["Growth and Spacing"],
@@ -643,6 +644,7 @@ local headerOptionsTable = {
     generalGroup = generalUnitOptionsTable,
 
     growthAndSpacingGroup = {
+        order = new_order(20),
         type = 'group',
         inline = true,
         name = L["Growth and Spacing"],
@@ -683,6 +685,7 @@ local headerOptionsTable = {
         },
     },
     sortingGroup = {
+        order = new_order(),
         type = 'group',
         inline = true,
         name = L["Grouping and Sorting"],
@@ -738,6 +741,7 @@ local headerOptionsTable = {
         },
     },
     visibilityGroup = {
+        order = new_order(),
         type = 'group',
         name = L["Visibility"],
         inline = true,
@@ -790,21 +794,21 @@ function Module.get_module_options()
     }
 
     options.args.generalGroup = get_general_options()
-    options.args.generalGroup.order = new_order()
+    options.args.generalGroup.order = new_order(1)
 
     for name, unit in pairs(Module.units) do
         options.args[name] = create_unit_options(name, unit)
-        options.args[name].order = new_order()
+        options.args[name].order = 2
     end
 
     for name, group in pairs(Module.groups) do
         options.args[name] = create_group_options(name, group)
-        options.args[name].order = new_order()
+        options.args[name].order = 3
     end
 
     for name, header in pairs(Module.headers) do
         options.args[name] = create_header_options(name, header)
-        options.args[name].order = new_order()
+        options.args[name].order = 4
     end
 
     return options

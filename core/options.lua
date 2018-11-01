@@ -6,6 +6,17 @@ local AceConfig = LibStub('AceConfig-3.0')
 local AceConfigDialog = LibStub('AceConfigDialog-3.0')
 
 --------------------------------------------------------------------------------
+-- To make tables ordered by how they are constructed
+local new_order
+do
+    local current = 0
+    function new_order(reset)
+        current = reset and (tonumber(reset) or 1) or current + 1
+        return current
+    end
+end
+
+--------------------------------------------------------------------------------
 
 local function get_general_options()
     local options = {
@@ -18,17 +29,8 @@ local function get_general_options()
         set = function(info, value) Addon.db.profile.general[ info[#info] ] = value end,
     }
 
-    local new_order
-    do
-        local current = 0
-        function new_order()
-            current = current + 1
-            return current
-        end
-    end
-
     options.args.description = {
-        order = new_order(),
+        order = new_order(1),
         type = 'description',
         name = L['General options are options that effect the whole addon. '..
             'Some Modules will have simalar options, but those are unique to '..
@@ -41,14 +43,14 @@ local function get_general_options()
         name = L["Fonts"],
         args = {
             fontSize = {
-                order = 11,
+                order = new_order(),
                 name = L["Font Size"],
                 desc = L["Set the font size for everything in the UI."],
                 type = 'range',
                 min = 4, max = 200, step = 1,
             },
             font = {
-                order = 12,
+                order = new_order(),
                 name = L["Default"],
                 desc = L["This is the description."],
                 type = 'select', dialogControl = 'LSM30_Font',
@@ -63,7 +65,7 @@ local function get_general_options()
         name = L["Textures"],
         args = {
             texture = {
-                order = 21,
+                order = new_order(),
                 name = L["Texture"],
                 desc = L["The texture that will be used mainly for statusbars."],
                 type = "select", dialogControl = 'LSM30_Statusbar',
@@ -84,13 +86,13 @@ local function get_general_options()
         set = function(info, ...) Addon.db.profile.general[info[#info]] = {...} end,
         args = {
             textureColor = {
-                order = 32,
+                order = new_order(),
                 name = L["Texture color"],
                 desc = L["The color used for statusbars."],
                 type = 'color', hasAlpha = false,
             },
             borderColor = {
-                order = 31,
+                order = new_order(),
                 name = L["Border color"],
                 desc = L["Main border color for the UI."],
                 type = 'color', hasAlpha = false,
@@ -112,18 +114,8 @@ function Addon:OpenOptions(...)
         childGroups = 'tab',
     }
 
-    local new_order
-    do
-        local current = 0
-        function new_order()
-            current = current + 1
-            return current
-        end
-    end
-
-
     options.args.generalOptions = get_general_options()
-    options.args.generalOptions.order = new_order()
+    options.args.generalOptions.order = new_order(1)
 
     -- Modules
     -- IDEA: use `orderedModules` to order by when they were loaded.
@@ -145,7 +137,7 @@ function Addon:OpenOptions(...)
 
     -- Register
     AceConfig:RegisterOptionsTable(ADDON_NAME, options)
-    AceConfigDialog:SetDefaultSize(ADDON_NAME, 835, 550)
+    AceConfigDialog:SetDefaultSize(ADDON_NAME, 1024, 666)
 
     -- Redefine
     function Addon:OpenOptions(...)
