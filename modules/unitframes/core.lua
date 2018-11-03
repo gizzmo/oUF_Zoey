@@ -611,15 +611,12 @@ local holderMethods = {}
 function holderMethods:Configure()
     local db = self.db
 
+    -- How many child headers do we need
+    local numChildHeaders = db.raidWideSorting and 1 or db.numGroups
+
     -- Create any child headers if needed
-    if db.raidWideSorting then
-        if not self[1] then -- only need the first group with raidWideSorting
-            self[1] = createChildHeader(self, 'ZoeyUI_'..unitToPascalCase(self.headerName)..'Group1')
-        end
-    else
-        while db.numGroups > #self do
-            self[#self + 1] = createChildHeader(self, 'ZoeyUI_'..unitToPascalCase(self.headerName)..'Group'..(#self + 1))
-        end
+    while numChildHeaders > #self do
+        self[#self + 1] = createChildHeader(self, 'ZoeyUI_'..unitToPascalCase(self.headerName)..'Group'..(#self + 1))
     end
 
     -- Update visibility
@@ -634,7 +631,7 @@ function holderMethods:Configure()
 
         -- if numGroups changed or raidWideSorting was enabled,
         -- hide child headers that aren't used.
-        if i > db.numGroups or db.raidWideSorting and i > 1 then
+        if i > numChildHeaders then
             childHeader:Hide()
         else
             childHeader:Show()
@@ -658,7 +655,7 @@ function holderMethods:Configure()
     local groupHeight = abs(yMult) * (unitHeight + verticalSpacing) * 4 + unitHeight
 
     -- Only update the groups we're using
-    for i = 1, db.raidWideSorting and 1 or db.numGroups do
+    for i = 1, numChildHeaders do
         local childHeader = self[i]
 
         -- Disable SecureGroupHeader from updating on attribute changes.
