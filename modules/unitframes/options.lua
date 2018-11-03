@@ -680,6 +680,7 @@ local headerOptionsTable = {
         type = 'group',
         inline = true,
         name = L["Grouping and Sorting"],
+        set = 'SetAndConfigure',
 
         args = {
             raidWideSorting = {
@@ -731,8 +732,9 @@ local headerOptionsTable = {
     visibilityGroup = {
         order = new_order(),
         type = 'group',
-        name = L["Visibility"],
         inline = true,
+        name = L["Visibility"],
+        set = 'SetAndConfigure',
 
         args = {
             visibility = {
