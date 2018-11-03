@@ -614,7 +614,7 @@ function holderMethods:Configure()
     -- How many child headers do we need
     local numChildHeaders = db.raidWideSorting and 1 or db.numGroups
 
-    -- Create any child headers if needed
+    -- Create any child headers that are needed.
     while numChildHeaders > #self do
         self[#self + 1] = createChildHeader(self, 'ZoeyUI_'..unitToPascalCase(self.headerName)..'Group'..(#self + 1))
     end
@@ -629,8 +629,7 @@ function holderMethods:Configure()
     for i = 1, #self do
         local childHeader = self[i]
 
-        -- if numGroups changed or raidWideSorting was enabled,
-        -- hide child headers that aren't used.
+        -- Hide child headers that aren't needed anymore.
         if i > numChildHeaders then
             childHeader:Hide()
         else
