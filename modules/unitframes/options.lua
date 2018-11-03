@@ -22,6 +22,21 @@ local singleGrowthDirectionValues = {
     LEFT = L['Left'],
     RIGHT = L['Right'],
 }
+local sideAnchorValues = {
+    TOP_LEFT    = format(L['%s and then %s'], L['Top'], L['Left']),
+    TOP         = format(L['%s and then %s'], L['Top'], L['Middle']),
+    TOP_RIGHT   = format(L['%s and then %s'], L['Top'], L['Right']),
+    BOTTOM_LEFT = format(L['%s and then %s'], L['Bottom'], L['Left']),
+    BOTTOM      = format(L['%s and then %s'], L['Bottom'], L['Middle']),
+    BOTTOM_RIGHT= format(L['%s and then %s'], L['Bottom'], L['Right']),
+    LEFT_TOP    = format(L['%s and then %s'], L['Left'], L['Top']),
+    LEFT        = format(L['%s and then %s'], L['Left'], L['Middle']),
+    LEFT_BOTTOM = format(L['%s and then %s'], L['Left'], L['Bottom']),
+    RIGHT_TOP   = format(L['%s and then %s'], L['Right'], L['Top']),
+    RIGHT       = format(L['%s and then %s'], L['Right'], L['Middle']),
+    RIGHT_BOTTOM= format(L['%s and then %s'], L['Right'], L['Bottom']),
+}
+
 --------------------------------------------------------------------------------
 -- To make tables ordered by how they are constructed
 local new_order
@@ -753,6 +768,69 @@ local headerOptionsTable = {
             },
         },
     },
+}
+
+-- Child frames
+headerOptionsTable.targetChildGroup = {
+    order = new_order(),
+    type = 'group',
+    inline = true,
+    name = L['Target Child'],
+    args = {
+        sideAndSpacingGroup = {
+            order = new_order(),
+            type = 'group',
+            name = L['Side Anchoring and Spacing'],
+            args = {
+                side = {
+                    order = new_order(),
+                    type = "select",
+                    name = L["Side Anchor"],
+                    desc = L['Attaching to which side, and then aligning.'],
+                    values = sideAnchorValues,
+                },
+                spacing = {
+                    order = new_order(),
+                    type = "range",
+                    name = L["Spacing"],
+                    min = 0, max = 100, step = 1,
+                },
+            },
+        },
+    },
+    -- Because child units' db are not attached to the handler/header,
+    -- we have to use the option keys to find the db entry.
+    get = function(info)
+        local childUnit = info[2]..info[3]:sub(0, -11)
+        return Module.db.profile.units[childUnit][info[#info]]
+    end,
+    set = function(info, value)
+        local childUnit =  info[2]..info[3]:sub(0, -11)
+        Module.db.profile.units[childUnit][info[#info]] = value
+        info.handler.object:Update()
+    end,
+    hidden = function(info)
+        local childName = info[3]:sub(0, -11)
+        local template = info.handler.object.template
+        local hasTemplate = template and template:lower():match(childName)
+        return not hasTemplate
+    end,
+}
+
+-- header child object needs base unit options
+for k, v in pairs(unitOptionsTable) do
+    headerOptionsTable.targetChildGroup.args[k] = v
+end
+
+headerOptionsTable.petChildGroup = {
+    order = new_order(),
+    type = 'group',
+    inline = true,
+    name = L['Pet Child'],
+    args = headerOptionsTable.targetChildGroup.args,
+    get = headerOptionsTable.targetChildGroup.get,
+    set = headerOptionsTable.targetChildGroup.set,
+    hidden = headerOptionsTable.targetChildGroup.hidden,
 }
 
 local function create_header_options(name, header)
