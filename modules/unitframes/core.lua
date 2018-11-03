@@ -196,7 +196,7 @@ local defaultDB = {
 
                 direction = 'UP',
                 spacing = 50,
-                groupBy = 'ROLE',
+                sortBy = 'ROLE',
                 visibility = '[group:party,nogroup:raid]show;hide;',
                 numGroups = 1,
                 groupsPerCol = 1,
@@ -218,7 +218,7 @@ local defaultDB = {
 
                 direction = 'RIGHT_UP',
                 spacing = 6,
-                groupBy = 'ROLE',
+                sortBy = 'ROLE',
                 visibility = '[group:raid]show;hide;',
                 numGroups = 8,
                 groupsPerCol = 1,
@@ -519,19 +519,19 @@ function headerMethods:Configure()
     self:SetAttribute('yOffset', verticalSpacing * yMult)
 
     -- Sorting
-    if db.groupBy == 'CLASS' then
+    if db.sortBy == 'CLASS' then
         self:SetAttribute('groupingOrder', 'DEATHKNIGHT,DRUID,HUNTER,MAGE,PALADIN,PRIEST,SHAMAN,WARLOCK,WARRIOR,MONK')
         self:SetAttribute('sortMethod', 'NAME')
         self:SetAttribute('groupBy', 'CLASS')
-    elseif db.groupBy == 'ROLE' then
+    elseif db.sortBy == 'ROLE' then
         self:SetAttribute('groupingOrder', 'TANK,HEALER,DAMAGER,NONE')
         self:SetAttribute('sortMethod', 'NAME')
         self:SetAttribute('groupBy', 'ASSIGNEDROLE')
-    elseif db.groupBy == 'NAME' then
+    elseif db.sortBy == 'NAME' then
         self:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
         self:SetAttribute('sortMethod', 'NAME')
         self:SetAttribute('groupBy', nil)
-    elseif db.groupBy == 'GROUP' then
+    elseif db.sortBy == 'GROUP' then
         self:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
         self:SetAttribute('sortMethod', 'INDEX')
         self:SetAttribute('groupBy', 'GROUP')

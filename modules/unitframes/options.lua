@@ -730,9 +730,9 @@ local headerOptionsTable = {
                     or info.handler.object.db.raidWideSorting
                 end
             },
-            groupBy = {
+            sortBy = {
                 order = new_order(),
-                name = L["Group By"],
+                name = L["Sort By"],
                 desc = L["Set the order that the group will sort."],
                 type = 'select',
                 values = {
