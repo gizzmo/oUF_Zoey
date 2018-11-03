@@ -200,6 +200,7 @@ local defaultDB = {
                 visibility = '[group:party,nogroup:raid]show;hide;',
                 numGroups = 1,
                 groupsPerCol = 1,
+                showPlayer = false,
             },
             partytarget = {
                 side = 'RIGHT_BOTTOM',
@@ -537,6 +538,7 @@ function headerMethods:Configure()
     end
 
     self:SetAttribute('sortDir', db.sortDir or 'ASC')
+    self:SetAttribute("showPlayer", db.showPlayer)
 
     -- Need to clear the points of the child for the SecureGroupHeader_Update
     -- to anchor, incase attributes change after first Update.
