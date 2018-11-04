@@ -520,7 +520,7 @@ function headerMethods:Configure()
 
     -- Sorting
     if db.sortBy == 'CLASS' then
-        self:SetAttribute('groupingOrder', 'DEATHKNIGHT,DRUID,HUNTER,MAGE,PALADIN,PRIEST,SHAMAN,WARLOCK,WARRIOR,MONK')
+        self:SetAttribute('groupingOrder', 'WARRIOR,PALADIN,HUNTER,ROGUE,PRIEST,DEATHKNIGHT,SHAMAN,MAGE,WARLOCK,MONK,DRUID,DEMONHUNTER')
         self:SetAttribute('sortMethod', 'NAME')
         self:SetAttribute('groupBy', 'CLASS')
     elseif db.sortBy == 'ROLE' then
