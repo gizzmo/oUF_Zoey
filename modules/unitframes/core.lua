@@ -520,21 +520,21 @@ function headerMethods:Configure()
 
     -- Sorting
     if db.sortBy == 'CLASS' then
+        self:SetAttribute('groupBy', 'CLASS')
         self:SetAttribute('groupingOrder', 'WARRIOR,PALADIN,HUNTER,ROGUE,PRIEST,DEATHKNIGHT,SHAMAN,MAGE,WARLOCK,MONK,DRUID,DEMONHUNTER')
         self:SetAttribute('sortMethod', 'NAME')
-        self:SetAttribute('groupBy', 'CLASS')
     elseif db.sortBy == 'ROLE' then
+        self:SetAttribute('groupBy', 'ASSIGNEDROLE')
         self:SetAttribute('groupingOrder', 'TANK,HEALER,DAMAGER,NONE')
         self:SetAttribute('sortMethod', 'NAME')
-        self:SetAttribute('groupBy', 'ASSIGNEDROLE')
     elseif db.sortBy == 'NAME' then
-        self:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
-        self:SetAttribute('sortMethod', 'NAME')
         self:SetAttribute('groupBy', nil)
+        self:SetAttribute('groupingOrder', nil)
+        self:SetAttribute('sortMethod', 'NAME')
     elseif db.sortBy == 'GROUP' then
+        self:SetAttribute('groupBy', 'GROUP')
         self:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
         self:SetAttribute('sortMethod', 'INDEX')
-        self:SetAttribute('groupBy', 'GROUP')
     end
 
     self:SetAttribute('sortDir', db.sortDir or 'ASC')
