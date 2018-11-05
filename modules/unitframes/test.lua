@@ -39,7 +39,6 @@ function Module:UnForceShowUnit(object)
     object.isForced = nil
 end
 
-
 function Module:ForceShowHolder(holder)
     -- if no holder or holder is already forced. Return early
     if not holder or holder.isForced then return end
@@ -119,8 +118,6 @@ function Module:EnableTest(type)
 
     if type == nil or type == 'party' then
         self:ForceShowHolder(ZoeyUI_Party)
-        self:ForceShowHolder(ZoeyUI_PartyPet)
-        self:ForceShowHolder(ZoeyUI_PartyTarget)
     elseif type == 'raid' then
         self:ForceShowHolder(ZoeyUI_Raid)
     end
