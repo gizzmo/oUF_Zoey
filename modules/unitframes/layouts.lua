@@ -719,6 +719,10 @@ function Module:Construct_Zoey(object, unit, isSingle)
     object.ResurrectIndicator:SetSize(object:GetHeight(), object:GetHeight())
     object.ResurrectIndicator:SetPoint('CENTER')
 
+    object.SummonIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
+    object.SummonIndicator:SetSize(object:GetHeight(), object:GetHeight())
+    object.SummonIndicator:SetPoint('CENTER')
+
     ----------------------------------------------------------------------------
     -- Cast Bars
     ----------------------------------------------------------------------------
@@ -1057,4 +1061,8 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
     object.ResurrectIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
     object.ResurrectIndicator:SetSize(object:GetHeight(), object:GetHeight())
     object.ResurrectIndicator:SetPoint('CENTER')
+
+    object.SummonIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
+    object.SummonIndicator:SetSize(object:GetHeight(), object:GetHeight())
+    object.SummonIndicator:SetPoint('CENTER')
 end
