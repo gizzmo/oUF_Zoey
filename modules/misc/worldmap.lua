@@ -61,13 +61,6 @@ function Module:OnEnable()
     SetCVar("mapFade", (self.db.profile.fadeMapWhenMoving == true and 1 or 0))
 end
 
-local tooltips = {
-    WorldMapTooltip,
-    WorldMapCompareTooltip1,
-    WorldMapCompareTooltip2,
-    WorldMapCompareTooltip3
-}
-
 local smallerMapScale = 0.7
 
 function Module:SetLargeWorldMap()
@@ -86,10 +79,6 @@ function Module:SetLargeWorldMap()
     WorldMapFrame:OnFrameSizeChanged()
     if WorldMapFrame:GetMapID() then
         WorldMapFrame.NavBar:Refresh()
-    end
-
-    for _, tt in pairs(tooltips) do
-        if _G[tt] then _G[tt]:SetFrameStrata("TOOLTIP") end
     end
 end
 
