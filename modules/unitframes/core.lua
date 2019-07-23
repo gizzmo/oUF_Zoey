@@ -425,9 +425,6 @@ function Module.UpdateObject(object)
     object:UpdateAllElements('ForceUpdate')
 end
 
--- We shouldn't run durning combat. Could cause issues.
-Module.UpdateObject = Addon:AfterCombatWrapper(Module.UpdateObject)
-
 -------------------------------------------------------------------- Creating --
 function Module:CreateUnit(unit)
     local unit = unit:lower()
@@ -784,3 +781,13 @@ function Module:LoadUnits()
     oUF:SetActiveStyle('ZoeySquare')
     self:CreateHeader('Raid'):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', 5, 240)
 end
+
+----------------------------------------------------------- Combat Protection --
+-- We shouldn't run these methods durning combat. Could cause errors.
+-- Changing points, anchors, sizes on protected frames.
+Module.UpdateObject = Addon:AfterCombatWrapper(Module.UpdateObject)
+groupMethods.Configure = Addon:AfterCombatWrapper(groupMethods.Configure)
+headerMethods.Configure = Addon:AfterCombatWrapper(headerMethods.Configure)
+holderMethods.Configure = Addon:AfterCombatWrapper(holderMethods.Configure)
+-- Note: we dont need to wrap the group/header/holder:Update methods
+--       because they just loop over and run the UpdateObject method.
