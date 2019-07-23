@@ -41,9 +41,9 @@ function Module:OnEnable()
         self:SecureHook(WorldMapFrame, 'UpdateMaximizedSize')
 
         self:SecureHookScript(WorldMapFrame, 'OnShow', function()
-            WorldMapFrame:UpdateMaximizedSize()
 
             if WorldMapFrame:IsMaximized() then
+                WorldMapFrame:UpdateMaximizedSize()
                 self:SetLargeWorldMap()
             else
                 self:SetSmallWorldMap()
