@@ -32,7 +32,7 @@ end
 
 function Module:OnEnable()
     if self.db.profile.smallerWorldMap then
-        WorldMapFrame.BlackoutFrame.Blackout:SetTexture(nil)
+        WorldMapFrame.BlackoutFrame.Blackout:SetTexture()
         WorldMapFrame.BlackoutFrame:EnableMouse(false)
 
         self:SecureHook(WorldMapFrame, 'Maximize', 'SetLargeWorldMap')
@@ -40,8 +40,8 @@ function Module:OnEnable()
         self:SecureHook(WorldMapFrame, 'SynchronizeDisplayState')
         self:SecureHook(WorldMapFrame, 'UpdateMaximizedSize')
 
+        -- Used to fix the size after initial loading and setup.
         self:SecureHookScript(WorldMapFrame, 'OnShow', function()
-
             if WorldMapFrame:IsMaximized() then
                 WorldMapFrame:UpdateMaximizedSize()
                 self:SetLargeWorldMap()
@@ -61,6 +61,11 @@ function Module:OnEnable()
     SetCVar("mapFade", (self.db.profile.fadeMapWhenMoving == true and 1 or 0))
 end
 
+function Module:OnDisable()
+    -- TODO: find way to disable without reloading the UI.
+end
+
+-- TODO: enable this as an option.
 local smallerMapScale = 0.7
 
 function Module:SetLargeWorldMap()
@@ -69,11 +74,11 @@ function Module:SetLargeWorldMap()
     WorldMapFrame.ScrollContainer.Child:SetScale(smallerMapScale)
 
     if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
-        SetUIPanelAttribute(WorldMapFrame, "area", "center");
+        SetUIPanelAttribute(WorldMapFrame, 'area', 'center');
     end
 
     if WorldMapFrame:GetAttribute('UIPanelLayout-allowOtherPanels') ~= true then
-        SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)
+        SetUIPanelAttribute(WorldMapFrame, 'allowOtherPanels', true)
     end
 
     WorldMapFrame:OnFrameSizeChanged()
@@ -92,6 +97,7 @@ function Module:SynchronizeDisplayState()
     if WorldMapFrame:IsMaximized() then
         WorldMapFrame:ClearAllPoints()
         WorldMapFrame:SetPoint("TOP", UIParent, "TOP", 0, -94)
+        -- TODO: scale placement to be slightly above center
     end
 end
 
