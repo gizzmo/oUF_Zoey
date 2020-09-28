@@ -897,7 +897,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
         object.Debuffs.PostUpdateIcon = PostUpdateAuraIcon
         object.Debuffs.PostUpdate = PostUpdateAuras
 
-    elseif unit:match('boss%d') then
+    elseif unit == 'boss' then
         object.Buffs = CreateFrame('Frame', nil, object)
         object.Buffs:SetSize(object:GetWidth(), 1)
         object.Buffs:SetPoint('TOPLEFT', object, 'TOPRIGHT', 8, 0)
