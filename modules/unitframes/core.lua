@@ -407,8 +407,6 @@ function Module.InitObject(object, unit, isSingle)
 end
 
 function Module.UpdateObject(object)
-    Module:UpdateStyle(object)
-
     -- Update the frame Size
     object:SetSize(object.db.width, object.db.height)
 
@@ -420,6 +418,8 @@ function Module.UpdateObject(object)
         object:ClearAllPoints()
         object:SetPoint(point, parent, relativePoint, object.db.spacing * xMult, object.db.spacing * yMult)
     end
+
+    Module:UpdateStyle(object)
 
     -- Update all oUF elements, something with them may have changed.
     object:UpdateAllElements('ForceUpdate')
