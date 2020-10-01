@@ -406,8 +406,9 @@ function Module.InitObject(object, unit, isSingle)
     Module:ConstructStyle(object, unit, isSingle)
 end
 
+-- Every oUF object has an 'Update' method, which is this function.
 function Module.UpdateObject(object)
-    -- Update the frame Size
+    -- Update the frame Size -- This should be fine, since its combat protected
     object:SetSize(object.db.width, object.db.height)
 
     -- A child frame comes from xml templates and its anchoring is configurable
