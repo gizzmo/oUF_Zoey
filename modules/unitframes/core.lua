@@ -240,9 +240,6 @@ function Module:OnInitialize()
 
     -- Every object gets a update method to update its style
     oUF:RegisterMetaFunction('Update', self.UpdateObject)
-
-    -- After creating a object, also run the Update Method
-    oUF:RegisterInitCallback(self.UpdateObject)
 end
 
 function Module:OnEnable()
@@ -278,14 +275,8 @@ function Module:UpdateAll()
     self:UpdateColors()
 
     for _, unit in pairs(self.units) do unit:Update() end
-    for _, group in pairs(self.groups) do
-        group:Update()
-        group:Configure()
-    end
-    for _, header in pairs(self.headers) do
-        header:Update()
-        header:Configure()
-    end
+    for _, group in pairs(self.groups) do group:Update() end
+    for _, header in pairs(self.headers) do header:Update() end
 end
 
 function Module:UpdateColors()
@@ -430,6 +421,9 @@ function Module:CreateUnit(unit)
     -- If it doesnt exist, create it!
     if not self.units[unit] then
         local object = oUF:Spawn(unit, 'ZoeyUI_'..unitToPascalCase(unit))
+
+        object:Update()
+
         self.units[unit] = object
     end
 
@@ -437,7 +431,7 @@ function Module:CreateUnit(unit)
 end
 
 local groupMethods = {}
-function groupMethods:Configure()
+function groupMethods:Update()
     local db = self.db
 
     local point = directionToAnchorPoint[db.direction]
@@ -446,6 +440,10 @@ function groupMethods:Configure()
     for i = 1, #self do
         local child = self[i]
 
+        -- Update the unit
+        child:Update()
+
+        -- and re-anchor them
         child:ClearAllPoints()
 
         if i == 1 then
@@ -459,13 +457,6 @@ function groupMethods:Configure()
     local unitWidth, unitHeight = self[1]:GetSize()
     self:SetWidth(abs(xMult) * (unitWidth + db.spacing) * (#self - 1) + unitWidth)
     self:SetHeight(abs(yMult) * (unitHeight + db.spacing) * (#self - 1) + unitHeight)
-end
-
--- Run the update metamethod for all child units
-function groupMethods:Update()
-    for i = 1, #self do
-        self[i]:Update()
-    end
 end
 
 function Module:CreateGroup(group, numUnits)
@@ -486,7 +477,7 @@ function Module:CreateGroup(group, numUnits)
             holder[k] = v
         end
 
-        holder:Configure()
+        holder:Update()
 
         self.groups[group] = holder
     end
@@ -495,7 +486,7 @@ function Module:CreateGroup(group, numUnits)
 end
 
 local headerMethods = {}
-function headerMethods:Configure()
+function headerMethods:Update()
     -- Disable SecureGroupHeader from updating on attribute changes.
     local oldIgnore = self:GetAttribute('_ignore')
     self:SetAttribute('_ignore', 'attributeChanges')
@@ -538,6 +529,9 @@ function headerMethods:Configure()
     for i = 1, #self do
         local child = self[i]
 
+        -- Call the update metamethod
+        child:Update()
+
         -- Need to clear the points of the child for the SecureGroupHeader_Update
         -- to anchor, incase attributes change after first Update.
         child:ClearAllPoints()
@@ -549,6 +543,10 @@ function headerMethods:Configure()
                     -- A child frame comes from xml templates and its anchoring is configurable
                     local point, relativePoint, xMult, yMult = getSideAnchorPoints(grandChild.db.side)
 
+                    -- Call the update metamethod
+                    grandChild:Update()
+
+                    -- and re-anchor them
                     grandChild:ClearAllPoints()
                     grandChild:SetPoint(point, child, relativePoint, grandChild.db.spacing * xMult, grandChild.db.spacing * yMult)
                 end
@@ -559,22 +557,6 @@ function headerMethods:Configure()
     -- Reenable Updating and set a attribute to force an update
     self:SetAttribute('_ignore', oldIgnore)
     self:SetAttribute('ForceUpdate')
-end
-
--- Run the update metamethod for all child units
-function headerMethods:Update()
-    for i = 1, #self do
-        local child = self[i]
-
-        child:Update()
-
-        -- Grand children come from templates.
-        if child.hasChildren then -- hasChildren and isChild come from oUF initObject
-            for i, grandChild in pairs({child:GetChildren()}) do
-                if grandChild.isChild then grandChild:Update() end
-            end
-        end
-    end
 end
 
 local function createChildHeader(parent, overrideName, headerName, template, headerTemplate)
@@ -618,7 +600,7 @@ local function createChildHeader(parent, overrideName, headerName, template, hea
 end
 
 local holderMethods = {}
-function holderMethods:Configure()
+function holderMethods:Update()
     local db = self.db
 
     -- How many child headers do we need
@@ -671,8 +653,8 @@ function holderMethods:Configure()
         local oldIgnore = childHeader:GetAttribute('_ignore')
         childHeader:SetAttribute('_ignore', 'attributeChanges')
 
-        -- Configure child headers
-        childHeader:Configure()
+        -- Update child headers
+        childHeader:Update()
 
         -- A child header doesnt know what group it is
         if i == 1 and db.raidWideSorting then
@@ -738,14 +720,6 @@ function holderMethods:Configure()
     self:SetHeight(height)
 end
 
--- Run the update metamethod for all child units
-function holderMethods:Update()
-    -- Note: Should we update the child headers, that arent being used?
-    for i = 1, #self do
-        self[i]:Update()
-    end
-end
-
 function Module:CreateHeader(header, template, headerTemplate)
     local header = header:lower()
 
@@ -760,7 +734,7 @@ function Module:CreateHeader(header, template, headerTemplate)
             holder[k] = v
         end
 
-        holder:Configure()
+        holder:Update()
 
         self.headers[header] = holder
     end
@@ -799,8 +773,6 @@ end
 -- We shouldn't run these methods durning combat. Could cause errors.
 -- Changing points, anchors, sizes on protected frames.
 Module.UpdateObject = Addon:AfterCombatWrapper(Module.UpdateObject)
-groupMethods.Configure = Addon:AfterCombatWrapper(groupMethods.Configure)
-headerMethods.Configure = Addon:AfterCombatWrapper(headerMethods.Configure)
-holderMethods.Configure = Addon:AfterCombatWrapper(holderMethods.Configure)
--- Note: we dont need to wrap the group/header/holder:Update methods
---       because they just loop over and run the UpdateObject method.
+groupMethods.Update = Addon:AfterCombatWrapper(groupMethods.Update)
+headerMethods.Update = Addon:AfterCombatWrapper(headerMethods.Update)
+holderMethods.Update = Addon:AfterCombatWrapper(holderMethods.Update)

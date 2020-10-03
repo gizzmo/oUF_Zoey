@@ -541,10 +541,6 @@ function handlerPrototype:Set(info, value)
     self.object.db[info[#info]] = value
     self.object:Update()
 end
-function handlerPrototype:SetAndConfigure(info, value)
-    self:Set(info, value)
-    self.object:Configure()
-end
 function handlerPrototype:GetName()
     return self.object:GetName():sub(8) -- Removes 'ZoeyUI_'
 end
@@ -611,8 +607,6 @@ local groupOptionsTable = {
         type = 'group',
         inline = true,
         name = L["Growth and Spacing"],
-        set = 'SetAndConfigure',
-
         args = {
             direction = {
                 order = new_order(),
@@ -659,8 +653,6 @@ local headerOptionsTable = {
         type = 'group',
         inline = true,
         name = L["Growth and Spacing"],
-        set = 'SetAndConfigure',
-
         args = {
             direction = {
                 order = new_order(),
@@ -695,8 +687,6 @@ local headerOptionsTable = {
         type = 'group',
         inline = true,
         name = L["Grouping and Sorting"],
-        set = 'SetAndConfigure',
-
         args = {
             raidWideSorting = {
                 order = new_order(),
@@ -749,8 +739,6 @@ local headerOptionsTable = {
         type = 'group',
         inline = true,
         name = L["Visibility"],
-        set = 'SetAndConfigure',
-
         args = {
             visibility = {
                 order = new_order(),
@@ -810,7 +798,6 @@ headerOptionsTable.targetChildGroup = {
 
         -- This will trickle its way down to the child
         info.handler.object:Update()
-        info.handler.object:Configure()
     end,
     hidden = function(info)
         local childName = info[3]:sub(0, -11)
