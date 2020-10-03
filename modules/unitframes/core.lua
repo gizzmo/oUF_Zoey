@@ -278,8 +278,14 @@ function Module:UpdateAll()
     self:UpdateColors()
 
     for _, unit in pairs(self.units) do unit:Update() end
-    for _, group in pairs(self.groups) do group:Update() end
-    for _, header in pairs(self.headers) do header:Update() end
+    for _, group in pairs(self.groups) do
+        group:Update()
+        group:Configure()
+    end
+    for _, header in pairs(self.headers) do
+        header:Update()
+        header:Configure()
+    end
 end
 
 function Module:UpdateColors()
