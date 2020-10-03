@@ -411,15 +411,6 @@ function Module.UpdateObject(object)
     -- Update the frame Size -- This should be fine, since its combat protected
     object:SetSize(object.db.width, object.db.height)
 
-    -- A child frame comes from xml templates and its anchoring is configurable
-    if object.isChild then
-        local parent = object:GetParent()
-        local point, relativePoint, xMult, yMult = getSideAnchorPoints(object.db.side)
-
-        object:ClearAllPoints()
-        object:SetPoint(point, parent, relativePoint, object.db.spacing * xMult, object.db.spacing * yMult)
-    end
-
     Module:UpdateStyle(object)
 
     -- Update all oUF elements, something with them may have changed.
@@ -538,10 +529,25 @@ function headerMethods:Configure()
     self:SetAttribute('sortDir', db.sortDir or 'ASC')
     self:SetAttribute("showPlayer", db.showPlayer)
 
-    -- Need to clear the points of the child for the SecureGroupHeader_Update
-    -- to anchor, incase attributes change after first Update.
     for i = 1, #self do
-        self[i]:ClearAllPoints()
+        local child = self[i]
+
+        -- Need to clear the points of the child for the SecureGroupHeader_Update
+        -- to anchor, incase attributes change after first Update.
+        child:ClearAllPoints()
+
+        -- Grand children come from templates.
+        if child.hasChildren then -- hasChildren and isChild come from oUF initObject
+            for i, grandChild in pairs({child:GetChildren()}) do
+                if grandChild.isChild then
+                    -- A child frame comes from xml templates and its anchoring is configurable
+                    local point, relativePoint, xMult, yMult = getSideAnchorPoints(grandChild.db.side)
+
+                    grandChild:ClearAllPoints()
+                    grandChild:SetPoint(point, child, relativePoint, grandChild.db.spacing * xMult, grandChild.db.spacing * yMult)
+                end
+            end
+        end
     end
 
     -- Reenable Updating and set a attribute to force an update

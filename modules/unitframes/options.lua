@@ -807,7 +807,10 @@ headerOptionsTable.targetChildGroup = {
     set = function(info, value)
         local childUnit =  info[2]..info[3]:sub(0, -11)
         Module.db.profile.units[childUnit][info[#info]] = value
+
+        -- This will trickle its way down to the child
         info.handler.object:Update()
+        info.handler.object:Configure()
     end,
     hidden = function(info)
         local childName = info[3]:sub(0, -11)
