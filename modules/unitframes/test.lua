@@ -12,10 +12,11 @@ function Module:ForceShowUnit(object)
     object.oldUnit = object.unit
     object.oldOnUpdate = object:GetScript('OnUpdate')
 
+    object:Disable()
+
     object.unit = 'player'
     object:SetScript('OnUpdate', nil)
 
-    object:Disable()
     object:Enable(true)
     object:Show()
     object:Update()
@@ -26,10 +27,11 @@ function Module:UnForceShowUnit(object)
     -- if no object or object isnt forced. return early
     if not object or not object.isForced then return end
 
+    object:Disable()
+
     object.unit = object.oldUnit
     object:SetScript('OnUpdate', object.oldOnUpdate)
 
-    object:Disable()
     object:Enable()
     object:Show()
     object:Update()
