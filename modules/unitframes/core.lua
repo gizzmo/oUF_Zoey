@@ -415,12 +415,25 @@ function Module.UpdateObject(object)
 end
 
 -------------------------------------------------------------------- Creating --
+-- Methods only for single units. We may want to do other things
+-- that's tied to just this specific unit, and not all oUF objects
+-- (like changing enabled state of this unit on update)
+local unitMethods = {}
+function unitMethods:Update()
+    -- Gotta get fancy on how we call the method, because we share a name
+    getmetatable(self).__index.Update(self)
+end
+
 function Module:CreateUnit(unit)
     local unit = unit:lower()
 
     -- If it doesnt exist, create it!
     if not self.units[unit] then
         local object = oUF:Spawn(unit, 'ZoeyUI_'..unitToPascalCase(unit))
+
+        for k, v in pairs(unitMethods) do
+            object[k] = v
+        end
 
         object:Update()
 
