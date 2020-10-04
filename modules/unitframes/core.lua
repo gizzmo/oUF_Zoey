@@ -671,7 +671,7 @@ function holderMethods:Update()
 
         -- A child header doesnt know what group it is
         if i == 1 and db.raidWideSorting then
-            childHeader:SetAttribute('groupFilter', '1,2,3,4,5,6,7,8')
+            childHeader:SetAttribute('groupFilter', strsub('1,2,3,4,5,6,7,8', 1, db.numGroups * 2 - 1))
         else
             childHeader:SetAttribute('groupFilter', tostring(i))
         end
