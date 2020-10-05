@@ -579,7 +579,7 @@ local function createChildHeader(parent, overrideName, headerName, template, hea
 
     local db = Module.db.profile.units[header]
 
-    local object = oUF:SpawnHeader(overrideName, headerTemplate, nil,
+    local object = oUF:SpawnHeader('ZoeyUI_'..unitToPascalCase(header)..overrideName, headerTemplate, nil,
         -- These are all set so the header will show in all situations.
         -- Visibility will be controlled with RegisterStateDriver()
         'showRaid', true, 'showParty', true, 'showSolo', true,
@@ -621,7 +621,7 @@ function holderMethods:Update()
 
     -- Create any child headers that are needed.
     while numChildHeaders > #self do
-        self[#self + 1] = createChildHeader(self, 'ZoeyUI_'..unitToPascalCase(self.headerName)..'Group'..(#self + 1))
+        self[#self + 1] = createChildHeader(self, 'Group'..(#self + 1))
     end
 
     -- Update visibility
