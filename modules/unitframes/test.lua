@@ -45,6 +45,8 @@ function Module:ForceShowHolder(holder)
     -- if no holder or holder is already forced. Return early
     if not holder or holder.isForced then return end
 
+    -- TODO: Updating the frame while test mode is active, resets the visibility
+    -- Some settings changed, like number of groups, do not get pushed into test mode.
     RegisterStateDriver(holder, 'visibility', 'show')
 
     local db = holder.db
