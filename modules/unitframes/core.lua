@@ -572,14 +572,14 @@ function headerMethods:Update()
     self:SetAttribute('ForceUpdate')
 end
 
-local function createChildHeader(parent, overrideName, headerName, template, headerTemplate)
+local function createChildHeader(parent, childName, headerName, template, headerTemplate)
     local header = parent.headerName or headerName
     local template = parent.template or template
     local headerTemplate = parent.headerTemplate or headerTemplate
 
     local db = parent.db
 
-    local object = oUF:SpawnHeader('ZoeyUI_'..unitToPascalCase(header)..overrideName, headerTemplate, nil,
+    local object = oUF:SpawnHeader('ZoeyUI_'..unitToPascalCase(header)..childName, headerTemplate, nil,
         -- These are all set so the header will show in all situations.
         -- Visibility will be controlled with RegisterStateDriver()
         'showRaid', true, 'showParty', true, 'showSolo', true,
