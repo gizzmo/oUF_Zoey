@@ -577,7 +577,7 @@ local function createChildHeader(parent, overrideName, headerName, template, hea
     local template = parent.template or template
     local headerTemplate = parent.headerTemplate or headerTemplate
 
-    local db = Module.db.profile.units[header]
+    local db = parent.db
 
     local object = oUF:SpawnHeader('ZoeyUI_'..unitToPascalCase(header)..overrideName, headerTemplate, nil,
         -- These are all set so the header will show in all situations.
