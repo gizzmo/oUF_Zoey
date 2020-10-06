@@ -742,6 +742,12 @@ local headerOptionsTable = {
         inline = true,
         name = L["Visibility"],
         args = {
+            showPlayer = {
+                order = new_order(),
+                type = 'toggle',
+                name = L["Display Player"],
+                desc = L["When true, the header includes the player when not in a raid."],
+            },
             visibility = {
                 order = new_order(),
                 type = 'input',
@@ -755,6 +761,24 @@ local headerOptionsTable = {
                 name = L["The above macro must be true in order for the group to be shown."],
                 -- TODO: Add better explaination and examples
                 fontSize = 'medium'
+            },
+            spacer = { -- the reset button is a bit to close to the description for my liking.
+                order = new_order(),
+                type = 'description',
+                name = ' ',
+                width = 'full',
+            },
+            resetVisibility = {
+                order = new_order(),
+                type = 'execute',
+                name = L["Restore Defaults"],
+                confirm = true,
+                confirmText = 'Are you sure you want to reset the visibility text to default',
+                func = function(info)
+                    local object = info.handler.object
+                    object.db.visibility = Module.db.defaults.profile.units[object.headerName].visibility
+                    object:Update()
+                end,
             },
         },
     },
