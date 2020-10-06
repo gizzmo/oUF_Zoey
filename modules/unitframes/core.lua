@@ -522,6 +522,10 @@ function headerMethods:Update()
         self:SetAttribute('groupBy', 'CLASS')
         self:SetAttribute('groupingOrder', 'WARRIOR,PALADIN,HUNTER,ROGUE,PRIEST,DEATHKNIGHT,SHAMAN,MAGE,WARLOCK,MONK,DRUID,DEMONHUNTER')
         self:SetAttribute('sortMethod', 'NAME')
+    elseif db.sortBy == 'CLASS_ALPH' then
+        self:SetAttribute('groupBy', 'CLASS')
+        self:SetAttribute('groupingOrder', 'DEATHKNIGHT,DEMONHUNTER,DRUID,HUNTER,MAGE,MONK,PALADIN,PRIEST,ROGUE,SHAMAN,WARLOCK,WARRIOR')
+        self:SetAttribute('sortMethod', 'NAME')
     elseif db.sortBy == 'ROLE' then
         self:SetAttribute('groupBy', 'ASSIGNEDROLE')
         self:SetAttribute('groupingOrder', 'TANK,HEALER,DAMAGER,NONE')
