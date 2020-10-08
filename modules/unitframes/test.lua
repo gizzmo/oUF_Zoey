@@ -6,16 +6,15 @@ local Unitframes = Addon:GetModule('Unitframes')
 local testActive = false
 
 function Module:ForceShowUnit(object)
-    -- if no object or object is already forced. Return early
-    if not object or object.isForced then return end
-
-    object.oldUnit = object.unit
-    object.oldOnUpdate = object:GetScript('OnUpdate')
-
     object:Disable()
 
-    object.unit = 'player'
-    object:SetScript('OnUpdate', nil)
+    if not object.isForced then
+        object.oldUnit = object.unit
+        object.oldOnUpdate = object:GetScript('OnUpdate')
+
+        object.unit = 'player'
+        object:SetScript('OnUpdate', nil)
+    end
 
     object:Enable(true)
     object:Show()
@@ -24,8 +23,8 @@ function Module:ForceShowUnit(object)
     object.isForced = true
 end
 function Module:UnForceShowUnit(object)
-    -- if no object or object isnt forced. return early
-    if not object or not object.isForced then return end
+    -- if the object isnt forced, nothing for us to do.
+    if not object.isForced then return end
 
     object:Disable()
 
