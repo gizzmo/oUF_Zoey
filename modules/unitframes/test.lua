@@ -40,13 +40,9 @@ function Module:UnForceShowUnit(object)
     object.isForced = nil
 end
 
-function Module:ForceShowHolder(holder)
-    -- if no holder or holder is already forced. Return early
-    if not holder or holder.isForced then return end
-
-    -- TODO: Updating the frame while test mode is active, resets the visibility
-    -- Some settings changed, like number of groups, do not get pushed into test mode.
-    RegisterStateDriver(holder, 'visibility', 'show')
+-- This is a post-hook so other groups and units are created
+local function holderUpdateHook(holder)
+    Module.hooks[holder].Update(holder)
 
     local db = holder.db
     local maxUnits = db.raidWideSorting and min(db.numGroups * 5, MAX_RAID_MEMBERS) or 5
@@ -62,18 +58,32 @@ function Module:ForceShowHolder(holder)
 
         -- Setting startingIndex, encourages SecureGroupheaders to create the buttons
         header:SetAttribute('startingIndex', -maxUnits + 1)
+
         for i=1, #header do
             local object = header[i]
-            self:ForceShowUnit(object)
+            Module:ForceShowUnit(object)
 
             -- Template child frames support
             if object.hasChildren then -- hasChildren and isChild come from oUF initObject
                 for i, child in pairs({object:GetChildren()}) do
-                    if child.isChild then self:ForceShowUnit(child) end
+                    if child.isChild then Module:ForceShowUnit(child) end
                 end
             end
         end
+
+        -- Encourage SecureGroupheaders to update the header
+        header:SetAttribute('ForceUpdate')
     end
+end
+function Module:ForceShowHolder(holder)
+    -- if no holder or holder is already forced. Return early
+    if not holder or holder.isForced then return end
+
+    RegisterStateDriver(holder, 'visibility', 'show')
+
+    -- Hook the holder's Update method, so if options change (number of groups)
+    -- all new child units are shown and updated.
+    Module:RawHook(holder, 'Update', holderUpdateHook)
 
     holder:Update()
     holder.isForced = true
@@ -83,6 +93,8 @@ function Module:UnForceShowHolder(holder)
     if not holder or not holder.isForced then return end
 
     RegisterStateDriver(holder, 'visibility', holder.visibility)
+
+    Module:Unhook(holder, 'Update')
 
     for i=1, #holder do
         local header = holder[i]
