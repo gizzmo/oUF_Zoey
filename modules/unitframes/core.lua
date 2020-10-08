@@ -628,10 +628,11 @@ function holderMethods:Update()
         self[#self + 1] = createChildHeader(self, 'Group'..(#self + 1))
     end
 
-    -- Update visibility
+    -- Update visibility. Only update if changed, and not forced
     if not self.visibility or self.visibility ~= db.visibility then
-        RegisterStateDriver(self, 'visibility', db.visibility)
         self.visibility = db.visibility
+
+        RegisterStateDriver(self, 'visibility', self.isForced and 'show' or self.visibility)
     end
 
     -- Update child header visibility
