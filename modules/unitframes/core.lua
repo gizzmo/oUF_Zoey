@@ -727,8 +727,8 @@ function holderMethods:Update()
     -- Rezize the holder to fit the size of the child headers
 
     -- Start with 1 column of groups: if groupsPerCol is 1 then just the group size
-    local width = abs(xMult) * (groupWidth + horizontalSpacing) * (db.groupsPerCol - 1) + groupWidth
-    local height = abs(yMult) * (groupHeight + verticalSpacing) * (db.groupsPerCol - 1) + groupHeight
+    local width = abs(xMult) * (groupWidth + horizontalSpacing) * (min(db.numGroups, db.groupsPerCol) - 1) + groupWidth
+    local height = abs(yMult) * (groupHeight + verticalSpacing) * (min(db.numGroups, db.groupsPerCol) - 1) + groupHeight
 
     -- Then increase by the number of rows
     width = abs(colxMult) * (width + horizontalSpacing) * (numRows - 1) + width
