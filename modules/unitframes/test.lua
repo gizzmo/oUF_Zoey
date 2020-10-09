@@ -40,10 +40,7 @@ function Module:UnForceShowUnit(object)
     object.isForced = nil
 end
 
--- This is a post-hook so other groups and units are created
-local function holderUpdateHook(holder)
-    Module.hooks[holder].Update(holder)
-
+local function forceShowHolderChildUnits(holder)
     local db = holder.db
     local maxUnits = db.raidWideSorting and min(db.numGroups * 5, MAX_RAID_MEMBERS) or 5
 
@@ -83,7 +80,7 @@ function Module:ForceShowHolder(holder)
 
     -- Hook the holder's Update method, so if options change (number of groups)
     -- all new child units are shown and updated.
-    Module:RawHook(holder, 'Update', holderUpdateHook)
+    Module:SecureHook(holder, 'Update', forceShowHolderChildUnits)
 
     holder:Update()
     holder.isForced = true
