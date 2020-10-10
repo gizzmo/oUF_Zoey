@@ -787,7 +787,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
         object.Castbar.Text = CreateFontString(object.Castbar, 9)
         object.Castbar.Text:SetPoint('LEFT', 5, 0)
 
-    else
+    elseif not unit:match('%wtarget$') then
         object.Castbar = CreateStatusBar(object, true)
 
         object.Castbar:SetFrameLevel(object.Health:GetFrameLevel()+1)
@@ -799,19 +799,21 @@ function Module:Construct_Zoey(object, unit, isSingle)
         object.Castbar.Text:SetPoint('BOTTOMLEFT', object.Castbar, 'TOPLEFT', 2, 0)
     end
 
-    -- Add a spark
-    object.Castbar.Spark = object.Castbar:CreateTexture(nil, 'OVERLAY')
-    object.Castbar.Spark:SetPoint("CENTER", object.Castbar:GetStatusBarTexture(), "RIGHT", 0, 0)
-    object.Castbar.Spark:SetHeight(object.Castbar:GetHeight()*2.5)
-    object.Castbar.Spark:SetBlendMode('ADD')
-    object.Castbar.Spark:SetAlpha(0.5)
+    if object.Castbar then
+        -- Add a spark
+        object.Castbar.Spark = object.Castbar:CreateTexture(nil, 'OVERLAY')
+        object.Castbar.Spark:SetPoint("CENTER", object.Castbar:GetStatusBarTexture(), "RIGHT", 0, 0)
+        object.Castbar.Spark:SetHeight(object.Castbar:GetHeight()*2.5)
+        object.Castbar.Spark:SetBlendMode('ADD')
+        object.Castbar.Spark:SetAlpha(0.5)
 
-    -- Castbar Function Hooks
-    object.Castbar.OnUpdate = CastbarOnUpdate
-    object.Castbar.PostCastStart = PostCastStart
-    object.Castbar.PostCastStop = PostCastStop
-    object.Castbar.PostCastFail = PostCastFail
-    object.Castbar.PostCastInterruptible = PostCastInterruptible
+        -- Castbar Function Hooks
+        object.Castbar.OnUpdate = CastbarOnUpdate
+        object.Castbar.PostCastStart = PostCastStart
+        object.Castbar.PostCastStop = PostCastStop
+        object.Castbar.PostCastFail = PostCastFail
+        object.Castbar.PostCastInterruptible = PostCastInterruptible
+    end
 
 
     ----------------------------------------------------------------------------
