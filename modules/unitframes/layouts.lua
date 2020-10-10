@@ -191,7 +191,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Castbar Functions
-local function PostCastStart(Castbar, unit, name, castID, spellID)
+local function PostCastStart(Castbar, unit)
     local parent = Castbar.__owner
     local r,g,b = unpack(parent.colors.cast.normal)
 
@@ -214,29 +214,16 @@ local function PostCastStart(Castbar, unit, name, castID, spellID)
         Castbar.Lag:SetFormattedText('%d ms', ms)
     end
 
-    if Castbar.notInterruptible then
-        Castbar:PostCastNotInterruptible(unit)
-    else
-        Castbar:PostCastInterruptible(unit)
-    end
+    Castbar:PostCastInterruptible(unit)
 end
 
-local function PostCastStop(Castbar, unit, spellname, castID, spellID)
-    Castbar:SetValue(Castbar.max)
+local function PostCastStop(Castbar, unit, spellID)
     Castbar:Show()
 end
 
-local function PostChannelStop(Castbar, unit, spellname, spellID)
-    Castbar:SetValue(0)
-    Castbar:Show()
-end
-
-local function PostCastFailed(Castbar, unit, spellname, castID, spellID)
+local function PostCastFail(Castbar, unit, spellID)
     local parent = Castbar.__owner
     local r,g,b = unpack(parent.colors.cast.failed)
-
-    Castbar:SetValue(Castbar.max)
-    Castbar:Show()
 
     Castbar:SetStatusBarColor(r,g,b)
 
@@ -249,13 +236,11 @@ end
 local function PostCastInterruptible(Castbar, unit)
     local parent = Castbar.__owner
     if unit == 'target' then
-        Castbar.Frame.Border:SetColor(unpack(parent.colors.border))
-    end
-end
-
-local function PostCastNotInterruptible(Castbar, unit)
-    if unit == 'target' then
-        Castbar.Frame.Border:SetColor(1,1,1)
+        if Castbar.notInterruptible then
+            Castbar.Frame.Border:SetColor(1,1,1)
+        else
+            Castbar.Frame.Border:SetColor(unpack(parent.colors.border))
+        end
     end
 end
 
@@ -264,7 +249,7 @@ local function CastbarOnUpdate(Castbar, elapsed)
     if Castbar.casting or Castbar.channeling then
         local duration = Castbar.casting and Castbar.duration + elapsed or Castbar.duration - elapsed
 
-        if (Castbar.casting and duration >= Castbar.max) or (Castbar.channeling and duration <= 0) then
+        if (Castbar.casting and duration >= Castbar.max) or (duration <= 0) then
             Castbar.casting = nil
             Castbar.channeling = nil
             return
@@ -280,18 +265,6 @@ local function CastbarOnUpdate(Castbar, elapsed)
 
         Castbar.duration = duration
         Castbar:SetValue(duration)
-
-        if Castbar.Spark then
-            local horiz = Castbar.horizontal
-            local size = Castbar[horiz and 'GetWidth' or 'GetHeight'](Castbar)
-
-            local offset = (duration / Castbar.max) * size
-            if(Castbar:GetReverseFill()) then
-                offset = size - offset
-            end
-
-            Castbar.Spark:SetPoint('CENTER', Castbar, horiz and 'LEFT' or 'BOTTOM', horiz and offset or 0, horiz and 0 or offset)
-        end
     else
         Castbar.Spark:Hide()
         local alpha = Castbar:GetAlpha() - 0.08
@@ -828,6 +801,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
 
     -- Add a spark
     object.Castbar.Spark = object.Castbar:CreateTexture(nil, 'OVERLAY')
+    object.Castbar.Spark:SetPoint("CENTER", object.Castbar:GetStatusBarTexture(), "RIGHT", 0, 0)
     object.Castbar.Spark:SetHeight(object.Castbar:GetHeight()*2.5)
     object.Castbar.Spark:SetBlendMode('ADD')
     object.Castbar.Spark:SetAlpha(0.5)
@@ -835,13 +809,10 @@ function Module:Construct_Zoey(object, unit, isSingle)
     -- Castbar Function Hooks
     object.Castbar.OnUpdate = CastbarOnUpdate
     object.Castbar.PostCastStart = PostCastStart
-    object.Castbar.PostChannelStart = PostCastStart
     object.Castbar.PostCastStop = PostCastStop
-    object.Castbar.PostChannelStop = PostChannelStop
-    object.Castbar.PostCastFailed = PostCastFailed
-    object.Castbar.PostCastInterrupted = PostCastFailed
+    object.Castbar.PostCastFail = PostCastFail
     object.Castbar.PostCastInterruptible = PostCastInterruptible
-    object.Castbar.PostCastNotInterruptible = PostCastNotInterruptible
+
 
     ----------------------------------------------------------------------------
     -- Auras
