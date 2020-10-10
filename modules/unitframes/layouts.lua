@@ -350,7 +350,7 @@ do
     }
 
     function CreateCornerIndicator(parent)
-        local square = CreateFrame('Frame', nil, parent)
+        local square = CreateFrame('Frame', nil, parent, BackdropTemplateMixin and "BackdropTemplate")
         square:SetBackdrop(CORNER_BACKDROP)
         square:SetBackdropBorderColor(0, 0, 0, 1)
         square:SetSize(6,6)
