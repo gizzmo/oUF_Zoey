@@ -78,8 +78,9 @@ do
 end
 
 --------------------------------------------------------------------------------
-local function HealthUpdateColor(Health, unit, cur, max)
+local function HealthUpdateColor(self, event, unit)
     local db = Module.db.profile.colors
+    local Health = self.Health
     local parent = Health.__owner
     local r, g, b, t
 
@@ -93,7 +94,7 @@ local function HealthUpdateColor(Health, unit, cur, max)
     elseif db.health_class and UnitReaction(unit, 'player') then
         t = parent.colors.reaction[UnitReaction(unit, 'player')]
     elseif db.health_by_value then
-        r, g, b = parent.ColorGradient(cur, max, unpack(parent.colors.smooth))
+        r, g, b = parent.ColorGradient(element.cur, element.max, unpack(parent.colors.smooth))
     else
         t = parent.colors.health
     end
@@ -137,8 +138,9 @@ local function HealthUpdateColor(Health, unit, cur, max)
     end
 end
 
-local function PowerUpdateColor(Power, unit, cur, min, max, displayType)
+local function PowerUpdateColor(self, event, unit)
     local db = Module.db.profile.colors
+    local Power = self.Power
     local parent = Power.__owner
     local r, g, b, t
 
