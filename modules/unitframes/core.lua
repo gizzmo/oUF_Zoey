@@ -348,6 +348,8 @@ function Module:UpdateColors()
     oUF.colors.healthPrediction.absorbs = db.healthPrediction.absorbs
     oUF.colors.healthPrediction.healAbsorbs = db.healthPrediction.healAbsorbs
     oUF.colors.healthPrediction.maxOverflow = db.healthPrediction.maxOverflow
+
+    -- TODO add threat color
 end
 
 function Module:DisableBlizzard()
