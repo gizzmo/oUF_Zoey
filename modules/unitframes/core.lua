@@ -402,6 +402,17 @@ function Module.InitObject(object, unit, isSingle)
     -- Temp: The UnitPetTemplate uses a different style then the parent object
     if object.isChild and unit:match('.+pet') then object.style = 'ZoeyThin' end
 
+    -- Make the frame interactiveable
+    object:RegisterForClicks('AnyUp') -- TODO: make this an option?
+    object:SetScript('OnEnter', UnitFrame_OnEnter)
+    object:SetScript('OnLeave', UnitFrame_OnLeave)
+
+    -- Overlay Frame -- used to attach icons/text to
+    object.Overlay = CreateFrame('Frame', nil, object)
+    object.Overlay:SetAllPoints(object)
+    object.Overlay:SetFrameLevel(10) -- TODO: does it have to be that high?
+
+    -- Finish building the Style
     Module:ConstructStyle(object, unit, isSingle)
 end
 

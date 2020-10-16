@@ -416,16 +416,6 @@ end
 
 ------------------------------------------------------------------ The Styles --
 function Module:ConstructStyle(object, unit, isSingle)
-    -- Make the frame interactiveable
-    object:RegisterForClicks('AnyUp')
-    object:SetScript('OnEnter', UnitFrame_OnEnter)
-    object:SetScript('OnLeave', UnitFrame_OnLeave)
-
-    -- Overlay Frame -- used to attach icons/text to
-    object.Overlay = CreateFrame('Frame', nil, object)
-    object.Overlay:SetAllPoints(object)
-    object.Overlay:SetFrameLevel(10) -- todo: does it have to be that high?
-
     -- Background
     object.bg = object:CreateTexture(nil, 'BACKGROUND')
     object.bg:SetAllPoints(object)
