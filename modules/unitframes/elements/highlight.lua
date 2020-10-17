@@ -1,52 +1,52 @@
 local ADDON_NAME, Addon = ...
 local Module = Addon:GetModule('Unitframes')
 
-local HighlightOnEnter, HighlightOnLeave, HighlightUpdate
-do
-    local mouseFocus
-    function HighlightOnEnter(object)
-        mouseFocus = object
-        HighlightUpdate(object)
-    end
-    function HighlightOnLeave(object)
-        mouseFocus = nil
-        HighlightUpdate(object)
+local mouseFocus
+local function Update(object)
+    local show
+
+    -- Frame is curently mouse focused
+    if mouseFocus == object then
+        show = true
     end
 
-    function HighlightUpdate(object)
-        local show
-
-        -- Frame is curently mouse focused
-        if mouseFocus == object then
+    -- Dont show highlighting on player or target frames
+    if object.unit ~= 'player' and strsub(object.unit, 1, 6) ~= 'target' then
+        -- Frame is not the current target
+        if UnitIsUnit(object.unit, 'target') then
             show = true
         end
+    end
 
-        -- Dont show highlighting on player or target frames
-        if object.unit ~= 'player' and strsub(object.unit, 1, 6) ~= 'target' then
-            -- Frame is not the current target
-            if UnitIsUnit(object.unit, 'target') then
-                show = true
-            end
-        end
-
-        if show then
-            object.Highlight:Show()
-        else
-            object.Highlight:Hide()
-        end
+    if show then
+        object.Highlight:Show()
+    else
+        object.Highlight:Hide()
     end
 end
 
-function Module.CreateHighlight(object)
-    object.Highlight = object.Overlay:CreateTexture(nil, 'OVERLAY')
-    object.Highlight:SetAllPoints(object)
-    object.Highlight:SetTexture([[Interface\QuestFrame\UI-QuestLogTitleHighlight]])
-    object.Highlight:SetBlendMode('ADD')
-    object.Highlight:SetVertexColor(1,1,1, 0.3)
-    object.Highlight:Hide() -- start hidden
+local function OnEnter(object)
+    mouseFocus = object
+    Update(object)
+end
 
-    object:HookScript('OnEnter', HighlightOnEnter)
-    object:HookScript('OnLeave', HighlightOnLeave)
-    object:RegisterEvent('PLAYER_TARGET_CHANGED', HighlightUpdate, true)
-    table.insert(object.__elements, HighlightUpdate) -- So its run with 'UpdateAllElements'
+local function OnLeave(object)
+    mouseFocus = nil
+    Update(object)
+end
+
+function Module.CreateHighlight(object)
+    local element = object.Overlay:CreateTexture(nil, 'OVERLAY')
+    element:SetAllPoints(object)
+    element:SetTexture([[Interface\QuestFrame\UI-QuestLogTitleHighlight]])
+    element:SetBlendMode('ADD')
+    element:SetVertexColor(1,1,1, 0.3)
+    element:Hide() -- start hidden
+
+    object:HookScript('OnEnter', OnEnter)
+    object:HookScript('OnLeave', OnLeave)
+    object:RegisterEvent('PLAYER_TARGET_CHANGED', Update, true)
+    table.insert(object.__elements, Update) -- So its run with 'UpdateAllElements'
+
+    object.Highlight = element
 end
