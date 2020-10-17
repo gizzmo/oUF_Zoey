@@ -51,5 +51,7 @@ modules\unitframes\layouts.lua
 modules\unitframes\tags.lua
 modules\unitframes\test.lua
 
+modules\unitframes\elements\highlight.lua
+
 modules\misc\mirrortimers.lua
 modules\misc\worldmap.lua
