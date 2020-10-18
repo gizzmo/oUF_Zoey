@@ -206,7 +206,7 @@ oUF.Tags.Methods['Status'] = function(unit)
 end
 
 
-oUF.Tags.Events['Health'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
+oUF.Tags.Events['Health'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION'
 oUF.Tags.Methods['Health'] = function(unit)
     local cur = UnitHealth(unit)
     local max = UnitHealthMax(unit)

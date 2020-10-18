@@ -461,7 +461,6 @@ function Module:ConstructStyle(object, unit, isSingle)
     object.Health:SetPoint('LEFT', 1, 0)
     object.Health:SetPoint('RIGHT', -1, 0)
     object.Health:SetPoint('BOTTOM', 0, 1)
-    object.Health.frequentUpdates = true
     object.Health.UpdateColor = HealthUpdateColor
 
     -- Health Prediction
@@ -494,7 +493,6 @@ function Module:ConstructStyle(object, unit, isSingle)
             absorbBar = absorbBar,
             healAbsorbBar = healAbsorbBar,
             maxOverflow = 1 + object.colors.healthPrediction.maxOverflow,
-            frequentUpdates = true,
             PostUpdate = PostUpdateHealthPrediction,
         }
     end
@@ -620,12 +618,10 @@ function Module:Construct_Zoey(object, unit, isSingle)
 
     object.HealthTag = CreateFontString(object.Overlay, 17)
     object.HealthTag:SetPoint('RIGHT', object.Health, -1, -1)
-    object.HealthTag.frequentUpdates = true
     object:Tag(object.HealthTag, '[Health]')
 
     object.PowerTextTag = CreateFontString(object.Overlay, 10)
     object.PowerTextTag:SetPoint('RIGHT', object.Power, -1, -1)
-    object.PowerTextTag.frequentUpdates = true
     object:Tag(object.PowerTextTag, '[Power]')
 
     if object.Portrait then
