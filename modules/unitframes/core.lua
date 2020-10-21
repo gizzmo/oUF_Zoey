@@ -381,6 +381,32 @@ function Module:DisableBlizzard()
 end
 
 --------------------------------------------------------------------------------
+function Module.CreateStatusBar(parent, noBG)
+    local sb = CreateFrame('StatusBar', nil, parent)
+    sb:SetStatusBarTexture(Addon.Media:Fetch('statusbar', Addon.db.profile.general.texture))
+
+    if not noBG then
+        sb.bg = sb:CreateTexture(nil, 'BACKGROUND')
+        sb.bg:SetTexture(Addon.Media:Fetch('statusbar', Addon.db.profile.general.texture))
+        sb.bg:SetAllPoints(true)
+        sb.bg.multiplier = 0.4
+    end
+
+    return sb
+end
+
+function Module.CreateFontString(parent, size, justify)
+    local fs = parent:CreateFontString(nil, 'ARTWORK')
+    fs:SetFont(Addon.Media:Fetch('font', Addon.db.profile.general.font), size or 16)
+    fs:SetJustifyH(justify or 'LEFT')
+    fs:SetWordWrap(false)
+    fs:SetShadowOffset(1, -1)
+    fs:SetShadowColor(0,0,0,1)
+
+    return fs
+end
+
+--------------------------------------------------------------------------------
 -- This is the function that oUF calls after it initializes an object.
 function Module.InitObject(object, unit, isSingle)
     -- Clean unit names like 'boss1'
