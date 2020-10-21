@@ -1,6 +1,13 @@
 local ADDON_NAME, Addon = ...
 local Module = Addon:GetModule('Unitframes')
 
+--[[ TODO:
+    currently hard coded to be a bar thats half the frame height
+
+    give more options:
+        trasparent on entire object/health/power
+        3D ICON on the left/right side, (force it to be a square?)
+--]]
 function Module.CreatePortrait(object)
     local element = CreateFrame('PlayerModel', nil, object)
     element:SetHeight((object:GetHeight() / 2) - 1.5)

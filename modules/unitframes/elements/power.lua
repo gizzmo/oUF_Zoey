@@ -1,6 +1,12 @@
 local ADDON_NAME, Addon = ...
 local Module = Addon:GetModule('Unitframes')
 
+--[[ TODO:
+    current design is inline
+
+    more options:
+        Detatched Power bar? Have it overlay ontop of the lower half of the healthbar
+--]]
 local function UpdateColor(self, event, unit)
     local db = Module.db.profile.colors
     local Power = self.Power

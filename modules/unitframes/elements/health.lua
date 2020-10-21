@@ -1,6 +1,9 @@
 local ADDON_NAME, Addon = ...
 local Module = Addon:GetModule('Unitframes')
 
+--[[ TODO:
+
+--]]
 local function UpdateColor(self, event, unit)
     local db = Module.db.profile.colors
     local Health = self.Health
