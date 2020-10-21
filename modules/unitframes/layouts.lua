@@ -18,59 +18,6 @@ local function UpdateUnitBorderColor(object)
     object.Border:SetColor(unpack(t))
 end
 
---------------------------------------------------------------------------------
-
-
-local function PowerUpdateColor(self, event, unit)
-    local db = Module.db.profile.colors
-    local Power = self.Power
-    local parent = Power.__owner
-    local r, g, b, t
-
-    if db.power_class and UnitIsPlayer(unit) then
-        local class = select(2, UnitClass(unit))
-        t = parent.colors.class[class]
-    elseif db.power_class and UnitReaction(unit, 'player') then
-        t = parent.colors.reaction[UnitReaction(unit, 'player')]
-    elseif db.power_custom then
-        t = parent.colors.power.custom
-    else
-        local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
-
-        t = parent.colors.power[ptoken]
-        if not t then
-            if altR then
-                r, g, b = altR, altG, altB
-
-                if r > 1 or g > 1 or b > 1 then
-                    -- BUG: As of 7.0.3, altR, altG, altB may be in 0-1 or 0-255 range.
-                    r, g, b = r / 255, g / 255, b / 255
-                end
-            else
-                t = parent.colors.power[ptype]
-            end
-        end
-    end
-
-    if t then
-        r, g, b = t[1], t[2], t[3]
-    end
-
-    if r or g or b then
-        Power:SetStatusBarColor(r, g, b)
-
-        local bg = Power.bg
-        if bg then
-            local mult = 0.4
-            bg:SetVertexColor(r * mult, g * mult, b * mult)
-        end
-    end
-end
-
-local function PowerPostUpdate(Power, unit, cur, min, max)
-    -- Fixes the issue of a bar with MinMaxValues of 0,0 showing as empty.
-    if max == 0 then Power:SetMinMaxValues(-1, 0) end
-end
 
 --------------------------------------------------------------------------------
 -- Castbar Functions
@@ -382,16 +329,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Build the other status bars
     ----------------------------------------------------------------------------
-    object.Power = CreateStatusBar(object)
-    object.Power:SetHeight(10)
-    object.Power:SetPoint('LEFT', 1, 0)
-    object.Power:SetPoint('RIGHT', -1, 0)
-    object.Power:SetPoint('BOTTOM', 0, 1)
-    object.Power.frequentUpdates = true
-    object.Power.UpdateColor = PowerUpdateColor
-    object.Power.PostUpdate = PowerPostUpdate
-
-    object.Health:SetPoint('BOTTOM', object.Power, 'TOP', 0, 1)
+    Module.CreatePower(object)
 
     if unit == 'party' then
         object.Portrait = CreateFrame('PlayerModel', nil, object)
@@ -841,14 +779,7 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Build the other status bars
     ----------------------------------------------------------------------------
-    object.Power = CreateStatusBar(object)
-    object.Power:SetHeight(5)
-    object.Power:SetPoint('LEFT', 1, 0)
-    object.Power:SetPoint('RIGHT', -1, 0)
-    object.Power:SetPoint('BOTTOM', 0, 1)
-    object.Power.UpdateColor = PowerUpdateColor
-
-    object.Health:SetPoint('BOTTOM', object.Power, 'TOP', 0, 1)
+    Module.CreatePower(object, 5)
 
     ----------------------------------------------------------------------------
     -- Tags
