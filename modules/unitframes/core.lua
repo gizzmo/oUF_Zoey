@@ -73,6 +73,8 @@ end
 -------------------------------------------------------------------- Database --
 local defaultDB = {
     profile = {
+        font = 'Dorispp',
+        statusbar = 'Armory',
         colors = {
             border = { 113/255, 113/255, 113/255 },
 
@@ -383,11 +385,11 @@ end
 --------------------------------------------------------------------------------
 function Module.CreateStatusBar(parent, noBG)
     local sb = CreateFrame('StatusBar', nil, parent)
-    sb:SetStatusBarTexture(Addon.Media:Fetch('statusbar', Addon.db.profile.general.texture))
+    sb:SetStatusBarTexture(Addon.Media:Fetch('statusbar', Module.db.profile.statusbar))
 
     if not noBG then
         sb.bg = sb:CreateTexture(nil, 'BACKGROUND')
-        sb.bg:SetTexture(Addon.Media:Fetch('statusbar', Addon.db.profile.general.texture))
+        sb.bg:SetTexture(Addon.Media:Fetch('statusbar', Module.db.profile.statusbar))
         sb.bg:SetAllPoints(true)
         sb.bg.multiplier = 0.4
     end
@@ -397,7 +399,7 @@ end
 
 function Module.CreateFontString(parent, size, justify)
     local fs = parent:CreateFontString(nil, 'ARTWORK')
-    fs:SetFont(Addon.Media:Fetch('font', Addon.db.profile.general.font), size or 16)
+    fs:SetFont(Addon.Media:Fetch('font', Module.db.profile.font), size or 16)
     fs:SetJustifyH(justify or 'LEFT')
     fs:SetWordWrap(false)
     fs:SetShadowOffset(1, -1)
