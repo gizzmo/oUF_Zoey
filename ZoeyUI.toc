@@ -54,6 +54,7 @@ modules\unitframes\test.lua
 modules\unitframes\elements\highlight.lua
 modules\unitframes\elements\health.lua
 modules\unitframes\elements\power.lua
+modules\unitframes\elements\portrait.lua
 
 modules\misc\mirrortimers.lua
 modules\misc\worldmap.lua

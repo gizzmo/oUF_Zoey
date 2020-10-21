@@ -332,14 +332,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
     Module.CreatePower(object)
 
     if unit == 'party' then
-        object.Portrait = CreateFrame('PlayerModel', nil, object)
-        object.Portrait:SetHeight((object:GetHeight() / 2) - 1.5)
-        object.Portrait:SetPoint('TOP', 0, -1)
-        object.Portrait:SetPoint('LEFT', 1, 0)
-        object.Portrait:SetPoint('RIGHT', -2, 0)
-        object.Portrait:SetAlpha(0.4)
-
-        object.Health:SetPoint('TOP', object.Portrait, 'BOTTOM', 0, -1.5)
+        Module.CreatePortrait(object)
     end
 
     ----------------------------------------------------------------------------
