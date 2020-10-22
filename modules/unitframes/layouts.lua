@@ -265,7 +265,7 @@ function Module:ConstructStyle(object, unit, isSingle)
         outsideAlpha = 0.5
     }
 
-    Module:CreateHealth(object)
+    Module.CreateHealth(object)
 
     -- Health Prediction
     do
