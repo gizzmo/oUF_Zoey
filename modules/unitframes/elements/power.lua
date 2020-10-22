@@ -1,6 +1,8 @@
 local ADDON_NAME, Addon = ...
 local Module = Addon:GetModule('Unitframes')
 
+local CreateStatusBar = Module.CreateStatusBar
+
 --[[ TODO:
     current design is inline
 
