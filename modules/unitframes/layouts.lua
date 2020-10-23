@@ -4,7 +4,7 @@ local Module = Addon:GetModule('Unitframes')
 local _, playerClass = UnitClass('player')
 
 --------------------------------------------------------------------------------
-local CreateFontString Module.CreateFontString
+local CreateFontString = Module.CreateFontString
 local CreateStatusBar = Module.CreateStatusBar
 
 
