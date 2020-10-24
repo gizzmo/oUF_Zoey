@@ -249,15 +249,10 @@ function Module:ConstructStyle(object, unit, isSingle)
         outsideAlpha = 0.5
     }
 
-    Module.CreateHealth(object)
-
-    -- Health Prediction
-    Module.CreateHealthPrediction(object)
-
     -- DispelHighlight
     do
         local texture = object.Overlay:CreateTexture(nil, 'OVERLAY')
-        texture:SetAllPoints(object.Health)
+        texture:SetAllPoints(object)
         texture:SetTexture("Interface\\AddOns\\"..ADDON_NAME.."\\media\\Dispel.tga")
         texture:SetBlendMode("ADD")
         texture:SetVertexColor(1, 1, 1, 0) -- start hiddend
@@ -280,8 +275,11 @@ end
 
 function Module:Construct_Zoey(object, unit, isSingle)
     ----------------------------------------------------------------------------
-    -- Build the other status bars
+    -- Status bars
     ----------------------------------------------------------------------------
+    Module.CreateHealth(object)
+    Module.CreateHealthPrediction(object)
+
     Module.CreatePower(object)
 
     if unit == 'party' then
@@ -654,6 +652,12 @@ function Module:Construct_Zoey(object, unit, isSingle)
 end
 function Module:Construct_ZoeyThin(object, unit, isSingle)
     ----------------------------------------------------------------------------
+    -- Status bars
+    ----------------------------------------------------------------------------
+    Module.CreateHealth(object)
+    Module.CreateHealthPrediction(object)
+
+    ----------------------------------------------------------------------------
     -- Tags
     ----------------------------------------------------------------------------
     object.NameTag = CreateFontString(object.Overlay, 11)
@@ -689,33 +693,6 @@ function Module:Construct_ZoeyThin(object, unit, isSingle)
     object.PvPIndicator:SetPoint('CENTER', object.Overlay, 'LEFT')
 end
 function Module:Construct_ZoeySquare(object, unit, isSingle)
-    -- Grow healthbar top to bottom
-    object.Health:SetOrientation('VERTICAL')
-
-    -- Adust the health prediction bars
-    do
-        local myBar = object.HealthPrediction.myBar
-        myBar:SetOrientation('VERTICAL')
-        myBar:ClearAllPoints()
-        myBar:SetPoint('BOTTOM', object.Health:GetStatusBarTexture(), 'TOP')
-
-        local otherBar = object.HealthPrediction.otherBar
-        otherBar:SetOrientation('VERTICAL')
-        otherBar:ClearAllPoints()
-        otherBar:SetPoint('BOTTOM', myBar:GetStatusBarTexture(), 'TOP')
-
-        local absorbBar = object.HealthPrediction.absorbBar
-        absorbBar:SetOrientation('VERTICAL')
-        absorbBar:ClearAllPoints()
-        absorbBar:SetPoint('BOTTOM', otherBar:GetStatusBarTexture(), 'TOP')
-
-        local healAbsorbBar = object.HealthPrediction.healAbsorbBar
-        healAbsorbBar:SetOrientation('VERTICAL')
-        healAbsorbBar:ClearAllPoints()
-        healAbsorbBar:SetPoint('TOP', object.Health:GetStatusBarTexture())
-
-    end
-
     -- Change Range Fading
     object[IsAddOnLoaded('oUF_SpellRange') and 'SpellRange' or 'Range'] = {
         insideAlpha = 1,
@@ -723,8 +700,12 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
     }
 
     ----------------------------------------------------------------------------
-    -- Build the other status bars
+    -- Status bars
     ----------------------------------------------------------------------------
+    Module.CreateHealth(object)
+    object.Health:SetOrientation('VERTICAL')
+    Module.CreateHealthPrediction(object)
+
     Module.CreatePower(object, 5)
 
     ----------------------------------------------------------------------------

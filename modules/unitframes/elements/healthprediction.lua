@@ -1,7 +1,9 @@
 local ADDON_NAME, Addon = ...
 local Module = Addon:GetModule('Unitframes')
 
-local function PostUpdateHealthPrediction(HealthPrediction, unit, myIncomingHeal, otherIncomingHeal, absorb, healAbsorb, hasOverAbsorb, hasOverHealAbsorb)
+local CreateStatusBar = Module.CreateStatusBar
+
+local function PostUpdateHealthPrediction(HealthPrediction)
     local parent = HealthPrediction.__owner
     local width, height = parent.Health:GetSize()
 
@@ -16,26 +18,38 @@ local function PostUpdateHealthPrediction(HealthPrediction, unit, myIncomingHeal
 end
 
 function Module.CreateHealthPrediction(object)
-    -- Incoming heals from the player
-    local myBar = CreateStatusBar(object.Health, true)
+    local health = object.Health
+    local orientation = health:GetOrientation()
+	local reverseFill = health:GetReverseFill()
+
+    local myBar = CreateStatusBar(health, true)
+    local otherBar = CreateStatusBar(health, true)
+    local absorbBar = CreateStatusBar(health, true)
+    local healAbsorbBar = CreateStatusBar(health, true)
+
     myBar:SetStatusBarColor(unpack(object.colors.healthPrediction.personal))
-    myBar:SetPoint('LEFT', object.Health:GetStatusBarTexture(), 'RIGHT')
-
-    -- Incoming heals from others
-    local otherBar = CreateStatusBar(object.Health, true)
     otherBar:SetStatusBarColor(unpack(object.colors.healthPrediction.others))
-    otherBar:SetPoint('LEFT', myBar:GetStatusBarTexture(), 'RIGHT')
-
-    -- Damage absorptions
-    local absorbBar = CreateStatusBar(object.Health, true)
     absorbBar:SetStatusBarColor(unpack(object.colors.healthPrediction.absorbs))
-    absorbBar:SetPoint('LEFT', otherBar:GetStatusBarTexture(), 'RIGHT')
-
-    -- Healing absorptions
-    local healAbsorbBar = CreateStatusBar(object.Health, true)
     healAbsorbBar:SetStatusBarColor(unpack(object.colors.healthPrediction.healAbsorbs))
-    healAbsorbBar:SetPoint('RIGHT', object.Health:GetStatusBarTexture())
+
+    myBar:SetOrientation(orientation)
+    otherBar:SetOrientation(orientation)
+    absorbBar:SetOrientation(orientation)
+    healAbsorbBar:SetOrientation(orientation)
+
     healAbsorbBar:SetReverseFill(true)
+
+    if orientation == 'HORIZONTAL' then
+        myBar:SetPoint('LEFT', health:GetStatusBarTexture(), 'RIGHT')
+        otherBar:SetPoint('LEFT', myBar:GetStatusBarTexture(), 'RIGHT')
+        absorbBar:SetPoint('LEFT', otherBar:GetStatusBarTexture(), 'RIGHT')
+        healAbsorbBar:SetPoint('RIGHT', health:GetStatusBarTexture())
+    else
+        myBar:SetPoint('BOTTOM', health:GetStatusBarTexture(), 'TOP')
+        otherBar:SetPoint('BOTTOM', myBar:GetStatusBarTexture(), 'TOP')
+        absorbBar:SetPoint('BOTTOM', otherBar:GetStatusBarTexture(), 'TOP')
+        healAbsorbBar:SetPoint('TOP', health:GetStatusBarTexture())
+    end
 
     -- Register with oUF
     object.HealthPrediction = {
