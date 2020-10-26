@@ -274,25 +274,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
 
         -- Monk Stagger Bar
         if playerClass == 'MONK' then
-            object.Stagger = CreateStatusBar(object)
-            object.Stagger:SetFrameLevel(object:GetFrameLevel()-1)
-
-            -- Build a frame around the stagger bar
-            object.Stagger.Frame = CreateFrame('Frame', nil, object.Stagger)
-            object.Stagger.Frame:SetFrameLevel(object.Stagger:GetFrameLevel()-1)
-            object.Stagger.Frame.bg = object.Stagger.Frame:CreateTexture(nil, 'BACKGROUND')
-            object.Stagger.Frame.bg:SetAllPoints(object.Stagger.Frame)
-            object.Stagger.Frame.bg:SetColorTexture(0, 0, 0, 1)
-            Addon:CreateBorder(object.Stagger.Frame)
-
-            -- Size and place the Stagger Frame
-            object.Stagger.Frame:SetHeight(10)
-            object.Stagger.Frame:SetWidth(object:GetWidth() - 10)
-            object.Stagger.Frame:SetPoint('TOP', object, 'BOTTOM', 0, -3)
-
-            -- Attach the Stagger bar to the Frame
-            object.Stagger:SetPoint('TOPLEFT', object.Stagger.Frame)
-            object.Stagger:SetPoint('BOTTOMRIGHT', object.Stagger.Frame, 0, 1)
+            Module.CreateStaggerBar(object)
         end
     end
 
