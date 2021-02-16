@@ -619,6 +619,9 @@ end
 
 local function createChildHeader(parent, childName, headerName, template, headerTemplate)
     local header = parent.headerName or headerName
+
+    -- template is use by SecureGroupHeaders when creating new units, and
+    -- headerTemplate is use by oUF when creating the header frame.
     local template = parent.template or template
     local headerTemplate = parent.headerTemplate or headerTemplate
 
