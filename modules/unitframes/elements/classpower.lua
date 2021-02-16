@@ -81,3 +81,27 @@ function Module.CreateStaggerBar(object)
     object.Stagger:SetPoint('TOPLEFT', object.Stagger.Frame)
     object.Stagger:SetPoint('BOTTOMRIGHT', object.Stagger.Frame, 0, 1)
 end
+
+function Module.CreateAdditionalPowerBar(object)
+    object.AdditionalPower = CreateStatusBar(object)
+    object.AdditionalPower:SetFrameLevel(object:GetFrameLevel()-1)
+
+    object.AdditionalPower.colorClass = true
+
+    -- Build a frame around the stagger bar
+    object.AdditionalPower.Frame = CreateFrame('Frame', nil, object.AdditionalPower)
+    object.AdditionalPower.Frame:SetFrameLevel(object.AdditionalPower:GetFrameLevel()-1)
+    object.AdditionalPower.Frame.bg = object.AdditionalPower.Frame:CreateTexture(nil, 'BACKGROUND')
+    object.AdditionalPower.Frame.bg:SetAllPoints(object.AdditionalPower.Frame)
+    object.AdditionalPower.Frame.bg:SetColorTexture(0, 0, 0, 1)
+    Addon:CreateBorder(object.AdditionalPower.Frame)
+
+    -- Size and place the AdditionalPower Frame
+    object.AdditionalPower.Frame:SetHeight(10)
+    object.AdditionalPower.Frame:SetWidth(object:GetWidth() - 10)
+    object.AdditionalPower.Frame:SetPoint('TOP', object, 'BOTTOM', 0, -3)
+
+    -- Attach the AdditionalPower bar to the Frame
+    object.AdditionalPower:SetPoint('TOPLEFT', object.AdditionalPower.Frame, 1, 0)
+    object.AdditionalPower:SetPoint('BOTTOMRIGHT', object.AdditionalPower.Frame, -1, 1)
+end

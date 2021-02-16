@@ -275,6 +275,8 @@ function Module:Construct_Zoey(object, unit, isSingle)
         -- Monk Stagger Bar
         if playerClass == 'MONK' then
             Module.CreateStaggerBar(object)
+        elseif playerClass == 'PRIEST' then
+            -- Module.CreateAdditionalPowerBar(object)
         end
     end
 
