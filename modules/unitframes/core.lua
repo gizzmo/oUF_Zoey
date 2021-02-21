@@ -427,6 +427,16 @@ function Module.InitObject(object, unit, isSingle)
         object:SetSize(object.db.width, object.db.height)
     end
 
+    -- Child frames comes from xml templates and need their initial anchoring
+    -- and size set, but those are protected actions, and cant be done in combat.
+    if object.isChild then
+        Addon:RunAfterCombat(function()
+            local point, relativePoint, xMult, yMult = getSideAnchorPoints(object.db.side)
+            object:SetPoint(point, object:GetParent(), relativePoint, object.db.spacing * xMult, object.db.spacing * yMult)
+            object:SetSize(object.db.width, object.db.height)
+        end)
+    end
+
     -- Temp: The UnitPetTemplate uses a different style then the parent object
     if object.isChild and unit:match('.+pet') then object.style = 'ZoeyThin' end
 
@@ -632,20 +642,29 @@ local function createChildHeader(parent, childName, headerName, template, header
         -- Visibility will be controlled with RegisterStateDriver()
         'showRaid', true, 'showParty', true, 'showSolo', true,
 
-        -- oUF-initialConfigFunction is used to set units default sizes, and
-        -- to override what oUF thinks the unit is, because of the above settings
-        -- the unit will always some out as `raid`.
-        -- Also there is no `SetSize` mirror for restricted frames
-        'oUF-initialConfigFunction', ([[
-            self:SetWidth(%d) self:SetHeight(%d)
+        -- oUF-initialConfigFunction is called when a new object is created by
+        -- 'SecureGroupHeader', and we will use use it to override what oUF
+        -- guesses the unit is, becase the above settings, it'll always be 'raid'
 
+        -- We also have to set unit's default size. We do this here because if
+        -- a frame happens to be created in combat by 'SecureGroupHeaders'
+        -- there wont be any errors, because it's a secure environment.
+
+        -- We don't set child frames because their not THAT important. Plus they
+        -- also need anchoring set. Both of which will be taken care of
+        -- in InitObject, after combat ends.
+
+        -- Note: There is no `SetSize` mirror for restricted frames
+        'oUF-initialConfigFunction', ([[
             local unit = '%s'
             local suffix = self:GetAttribute('unitsuffix')
             if suffix then
                 unit = unit .. suffix
+            else
+                self:SetWidth(%d) self:SetHeight(%d)
             end
             self:SetAttribute('oUF-guessUnit', unit)
-        ]]):format(db.width, db.height, header),
+        ]]):format(header, db.width, db.height),
         template and 'template', template
     )
 
