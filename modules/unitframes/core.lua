@@ -471,8 +471,7 @@ end
 -- (like changing enabled state of this unit on update)
 local unitMethods = {}
 function unitMethods:Update()
-    -- Gotta get fancy on how we call the method, because we share a name
-    getmetatable(self).__index.Update(self)
+    Module.UpdateObject(self)
 end
 
 function Module:CreateUnit(unit)
