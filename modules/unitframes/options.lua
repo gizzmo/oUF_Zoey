@@ -582,6 +582,10 @@ local unitOptionsTable = {
     },
 }
 
+-- Elements
+unitOptionsTable.healthGroup = Module.GetHealthOptions()
+unitOptionsTable.healthGroup.order = new_order(30)
+
 local function create_unit_options(name, unit)
     local tbl = {
         type = 'group',
@@ -683,7 +687,7 @@ local headerOptionsTable = {
         },
     },
     sortingGroup = {
-        order = new_order(),
+        order = new_order(21),
         type = 'group',
         inline = true,
         name = L["Grouping and Sorting"],
@@ -737,7 +741,7 @@ local headerOptionsTable = {
         },
     },
     visibilityGroup = {
-        order = new_order(),
+        order = new_order(22),
         type = 'group',
         inline = true,
         name = L["Visibility"],

@@ -46,7 +46,6 @@ core\functions.lua
 
 modules\unitframes\templates.xml
 modules\unitframes\core.lua
-modules\unitframes\options.lua
 modules\unitframes\layouts.lua
 modules\unitframes\tags.lua
 modules\unitframes\test.lua
@@ -57,6 +56,8 @@ modules\unitframes\elements\healthprediction.lua
 modules\unitframes\elements\power.lua
 modules\unitframes\elements\portrait.lua
 modules\unitframes\elements\classpower.lua
+
+modules\unitframes\options.lua
 
 modules\misc\mirrortimers.lua
 modules\misc\worldmap.lua

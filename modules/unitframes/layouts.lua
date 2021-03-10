@@ -249,7 +249,7 @@ end
 
 function Module:UpdateStyle(object)
     -- Update the rest of the object depening on the style
-    -- Module['Update_'..object.style](self, object) -- NYI
+    Module['Update_'..object.style](self, object)
 end
 
 function Module:Construct_Zoey(object, unit, isSingle)
@@ -583,6 +583,10 @@ function Module:Construct_Zoey(object, unit, isSingle)
 
     end
 end
+function Module:Update_Zoey(object)
+    Module.ConfigureHealth(object)
+end
+
 function Module:Construct_ZoeyThin(object, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Status bars
@@ -625,6 +629,10 @@ function Module:Construct_ZoeyThin(object, unit, isSingle)
     object.PvPIndicator:SetSize(16,16)
     object.PvPIndicator:SetPoint('CENTER', object.Overlay, 'LEFT')
 end
+function Module:Update_ZoeyThin(object)
+    Module.ConfigureHealth(object)
+end
+
 function Module:Construct_ZoeySquare(object, unit, isSingle)
     -- Change Range Fading
     object[IsAddOnLoaded('oUF_SpellRange') and 'SpellRange' or 'Range'] = {
@@ -636,7 +644,6 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
     -- Status bars
     ----------------------------------------------------------------------------
     Module.CreateHealth(object)
-    object.Health:SetOrientation('VERTICAL')
     Module.CreateHealthPrediction(object)
 
     Module.CreatePower(object, 5)
@@ -684,4 +691,7 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
     object.SummonIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
     object.SummonIndicator:SetSize(object:GetHeight(), object:GetHeight())
     object.SummonIndicator:SetPoint('CENTER')
+end
+function Module:Update_ZoeySquare(object)
+    Module.ConfigureHealth(object)
 end

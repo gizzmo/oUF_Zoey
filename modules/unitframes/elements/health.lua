@@ -1,7 +1,47 @@
 local ADDON_NAME, Addon = ...
 local Module = Addon:GetModule('Unitframes')
 
+local ACD = LibStub('AceConfigDialog-3.0')
+
+local L = Addon.L
 local CreateStatusBar = Module.CreateStatusBar
+
+function Module.GetHealthOptions()
+    return {
+        type = 'group',
+        name = 'Health',
+        inline = true,
+        get = function(info)
+            return info.handler.object.db.health[info[#info]]
+        end,
+        set = function(info, value)
+            info.handler.object.db.health[info[#info]] = value
+            info.handler.object:Update()
+        end,
+        args = {
+            fillDirection = {
+    			type = 'select',
+    			order = 1,
+    			name = L["Statusbar Fill Direction"],
+    			desc = L["Direction the health bar moves when filling."],
+    			values = {
+                    BOTTOM_TOP = L['Bottom to Top'],
+                    LEFT_RIGHT = L['Left to Right'],
+                    TOP_BOTTOM = L['Top to Bottom'],
+                    RIGHT_LEFT = L['Right to Left'],
+    			},
+                sorting = {'BOTTOM_TOP', 'LEFT_RIGHT', 'TOP_BOTTOM', 'RIGHT_LEFT'}
+    		},
+            colorConfigureButton = {
+                order = 2,
+                name = L["Coloring"],
+                desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
+                type = 'execute',
+                func = function() ACD:SelectGroup('ZoeyUI', 'Unitframes', 'generalGroup', 'colorsGroup') end,
+            },
+        },
+    }
+end
 
 --[[ TODO:
 
@@ -75,4 +115,23 @@ function Module.CreateHealth(object)
     element.UpdateColor = UpdateColor
 
     object.Health = element
+end
+
+function Module.ConfigureHealth(object)
+    local db = object.db
+    local health = object.Health
+
+    local fill = db.health.fillDirection
+
+    if fill == 'TOP_BOTTOM' or fill == 'BOTTOM_TOP' then
+        health:SetOrientation('VERTICAL')
+    else
+        health:SetOrientation('HORIZONTAL')
+    end
+
+    if fill == 'TOP_BOTTOM' or fill == 'RIGHT_LEFT' then
+        health:SetReverseFill(true)
+    else
+        health:SetReverseFill(false)
+    end
 end

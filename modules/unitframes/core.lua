@@ -164,6 +164,10 @@ local defaultDB = {
 
                 width = 135,
                 height = 40,
+
+                health = {
+                	fillDirection = 'LEFT_RIGHT',
+                },
             },
             player = {
                 width = 227,
@@ -217,6 +221,10 @@ local defaultDB = {
 
             raid = {
                 width = 65,
+
+                health = {
+                	fillDirection = 'BOTTOM_TOP',
+                },
 
                 direction = 'RIGHT_UP',
                 spacing = 6,
