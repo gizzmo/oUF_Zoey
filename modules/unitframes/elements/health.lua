@@ -123,15 +123,9 @@ function Module.ConfigureHealth(object)
 
     local fill = db.health.fillDirection
 
-    if fill == 'TOP_BOTTOM' or fill == 'BOTTOM_TOP' then
-        health:SetOrientation('VERTICAL')
-    else
-        health:SetOrientation('HORIZONTAL')
-    end
+    local orientation = (fill == 'TOP_BOTTOM' or fill == 'BOTTOM_TOP')
+    local reverseFill = (fill == 'TOP_BOTTOM' or fill == 'RIGHT_LEFT')
 
-    if fill == 'TOP_BOTTOM' or fill == 'RIGHT_LEFT' then
-        health:SetReverseFill(true)
-    else
-        health:SetReverseFill(false)
-    end
+    health:SetOrientation(orientation and 'VERTICAL' or 'HORIZONTAL')
+    health:SetReverseFill(reverseFill)
 end
