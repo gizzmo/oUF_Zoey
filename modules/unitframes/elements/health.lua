@@ -19,19 +19,24 @@ function Module.GetHealthOptions()
             info.handler.object:Update()
         end,
         args = {
-            fillDirection = {
-    			type = 'select',
-    			order = 1,
-    			name = L["Statusbar Fill Direction"],
-    			desc = L["Direction the health bar moves when filling."],
-    			values = {
-                    BOTTOM_TOP = L['Bottom to Top'],
-                    LEFT_RIGHT = L['Left to Right'],
-                    TOP_BOTTOM = L['Top to Bottom'],
-                    RIGHT_LEFT = L['Right to Left'],
-    			},
-                sorting = {'BOTTOM_TOP', 'LEFT_RIGHT', 'TOP_BOTTOM', 'RIGHT_LEFT'}
-    		},
+            reverseFill = {
+                order = 1,
+                type = 'toggle',
+                name = L['Reverse Fill'],
+                desc = L['Change the direction the healthbar moves when filling.'],
+            },
+            orientation = {
+                type = 'select',
+                order = 1,
+                name = L["Statusbar Fill Orientation"],
+                values = {
+                    HORIZONTAL = L["Horizontal"],
+                    VERTICAL = L["Vertical"],
+                },
+                hidden = function(info) -- Hide if not in 'headers' table
+                    return not Module.headers[info.handler.name]
+                end
+            },
             colorConfigureButton = {
                 order = 2,
                 name = L["Coloring"],
@@ -121,11 +126,7 @@ function Module.ConfigureHealth(object)
     local db = object.db
     local health = object.Health
 
-    local fill = db.health.fillDirection
-
-    local orientation = (fill == 'TOP_BOTTOM' or fill == 'BOTTOM_TOP')
-    local reverseFill = (fill == 'TOP_BOTTOM' or fill == 'RIGHT_LEFT')
-
-    health:SetOrientation(orientation and 'VERTICAL' or 'HORIZONTAL')
-    health:SetReverseFill(reverseFill)
+    -- Not every frame will have this option.
+    health:SetOrientation(db.health.orientation or 'HORIZONTAL')
+    health:SetReverseFill(db.health.reverseFill)
 end
