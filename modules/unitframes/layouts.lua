@@ -586,6 +586,7 @@ end
 function Module:Update_Zoey(object)
     Module.ConfigureHealth(object)
     Module.ConfigureHealthPrediction(object)
+    Module.ConfigurePower(object)
 end
 
 function Module:Construct_ZoeyThin(object, unit, isSingle)
@@ -648,7 +649,7 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
     Module.CreateHealth(object)
     Module.CreateHealthPrediction(object)
 
-    Module.CreatePower(object, 5)
+    Module.CreatePower(object)
 
     ----------------------------------------------------------------------------
     -- Tags
@@ -697,4 +698,5 @@ end
 function Module:Update_ZoeySquare(object)
     Module.ConfigureHealth(object)
     Module.ConfigureHealthPrediction(object)
+    Module.ConfigurePower(object)
 end

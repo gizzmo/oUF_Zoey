@@ -169,6 +169,9 @@ local defaultDB = {
                     reverseFill = false,
                     orientation = 'HORIZONTAL'
                 },
+                power = {
+                    height = 10
+                }
             },
             player = {
                 width = 227,
@@ -225,6 +228,9 @@ local defaultDB = {
 
                 health = {
                     orientation = 'VERTICAL'
+                },
+                power = {
+                    height = 5
                 },
 
                 direction = 'RIGHT_UP',

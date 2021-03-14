@@ -1,7 +1,60 @@
 local ADDON_NAME, Addon = ...
 local Module = Addon:GetModule('Unitframes')
 
+local ACD = LibStub('AceConfigDialog-3.0')
+
+local L = Addon.L
 local CreateStatusBar = Module.CreateStatusBar
+
+function Module.GetPowerOptions()
+    return {
+        type = 'group',
+        inline = true,
+        name = L['Power'],
+        get = function(info)
+            return info.handler.object.db.power[info[#info]]
+        end,
+        set = function(info, value)
+            info.handler.object.db.power[info[#info]] = value
+            info.handler.object:Update()
+        end,
+        args = {
+            enable = {
+                type = 'toggle',
+                order = 1,
+                name = L["Enable"],
+                disabled = true,
+            },
+            height = {
+                order = 2,
+                type = 'range',
+                name = L['Height'],
+                desc = L['The height of the power bar.'],
+                min = 1, max = 100, step = 1, softMax = 50
+            },
+            reverseFill = {
+                order = 3,
+                type = 'toggle',
+                name = L['Reverse Fill'],
+                desc = L['Change the direction the powerbar moves when filling.'],
+            },
+            powerPrediction = {
+                type = 'toggle',
+                order = 4,
+                name = L["Power Prediction"],
+                disabled = true,
+            },
+
+            configureButton = {
+                order = 10,
+                name = L["Coloring"],
+                desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
+                type = 'execute',
+                func = function() ACD:SelectGroup('ZoeyUI', 'Unitframe', 'generalGroup', 'colorsGroup') end,
+            },
+        },
+    }
+end
 
 --[[ TODO:
     current design is inline
@@ -60,11 +113,8 @@ local function PostUpdate(Power, unit, cur, min, max)
     if max == 0 then Power:SetMinMaxValues(-1, 0) end
 end
 
-function Module.CreatePower(object, height)
-    local height = height or 10
-
+function Module.CreatePower(object)
     local element = CreateStatusBar(object)
-    element:SetHeight(height)
     element:SetPoint('LEFT', 1, 0)
     element:SetPoint('RIGHT', -1, 0)
     element:SetPoint('BOTTOM', 0, 1)
@@ -76,4 +126,13 @@ function Module.CreatePower(object, height)
 
     -- Reanchor the health bar.
     object.Health:SetPoint('BOTTOM', object.Power, 'TOP', 0, 1)
+end
+
+function Module.ConfigurePower(object)
+    local db = object.db
+    local power = object.Power
+
+    power:SetHeight(math.max(1, math.min(db.power.height, db.height - 5)))
+
+    power:SetReverseFill(db.power.reverseFill)
 end

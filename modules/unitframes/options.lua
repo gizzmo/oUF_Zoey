@@ -586,6 +586,10 @@ local unitOptionsTable = {
 unitOptionsTable.healthGroup = Module.GetHealthOptions()
 unitOptionsTable.healthGroup.order = new_order(30)
 
+unitOptionsTable.powerGroup = Module.GetPowerOptions()
+unitOptionsTable.powerGroup.order = new_order(31)
+
+
 local function create_unit_options(name, unit)
     local tbl = {
         type = 'group',
