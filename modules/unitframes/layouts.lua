@@ -243,11 +243,22 @@ function Module:ConstructStyle(object, unit, isSingle)
         }
     end
 
+
+    -- Status bars
+    Module.CreateHealth(object)
+    Module.CreatePower(object)
+    Module.CreateHealthPrediction(object)
+
     -- Build the rest of the object depending on the style
     Module['Construct_'..object.style](self, object, unit, isSingle)
 end
 
 function Module:UpdateStyle(object)
+    -- Status bars
+    Module.ConfigureHealth(object)
+    Module.ConfigurePower(object)
+    Module.ConfigureHealthPrediction(object)
+
     -- Update the rest of the object depening on the style
     Module['Update_'..object.style](self, object)
 end
@@ -256,11 +267,6 @@ function Module:Construct_Zoey(object, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Status bars
     ----------------------------------------------------------------------------
-    Module.CreateHealth(object)
-    Module.CreateHealthPrediction(object)
-
-    Module.CreatePower(object)
-
     if unit == 'party' then
         Module.CreatePortrait(object)
     end
@@ -584,18 +590,9 @@ function Module:Construct_Zoey(object, unit, isSingle)
     end
 end
 function Module:Update_Zoey(object)
-    Module.ConfigureHealth(object)
-    Module.ConfigureHealthPrediction(object)
-    Module.ConfigurePower(object)
 end
 
 function Module:Construct_ZoeyThin(object, unit, isSingle)
-    ----------------------------------------------------------------------------
-    -- Status bars
-    ----------------------------------------------------------------------------
-    Module.CreateHealth(object)
-    Module.CreateHealthPrediction(object)
-
     ----------------------------------------------------------------------------
     -- Tags
     ----------------------------------------------------------------------------
@@ -632,8 +629,6 @@ function Module:Construct_ZoeyThin(object, unit, isSingle)
     object.PvPIndicator:SetPoint('CENTER', object.Overlay, 'LEFT')
 end
 function Module:Update_ZoeyThin(object)
-    Module.ConfigureHealth(object)
-    Module.ConfigureHealthPrediction(object)
 end
 
 function Module:Construct_ZoeySquare(object, unit, isSingle)
@@ -642,14 +637,6 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
         insideAlpha = 1,
         outsideAlpha = 0.25
     }
-
-    ----------------------------------------------------------------------------
-    -- Status bars
-    ----------------------------------------------------------------------------
-    Module.CreateHealth(object)
-    Module.CreateHealthPrediction(object)
-
-    Module.CreatePower(object)
 
     ----------------------------------------------------------------------------
     -- Tags
@@ -696,7 +683,4 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
     object.SummonIndicator:SetPoint('CENTER')
 end
 function Module:Update_ZoeySquare(object)
-    Module.ConfigureHealth(object)
-    Module.ConfigureHealthPrediction(object)
-    Module.ConfigurePower(object)
 end
