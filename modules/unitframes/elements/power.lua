@@ -48,7 +48,7 @@ function Module.GetPowerOptions()
                 name = L["Coloring"],
                 desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
                 type = 'execute',
-                func = function() ACD:SelectGroup('ZoeyUI', 'Unitframe', 'generalGroup', 'colorsGroup') end,
+                func = function() ACD:SelectGroup('ZoeyUI', 'Unitframes', 'generalGroup', 'colorsGroup') end,
             },
         },
     }
