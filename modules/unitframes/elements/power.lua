@@ -9,7 +9,6 @@ local CreateStatusBar = Module.CreateStatusBar
 function Module.GetPowerOptions()
     return {
         type = 'group',
-        inline = true,
         name = L['Power'],
         get = function(info)
             return info.handler.object.db.power[info[#info]]

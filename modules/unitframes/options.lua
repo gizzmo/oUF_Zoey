@@ -56,6 +56,12 @@ local function get_general_options()
         -- get = function(info) return Module.db.profile[ info[#info] ] end,
         -- set = function(info, value) Module.db.profile[ info[#info] ] = value end,
         args = {
+            desc = {
+                order = 0,
+                type = 'header',
+                name = L['|cffFF9900Note|r: These options affect all unitframes.'],
+                desc = L['This is the description.'],
+            },
             outOfRangeAlpha = {
                 order = new_order(1),
                 name = L["Out of range Alpha"],
@@ -114,6 +120,7 @@ local function get_general_options()
     options.args.colorsGroup = {
         order = new_order(),
         type = 'group',
+        inline = true,
         name = L["Colors"],
 
         -- Smart functions to deal with both colos and other types
@@ -165,7 +172,6 @@ local function get_general_options()
             healthGroup = {
                 order = new_order(),
                 type = 'group',
-                inline = true,
                 name = L['Health'],
                 args = {
                     -- IDEA: use select radio
@@ -254,7 +260,6 @@ local function get_general_options()
             powerGroup = {
                 order = new_order(),
                 type = 'group',
-                inline = true,
                 name = L['Power'],
                 args = {
                     power_class = {
@@ -323,7 +328,6 @@ local function get_general_options()
             staggerGroup = {
                 order = new_order(),
                 type = 'group',
-                inline = true,
                 name = L['Stagger'],
 
                 hidden = function(info) return playerClass ~= 'MONK' end,
@@ -366,7 +370,6 @@ local function get_general_options()
                 order = new_order(),
                 name = L["Health Prediction"],
                 type = 'group',
-                inline = true,
 
                 args = {
                     personal = {
@@ -407,7 +410,6 @@ local function get_general_options()
                 order = new_order(),
                 name = L["Debuff Highlighting"],
                 type = 'group',
-                inline = true,
 
                 args = {
                     Magic = {
@@ -439,7 +441,6 @@ local function get_general_options()
             reactionGroup = {
                 order = new_order(),
                 type = 'group',
-                inline = true,
                 name = L["Reactions"],
                 args = {
                     HATED = {
@@ -467,7 +468,6 @@ local function get_general_options()
             classificationGroup = {
                 order = new_order(),
                 type = 'group',
-                inline = true,
                 name = L['Classifications'],
 
                 args = {
@@ -496,7 +496,6 @@ local function get_general_options()
             castGroup = {
                 order = new_order(),
                 type = 'group',
-                inline = true,
                 name = L['Cast Bars'],
 
                 args = {
@@ -553,30 +552,30 @@ end
 ---------------------------------------------------------------- Unit Options --
 local unitOptionsTable = {
     generalGroup = {
-        order = new_order(10),
+        order = 1,
         type = 'group',
-        inline = true,
         name = L['General'],
 
         args = {
-            enable = {
-                order = new_order(),
-                type = 'toggle',
-                name = L['Enable'],
-                width = 'full',
-                disabled = true, -- disabled because its not implemented.
-            },
-            width = {
-                order = new_order(),
-                name = L["Width"],
-                type = 'range',
-                min = 50, max = 1000, step = 1,
-            },
-            height = {
-                order = new_order(),
-                name = L["Height"],
-                type = 'range',
-                min = 10, max = 500, step = 1,
+            sizeGroup = {
+                order = 1,
+                type = 'group',
+                inline = true,
+                name = L['Size'],
+                args = {
+                    width = {
+                        order = 1,
+                        name = L["Width"],
+                        type = 'range',
+                        min = 50, max = 1000, step = 1,
+                    },
+                    height = {
+                        order = 2,
+                        name = L["Height"],
+                        type = 'range',
+                        min = 10, max = 500, step = 1,
+                    },
+                },
             },
         },
     },
@@ -584,16 +583,13 @@ local unitOptionsTable = {
 
 -- Elements
 unitOptionsTable.healthGroup = Module.GetHealthOptions()
-unitOptionsTable.healthGroup.order = new_order(30)
-
 unitOptionsTable.powerGroup = Module.GetPowerOptions()
-unitOptionsTable.powerGroup.order = new_order(31)
 
 
 local function create_unit_options(name, unit)
     local tbl = {
         type = 'group',
-        childGroups = 'tab',
+        childGroups = 'tree',
         name = getName,
         args = unitOptionsTable,
         handler = { name = name, object = unit },
@@ -610,42 +606,52 @@ end
 
 --------------------------------------------------------------- Group Options --
 local groupOptionsTable = {
-    growthAndSpacingGroup = {
-        order = new_order(20),
+    generalGroup = {
+        order = 1,
         type = 'group',
-        inline = true,
-        name = L["Growth and Spacing"],
+        name = L['General'],
         args = {
-            direction = {
-                order = new_order(),
-                type = "select",
-                name = L["Growth Direction"],
-                values = singleGrowthDirectionValues,
-            },
-            spacing = {
-                order = new_order(),
-                type = "range",
-                name = L["Spacing"],
-                min = 0, max = 400, step = 1,
+            sizeGroup = unitOptionsTable.generalGroup.args.sizeGroup,
+            growthAndSpacingGroup = {
+                order = 2,
+                type = 'group',
+                inline = true,
+                name = L["Growth and Spacing"],
+                args = {
+                    direction = {
+                        order = 1,
+                        type = "select",
+                        name = L["Growth Direction"],
+                        values = singleGrowthDirectionValues,
+                    },
+                    spacing = {
+                        order = 2,
+                        type = "range",
+                        name = L["Spacing"],
+                        min = 0, max = 400, step = 1,
+                    },
+                },
             },
         },
     },
 }
 
+-- Merge in the element option tables
+for key, value in pairs(unitOptionsTable) do
+    if key ~= 'generalGroup' then
+        groupOptionsTable[key] = value
+    end
+end
+
 local function create_group_options(name, group)
     local tbl = {
         type = 'group',
-        childGroups = 'tab',
+        childGroups = 'tree',
         name = getName,
         args = groupOptionsTable,
         handler = { name = name, object = group },
         get = 'Get', set = 'Set',
     }
-
-    -- merg in unit specific options
-    for k, v in pairs(unitOptionsTable) do
-        tbl.args[k] = v
-    end
 
     for k, v in pairs(handlerPrototype) do
         tbl.handler[k] = v
@@ -656,163 +662,179 @@ end
 
 -------------------------------------------------------------- Header Options --
 local headerOptionsTable = {
-    growthAndSpacingGroup = {
-        order = new_order(20),
+    generalGroup = {
+        order = 1,
         type = 'group',
-        inline = true,
-        name = L["Growth and Spacing"],
+        name = L['General'],
         args = {
-            direction = {
-                order = new_order(),
-                type = "select",
-                name = L["Growth Direction"],
-                values = growthDirectionValues,
-            },
-            horizontalSpacing = {
-                order = new_order(),
-                type = "range",
-                name = L["Horizontal Spacing"],
-                min = 0, max = 400, step = 1,
-                get = function(info)
-                    local db = info.handler.object.db
-                    return db.horizontalSpacing or db.spacing
-                end
-            },
-            verticalSpacing = {
-                order = new_order(),
-                type = "range",
-                name = L["Vertical Spacing"],
-                min = 0, max = 400, step = 1,
-                get = function(info)
-                    local db = info.handler.object.db
-                    return db.verticalSpacing or db.spacing
-                end
-            },
-        },
-    },
-    sortingGroup = {
-        order = new_order(21),
-        type = 'group',
-        inline = true,
-        name = L["Grouping and Sorting"],
-        args = {
-            raidWideSorting = {
-                order = new_order(),
-                type = 'toggle',
-                name = L["Raid-Wide Sorting"],
-                desc = L["Enabling this will make you not be able to distinguish between groups."],
-            },
-            numGroups = {
-                order = new_order(),
-                type = 'range',
-                name = L["Number of Groups"],
-                min = 1, max = 8, step = 1,
-            },
-            groupsPerCol = {
-                order = new_order(),
-                type = 'range',
-                name = L["Groups per column"],
-                desc = L["The number of groups before creating a new row."],
-                min = 1, max = 8, step = 1,
-                disabled = function(info)
-                    return info.handler.object.db.numGroups == 1
-                end
-            },
-            invertGroupGrowth = {
-                order = new_order(),
-                type = 'toggle',
-                name = L['Invert group growth'],
-                desc = L['Change how groups grow.'],
-                disabled = function(info)
-                    return info.handler.object.db.groupsPerCol == 1
-                    or info.handler.object.db.raidWideSorting
-                end
-            },
-            sortBy = {
-                order = new_order(),
-                name = L["Sort By"],
-                desc = L["Set the order that the group will sort."],
-                type = 'select',
-                width = 1.15,
-                values = {
-                    CLASS = L["Class: classID"],
-                    CLASS_ALPH = L["Class: Alphabetically"],
-                    ROLE = L["Role: Tank, Healer, Damage"],
-                    NAME = L["Name"],
-                    GROUP = L["Group"],
+            sizeGroup = unitOptionsTable.generalGroup.args.sizeGroup,
+            growthAndSpacingGroup = {
+                order = 2,
+                type = 'group',
+                inline = true,
+                name = L["Growth and Spacing"],
+                args = {
+                    direction = {
+                        order = 1,
+                        type = "select",
+                        name = L["Growth Direction"],
+                        values = growthDirectionValues,
+                    },
+                    horizontalSpacing = {
+                        order = 2,
+                        type = "range",
+                        name = L["Horizontal Spacing"],
+                        min = 0, max = 400, step = 1,
+                        get = function(info)
+                            local db = info.handler.object.db
+                            return db.horizontalSpacing or db.spacing
+                        end
+                    },
+                    verticalSpacing = {
+                        order = 3,
+                        type = "range",
+                        name = L["Vertical Spacing"],
+                        min = 0, max = 400, step = 1,
+                        get = function(info)
+                            local db = info.handler.object.db
+                            return db.verticalSpacing or db.spacing
+                        end
+                    },
                 },
             },
-        },
-    },
-    visibilityGroup = {
-        order = new_order(22),
-        type = 'group',
-        inline = true,
-        name = L["Visibility"],
-        args = {
-            showPlayer = {
-                order = new_order(),
-                type = 'toggle',
-                name = L["Display Player"],
-                desc = L["When true, the header includes the player when not in a raid."],
+            sortingGroup = {
+                order = 3,
+                type = 'group',
+                inline = true,
+                name = L["Grouping and Sorting"],
+                args = {
+                    raidWideSorting = {
+                        order = 1,
+                        type = 'toggle',
+                        name = L["Raid-Wide Sorting"],
+                        desc = L["Enabling this will make you not be able to distinguish between groups."],
+                    },
+                    numGroups = {
+                        order = 2,
+                        type = 'range',
+                        name = L["Number of Groups"],
+                        min = 1, max = 8, step = 1,
+                    },
+                    groupsPerCol = {
+                        order = 3,
+                        type = 'range',
+                        name = L["Groups per column"],
+                        desc = L["The number of groups before creating a new row."],
+                        min = 1, max = 8, step = 1,
+                        disabled = function(info)
+                            return info.handler.object.db.numGroups == 1
+                        end
+                    },
+                    invertGroupGrowth = {
+                        order = 4,
+                        type = 'toggle',
+                        name = L['Invert group growth'],
+                        desc = L['Change how groups grow.'],
+                        disabled = function(info)
+                            return info.handler.object.db.groupsPerCol == 1
+                            or info.handler.object.db.raidWideSorting
+                        end
+                    },
+                    sortBy = {
+                        order = 5,
+                        name = L["Sort By"],
+                        desc = L["Set the order that the group will sort."],
+                        type = 'select',
+                        width = 1.15,
+                        values = {
+                            CLASS = L["Class: classID"],
+                            CLASS_ALPH = L["Class: Alphabetically"],
+                            ROLE = L["Role: Tank, Healer, Damage"],
+                            NAME = L["Name"],
+                            GROUP = L["Group"],
+                        },
+                    },
+                },
             },
-            visibility = {
-                order = new_order(),
-                type = 'input',
+            visibilityGroup = {
+                order = 4,
+                type = 'group',
+                inline = true,
                 name = L["Visibility"],
-                width = 'full',
-                -- TODO: validation?
-            },
-            visibilityHelp = {
-                order = new_order(),
-                type = 'description',
-                name = L["The above macro must be true in order for the group to be shown."],
-                -- TODO: Add better explaination and examples
-                fontSize = 'medium'
-            },
-            spacer = { -- the reset button is a bit to close to the description for my liking.
-                order = new_order(),
-                type = 'description',
-                name = ' ',
-                width = 'full',
-            },
-            resetVisibility = {
-                order = new_order(),
-                type = 'execute',
-                name = L["Restore Defaults"],
-                confirm = true,
-                confirmText = 'Are you sure you want to reset the visibility text to default',
-                func = function(info)
-                    local object = info.handler.object
-                    object.db.visibility = Module.db.defaults.profile.units[object.headerName].visibility
-                    object:Update()
-                end,
+                args = {
+                    showPlayer = {
+                        order = 1,
+                        type = 'toggle',
+                        name = L["Display Player"],
+                        desc = L["When true, the header includes the player when not in a raid."],
+                    },
+                    visibility = {
+                        order = 2,
+                        type = 'input',
+                        name = L["Visibility"],
+                        width = 'full',
+                        -- TODO: validation?
+                    },
+                    visibilityHelp = {
+                        order = 3,
+                        type = 'description',
+                        name = L["The above macro must be true in order for the group to be shown."],
+                        -- TODO: Add better explaination and examples
+                        fontSize = 'medium'
+                    },
+                    spacer = { -- the reset button is a bit to close to the description for my liking.
+                        order = 4,
+                        type = 'description',
+                        name = ' ',
+                        width = 'full',
+                    },
+                    resetVisibility = {
+                        order = 5,
+                        type = 'execute',
+                        name = L["Restore Defaults"],
+                        confirm = true,
+                        confirmText = 'Are you sure you want to reset the visibility text to default',
+                        func = function(info)
+                            local object = info.handler.object
+                            object.db.visibility = Module.db.defaults.profile.units[object.headerName].visibility
+                            object:Update()
+                        end,
+                    },
+                },
             },
         },
     },
 }
 
+-- Merge in the element option tables
+for key, value in pairs(unitOptionsTable) do
+    if key ~= 'generalGroup' then
+        headerOptionsTable[key] = value
+    end
+end
+
 -- Child frames
 headerOptionsTable.targetChildGroup = {
-    order = new_order(),
+    order = -1,
     type = 'group',
-    inline = true,
     name = L['Target Child'],
     args = {
+        sizeGroup = unitOptionsTable.generalGroup.args.sizeGroup,
         sideAndSpacingGroup = {
-            order = new_order(),
+            order = 2,
             type = 'group',
+            inline = true,
             name = L['Side Anchoring and Spacing'],
             args = {
                 side = {
-                    order = new_order(),
+                    order = 1,
                     type = "select",
                     name = L["Side Anchor"],
                     desc = L['Attaching to which side, and then aligning.'],
                     values = sideAnchorValues,
                 },
                 spacing = {
-                    order = new_order(),
+                    order = 2,
                     type = "range",
                     name = L["Spacing"],
                     min = 0, max = 100, step = 1,
@@ -823,33 +845,39 @@ headerOptionsTable.targetChildGroup = {
     -- Because child units' db are not attached to the handler/header,
     -- we have to use the option keys to find the db entry.
     get = function(info)
-        local childUnit = info[2]..info[3]:sub(0, -11)
+        local childUnit = info[3]..info[4]:sub(0, -11)
         return Module.db.profile.units[childUnit][info[#info]]
     end,
     set = function(info, value)
-        local childUnit =  info[2]..info[3]:sub(0, -11)
+        local childUnit =  info[3]..info[4]:sub(0, -11)
         Module.db.profile.units[childUnit][info[#info]] = value
+
+        for k, v in pairs(info) do
+            print(k,v)
+        end
 
         -- This will trickle its way down to the child
         info.handler.object:Update()
     end,
     hidden = function(info)
-        local childName = info[3]:sub(0, -11)
+        local childName = info[4]:sub(0, -11)
         local template = info.handler.object.template
         local hasTemplate = template and template:lower():match(childName)
         return not hasTemplate
     end,
 }
 
--- header child object needs base unit options
-for k, v in pairs(unitOptionsTable) do
-    headerOptionsTable.targetChildGroup.args[k] = v
-end
+--[[ TODO: Fix elements not affecting child units properly. ]]
+-- Merge in the element option tables
+-- for key, value in pairs(unitOptionsTable) do
+--     if key ~= 'generalGroup' then
+--         headerOptionsTable.targetChildGroup.args[key] = value
+--     end
+-- end
 
 headerOptionsTable.petChildGroup = {
-    order = new_order(),
+    order = -1,
     type = 'group',
-    inline = true,
     name = L['Pet Child'],
     args = headerOptionsTable.targetChildGroup.args,
     get = headerOptionsTable.targetChildGroup.get,
@@ -860,17 +888,12 @@ headerOptionsTable.petChildGroup = {
 local function create_header_options(name, header)
     local tbl = {
         type = 'group',
-        childGroups = 'tab',
+        childGroups = 'tree',
         name = getName,
         args = headerOptionsTable,
         handler = { name = name, object = header },
         get = 'Get', set = 'Set',
     }
-
-    -- merg in unit specific options
-    for k, v in pairs(unitOptionsTable) do
-        tbl.args[k] = v
-    end
 
     for k, v in pairs(handlerPrototype) do
         tbl.handler[k] = v
@@ -884,26 +907,39 @@ function Module.get_module_options()
     local options = {
         type = 'group',
         name = L['Unitframes'],
-        args = {},
-        childGroups = 'tree',
+        childGroups = 'tab',
+        args = {
+            individualUnits = {
+                order = 1,
+                type = 'group',
+                childGroups = 'tab',
+                name = L['Individual Units'],
+                args = {},
+            },
+            groupUnits = {
+                order = 2,
+                type = 'group',
+                childGroups = 'tab',
+                name = L['Group Units'],
+                args = {},
+            },
+        },
     }
 
     options.args.generalGroup = get_general_options()
-    options.args.generalGroup.order = new_order(1)
+    options.args.generalGroup.order = 1
 
+    --[[ TODO: ordering of units. Alphabetical isnt that nice]]
     for name, unit in pairs(Module.units) do
-        options.args[name] = create_unit_options(name, unit)
-        options.args[name].order = 2
+        options.args.individualUnits.args[name] = create_unit_options(name, unit)
     end
 
     for name, group in pairs(Module.groups) do
-        options.args[name] = create_group_options(name, group)
-        options.args[name].order = 3
+        options.args.groupUnits.args[name] = create_group_options(name, group)
     end
 
     for name, header in pairs(Module.headers) do
-        options.args[name] = create_header_options(name, header)
-        options.args[name].order = 4
+        options.args.groupUnits.args[name] = create_header_options(name, header)
     end
 
     return options

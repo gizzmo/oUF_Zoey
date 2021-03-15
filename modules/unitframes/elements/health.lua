@@ -10,7 +10,6 @@ function Module.GetHealthOptions()
     return {
         type = 'group',
         name = 'Health',
-        inline = true,
         get = function(info)
             return info.handler.object.db.health[info[#info]]
         end,
