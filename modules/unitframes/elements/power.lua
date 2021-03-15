@@ -63,21 +63,20 @@ end
 --]]
 local function UpdateColor(self, event, unit)
     local db = Module.db.profile.colors
-    local Power = self.Power
-    local parent = Power.__owner
+    local element = self.Power
     local r, g, b, t
 
     if db.power_class and UnitIsPlayer(unit) then
         local class = select(2, UnitClass(unit))
-        t = parent.colors.class[class]
+        t = self.colors.class[class]
     elseif db.power_class and UnitReaction(unit, 'player') then
-        t = parent.colors.reaction[UnitReaction(unit, 'player')]
+        t = self.colors.reaction[UnitReaction(unit, 'player')]
     elseif db.power_custom then
-        t = parent.colors.power.custom
+        t = self.colors.power.custom
     else
         local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 
-        t = parent.colors.power[ptoken]
+        t = self.colors.power[ptoken]
         if not t then
             if altR then
                 r, g, b = altR, altG, altB
@@ -87,7 +86,7 @@ local function UpdateColor(self, event, unit)
                     r, g, b = r / 255, g / 255, b / 255
                 end
             else
-                t = parent.colors.power[ptype]
+                t = self.colors.power[ptype]
             end
         end
     end
@@ -97,9 +96,9 @@ local function UpdateColor(self, event, unit)
     end
 
     if r or g or b then
-        Power:SetStatusBarColor(r, g, b)
+        element:SetStatusBarColor(r, g, b)
 
-        local bg = Power.bg
+        local bg = element.bg
         if bg then
             local mult = 0.4
             bg:SetVertexColor(r * mult, g * mult, b * mult)

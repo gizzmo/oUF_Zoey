@@ -52,23 +52,22 @@ end
 --]]
 local function UpdateColor(self, event, unit)
     local db = Module.db.profile.colors
-    local Health = self.Health
-    local parent = Health.__owner
+    local element = self.Health
     local r, g, b, t
 
     if not UnitPlayerControlled(unit) and UnitIsTapDenied(unit) then
-        t = parent.colors.tapped
-    elseif Health.disconnected then
-        t = parent.colors.disconnected
+        t = self.colors.tapped
+    elseif element.disconnected then
+        t = self.colors.disconnected
     elseif db.health_class and UnitIsPlayer(unit) and not db.health_force_reaction then
         local _, class = UnitClass(unit)
-        t = parent.colors.class[class]
+        t = self.colors.class[class]
     elseif db.health_class and UnitReaction(unit, 'player') then
-        t = parent.colors.reaction[UnitReaction(unit, 'player')]
+        t = self.colors.reaction[UnitReaction(unit, 'player')]
     elseif db.health_by_value then
-        r, g, b = parent.ColorGradient(element.cur, element.max, unpack(parent.colors.smooth))
+        r, g, b = self.ColorGradient(element.cur, element.max, unpack(self.colors.smooth))
     else
-        t = parent.colors.health
+        t = self.colors.health
     end
 
     if t then
@@ -76,9 +75,9 @@ local function UpdateColor(self, event, unit)
     end
 
     if r or g or b then
-        Health:SetStatusBarColor(r, g, b)
+        element:SetStatusBarColor(r, g, b)
 
-        local bg = Health.bg
+        local bg = element.bg
         if bg then
             local t
 
@@ -89,9 +88,9 @@ local function UpdateColor(self, event, unit)
                 local t
                 if UnitIsPlayer(unit) then
                     local _, class = UnitClass(unit)
-                    t = parent.colors.class[class]
+                    t = self.colors.class[class]
                 elseif UnitReaction(unit, 'player') then
-                    t = parent.colors.reaction[UnitReaction(unit, 'player')]
+                    t = self.colors.reaction[UnitReaction(unit, 'player')]
                 end
 
                 if t then
