@@ -170,6 +170,7 @@ local defaultDB = {
                     orientation = 'HORIZONTAL'
                 },
                 power = {
+                    enabled = true,
                     height = 10
                 }
             },
@@ -183,15 +184,27 @@ local defaultDB = {
             focustarget = {},
             pet = {
                 height = 20,
+                power = {
+                    enabled = false
+                }
             },
             pettarget = {
                 height = 20,
+                power = {
+                    enabled = false
+                }
             },
             targettarget = {
                 height = 20,
+                power = {
+                    enabled = false
+                }
             },
             targettargettarget = {
                 height = 20,
+                power = {
+                    enabled = false
+                }
             },
 
             -- groups
@@ -218,6 +231,9 @@ local defaultDB = {
             },
             partypet = {
                 height = 20,
+                power = {
+                    enabled = false,
+                },
 
                 side = 'BOTTOM',
                 spacing = 8,

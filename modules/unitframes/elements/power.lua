@@ -18,11 +18,10 @@ function Module.GetPowerOptions()
             info.handler.object:Update()
         end,
         args = {
-            enable = {
+            enabled = {
                 type = 'toggle',
                 order = 1,
                 name = L["Enable"],
-                disabled = true,
             },
             height = {
                 order = 2,
@@ -113,24 +112,37 @@ end
 
 function Module.CreatePower(object)
     local element = CreateStatusBar(object)
-    element:SetPoint('LEFT', 1, 0)
-    element:SetPoint('RIGHT', -1, 0)
-    element:SetPoint('BOTTOM', 0, 1)
     element.frequentUpdates = true
     element.UpdateColor = UpdateColor
     element.PostUpdate = PostUpdate
 
     object.Power = element
-
-    -- Reanchor the health bar.
-    object.Health:SetPoint('BOTTOM', object.Power, 'TOP', 0, 1)
 end
 
 function Module.ConfigurePower(object)
     local db = object.db
-    local power = object.Power
+    local element = object.Power
 
-    power:SetHeight(math.max(1, math.min(db.power.height, db.height - 5)))
+    if db.power.enabled then
+        -- Enable the oUF Element
+        object:EnableElement('Power')
 
-    power:SetReverseFill(db.power.reverseFill)
+        -- Anchor the element
+        element:ClearAllPoints()
+        element:SetPoint('LEFT', 1, 0)
+        element:SetPoint('RIGHT', -1, 0)
+        element:SetPoint('BOTTOM', 0, 1)
+        object.Health:SetPoint('BOTTOM', element, 'TOP', 0, 1)
+
+        element:SetHeight(math.max(1, math.min(db.power.height, db.height - 5)))
+
+        element:SetReverseFill(db.power.reverseFill)
+
+    else
+        -- Disable the element, we dont need it anymore.
+        object:DisableElement('Power')
+
+        -- Undo health reanchoring we did.
+        object.Health:SetPoint('BOTTOM', 0, 1)
+    end
 end
