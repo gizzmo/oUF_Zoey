@@ -852,10 +852,6 @@ headerOptionsTable.targetChildGroup = {
         local childUnit =  info[3]..info[4]:sub(0, -11)
         Module.db.profile.units[childUnit][info[#info]] = value
 
-        for k, v in pairs(info) do
-            print(k,v)
-        end
-
         -- This will trickle its way down to the child
         info.handler.object:Update()
     end,
