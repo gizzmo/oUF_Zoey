@@ -172,6 +172,9 @@ local defaultDB = {
                 power = {
                     enabled = true,
                     height = 10
+                },
+                portrait = {
+                    enabled = false,
                 }
             },
             player = {
@@ -216,6 +219,11 @@ local defaultDB = {
             -- headers
             party = {
                 height = 80,
+
+                portrait = {
+                    enabled = true,
+                    size = 40,
+                },
 
                 direction = 'UP',
                 spacing = 50,

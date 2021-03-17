@@ -584,6 +584,7 @@ local unitOptionsTable = {
 -- Elements
 unitOptionsTable.healthGroup = Module.GetHealthOptions()
 unitOptionsTable.powerGroup = Module.GetPowerOptions()
+unitOptionsTable.portraitGroup = Module.GetPortraitOptions()
 
 
 local function create_unit_options(name, unit)

@@ -590,6 +590,9 @@ function Module:Construct_Zoey(object, unit, isSingle)
     end
 end
 function Module:Update_Zoey(object)
+    if object.objectName == 'party' then
+        Module.ConfigurePortrait(object)
+    end
 end
 
 function Module:Construct_ZoeyThin(object, unit, isSingle)
