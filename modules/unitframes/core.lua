@@ -736,16 +736,12 @@ function holderMethods:Update()
         RegisterStateDriver(self, 'visibility', self.isForced and 'show' or self.visibility)
     end
 
-    -- Update child header visibility
-    for i = 1, #self do
+    -- Hide child headers that aren't used.
+    for i = numChildHeaders + 1, #self do
         local childHeader = self[i]
 
-        -- Hide child headers that aren't needed anymore.
-        if i > numChildHeaders then
-            childHeader:Hide()
-        else
-            childHeader:Show()
-        end
+        childHeader:Hide()
+        childHeader:ClearAllPoints()
     end
 
     local point = directionToAnchorPoint[db.direction]
@@ -796,6 +792,7 @@ function holderMethods:Update()
         -- Reenable Updating and set a attribute to force an update
         childHeader:SetAttribute('_ignore', oldIgnore)
         childHeader:SetAttribute('ForceUpdate')
+        childHeader:Show()
 
         -- Start over with anchors
         childHeader:ClearAllPoints()
