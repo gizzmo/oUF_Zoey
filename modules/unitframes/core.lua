@@ -281,6 +281,9 @@ function Module:OnInitialize()
 
     -- Every object gets a update method to update its style
     oUF:RegisterMetaFunction('Update', self.UpdateObject)
+
+    -- Immediately update the object after updating it.
+    oUF:RegisterInitCallback(self.UpdateObject)
 end
 
 function Module:OnEnable()
@@ -524,8 +527,6 @@ function Module:CreateUnit(unit)
             object[k] = v
         end
 
-        object:Update()
-
         self.units[unit] = object
     end
 
@@ -578,6 +579,16 @@ function Module:CreateGroup(group, numUnits)
         for k, v in pairs(groupMethods) do
             holder[k] = v
         end
+
+        --[[ TODO: Fix bug
+            `self.UpdateObject` is called twice, once just after oUF initializes
+            the object and again after when we call the 'Update' method, which
+            is needed to configure things.
+
+            It's not a major issue, it only happens durning initial loading,
+            but it bothers me none-the-less.
+
+        ]]
 
         holder:Update()
 
