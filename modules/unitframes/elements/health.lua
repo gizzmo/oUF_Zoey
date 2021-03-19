@@ -10,13 +10,6 @@ function Module.GetHealthOptions()
     return {
         type = 'group',
         name = 'Health',
-        get = function(info)
-            return info.handler.object.db.health[info[#info]]
-        end,
-        set = function(info, value)
-            info.handler.object.db.health[info[#info]] = value
-            info.handler.object:Update()
-        end,
         args = {
             reverseFill = {
                 order = 1,

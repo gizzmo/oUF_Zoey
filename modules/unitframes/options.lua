@@ -549,6 +549,34 @@ local function getName(info)
     return info.handler:GetName()
 end
 
+
+
+------------------------------------------------------------ Elements Options --
+local elementsOptions = {}
+function handlerPrototype:GetElement(info)
+    -- TODO: if options are in sub groups, we may need to find it farther down the tree
+    local element = info[#info-1]:lower()
+    return self.object.db[element][info[#info]]
+end
+function handlerPrototype:SetElement(info, value)
+    local element = info[#info-1]:lower()
+    self.object.db[element][info[#info]] = value
+    self.object:Update()
+end
+
+-- TODO: make a registration system for elements.
+local availableElements = {'Health', 'Power', 'Portrait'}
+
+for i, element in ipairs(availableElements) do
+    local tbl = Module['Get'..element..'Options']()
+
+    -- Dont overwrite get/set methods
+    tbl.get = tbl.get or 'GetElement'
+    tbl.set = tbl.set or 'SetElement'
+
+    elementsOptions[element] = tbl
+end
+
 ---------------------------------------------------------------- Unit Options --
 local unitOptionsTable = {
     generalGroup = {
@@ -581,12 +609,6 @@ local unitOptionsTable = {
     },
 }
 
--- Elements
-unitOptionsTable.healthGroup = Module.GetHealthOptions()
-unitOptionsTable.powerGroup = Module.GetPowerOptions()
-unitOptionsTable.portraitGroup = Module.GetPortraitOptions()
-
-
 local function create_unit_options(name, unit)
     local tbl = {
         type = 'group',
@@ -599,6 +621,10 @@ local function create_unit_options(name, unit)
 
     for k, v in pairs(handlerPrototype) do
         tbl.handler[k] = v
+    end
+
+    for k, v in pairs(elementsOptions) do
+        tbl.args[k] = v
     end
 
     return tbl
@@ -637,13 +663,6 @@ local groupOptionsTable = {
     },
 }
 
--- Merge in the element option tables
-for key, value in pairs(unitOptionsTable) do
-    if key ~= 'generalGroup' then
-        groupOptionsTable[key] = value
-    end
-end
-
 local function create_group_options(name, group)
     local tbl = {
         type = 'group',
@@ -656,6 +675,10 @@ local function create_group_options(name, group)
 
     for k, v in pairs(handlerPrototype) do
         tbl.handler[k] = v
+    end
+
+    for k, v in pairs(elementsOptions) do
+        tbl.args[k] = v
     end
 
     return tbl
@@ -807,13 +830,6 @@ local headerOptionsTable = {
     },
 }
 
--- Merge in the element option tables
-for key, value in pairs(unitOptionsTable) do
-    if key ~= 'generalGroup' then
-        headerOptionsTable[key] = value
-    end
-end
-
 -- Child frames
 headerOptionsTable.targetChildGroup = {
     order = -1,
@@ -894,6 +910,10 @@ local function create_header_options(name, header)
 
     for k, v in pairs(handlerPrototype) do
         tbl.handler[k] = v
+    end
+
+    for k, v in pairs(elementsOptions) do
+        tbl.args[k] = v
     end
 
     return tbl

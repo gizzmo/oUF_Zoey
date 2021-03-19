@@ -10,13 +10,6 @@ function Module.GetPowerOptions()
     return {
         type = 'group',
         name = L['Power'],
-        get = function(info)
-            return info.handler.object.db.power[info[#info]]
-        end,
-        set = function(info, value)
-            info.handler.object.db.power[info[#info]] = value
-            info.handler.object:Update()
-        end,
         args = {
             enabled = {
                 type = 'toggle',
