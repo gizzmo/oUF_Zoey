@@ -220,7 +220,7 @@ function Module:ConstructStyle(object, unit, isSingle)
     table.insert(object.__elements, UpdateUnitBorderColor)
 
     -- Highlight
-    Module.CreateHighlight(object)
+    object:CreateElement('Highlight')
 
     -- Frame Range Fading
     object[IsAddOnLoaded('oUF_SpellRange') and 'SpellRange' or 'Range'] = {
@@ -245,22 +245,20 @@ function Module:ConstructStyle(object, unit, isSingle)
 
 
     -- Status bars
-    Module.CreateHealth(object)
-    Module.CreatePower(object)
-    Module.CreateHealthPrediction(object)
+    object:CreateElement('Health')
+    object:CreateElement('Power')
+    object:CreateElement('HealthPrediction')
 
     -- Build the rest of the object depending on the style
     Module['Construct_'..object.style](self, object, unit, isSingle)
 end
 
 function Module:UpdateStyle(object)
-    -- Status bars
-    Module.ConfigureHealth(object)
-    Module.ConfigurePower(object)
-    Module.ConfigureHealthPrediction(object)
-
     -- Update the rest of the object depening on the style
     Module['Update_'..object.style](self, object)
+
+    -- This will only configure elements that exist on the object.
+    object:ConfigureAllElements()
 end
 
 function Module:Construct_Zoey(object, unit, isSingle)
@@ -268,7 +266,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
     -- Status bars
     ----------------------------------------------------------------------------
     if unit == 'party' then
-        Module.CreatePortrait(object)
+        object:CreateElement('Portrait')
     end
 
     ----------------------------------------------------------------------------
@@ -276,13 +274,13 @@ function Module:Construct_Zoey(object, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Class Power
     if unit == 'player' then
-        Module.CreateClassPower(object)
+        object:CreateElement('ClassPower')
 
         -- Monk Stagger Bar
         if playerClass == 'MONK' then
-            Module.CreateStaggerBar(object)
+            object:CreateElement('StaggerBar')
         elseif playerClass == 'PRIEST' then
-            -- Module.CreateAdditionalPowerBar(object)
+            -- object:CreateElement('AdditionalPowerBar')
         end
     end
 
@@ -590,9 +588,6 @@ function Module:Construct_Zoey(object, unit, isSingle)
     end
 end
 function Module:Update_Zoey(object)
-    if object.objectName == 'party' then
-        Module.ConfigurePortrait(object)
-    end
 end
 
 function Module:Construct_ZoeyThin(object, unit, isSingle)
