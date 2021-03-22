@@ -8,15 +8,6 @@ local CreateFontString = Module.CreateFontString
 local CreateStatusBar = Module.CreateStatusBar
 
 
-local function UpdateUnitBorderColor(object)
-    if not object.Border or not object.unit then return end
-
-    local c = UnitClassification(object.unit)
-    if c == 'worldboss' then c = 'boss' end
-    local t = object.colors.classification[c] or object.colors.border
-
-    object.Border:SetColor(unpack(t))
-end
 
 
 --------------------------------------------------------------------------------
@@ -214,10 +205,8 @@ function Module:ConstructStyle(object, unit, isSingle)
     object.bg:SetAllPoints(object)
     object.bg:SetColorTexture(0, 0, 0, 1)
 
-    -- Border: changes color depending on the unit's classification (rare,elite)
-    Addon:CreateBorder(object)
-    object:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', UpdateUnitBorderColor)
-    table.insert(object.__elements, UpdateUnitBorderColor)
+    -- Border
+    object:CreateElement('Border')
 
     -- Highlight
     object:CreateElement('Highlight')
