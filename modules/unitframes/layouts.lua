@@ -237,6 +237,7 @@ function Module:ConstructStyle(object, unit, isSingle)
     object:CreateElement('Health')
     object:CreateElement('Power')
     object:CreateElement('HealthPrediction')
+    object:CreateElement('Portrait')
 
     -- Build the rest of the object depending on the style
     Module['Construct_'..object.style](self, object, unit, isSingle)
@@ -251,13 +252,6 @@ function Module:UpdateStyle(object)
 end
 
 function Module:Construct_Zoey(object, unit, isSingle)
-    ----------------------------------------------------------------------------
-    -- Status bars
-    ----------------------------------------------------------------------------
-    if unit == 'party' then
-        object:CreateElement('Portrait')
-    end
-
     ----------------------------------------------------------------------------
     -- Class Specific
     ----------------------------------------------------------------------------
@@ -289,7 +283,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
     object.PowerTextTag:SetPoint('RIGHT', object.Power, -1, -1)
     object:Tag(object.PowerTextTag, '[Power]')
 
-    if object.Portrait then
+    if unit == 'party' then
         object.GuildTag = CreateFontString(object.Overlay, 12)
         object.GuildTag:SetPoint('TOP', object.NameTag, 'BOTTOM', 0, -1)
         object.GuildTag:SetPoint('LEFT', object.NameTag)
