@@ -134,8 +134,5 @@ function Module.ConfigurePower(object)
     else
         -- Disable the element, we dont need it anymore.
         object:DisableElement('Power')
-
-        -- Undo health reanchoring we did.
-        object.Health:SetPoint('BOTTOM', 0, 1)
     end
 end

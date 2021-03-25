@@ -104,10 +104,6 @@ end
 
 function Module.CreateHealth(object)
     local element = CreateStatusBar(object)
-    element:SetPoint('TOP', 0, -1)
-    element:SetPoint('LEFT', 1, 0)
-    element:SetPoint('RIGHT', -1, 0)
-    element:SetPoint('BOTTOM', 0, 1)
     element.UpdateColor = UpdateColor
 
     object.Health = element
@@ -115,9 +111,16 @@ end
 
 function Module.ConfigureHealth(object)
     local db = object.db
-    local health = object.Health
+    local element = object.Health
+
+    -- Anchoring
+    element:ClearAllPoints()
+    element:SetPoint('TOP', 0, -1)
+    element:SetPoint('LEFT', 1, 0)
+    element:SetPoint('RIGHT', -1, 0)
+    element:SetPoint('BOTTOM', 0, 1)
 
     -- Not every frame will have this option.
-    health:SetOrientation(db.health.orientation or 'HORIZONTAL')
-    health:SetReverseFill(db.health.reverseFill)
+    element:SetOrientation(db.health.orientation or 'HORIZONTAL')
+    element:SetReverseFill(db.health.reverseFill)
 end

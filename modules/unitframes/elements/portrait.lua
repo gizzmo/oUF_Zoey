@@ -63,7 +63,5 @@ function Module.ConfigurePortrait(object)
         object.Health:SetPoint('TOP', element, 'BOTTOM', 0, -1.5)
     else
         object:DisableElement('Portrait')
-
-        object.Health:SetPoint('TOP', 0, -1)
     end
 end
