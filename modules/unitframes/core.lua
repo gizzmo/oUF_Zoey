@@ -464,36 +464,40 @@ end
     we can easly loop over that list and update each one. This will reduce
     duplicate code.
 ]]
-local existingElements = {}
+local existingElements, orderedElements = {},{}
 
-function Module.GetExistingElements(object, silent)
-    if not silent and not existingElements[object] then
+-- Check if a element already exists on the given object.
+function Module.HasElement(object, name, silent)
+    local elements = existingElements[object]
+
+    if not elements and not silent then
         error(L['No elements created on object \'%s\'']:format(object:GetName()), 2)
     end
 
-    return existingElements[object]
-end
-
--- Check if a element already exists on the given object.
-function Module.HasElement(object, name)
-    local elements = Module.GetExistingElements(object)
-    return elements and elements[name] and true or false
+    return elements[name] and true or false
 end
 
 -- Create an element on the given frame.
 function Module.CreateElement(object, name, ...)
-    if Module.HasElement(object, name) then
+    -- Insure that the entry for the object exists.
+    if not existingElements[object] then
+        existingElements[object] = {}
+        orderedElements[object] = {}
+    end
+
+    if Module.HasElement(object, name, true) then
         error(L['Can not add element \'%s\' to \'%s\' as it already exists.']:format(name, object:Getname()), 2)
     end
 
     Module['Create'..name](object, ...)
 
     existingElements[object][name] = true
+    tinsert(orderedElements[object], name)
 end
 
 -- Configure an element.
 function Module.ConfigureElement(object, name, ...)
-    if not Module.HasElement(object, name) then
+    if not Module.HasElement(object, name, true) then
         error(L['No element named \'%s\' on object \'%s\'']:format(name, object:GetName()), 2)
     end
 
@@ -502,7 +506,7 @@ function Module.ConfigureElement(object, name, ...)
 end
 
 function Module.ConfigureAllElements(object, silent)
-    for name in pairs(Module.GetExistingElements(object, silent)) do
+    for _, name in ipairs(orderedElements[object]) do
         Module.ConfigureElement(object, name)
     end
 end
@@ -548,8 +552,6 @@ function Module.InitObject(object, unit, isSingle)
     object.Overlay = CreateFrame('Frame', nil, object)
     object.Overlay:SetAllPoints(object)
     object.Overlay:SetFrameLevel(10) -- TODO: does it have to be that high?
-
-    existingElements[object] = {}
 
     -- Finish building the Style
     Module:ConstructStyle(object, unit, isSingle)
