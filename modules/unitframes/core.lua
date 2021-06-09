@@ -238,6 +238,13 @@ local defaultDB = {
                     enabled = true,
                     size = 40,
                 },
+                readyCheckIndicator = {
+                    enabled = true,
+                    size = -1,
+                    anchorPoint = 'CENTER',
+                    xOffset = 0,
+                    yOffset = 0,
+                },
 
                 direction = 'UP',
                 spacing = 50,
@@ -269,6 +276,13 @@ local defaultDB = {
                 },
                 power = {
                     height = 5
+                },
+                readyCheckIndicator = {
+                    enabled = true,
+                    size = -1,
+                    anchorPoint = 'CENTER',
+                    xOffset = 0,
+                    yOffset = 0,
                 },
 
                 direction = 'RIGHT_UP',

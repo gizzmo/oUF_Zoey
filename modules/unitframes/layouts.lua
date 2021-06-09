@@ -244,6 +244,11 @@ function Module:ConstructStyle(object, unit, isSingle)
         object:CreateElement('RestingIndicator')
         object:CreateElement('CombatIndicator')
     end
+    if unit == 'party'
+    or unit == 'raid' then
+        object:CreateElement('ReadyCheckIndicator')
+    end
+
 
     -- Build the rest of the object depending on the style
     Module['Construct_'..object.style](self, object, unit, isSingle)
@@ -304,12 +309,6 @@ function Module:Construct_Zoey(object, unit, isSingle)
         object.QuestIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
         object.QuestIndicator:SetSize(32,32)
         object.QuestIndicator:SetPoint('CENTER', object.Overlay, 'LEFT')
-    end
-
-    if unit == 'party' then
-        object.ReadyCheckIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
-        object.ReadyCheckIndicator:SetSize(object:GetHeight(), object:GetHeight())
-        object.ReadyCheckIndicator:SetPoint('CENTER')
     end
 
     if unit == 'party' or unit == 'target' or unit == 'focus' then
@@ -642,10 +641,6 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
     object.GroupRoleIndicator = CreateCornerIndicator(object.Overlay)
     object.GroupRoleIndicator:SetPoint('TOPRIGHT')
     object.GroupRoleIndicator.Override = GroupRoleCornerIndicator
-
-    object.ReadyCheckIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
-    object.ReadyCheckIndicator:SetSize(object:GetHeight(), object:GetHeight())
-    object.ReadyCheckIndicator:SetPoint('CENTER')
 
     object.RaidTargetIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
     object.RaidTargetIndicator:SetSize(16,16)
