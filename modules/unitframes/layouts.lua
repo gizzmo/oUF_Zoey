@@ -242,6 +242,7 @@ function Module:ConstructStyle(object, unit, isSingle)
     -- Icons
     if unit == 'player' then
         object:CreateElement('RestingIndicator')
+        object:CreateElement('CombatIndicator')
     end
 
     -- Build the rest of the object depending on the style
@@ -299,12 +300,6 @@ function Module:Construct_Zoey(object, unit, isSingle)
     ----------------------------------------------------------------------------
     -- Indicators
     ----------------------------------------------------------------------------
-    if unit == 'player' then
-        object.CombatIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
-        object.CombatIndicator:SetSize(20,20)
-        object.CombatIndicator:SetPoint('RIGHT', object.Overlay, 'BOTTOMRIGHT', 0, 2)
-    end
-
     if unit == 'target' then
         object.QuestIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
         object.QuestIndicator:SetSize(32,32)

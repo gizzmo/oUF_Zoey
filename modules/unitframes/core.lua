@@ -186,6 +186,13 @@ local defaultDB = {
                     xOffset = 10,
                     yOffset = 2,
                 },
+                combatIndicator = {
+                    enabled = true,
+                    size = 20,
+                    anchorPoint = 'BOTTOMRIGHT',
+                    xOffset = -10,
+                    yOffset = 2,
+                },
             },
             target = {
                 width = 227,
