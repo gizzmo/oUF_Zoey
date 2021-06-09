@@ -175,7 +175,14 @@ local defaultDB = {
                 },
                 portrait = {
                     enabled = false,
-                }
+                },
+                resurrectIndicator = {
+                    enabled = true,
+                    size = -1,
+                    anchorPoint = 'CENTER',
+                    xOffset = 0,
+                    yOffset = 0,
+                },
             },
             player = {
                 width = 227,

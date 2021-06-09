@@ -249,6 +249,12 @@ function Module:ConstructStyle(object, unit, isSingle)
         object:CreateElement('ReadyCheckIndicator')
     end
 
+    if unit == 'player'
+    or unit == 'target'
+    or unit == 'party'
+    or unit == 'raid' then
+        object:CreateElement('ResurrectIndicator')
+    end
 
     -- Build the rest of the object depending on the style
     Module['Construct_'..object.style](self, object, unit, isSingle)
@@ -339,10 +345,6 @@ function Module:Construct_Zoey(object, unit, isSingle)
     object.PvPIndicator.Badge = object.Overlay:CreateTexture(nil, 'OVERLAY')
     object.PvPIndicator.Badge:SetSize(41,43)
     object.PvPIndicator.Badge:SetPoint('CENTER', object.PvPIndicator)
-
-    object.ResurrectIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
-    object.ResurrectIndicator:SetSize(object:GetHeight(), object:GetHeight())
-    object.ResurrectIndicator:SetPoint('CENTER')
 
     object.SummonIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
     object.SummonIndicator:SetSize(object:GetHeight(), object:GetHeight())
@@ -645,10 +647,6 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
     object.RaidTargetIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
     object.RaidTargetIndicator:SetSize(16,16)
     object.RaidTargetIndicator:SetPoint('LEFT', 3, 0)
-
-    object.ResurrectIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
-    object.ResurrectIndicator:SetSize(object:GetHeight(), object:GetHeight())
-    object.ResurrectIndicator:SetPoint('CENTER')
 
     object.SummonIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
     object.SummonIndicator:SetSize(object:GetHeight(), object:GetHeight())
