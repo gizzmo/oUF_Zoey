@@ -179,6 +179,13 @@ local defaultDB = {
             },
             player = {
                 width = 227,
+                restingIndicator = {
+                    enabled = true,
+                    size = 20,
+                    anchorPoint = 'BOTTOMLEFT',
+                    xOffset = 10,
+                    yOffset = 2,
+                },
             },
             target = {
                 width = 227,

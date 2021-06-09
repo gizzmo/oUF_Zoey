@@ -57,6 +57,7 @@ modules\unitframes\elements\power.lua
 modules\unitframes\elements\portrait.lua
 modules\unitframes\elements\classpower.lua
 modules\unitframes\elements\border.lua
+modules\unitframes\elements\restingindicator.lua
 
 modules\unitframes\options.lua
 

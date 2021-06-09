@@ -239,6 +239,11 @@ function Module:ConstructStyle(object, unit, isSingle)
     object:CreateElement('HealthPrediction')
     object:CreateElement('Portrait')
 
+    -- Icons
+    if unit == 'player' then
+        object:CreateElement('RestingIndicator')
+    end
+
     -- Build the rest of the object depending on the style
     Module['Construct_'..object.style](self, object, unit, isSingle)
 end
@@ -295,10 +300,6 @@ function Module:Construct_Zoey(object, unit, isSingle)
     -- Indicators
     ----------------------------------------------------------------------------
     if unit == 'player' then
-        object.RestingIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
-        object.RestingIndicator:SetSize(20,20)
-        object.RestingIndicator:SetPoint('LEFT', object.Overlay, 'BOTTOMLEFT', 0, 2)
-
         object.CombatIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
         object.CombatIndicator:SetSize(20,20)
         object.CombatIndicator:SetPoint('RIGHT', object.Overlay, 'BOTTOMRIGHT', 0, 2)
