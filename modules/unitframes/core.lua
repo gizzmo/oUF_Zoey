@@ -183,6 +183,13 @@ local defaultDB = {
                     xOffset = 0,
                     yOffset = 0,
                 },
+                summonIndicator = {
+                    enabled = true,
+                    size = -1,
+                    anchorPoint = 'CENTER',
+                    xOffset = 0,
+                    yOffset = 0,
+                },
             },
             player = {
                 width = 227,

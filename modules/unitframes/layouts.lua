@@ -254,6 +254,7 @@ function Module:ConstructStyle(object, unit, isSingle)
     or unit == 'party'
     or unit == 'raid' then
         object:CreateElement('ResurrectIndicator')
+        object:CreateElement('SummonIndicator')
     end
 
     -- Build the rest of the object depending on the style
@@ -345,10 +346,6 @@ function Module:Construct_Zoey(object, unit, isSingle)
     object.PvPIndicator.Badge = object.Overlay:CreateTexture(nil, 'OVERLAY')
     object.PvPIndicator.Badge:SetSize(41,43)
     object.PvPIndicator.Badge:SetPoint('CENTER', object.PvPIndicator)
-
-    object.SummonIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
-    object.SummonIndicator:SetSize(object:GetHeight(), object:GetHeight())
-    object.SummonIndicator:SetPoint('CENTER')
 
     ----------------------------------------------------------------------------
     -- Cast Bars
@@ -647,10 +644,6 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
     object.RaidTargetIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
     object.RaidTargetIndicator:SetSize(16,16)
     object.RaidTargetIndicator:SetPoint('LEFT', 3, 0)
-
-    object.SummonIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
-    object.SummonIndicator:SetSize(object:GetHeight(), object:GetHeight())
-    object.SummonIndicator:SetPoint('CENTER')
 end
 function Module:Update_ZoeySquare(object)
 end

@@ -61,6 +61,7 @@ modules\unitframes\elements\restingindicator.lua
 modules\unitframes\elements\combatindicator.lua
 modules\unitframes\elements\readycheckindicator.lua
 modules\unitframes\elements\resurrectindicator.lua
+modules\unitframes\elements\summonindicator.lua
 
 modules\unitframes\options.lua
 
