@@ -161,7 +161,24 @@ local function PostUpdateAuras(Auras)
 end
 
 --------------------------------------------------------------------------------
+local function LeaderCornerIndicator(object)
+    local element = object.LeaderIndicator
+    local unit = object.unit
 
+    local isInLFGInstance = HasLFGRestrictions()
+    local isLeader = UnitIsGroupLeader(unit)
+    if(isLeader) then
+        if(isInLFGInstance) then
+            element:SetBackdropColor(1, 1, 1, 1) -- TODO: change color
+        else
+            element:SetBackdropColor(1, 1, 1, 1)
+        end
+
+        element:Show()
+    else
+        element:Hide()
+    end
+end
 
 --------------------------------------------------------------------------------
 -- ClassIcons Functions
@@ -552,6 +569,7 @@ function Module:Construct_ZoeyThin(object, unit, isSingle)
     object.LeaderIndicator = CreateCornerIndicator(object.Overlay)
     object.LeaderIndicator:SetBackdropColor(0.65, 0.65, 1, 1)
     object.LeaderIndicator:SetPoint('TOPLEFT')
+    object.LeaderIndicator.Override = LeaderCornerIndicator
 
     object.AssistantIndicator = CreateCornerIndicator(object.Overlay)
     object.AssistantIndicator:SetBackdropColor(1, 0.75, 0.5, 1)
@@ -588,6 +606,7 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
     object.LeaderIndicator = CreateCornerIndicator(object.Overlay)
     object.LeaderIndicator:SetBackdropColor(0.65, 0.65, 1, 1)
     object.LeaderIndicator:SetPoint('TOPLEFT')
+    object.LeaderIndicator.Override = LeaderCornerIndicator
 
     object.AssistantIndicator = CreateCornerIndicator(object.Overlay)
     object.AssistantIndicator:SetBackdropColor(1, 0.75, 0.5, 1)
