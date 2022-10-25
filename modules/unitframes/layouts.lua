@@ -212,10 +212,9 @@ function Module:ConstructStyle(object, unit, isSingle)
     object:CreateElement('Highlight')
 
     -- Frame Range Fading
-    object[IsAddOnLoaded('oUF_SpellRange') and 'SpellRange' or 'Range'] = {
-        insideAlpha = 1,
-        outsideAlpha = 0.5
-    }
+    if unit ~= 'player' then
+        object:CreateElement('Range')
+    end
 
     -- DispelHighlight
     do
@@ -607,12 +606,6 @@ function Module:Update_ZoeyThin(object)
 end
 
 function Module:Construct_ZoeySquare(object, unit, isSingle)
-    -- Change Range Fading
-    object[IsAddOnLoaded('oUF_SpellRange') and 'SpellRange' or 'Range'] = {
-        insideAlpha = 1,
-        outsideAlpha = 0.25
-    }
-
     ----------------------------------------------------------------------------
     -- Tags
     ----------------------------------------------------------------------------

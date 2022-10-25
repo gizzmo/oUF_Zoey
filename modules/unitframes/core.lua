@@ -165,6 +165,8 @@ local defaultDB = {
                 width = 135,
                 height = 40,
 
+                rangeAlpha = 0.5,
+
                 health = {
                     reverseFill = false,
                     orientation = 'HORIZONTAL'
@@ -285,6 +287,8 @@ local defaultDB = {
 
             raid = {
                 width = 65,
+
+                rangeAlpha = 0.25,
 
                 health = {
                     orientation = 'VERTICAL'
