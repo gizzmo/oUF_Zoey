@@ -598,8 +598,8 @@ end
 
 -- Every oUF object has an 'Update' method, which is this function.
 function Module.UpdateObject(object)
-    -- Update the frame Size -- This should be fine, since its combat protected
-    object:SetSize(object.db.width, object.db.height)
+    -- Update the frame Size. Protect it from runing in combat.
+    Addon:NoCombatWrapper(object.SetSize, object, object.db.width, object.db.height)
 
     Module:UpdateStyle(object)
 
@@ -995,11 +995,3 @@ function Module:LoadUnits()
     oUF:SetActiveStyle('ZoeySquare')
     self:CreateHeader('Raid'):SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT', 5, 240)
 end
-
------------------------------------------------------------ Combat Protection --
--- We shouldn't run these methods durning combat. Could cause errors.
--- Changing points, anchors, sizes on protected frames.
-Module.UpdateObject = Addon:AfterCombatWrapper(Module.UpdateObject)
-groupMethods.Update = Addon:AfterCombatWrapper(groupMethods.Update)
-headerMethods.Update = Addon:AfterCombatWrapper(headerMethods.Update)
-holderMethods.Update = Addon:AfterCombatWrapper(holderMethods.Update)
