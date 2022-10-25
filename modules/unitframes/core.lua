@@ -193,6 +193,14 @@ local defaultDB = {
                     xOffset = 0,
                     yOffset = 0,
                 },
+                grouproleIndicator = {
+                    enabled = true,
+                    simple = false,
+                    size = 15,
+                    anchorPoint = 'TOPRIGHT',
+                    xOffset = 0,
+                    yOffset = 0,
+                },
             },
             player = {
                 width = 227,
@@ -302,6 +310,13 @@ local defaultDB = {
                     anchorPoint = 'CENTER',
                     xOffset = 0,
                     yOffset = 0,
+                },
+                grouproleIndicator = {
+                    simple = true,
+                    size = 6,
+                    anchorPoint = 'TOPRIGHT',
+                    xOffset = -3,
+                    yOffset = -3,
                 },
 
                 direction = 'RIGHT_UP',
@@ -499,6 +514,21 @@ function Module.CreateFontString(parent, size, justify)
     return fs
 end
 
+do
+    local CORNER_BACKDROP = {
+        bgFile = "Interface\\BUTTONS\\WHITE8X8", tile = true, tileSize = 8,
+        edgeFile = "Interface\\BUTTONS\\WHITE8X8", edgeSize = 1,
+        insets = {left = 1, right = 1, top = 1, bottom = 1},
+    }
+
+    function Module.CreateCornerIndicator(parent)
+        local square = CreateFrame('Frame', nil, parent, BackdropTemplateMixin and "BackdropTemplate")
+        square:SetBackdrop(CORNER_BACKDROP)
+        square:SetBackdropBorderColor(0, 0, 0, 1)
+        square:SetSize(6,6)
+        return square
+    end
+end
 
 --[[------------------------------------------------------------------ Elements --
     Some functions to make creating and updating elements easier.

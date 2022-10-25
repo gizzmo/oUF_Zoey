@@ -63,6 +63,7 @@ modules\unitframes\elements\readycheckindicator.lua
 modules\unitframes\elements\resurrectindicator.lua
 modules\unitframes\elements\summonindicator.lua
 modules\unitframes\elements\range.lua
+modules\unitframes\elements\grouproleindicator.lua
 
 
 modules\unitframes\options.lua

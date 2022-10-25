@@ -6,7 +6,7 @@ local _, playerClass = UnitClass('player')
 --------------------------------------------------------------------------------
 local CreateFontString = Module.CreateFontString
 local CreateStatusBar = Module.CreateStatusBar
-
+local CreateCornerIndicator = Module.CreateCornerIndicator
 
 
 
@@ -161,37 +161,7 @@ local function PostUpdateAuras(Auras)
 end
 
 --------------------------------------------------------------------------------
--- Corner Indicators
-local CreateCornerIndicator
-do
-    local CORNER_BACKDROP = {
-        bgFile = "Interface\\BUTTONS\\WHITE8X8", tile = true, tileSize = 8,
-        edgeFile = "Interface\\BUTTONS\\WHITE8X8", edgeSize = 1,
-        insets = {left = 1, right = 1, top = 1, bottom = 1},
-    }
 
-    function CreateCornerIndicator(parent)
-        local square = CreateFrame('Frame', nil, parent, BackdropTemplateMixin and "BackdropTemplate")
-        square:SetBackdrop(CORNER_BACKDROP)
-        square:SetBackdropBorderColor(0, 0, 0, 1)
-        square:SetSize(6,6)
-        return square
-    end
-end
-
-local function GroupRoleCornerIndicator(self)
-    local element = self.GroupRoleIndicator
-    local role = UnitGroupRolesAssigned(self.unit)
-    if role == 'TANK' then
-        element:SetBackdropColor(1, 1, 1, 1)
-        element:Show()
-    elseif role == 'HEALER' then
-        element:SetBackdropColor(0, 1, 0, 1)
-        element:Show()
-    else
-        element:Hide()
-    end
-end
 
 --------------------------------------------------------------------------------
 -- ClassIcons Functions
@@ -254,6 +224,7 @@ function Module:ConstructStyle(object, unit, isSingle)
     or unit == 'raid' then
         object:CreateElement('ResurrectIndicator')
         object:CreateElement('SummonIndicator')
+        object:CreateElement('GroupRoleIndicator')
     end
 
     -- Build the rest of the object depending on the style
@@ -329,10 +300,6 @@ function Module:Construct_Zoey(object, unit, isSingle)
         object.PhaseIndicator:SetDesaturated(true)
         object.PhaseIndicator:SetVertexColor(0.4, 0.8, 1)
     end
-
-    object.GroupRoleIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
-    object.GroupRoleIndicator:SetSize(15,15)
-    object.GroupRoleIndicator:SetPoint('CENTER', object.Overlay, 'TOPRIGHT', 1, 0)
 
     object.RaidTargetIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
     object.RaidTargetIndicator:SetSize(23,23)
@@ -590,10 +557,6 @@ function Module:Construct_ZoeyThin(object, unit, isSingle)
     object.AssistantIndicator:SetBackdropColor(1, 0.75, 0.5, 1)
     object.AssistantIndicator:SetPoint('TOPLEFT')
 
-    object.GroupRoleIndicator = CreateCornerIndicator(object.Overlay)
-    object.GroupRoleIndicator:SetPoint('TOPRIGHT')
-    object.GroupRoleIndicator.Override = GroupRoleCornerIndicator
-
     object.RaidTargetIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
     object.RaidTargetIndicator:SetSize(16,16)
     object.RaidTargetIndicator:SetPoint('LEFT', 3, 0)
@@ -629,10 +592,6 @@ function Module:Construct_ZoeySquare(object, unit, isSingle)
     object.AssistantIndicator = CreateCornerIndicator(object.Overlay)
     object.AssistantIndicator:SetBackdropColor(1, 0.75, 0.5, 1)
     object.AssistantIndicator:SetPoint('TOPLEFT')
-
-    object.GroupRoleIndicator = CreateCornerIndicator(object.Overlay)
-    object.GroupRoleIndicator:SetPoint('TOPRIGHT')
-    object.GroupRoleIndicator.Override = GroupRoleCornerIndicator
 
     object.RaidTargetIndicator = object.Overlay:CreateTexture(nil, 'OVERLAY')
     object.RaidTargetIndicator:SetSize(16,16)
