@@ -39,26 +39,9 @@ function Module:OnEnable()
         self:SecureHook(WorldMapFrame, 'Minimize', 'SetSmallWorldMap')
         self:SecureHook(WorldMapFrame, 'SynchronizeDisplayState')
         self:SecureHook(WorldMapFrame, 'UpdateMaximizedSize')
-
-        -- Used to fix the size after initial loading and setup.
-        self:SecureHookScript(WorldMapFrame, 'OnShow', function()
-            if WorldMapFrame:IsMaximized() then
-                WorldMapFrame:UpdateMaximizedSize()
-                self:SetLargeWorldMap()
-            else
-                self:SetSmallWorldMap()
-            end
-
-            self:Unhook(WorldMapFrame, 'OnShow')
-        end)
     end
 
-    -- Set alpha used when moving
-    WORLD_MAP_MIN_ALPHA = self.db.profile.alphaWhileMoving
-    SetCVar("mapAnimMinAlpha", self.db.profile.alphaWhileMoving)
-
-    -- Enable/Disable map fading when moving
-    SetCVar("mapFade", (self.db.profile.fadeMapWhenMoving == true and 1 or 0))
+    self:SecureHookScript(WorldMapFrame, 'OnShow', self.WorldMap_FirstShow)
 end
 
 function Module:OnDisable()
@@ -72,14 +55,6 @@ function Module:SetLargeWorldMap()
     WorldMapFrame:SetParent(UIParent)
     WorldMapFrame:SetScale(1)
     WorldMapFrame.ScrollContainer.Child:SetScale(smallerMapScale)
-
-    if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
-        SetUIPanelAttribute(WorldMapFrame, 'area', 'center');
-    end
-
-    if WorldMapFrame:GetAttribute('UIPanelLayout-allowOtherPanels') ~= true then
-        SetUIPanelAttribute(WorldMapFrame, 'allowOtherPanels', true)
-    end
 
     WorldMapFrame:OnFrameSizeChanged()
     if WorldMapFrame:GetMapID() then
@@ -106,4 +81,23 @@ function Module:SetSmallWorldMap()
         WorldMapFrame:ClearAllPoints()
         WorldMapFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 16, -94)
     end
+end
+
+function Module:WorldMap_FirstShow()
+    local frame = WorldMapFrame
+    local maxed = frame:IsMaximized()
+
+    if maxed then -- this needs to be called outside of smallerWorldMap
+        frame:UpdateMaximizedSize()
+    end
+
+    if Module.db.profile.smallerWorldMap then
+        if maxed then
+            Module:SetLargeWorldMap()
+        else
+            Module:SetSmallWorldMap()
+        end
+    end
+
+    Module:Unhook(frame, 'OnShow') -- only need the first
 end
