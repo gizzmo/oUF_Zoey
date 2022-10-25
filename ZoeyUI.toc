@@ -1,4 +1,4 @@
-## Interface: 90100
+## Interface: 100002
 
 #---------------------------------------------------------------------- Addon --
 ## Title: ZoeyUI
@@ -65,5 +65,4 @@ modules\unitframes\elements\summonindicator.lua
 
 modules\unitframes\options.lua
 
-modules\misc\mirrortimers.lua
 modules\misc\worldmap.lua

@@ -171,7 +171,8 @@ local defaultDB = {
                 },
                 power = {
                     enabled = true,
-                    height = 10
+                    height = 10,
+                    reverseFill = false,
                 },
                 portrait = {
                     enabled = false,
@@ -448,28 +449,24 @@ function Module:DisableBlizzard()
     -- Hide the Blizzard Buffs
     BuffFrame:Hide()
     BuffFrame:UnregisterAllEvents()
-    TemporaryEnchantFrame:Hide()
+    DebuffFrame:Hide()
+    DebuffFrame:UnregisterAllEvents()
 
-    -- Hide Raidframes
+    -- Hide Raidframes TODO: access to some of these buttons is useful
     CompactRaidFrameManager:Hide()
     CompactRaidFrameManager:UnregisterAllEvents()
     CompactRaidFrameContainer:UnregisterAllEvents()
 
     -- Remove tanited items from the right click menu on units
-    for _, menu in pairs(UnitPopupMenus) do
-        for i = #menu, 1, -1 do
-            local name = menu[i]
-            if name:match('^LOCK_%u+_FRAME$')
-            or name:match('^UNLOCK_%u+_FRAME$')
-            or name:match('^MOVE_%u+_FRAME$')
-            or name:match('^RESET_%u+_FRAME_POSITION')
-            or name:match('^SET_FOCUS')
-            or name:match('^DISMISS')
-            then
-                table.remove(menu, i)
-            end
-        end
-    end
+    -- for _, menu in pairs(UnitPopupMenus) do
+    --     for i = #menu, 1, -1 do
+    --         local name = menu[i]
+    --         if name:match('^WORD')
+    --         then
+    --             table.remove(menu, i)
+    --         end
+    --     end
+    -- end
 end
 
 --------------------------------------------------------------------------------

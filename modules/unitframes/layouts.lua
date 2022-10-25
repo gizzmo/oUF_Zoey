@@ -374,7 +374,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
 
         -- Spell Icon
         if unit == 'target' then
-            object.Castbar.Icon = object.Castbar:CreateTexture(nil, 'BACKDROP')
+            object.Castbar.Icon = object.Castbar:CreateTexture(nil, 'BACKGROUND')
             object.Castbar.Icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
             object.Castbar.Icon:SetPoint('TOPLEFT', object.Castbar.Frame, 1, -1)
             object.Castbar.Icon:SetPoint('BOTTOMLEFT', object.Castbar.Frame, 1, 1)
@@ -423,7 +423,7 @@ function Module:Construct_Zoey(object, unit, isSingle)
         object.Castbar.Frame:SetPoint('BOTTOMLEFT', object, 'BOTTOMRIGHT', 8, 0)
 
         -- Spell Icon
-        object.Castbar.Icon = object.Castbar:CreateTexture(nil, 'BACKDROP')
+        object.Castbar.Icon = object.Castbar:CreateTexture(nil, 'BACKGROUND')
         object.Castbar.Icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
         object.Castbar.Icon:SetPoint('TOPLEFT', object.Castbar.Frame, 1, -1)
         object.Castbar.Icon:SetPoint('BOTTOMLEFT', object.Castbar.Frame, 1, 1)
